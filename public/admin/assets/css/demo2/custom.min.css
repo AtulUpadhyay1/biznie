@@ -1,0 +1,136 @@
+
+.switch-slider{
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 19px;
+}
+
+.switch-slider input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider-btn{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.switch-slider-btn:before{
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.switch-slider input:checked + .switch-slider-btn{
+    background-color: #cc0000;
+}
+
+.switch-slider input:focus + .switch-slider-btn{
+    box-shadow: 0 0 1px #2196F3;
+}
+
+.switch-slider input:checked + .switch-slider-btn:before {
+    -webkit-transform: translateX(12px);
+    -ms-transform: translateX(12px);
+    transform: translateX(12px);
+}
+
+/* Rounded Slider Switch Button*/  
+.switch-slider-btn.round{
+    border-radius: 12px;
+}
+
+.switch-slider-btn.round:before{
+    border-radius: 50%;
+}
+
+.sidebar .sidebar-header{
+    background-color: #8A0707;
+}
+
+.sidebar .sidebar-body{
+    background-color: #8A0707;
+}
+
+.sidebar .sidebar-header .sidebar-brand{
+    color: #fff;
+}
+
+.sidebar .sidebar-header .sidebar-toggler span{
+    background-color: #fff;
+}
+
+.sidebar .sidebar-body .nav .nav-item.nav-category{
+    color: #fff;
+    padding: 0 0 22px 0;
+    border-bottom: 1px solid #acaaaa;
+}
+
+.sidebar .sidebar-body .nav{
+    padding: 25px 15px 50px 15px;
+}
+
+.sidebar .sidebar-body .nav .nav-item .nav-link{
+    color: #fff;
+    padding: 20px 10px 20px 10px;
+    border-radius: 10px;
+}
+
+.sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link{
+    color: #fff;
+}
+
+/*Hovering List */
+.sidebar .sidebar-body .nav .nav-item .nav-link:hover{
+    color: #ffdf00;
+    background-color: #cc0000;
+    border-radius: 10px;
+}
+
+.sidebar .sidebar-body .nav .nav-item:hover .nav-link .link-icon{
+    color: #ffdf00;
+    fill: none !important;
+}
+
+/*Sublist Hover */
+.sidebar .sidebar-body .nav .nav-item .nav-link[aria-expanded=true]{
+    color: #ffdf00;
+}
+
+.sidebar .sidebar-body .nav.sub-menu .nav-item:hover .nav-link{
+    color: #ffdf00;
+}
+
+/*Active List */
+
+.sidebar .sidebar-body .nav .nav-item.active .nav-link{
+    color: #ffdf00;
+    background-color: #cc0000;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.sidebar .sidebar-body .nav .nav-item.active .nav-link .link-icon{
+    color: #ffdf00;
+    fill: none !important;
+}
+
+.sidebar .sidebar-body .nav .nav-item.active .nav-link::before{
+    left: -15px;
+    background: #fff;
+}
