@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>{{ config('app.name') }} | {{ isset($page_title) ? $page_title : '' }}</title>
+    <title>@yield('title',config('app.name'))</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -81,6 +81,7 @@
     <link rel="stylesheet" href="{{asset('admin/assets/css/demo2/custom.min.css')}}">
     <!-- End layout styles -->
 
+    @livewireStyles
 </head>
 
 <body>
@@ -93,7 +94,8 @@
             @include('admin.layouts.navbar')
 
             <div class="page-content">
-                @yield('content')
+                {{ $slot }}
+                {{-- @yield('content') --}}
             </div>
 
             <footer
@@ -105,7 +107,7 @@
         </div>
 
     </div>
-
+    @livewireScripts
     @include('admin.layouts.footer')
 
     @stack('scripts')

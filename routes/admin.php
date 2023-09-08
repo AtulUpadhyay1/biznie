@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Admin\DashboardLivewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,19 +18,21 @@ Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 });
 
-Route::group(['namespace' => 'App\Http\Controllers\Admin', 'as'=>'admin.'], function () {
+Route::group(['as'=>'admin.'], function () {
 
-    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-    Route::post('login', 'Auth\LoginController@login')->name('login');
+    Route::get('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'login'])->name('login');
+
+    Route::get('dashboard', DashboardLivewire::class)->name('dashboard');
 
     // Authenticated Routes
     Route::group(['middleware' => 'auth:admin'], function () {
 
-        Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-
+        // Admin Dashboard
+        // Route::get('dashboard', DashboardLivewire::class)->name('dashboard');
 
         //Logout
-        Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+        Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });
 
 });
