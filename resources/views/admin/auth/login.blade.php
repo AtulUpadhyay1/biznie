@@ -11,21 +11,21 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
         <!-- End fonts -->
         <!-- core:css -->
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/core/core.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/core/core.css')}}">
         <!-- Layout styles -->
         @if(session()->has('selected_theme') && session()->get('selected_theme') == "Dark")
-            <link rel="stylesheet" href="{{asset('admin/assets/css/demo2/style.min.css')}}">
+            <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
         @else
-            <link rel="stylesheet" href="{{asset('admin/assets/css/demo2/style.min.css')}}">
+            <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
         @endif
         <!-- End layout styles -->
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
         {{-- @if(websiteSetupValue('favicon'))
             <link rel="shortcut icon" href="{{asset('admin/admin/website_setup/'.websiteSetupValue('favicon'))}}" />
         @else
             <link rel="shortcut icon" href="{{asset('admin/assets/images/favicon.png')}}" />
         @endif --}}
-        <link rel="shortcut icon" href="{{asset('admin/assets/images/favicon.png')}}" />
+        <link rel="shortcut icon" href="{{asset('admin_css/assets/images/favicon.png')}}" />
 
     </head>
 
@@ -83,8 +83,8 @@
                 </div>
             </div>
         </div>
-        <script src="{{asset('admin/assets/vendors/core/core.js')}}"></script>
-        <script src="{{asset('admin/assets/vendors/sweetalert2/sweetalert2.min.js')}}"></script>
+        <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
+        <script src="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.js')}}"></script>
         <script>
             $(function () {
                 const Toast = Swal.mixin({

@@ -15,45 +15,45 @@
         rel="stylesheet">
     <!-- End fonts -->
     <meta name="keywords"
-        content="Biznie, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+        content="Biznie, bootstrap, bootstrap 5, bootstrap5, admin_css, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
     {{-- <!-- core:css -->
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/core/core.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/core/core.css')}}">
         <!-- endinject -->
 
         <!-- Plugin css for this page -->
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/select2/select2.min.css')}}">
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/jquery-tags-input/jquery.tagsinput.min.css')}}">
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/flatpickr/flatpickr.min.css')}}">
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/easymde/easymde.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/select2/select2.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/jquery-tags-input/jquery.tagsinput.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/flatpickr/flatpickr.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/easymde/easymde.min.css')}}">
         <!-- End plugin css for this page -->
 
         <!-- inject:css -->
-        <link rel="stylesheet" href="{{asset('admin/assets/fonts/feather-font/css/iconfont.css')}}">
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/flag-icon-css/css/flag-icon.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/fonts/feather-font/css/iconfont.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/flag-icon-css/css/flag-icon.min.css')}}">
         <!-- endinject -->
 
         <!-- Layout styles -->
 
         @if (session()->has('selected_theme') && session()->get('selected_theme') == 'Dark')
-            <link rel="stylesheet" href="{{asset('admin/assets/css/demo2/style.min.css')}}">
+            <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
         @else
-            <link rel="stylesheet" href="{{asset('admin/assets/css/demo1/style.min.css')}}">
+            <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo1/style.min.css')}}">
         @endif
-        <link rel="stylesheet" href="{{asset('admin/assets/css/demo2/style.min.css')}}">
-        <link rel="stylesheet" href="{{asset('admin/assets/css/demo2/custom.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/custom.min.css')}}">
         <!-- End layout styles -->
 
-        <link rel="stylesheet" href="{{asset('admin/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css')}}">
+        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css')}}">
 
         @if (websiteSetupValue('favicon'))
-            <link rel="shortcut icon" href="{{asset('admin/admin/website_setup/'.websiteSetupValue('favicon'))}}" />
+            <link rel="shortcut icon" href="{{asset('admin_css/admin_css/website_setup/'.websiteSetupValue('favicon'))}}" />
         @else
-            <link rel="shortcut icon" href="{{asset('admin/assets/images/favicon.png')}}" />
+            <link rel="shortcut icon" href="{{asset('admin_css/assets/images/favicon.png')}}" />
         @endif
 
-        <link rel="shortcut icon" href="{{asset('admin/assets/images/favicon.png')}}" />
+        <link rel="shortcut icon" href="{{asset('admin_css/assets/images/favicon.png')}}" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
 
     <!-- Fonts -->
@@ -64,21 +64,21 @@
     <!-- End fonts -->
 
     <!-- core:css -->
-    <link rel="stylesheet" href="{{asset('admin/assets/vendors/core/core.css')}}">
+    <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/core/core.css')}}">
     <!-- endinject -->
 
     <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="{{asset('admin/assets/vendors/flatpickr/flatpickr.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/flatpickr/flatpickr.min.css')}}">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
-    <link rel="stylesheet" href="{{asset('admin/assets/fonts/feather-font/css/iconfont.css')}}">
-    <link rel="stylesheet" href="{{asset('admin/assets/vendors/flag-icon-css/css/flag-icon.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin_css/assets/fonts/feather-font/css/iconfont.css')}}">
+    <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/flag-icon-css/css/flag-icon.min.css')}}">
     <!-- endinject -->
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="{{asset('admin/assets/css/demo2/style.min.css')}}">
-    <link rel="stylesheet" href="{{asset('admin/assets/css/demo2/custom.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/custom.min.css')}}">
     <!-- End layout styles -->
 
     @livewireStyles
