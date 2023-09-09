@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Admin\DashboardLivewire;
+use App\Livewire\Admin as AdminRoot;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +23,12 @@ Route::group(['as'=>'admin.'], function () {
     Route::get('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'showLoginForm'])->name('login');
     Route::post('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'login'])->name('login');
 
-    Route::get('dashboard', DashboardLivewire::class)->name('dashboard');
 
     // Authenticated Routes
     Route::group(['middleware' => 'auth:admin'], function () {
 
         // Admin Dashboard
-        // Route::get('dashboard', DashboardLivewire::class)->name('dashboard');
+        Route::get('dashboard', AdminRoot\DashboardLivewire::class)->name('dashboard');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
