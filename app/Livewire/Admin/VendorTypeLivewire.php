@@ -3,22 +3,21 @@
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
+use App\Models\VendorType;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
-use App\Models\BusinessCategory;
 
-class BusinessCategoryLivewire extends Component
+class VendorTypeLivewire extends Component
 {
     use WithFileUploads;
-
     public $formMode = false;
 
     public $hidden_id, $name, $image, $showIcon;
 
     public function render()
     {
-        $list = BusinessCategory::latest()->get();
-        return view('admin.business_category.index', compact('list'));
+        $list = VendorType::latest()->get();
+        return view('admin.vendor_type.index', compact('list'));
     }
 
     public function create()
@@ -45,12 +44,13 @@ class BusinessCategoryLivewire extends Component
     public function save()
     {
         $this->validate([
-            'name'  => 'required',
+            'name' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg',
         ]);
 
-        try{
-            $data = new BusinessCategory;
+        try
+        {
+            $data = new VendorType;
             $data->name = $this->name;
             $data->slug = Str::slug($this->name);
             if($this->image){
@@ -61,8 +61,8 @@ class BusinessCategoryLivewire extends Component
 
             $this->formMode = false;
             $this->resetInputFields();
-
-        }catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[
                 'type' => 'error',
                 'message' => 'something went wrong',
@@ -73,7 +73,7 @@ class BusinessCategoryLivewire extends Component
     public function edit($id)
     {
         $this->hidden_id = $id;
-        $data = BusinessCategory::find($id);
+        $data = VendorType::find($id);
         $this->name = $data->name;
         $this->showIcon = $data->icon;
         $this->formMode = true;
@@ -86,8 +86,9 @@ class BusinessCategoryLivewire extends Component
             'image' => 'nullable|image|mimes:jpg,png,jpeg',
         ]);
 
-        try{
-            $data = BusinessCategory::find($this->hidden_id);
+        try
+        {
+            $data = VendorType::find($this->hidden_id);
             $data->name = $this->name;
             $data->slug = Str::slug($this->name);
             if($this->image){
@@ -98,8 +99,8 @@ class BusinessCategoryLivewire extends Component
 
             $this->formMode = false;
             $this->resetInputFields();
-
-        }catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[
                 'type' => 'error',
                 'message' => 'something went wrong',
@@ -109,20 +110,20 @@ class BusinessCategoryLivewire extends Component
 
     public function updateStatus($id)
     {
-        $data = BusinessCategory::find($id);
+        $data = VendorType::find($id);
         $data->status = $data->status ? 0 : 1;
         $data->save();
     }
 
     public function updateFeatured($id)
     {
-        $data = BusinessCategory::find($id);
+        $data = VendorType::find($id);
         $data->featured = $data->featured ? 0 : 1;
         $data->save();
     }
 
     public function delete($id)
     {
-        BusinessCategory::destroy($id);
+        VendorType::destroy($id);
     }
 }

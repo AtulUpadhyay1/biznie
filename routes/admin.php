@@ -33,6 +33,10 @@ Route::group(['as'=>'admin.'], function () {
         // Business Category
         Route::get('business-category', AdminRoot\BusinessCategoryLivewire::class)->name('business-category');
 
+        //Vendor Type
+        // Business Category
+        Route::get('vendor-type', AdminRoot\VendorTypeLivewire::class)->name('vendor-type');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

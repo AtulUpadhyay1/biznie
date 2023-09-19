@@ -25,6 +25,12 @@
                     <span class="link-title">Business Category</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{route('admin.vendor-type')}}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Vendors Type</span>
+                </a>
+            </li>
 
             <!--Category-->
             <li class="nav-item nav-category">Products</li>
