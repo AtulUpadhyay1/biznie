@@ -10,6 +10,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
         <!-- End fonts -->
+        <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/custom.min.css')}}">
+        <!--Bootstrap icons-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <!-- core:css -->
         <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/core/core.css')}}">
         <!-- Layout styles -->
@@ -31,58 +34,54 @@
 
     <body>
         <div class="main-wrapper">
-            <div class="page-wrapper full-page">
-                <div class="page-content d-flex align-items-center justify-content-center">
-                    <div class="row w-75 mx-0 auth-page">
-                        <div class="col-md-8 col-xl-6 mx-auto">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="col-md-12 ps-md-0">
-                                        <div class="auth-form-wrapper px-4 py-5">
-                                            <a href="#" class="noble-ui-logo logo-light d-block mb-2 text-center">
-                                                {{-- @if(websiteSetupValue('logo'))
-                                                    <img src="{{asset('admin/admin/website_setup/'.websiteSetupValue('logo'))}}" class="img-fluid"  style="height: 40px">
-                                                @else
-                                                    <h4> {{config('app.name')}} </h4>
-                                                @endif --}}
-                                                <h4> {{config('app.name')}} </h4>
-                                            </a>
-                                            <h5 class="text-muted fw-normal mb-4 text-center">Welcome back! Log in to your account.</h5>
-                                            <form class="forms-sample" method="POST" action="{{ route('admin.login') }}">
-                                                @csrf
-                                                <div class="mb-3">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="Email" required>
-                                                    @error('email')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="password" class="form-label">Password</label>
-                                                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" autocomplete="current-password" name="password" placeholder="Password" required>
-                                                    @error('password')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="text-center">
-                                                    <button type="submit" class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
-                                                        Login
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
+            <div class="page-wrapper full-page login-page-wrapper">
+                <img src="{{asset('admin_css/assets/images/wave.png')}}" class="wave">
+                <div class="container">
+                    <div class="bg-img">
+                        <img src="{{asset('admin_css/assets/images/bg.png')}}">
+                    </div>
+                    <div class="login-content">
+                        <div>
+                            <img src="{{asset('admin_css/assets/images/avatar.png')}}">
+                            <h2 class="admin-title">Welcome Admin </h2>
+                            <form class="admin-login-form forms-sample" method="POST" action="{{ route('admin.login') }}">
+                                @csrf
+                                <div class="input-area one">
+                                    <div class="input-icon">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                    <div class="input-text-area">
+                                        <input type="email" class="input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="Username">
                                     </div>
                                 </div>
-                            </div>
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                <div class="input-area pass">
+                                    <div class="input-icon">
+                                        <i class="bi bi-key-fill"></i>
+                                    </div>
+                                    <div class="input-text-area">
+                                        <input type="password" class="input @error('password') is-invalid @enderror" id="password" autocomplete="current-password" name="password" placeholder="Password">
+                                    </div>
+                                </div>
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                <a href="#">Forgot Password?</a>
+				                <input type="submit" class="submit-btn" value="Login">
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
         <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
         <script src="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.js')}}"></script>
         <script>
