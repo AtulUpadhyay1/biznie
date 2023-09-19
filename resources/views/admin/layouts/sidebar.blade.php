@@ -14,14 +14,38 @@
         <ul class="nav">
             <li class="nav-item nav-category">Home</li>
             <li class="nav-item">
-                <a href="dashboard.html" class="nav-link">
+                <a href="{{route('admin.dashboard')}}" class="nav-link">
                     <i class="link-icon" data-feather="home"></i>
                     <span class="link-title">Dashboard</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{route('admin.business-category')}}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Business Category</span>
+                </a>
+            </li>
 
             <!--Category-->
-            <li class="nav-item nav-category">Prodcuts Unit</li>
+            <li class="nav-item nav-category">Products</li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
+                    aria-expanded="false" aria-controls="business">
+                    <i class="link-icon" data-feather="shopping-bag"></i>
+                    <span class="link-title">Products</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="collapse" id="business">
+                    <ul class="nav sub-menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">All Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Add Products</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
@@ -46,6 +70,9 @@
                     <span class="link-title">Unit</span>
                 </a>
             </li>
+
+            <!--Businesses-->
+            <li class="nav-item nav-category">Business</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
@@ -57,27 +84,6 @@
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Discount Type</span>
                 </a>
-            </li>
-
-            <!--Businesses-->
-            <li class="nav-item nav-category">Businesses</li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
-                    aria-expanded="false" aria-controls="business">
-                    <i class="link-icon" data-feather="shopping-bag"></i>
-                    <span class="link-title">Products</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="collapse" id="business">
-                    <ul class="nav sub-menu">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">All Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Add Products</a>
-                        </li>
-                    </ul>
-                </div>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">

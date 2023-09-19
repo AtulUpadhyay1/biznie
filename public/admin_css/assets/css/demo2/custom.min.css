@@ -274,6 +274,7 @@
     color: #fff;
     padding: 20px 10px 20px 10px;
     border-radius: 10px;
+    margin: 3px 0;
 }
 
 .sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link{
@@ -319,3 +320,21 @@
     left: -15px;
     background: #fff;
 }
+
+
+/*Admin Pages start*/
+.page-content .card-title{
+    text-transform: capitalize;
+}
+
+.lable-image{
+    width: 100px;
+    height: 100px;
+}
+
+.label-image-url{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/*End of Admin pages*/

@@ -30,6 +30,9 @@ Route::group(['as'=>'admin.'], function () {
         // Admin Dashboard
         Route::get('dashboard', AdminRoot\DashboardLivewire::class)->name('dashboard');
 
+        // Business Category
+        Route::get('business-category', AdminRoot\BusinessCategoryLivewire::class)->name('business-category');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

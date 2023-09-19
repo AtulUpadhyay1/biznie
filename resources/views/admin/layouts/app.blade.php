@@ -81,6 +81,10 @@
     <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/custom.min.css')}}">
     <!-- End layout styles -->
 
+    <!--Bootstrap icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!--End of bootstrap icons-->
+
     @livewireStyles
 </head>
 

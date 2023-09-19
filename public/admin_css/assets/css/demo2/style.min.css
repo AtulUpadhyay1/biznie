@@ -2714,8 +2714,8 @@ textarea.form-control-lg {
 }
 
 .form-check-input:checked {
-    background-color: #6571ff;
-    border-color: #6571ff
+    background-color: #cc0000;
+    border-color: #cc0000
 }
 
 .form-check-input:checked[type=checkbox] {
@@ -23887,14 +23887,14 @@ div.tox .buy-now-wrapper .tox-button svg {
 }
 
 .navbar .navbar-content .navbar-nav .nav-item .nav-link .indicator .circle {
-    background: #6571ff;
+    background: #cc0000;
     width: 7px;
     height: 7px;
     border-radius: 50%
 }
 
 .navbar .navbar-content .navbar-nav .nav-item .nav-link .indicator .circle::before {
-    background-color: #6571ff;
+    background-color: #cc0000;
     content: "";
     display: table;
     border-radius: 50%;
