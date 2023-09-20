@@ -5,7 +5,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>Add Product Categories</h4>
+                            <h4>Add Product Category</h4>
                         </div>
                         <div class="col-6 text-end">
                             <a class="btn btn-danger btn-icon-text float-end align-items-center" wire:click="cancel()">
@@ -17,7 +17,7 @@
                     <form class="forms-sample" wire:submit.prevent="{{$hidden_id ? 'update()' : 'save()'}}">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                    <label for="business-product-category" class="form-label">Business Categories</label>
+                                    <label for="business-product-category" class="form-label">Business Category</label>
                                     <select class="form-select" id="business-product-category"  wire:model.defer="business_category_id">
                                         <option selected="">Select Business Category</option>
                                         @foreach($business_category_list as $business_category)
