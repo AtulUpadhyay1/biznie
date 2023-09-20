@@ -10,7 +10,7 @@
                             <div class="col-6 card-title">
                                 <h4>Business Categories</h4>
                             </div>
-                            <div class="col-md-6 text-end">
+                            <div class="col-6 text-end">
                                 <a class="btn btn-danger btn-icon-text float-end align-items-center" wire:click="create()"><i
                                         class="bi bi-plus-lg me-1"></i>Add Business Category</a>
                             </div>

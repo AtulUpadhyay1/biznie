@@ -2,7 +2,7 @@
 <nav class="sidebar">
     <div class="sidebar-header">
         <a href="#" class="sidebar-brand">
-            Biznie</span>
+            <img src="{{asset('admin_css/assets/images/logo.png')}}" style="width: 70%;">
         </a>
         <div class="sidebar-toggler not-active">
             <span></span>
