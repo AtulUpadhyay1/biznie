@@ -18,7 +18,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="business-product-category" class="form-label">Business Category</label>
-                                <select class="form-select" id="business-category"  wire:model.defer="business_category_id" wire:change="setProductCategoryList()">
+                                <select class="form-select mb-4 mb-md-0" id="business-category"  wire:model.defer="business_category_id" wire:change="setProductCategoryList()">
                                     <option selected="">Select Business Category</option>
                                     @foreach($business_category_list as $business_category)
                                     <option value="{{$business_category->id}}">{{$business_category->name}}</option>

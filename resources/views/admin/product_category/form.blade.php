@@ -18,7 +18,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                     <label for="business-product-category" class="form-label">Business Category</label>
-                                    <select class="form-select" id="business-product-category"  wire:model.defer="business_category_id">
+                                    <select class="form-select mb-4 mb-md-0" id="business-product-category"  wire:model.defer="business_category_id">
                                         <option selected="">Select Business Category</option>
                                         @foreach($business_category_list as $business_category)
                                         <option value="{{$business_category->id}}">{{$business_category->name}}</option>
@@ -28,7 +28,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Name:</label>
-                                <input type="text" class="form-control mb-4 mb-md-0" wire:model.defer="name">
+                                <input type="text" class="form-control" wire:model.defer="name">
                             </div>
                         </div>
                         <div class="row">
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 text-end">
+                            <div class="col-md-6">
                                 <button type="submit" class="btn btn-warning">Submit</button>
                             </div>
                         </div>
