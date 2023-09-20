@@ -5,7 +5,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>Add Product Categories</h4>
+                            <h4>Add Product Sub Categories</h4>
                         </div>
                         <div class="col-6 text-end">
                             <a class="btn btn-danger btn-icon-text float-end align-items-center" wire:click="cancel()">
@@ -17,21 +17,29 @@
                     <form class="forms-sample" wire:submit.prevent="{{$hidden_id ? 'update()' : 'save()'}}">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                    <label for="business-product-category" class="form-label">Business Categories</label>
-                                    <select class="form-select" id="business-product-category"  wire:model.defer="business_category_id">
-                                        <option selected="">Select Business Category</option>
-                                        @foreach($business_category_list as $business_category)
-                                        <option value="{{$business_category->id}}">{{$business_category->name}}</option>
-                                        @endforeach
-                                    </select>
-
+                                <label for="business-product-category" class="form-label">Business Categories</label>
+                                <select class="form-select" id="business-category"  wire:model.defer="business_category_id" wire:change="setProductCategoryList()">
+                                    <option selected="">Select Business Category</option>
+                                    @foreach($business_category_list as $business_category)
+                                    <option value="{{$business_category->id}}">{{$business_category->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
+                            <div class="col-md-6">
+                                <label for="business-product-category" class="form-label">Product Categories</label>
+                                <select class="form-select" id="business-product-category"  wire:model.defer="product_category_id">
+                                    <option selected="">Select Product Category</option>
+                                    @foreach($product_category_list as $product_category)
+                                    <option value="{{$product_category->id}}">{{$product_category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Name:</label>
                                 <input type="text" class="form-control mb-4 mb-md-0" wire:model.defer="name">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Choose Image:</label>
                                 <input id="business-category-image" type="file" class="form-control mb-2" wire:model.defer="image">
@@ -45,7 +53,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 text-end">
+                            <div class="col-md-6">
                                 <button type="submit" class="btn btn-warning">Submit</button>
                             </div>
                         </div>
@@ -55,3 +63,4 @@
         </div>
     </div>
 </div>
+

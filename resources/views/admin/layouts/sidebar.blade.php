@@ -33,8 +33,8 @@
             </li>
 
             <!--Category-->
-            <li class="nav-item nav-category">Products</li>
-            <li class="nav-item">
+            <li class="nav-item nav-category">Attributes</li>
+            {{-- <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
                     aria-expanded="false" aria-controls="business">
                     <i class="link-icon" data-feather="shopping-bag"></i>
@@ -51,7 +51,7 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a href="{{route('admin.product-category')}}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
@@ -59,7 +59,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('admin.product-sub-category')}}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Sub Category</span>
                 </a>
