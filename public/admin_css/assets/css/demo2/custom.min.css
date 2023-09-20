@@ -254,6 +254,7 @@
 
 .sidebar .sidebar-header .sidebar-brand{
     color: #fff;
+    width: 255px;
 }
 
 .sidebar .sidebar-header .sidebar-toggler span{
@@ -267,18 +268,18 @@
 }
 
 .sidebar .sidebar-body .nav{
-    padding: 25px 15px 50px 15px;
+    padding: 25px 15px;
 }
 
 .sidebar .sidebar-body .nav .nav-item .nav-link{
-    color: #fff;
+    color: #fff !important;
     padding: 20px 10px 20px 10px;
     border-radius: 10px;
     margin: 3px 0;
 }
 
 .sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link{
-    color: #fff;
+    color: #fff !important;
 }
 
 /*Hovering List */

@@ -23956,7 +23956,7 @@ div.tox .buy-now-wrapper .tox-button svg {
 
 .sidebar .sidebar-header {
     background: #fff;
-    height: 60px;
+    height: 70px;
     border-bottom: 1px solid #e9ecef;
     display: flex;
     justify-content: space-between;
@@ -23991,7 +23991,7 @@ div.tox .buy-now-wrapper .tox-button svg {
 
 .sidebar .sidebar-header .sidebar-toggler {
     cursor: pointer;
-    width: 18px
+    width: 30px;
 }
 
 .sidebar .sidebar-header .sidebar-toggler span {

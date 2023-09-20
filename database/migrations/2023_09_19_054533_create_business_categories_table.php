@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('business_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('slug')->nullable();
+            $table->string('name');
+            $table->string('slug');
             $table->string('icon')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->tinyInteger('featured')->default(0);

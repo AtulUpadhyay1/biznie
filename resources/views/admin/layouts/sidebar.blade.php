@@ -1,7 +1,7 @@
 <!-- partial:partials/_sidebar.html -->
 <nav class="sidebar">
     <div class="sidebar-header">
-        <a href="#" class="sidebar-brand">
+        <a href="{{route('admin.dashboard')}}" class="sidebar-brand">
             <img src="{{asset('admin_css/assets/images/logo.png')}}" style="width: 70%;">
         </a>
         <div class="sidebar-toggler not-active">
@@ -53,7 +53,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('admin.product-category')}}" class="nav-link">
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Category</span>
                 </a>
