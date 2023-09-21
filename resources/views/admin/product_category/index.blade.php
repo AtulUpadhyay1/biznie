@@ -21,7 +21,7 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Icon</th>
+                                        <th>Image</th>
                                         <th>Name</th>
                                         <th>Status</th>
                                         <th>Featured</th>
@@ -31,7 +31,7 @@
                                 <tbody>
                                     @foreach ($list as $data)
                                         <tr>
-                                            <td><img src="{{ asset('storage/' . $data->icon) }}" alt="image"></td>
+                                            <td><img src="{{ asset('storage/' . $data->thumbnail) }}" alt="image"></td>
                                             <td>{{ $data->name }}</td>
                                             <td>
                                                 <div class="form-check form-switch">

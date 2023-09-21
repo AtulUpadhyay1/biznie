@@ -28,10 +28,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Thumbnail Image:</label>
-                                <input type='file' id="business_category_thumbnail" class="form-control mb-3 mb-md-0" wire:model.defer="thumbnail">
+                                <input type='file' id="business_category_thumbnail" class="form-control" wire:model.defer="thumbnail">
                                 <label for="business_category_thumbnail">
                                     @if($thumbnail)
                                         <img src="{{$thumbnail->temporaryUrl()}}" class="label-thumbnail">
@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Banner Image:</label>
-                                <input type='file' id="business_category_banner" class="form-control mb-3 mb-md-0" wire:model.defer="banner">
+                                <input type='file' id="business_category_banner" class="form-control" wire:model.defer="banner">
                                 <label for="business_category_banner">
                                     @if($banner)
                                         <img src="{{$banner->temporaryUrl()}}" class="label-banner">
