@@ -17,7 +17,7 @@
                     <form class="forms-sample" wire:submit.prevent="{{$hidden_id ? 'update()' : 'save()'}}">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                    <label for="business-product-category" class="form-label">Business Category</label>
+                                    <label for="business-product-category" class="form-label">Business Category:</label>
                                     <select class="form-select mb-4 mb-md-0" id="business-product-category"  wire:model.defer="business_category_id">
                                         <option selected="">Select Business Category</option>
                                         @foreach($business_category_list as $business_category)

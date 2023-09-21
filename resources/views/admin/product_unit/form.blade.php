@@ -21,7 +21,7 @@
                                 <input type="text" class="form-control mb-4 mb-md-0" wire:model.defer="name">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Unit</label>
+                                <label class="form-label">Unit:</label>
                                 <input type="text" class="form-control mb-4 mb-md-0" wire:model.defer="unit">
                             </div>
                         </div>
