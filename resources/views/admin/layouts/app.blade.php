@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap"
         rel="stylesheet">
+
+    <!--Font awesome icons-->
+    <script src="https://use.fontawesome.com/80ace2cf8a.js"></script>
     <!-- End fonts -->
     <meta name="keywords"
         content="Biznie, bootstrap, bootstrap 5, bootstrap5, admin_css, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">

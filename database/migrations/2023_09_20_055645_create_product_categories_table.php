@@ -13,12 +13,17 @@ return new class extends Migration
     {
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('business_category_id');
+            $table->bigInteger('business_category_id')->unsigned();
             $table->string('name');
             $table->string('slug');
             $table->string('icon')->nullable();
+            $table->string('thumbnail')->nullable();
+            $table->string('banner')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->tinyInteger('featured')->default(0);
+            $table->string('meta_title')->nullable();
+            $table->longText('meta_keywords')->nullable();
+            $table->longText('meta_description')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

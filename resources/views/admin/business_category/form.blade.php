@@ -18,19 +18,55 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Name:</label>
-                                <input type="text" class="form-control mb-4 mb-md-0" wire:model.defer="name">
+                                <input type="text" class="form-control mb-3 mb-md-0" wire:model.defer="name">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Choose Image:</label>
-                                <input id="business-category-image" type="file" class="form-control mb-2" wire:model.defer="image">
-                               <div for="business-category-image" class="lable-image justify-content-center">
-                                    @if($image)
-                                        <img src="{{$image->temporaryUrl()}}" class="label-image-url">
-                                    @elseif ($showIcon)
-                                        <img src="{{asset('storage/'.$showIcon)}}" class="label-image-url">
-                                    @endif
+                                <label class="form-label">Icon:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>'!!}</span>
+                                    <input type="text" class="form-control" wire:model.defer="icon">
                                 </div>
                             </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Thumnail Image:</label>
+                                <input type='file' id="business_category_thumnail" class="form-control mb-3 mb-md-0" wire:model.defer="thumbnail">
+                                <label for="business_category_thumnail">
+                                    @if($thumbnail)
+                                        <img src="{{$thumbnail->temporaryUrl()}}" class="label-thumbnail">
+                                    @elseif ($showThumbnail)
+                                        <img src="{{asset('storage/'.$showThumbnail)}}" class="label-thumbnail">
+                                    @endif
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Banner Image:</label>
+                                <input type='file' id="business_category_banner" class="form-control mb-3 mb-md-0" wire:model.defer="banner">
+                                <label for="business_category_banner">
+                                    @if($banner)
+                                        <img src="{{$banner->temporaryUrl()}}" class="label-banner">
+                                    @elseif ($showBanner)
+                                        <img src="{{asset('storage/'.$showBanner)}}" class="label-banner">
+                                    @endif
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Meta Title:</label>
+                                <input type='text' class="form-control mb-3 mb-md-0" wire:model.defer='meta_title'>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Meta Keywords:</label>
+                                <input type='text' class="form-control" wire:model.defer='meta_keywords'>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                           <div class="col-12">
+                                <label for="FormControlTextarea" class="form-label">Meta Description:</label>
+                                <textarea class="form-control" id="FormControlTextarea" rows="5" wire:model.defer='meta_description'></textarea>
+                           </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">

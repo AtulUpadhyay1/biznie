@@ -327,15 +327,14 @@
 .page-content .card-title{
     text-transform: capitalize;
 }
-
-.lable-image{
+.label-thumbnail{
     width: 100px;
     height: 100px;
+    object-fit: cover;
 }
-
-.label-image-url{
+.label-banner{
     width: 100%;
-    height: 100%;
+    height: 100px;
     object-fit: cover;
 }
 /*End of Admin pages*/
