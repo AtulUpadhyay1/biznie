@@ -38,7 +38,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Name:</label>
-                                <input type="text" class="form-control mb-4 mb-md-0" wire:model.defer="name">
+                                <input type="text" class="form-control mb-3 mb-md-0" wire:model.defer="name">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Icon:</label>
