@@ -107,10 +107,10 @@
         </div>
 
     </div>
-    @livewireScripts
     @include('admin.layouts.footer')
 
     @stack('scripts')
+    @livewireScripts
 </body>
 
 </html>
