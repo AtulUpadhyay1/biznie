@@ -30,9 +30,9 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Thumnail Image:</label>
-                                <input type='file' id="business_category_thumnail" class="form-control mb-3 mb-md-0" wire:model.defer="thumbnail">
-                                <label for="business_category_thumnail">
+                                <label class="form-label">Thumbnail Image:</label>
+                                <input type='file' id="business_category_thumbnail" class="form-control mb-3 mb-md-0" wire:model.defer="thumbnail">
+                                <label for="business_category_thumbnail">
                                     @if($thumbnail)
                                         <img src="{{$thumbnail->temporaryUrl()}}" class="label-thumbnail">
                                     @elseif ($showThumbnail)
