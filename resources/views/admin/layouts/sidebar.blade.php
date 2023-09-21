@@ -14,19 +14,19 @@
         <ul class="nav">
             <li class="nav-item nav-category">Home</li>
             <li class="nav-item">
-                <a href="{{route('admin.dashboard')}}" class="nav-link">
+                <a href="{{route('admin.dashboard')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="home"></i>
                     <span class="link-title">Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('admin.business-category')}}" class="nav-link">
+                <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Business Category</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('admin.vendor-type')}}" class="nav-link">
+                <a href="{{route('admin.vendor-type')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Vendors Type</span>
                 </a>
@@ -53,13 +53,13 @@
                 </div>
             </li> --}}
             <li class="nav-item">
-                <a href="{{route('admin.product-category')}}" class="nav-link">
+                <a href="{{route('admin.product-category')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Category</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('admin.product-sub-category')}}" class="nav-link">
+                <a href="{{route('admin.product-sub-category')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Sub Category</span>
                 </a>
@@ -71,7 +71,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('admin.product-unit')}}" class="nav-link">
+                <a href="{{route('admin.product-unit')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Unit</span>
                 </a>
