@@ -40,11 +40,11 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <a type="button" id="actionEditBtn" data-bs-toggle="dropdown"
+                                                <a type="button" id="ActionBtn_{{$data->id}}" data-bs-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                                 </a>
-                                                <div class="dropdown-menu" aria-labelledby="actionEditBtn">
+                                                <div class="dropdown-menu" aria-labelledby="ActionBtn_{{$data->id}}">
                                                     <a class="dropdown-item d-flex align-items-center" href=""><i
                                                             class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
                                                     <a href="javascript:;"

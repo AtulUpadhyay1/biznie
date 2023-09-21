@@ -13,7 +13,8 @@ class ProductSubCategoryLiveWire extends Component
 {
     use WithFileUploads;
     public $formMode = false;
-    public $hidden_id, $product_category_id, $business_category_id, $name, $image, $showIcon;
+    public $hidden_id, $product_category_id, $business_category_id, $name, $icon,
+    $thumbnail, $showThumbnail, $banner, $showBanner, $meta_title, $meta_keywords, $meta_description;
     public $product_category_list = [];
     public $business_category_list  = null;
 
@@ -46,8 +47,14 @@ class ProductSubCategoryLiveWire extends Component
         $this->hidden_id = null;
         $this->product_category_id = null;
         $this->name = null;
-        $this->image = null;
-        $this->showIcon = null;
+        $this->icon = null;
+        $this->thumbnail = null;
+        $this->banner = null;
+        $this->showThumbnail = null;
+        $this->showBanner = null;
+        $this->meta_title= null;
+        $this->meta_keywords = null;
+        $this->meta_description = null;
         $this->resetValidation();
     }
 
@@ -55,22 +62,40 @@ class ProductSubCategoryLiveWire extends Component
     {
         $this->validate([
             'name' => 'required',
-            'image' => 'required|image|mimes:jpg,png,jpeg',
+            'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
+            'banner' => 'required|image|mimes:jpg,png,jpeg',
         ]);
 
-        $data = new ProductSubCategory;
-        $data->product_categories_id = $this->product_category_id;
-        $data->business_category_id = $this->business_category_id;
-        $data->name = $this->name;
-        $data->slug = Str::slug($this->name);
-        if($this->image){
-            $image_name = time().'-'.rand(10, 99).'.'.$this->image->extension();
-            $data->icon = $this->image->storeAs('business_category', $image_name, 'public');
-        }
-        $data->save();
+        try
+        {
+            $data = new ProductSubCategory;
+            $data->product_categories_id = $this->product_category_id;
+            $data->business_category_id = $this->business_category_id;
+            $data->name = $this->name;
+            $data->slug = Str::slug($this->name);
+            $data->icon = $this->icon;
+            $data->meta_title = $this->meta_title;
+            $data->meta_description = $this->meta_description;
+            $data->meta_keywords = $this->meta_keywords;
+            if($this->thumbnail){
+                $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
+                $data->thumbnail = $this->thumbnail->storeAs('product_subcategory', $thumbnail_name, 'public');
+            }
+            if($this->banner){
+                $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
+                $data->banner = $this->banner->storeAs('product_subcategory', $banner_name, 'public');
+            }
+            $data->save();
 
-        $this->formMode = false;
-        $this->resetInputFields();
+            $this->formMode = false;
+            $this->resetInputFields();
+        }
+        catch (\Exception $e) {
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => 'something went wrong',
+            ]);
+        }
 
     }
 
@@ -83,7 +108,12 @@ class ProductSubCategoryLiveWire extends Component
         $this->name = $data->name;
         $this->product_category_id = $data->product_categories_id;
         $this->business_category_id = $data->business_category_id;
-        $this->showIcon = $data->icon;
+        $this->icon = $data->icon;
+        $this->showThumbnail = $data->thumbnail;
+        $this->showBanner = $data->banner;
+        $this->meta_title= $data->meta_title;
+        $this->meta_keywords = $data->meta_keywords;
+        $this->meta_description = $data->meta_description;
         $this->formMode = true;
     }
 
@@ -91,21 +121,38 @@ class ProductSubCategoryLiveWire extends Component
     {
         $this->validate([
             'name'  => 'required',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg',
+            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
+            'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
         ]);
 
+        try
+        {
+            $data = ProductSubCategory::find($this->hidden_id);
+            $data->name = $this->name;
+            $data->slug = Str::slug($this->name);
+            $data->icon = $this->icon;
+            $data->meta_title = $this->meta_title;
+            $data->meta_description = $this->meta_description;
+            $data->meta_keywords = $this->meta_keywords;
+            if($this->thumbnail){
+                $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
+                $data->thumbnail = $this->thumbnail->storeAs('product_subcategory', $thumbnail_name, 'public');
+            }
+            if($this->banner){
+                $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
+                $data->banner = $this->banner->storeAs('product_subcategory', $banner_name, 'public');
+            }
+            $data->save();
 
-        $data = ProductSubCategory::find($this->hidden_id);
-        $data->name = $this->name;
-        $data->slug = Str::slug($this->name);
-        if($this->image){
-            $image_name = time().'-'.rand(10, 99).'.'.$this->image->extension();
-            $data->icon = $this->image->storeAs('business_category', $image_name, 'public');
+            $this->formMode = false;
+            $this->resetInputFields();
         }
-        $data->save();
-
-        $this->formMode = false;
-        $this->resetInputFields();
+        catch (\Exception $e) {
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => 'something went wrong',
+            ]);
+        }
 
     }
 
