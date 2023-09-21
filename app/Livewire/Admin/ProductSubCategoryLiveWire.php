@@ -69,7 +69,7 @@ class ProductSubCategoryLiveWire extends Component
         try
         {
             $data = new ProductSubCategory;
-            $data->product_categories_id = $this->product_category_id;
+            $data->product_category_id = $this->product_category_id;
             $data->business_category_id = $this->business_category_id;
             $data->name = $this->name;
             $data->slug = Str::slug($this->name);
@@ -106,7 +106,7 @@ class ProductSubCategoryLiveWire extends Component
         $this->business_category_list=BusinessCategory::where('status',1)->get();
         $this->product_category_list=ProductCategory::where('business_category_id',$data->business_category_id)->get();
         $this->name = $data->name;
-        $this->product_category_id = $data->product_categories_id;
+        $this->product_category_id = $data->product_category_id;
         $this->business_category_id = $data->business_category_id;
         $this->icon = $data->icon;
         $this->showThumbnail = $data->thumbnail;
