@@ -1,7 +1,3 @@
-<!-- core:js -->
-<script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
-<!-- endinject -->
-
 <!-- Plugin js for this page -->
 <script src="{{asset('admin_css/assets/vendors/flatpickr/flatpickr.min.js')}}"></script>
 <script src="{{asset('admin_css/assets/vendors/apexcharts/apexcharts.min.js')}}"></script>

@@ -88,6 +88,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!--End of bootstrap icons-->
 
+    <!-- core:js -->
+    <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
+    <!-- endinject -->
     @livewireStyles
 </head>
 
