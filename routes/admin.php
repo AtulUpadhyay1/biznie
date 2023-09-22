@@ -42,6 +42,9 @@ Route::group(['as'=>'admin.'], function () {
         //Product Sub Category
         Route::get('product-sub-category', AdminRoot\ProductSubCategoryLivewire::class)->name('product-sub-category');
 
+        //Product Sub Sub Category
+        Route::get('product-sub-subcategory', AdminRoot\ProductSubSubCategoryLivewire::class)->name('product-sub-subcategory');
+
         //Product Unit
         Route::get('product-unit', AdminRoot\ProductUnitLivewire::class)->name('product-unit');
 

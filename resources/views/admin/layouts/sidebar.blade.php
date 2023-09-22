@@ -21,14 +21,14 @@
             </li>
             <li class="nav-item">
                 <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="box"></i>
+                    <i class="link-icon" data-feather="inbox"></i>
                     <span class="link-title">Business Category</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{route('admin.vendor-type')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="box"></i>
-                    <span class="link-title">Vendors Type</span>
+                    <i class="link-icon" data-feather="users"></i>
+                    <span class="link-title">Vendor Type</span>
                 </a>
             </li>
 
@@ -65,9 +65,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('admin.product-sub-subcategory')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
-                    <span class="link-title">Sub sub Category</span>
+                    <span class="link-title">Sub Sub Category</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -81,13 +81,13 @@
             <li class="nav-item nav-category">Business</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="box"></i>
+                    <i class="link-icon" data-feather="pie-chart"></i>
                     <span class="link-title">Tax Type</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="box"></i>
+                    <i class="link-icon" data-feather="dollar-sign"></i>
                     <span class="link-title">Discount Type</span>
                 </a>
             </li>

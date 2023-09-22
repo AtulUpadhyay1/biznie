@@ -1,17 +1,17 @@
 <div>
     @if ($formMode)
-        @include('admin.product_sub_category.form')
+        @include('admin.product_sub_sub_category.form')
     @else
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>Product Sub Categories</h4>
+                            <h4>Product Sub Sub Categories</h4>
                         </div>
                         <div class="col-6">
                             <a class="btn btn-danger btn-icon-text float-end align-items-center"
-                            wire:click="create()"><i class="bi bi-plus-lg me-1"></i>Add Sub Category
+                                wire:click="create()"><i class="bi bi-plus-lg me-1"></i>Add Sub Sub Category
                             </a>
                         </div>
                     </div>
