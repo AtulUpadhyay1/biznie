@@ -17,7 +17,7 @@ class VendorTypeLivewire extends Component
     public function render()
     {
         $list = VendorType::latest()->get();
-        return view('admin.vendor_type.index', compact('list'));
+        return view('admin.vendor_type.index', compact('list'), ['page_title' => 'Vendor Type']);
     }
 
     public function create()

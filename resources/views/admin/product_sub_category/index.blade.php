@@ -1,4 +1,5 @@
 <div>
+    @section('title', config('app.name') . ' | '.$page_title)
     @if ($formMode)
         @include('admin.product_sub_category.form')
     @else
