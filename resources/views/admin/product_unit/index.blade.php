@@ -1,4 +1,5 @@
 <div>
+    @section('title', config('app.name') . ' | '.$page_title)
     @if ($formMode)
         @include('admin.product_unit.form')
     @else
@@ -28,7 +29,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($list as $data)
+                                    @forelse ($list as $data)
                                         <tr>
                                             <td>{{ $data->name }}</td>
                                             <td>{{ $data->unit }}</td>
@@ -58,7 +59,9 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <x-table-no-data />
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

@@ -21,7 +21,7 @@ class ProductSubCategoryLiveWire extends Component
     public function render()
     {
         $list = ProductSubCategory::latest()->get();
-        return view('admin.product_sub_category.index', compact('list'));
+        return view('admin.product_sub_category.index', compact('list'), ['page_title' => 'Product Sub Category']);
     }
 
     public function setProductCategoryList()

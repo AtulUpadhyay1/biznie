@@ -1,4 +1,5 @@
 <div>
+    @section('title', config('app.name') . ' | '.$page_title)
     @if ($formMode)
         @include('admin.product_sub_category.form')
     @else
@@ -29,7 +30,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($list as $data)
+                                @forelse ($list as $data)
                                     <tr>
                                         <td><img src="{{ asset('storage/' . $data->thumbnail) }}" alt="image"></td>
                                         <td>{{ $data->name }}</td>
@@ -66,7 +67,9 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <x-table-no-data />
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

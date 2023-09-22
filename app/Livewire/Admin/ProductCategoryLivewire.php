@@ -18,7 +18,7 @@ class ProductCategoryLivewire extends Component
     public function render()
     {
         $list = ProductCategory::latest()->get();
-        return view('admin.product_category.index', compact('list'));
+        return view('admin.product_category.index', compact('list'), ['page_title' => 'Product Category']);
     }
 
     public function create()

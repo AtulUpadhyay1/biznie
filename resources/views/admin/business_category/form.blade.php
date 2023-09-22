@@ -8,8 +8,7 @@
                             <h4>Add Business Category</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-icon-text float-end align-items-center" wire:click="cancel()">
-                                <i class="bi bi-x-lg me-1"></i>Cancel</a>
+                            <x-cancel-btn text="Cancel" function="cancel()" />
                         </div>
                     </div>
                 </div>
@@ -17,11 +16,12 @@
                     <form class="forms-sample" wire:submit.prevent="{{$hidden_id ? 'update()' : 'save()'}}">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Name:</label>
-                                <input type="text" class="form-control mb-3 mb-md-0" wire:model.defer="name">
+                                <label class="form-label" for="name">Name</label>
+                                <input type="text" class="form-control mb-3 mb-md-0 @error('name') is-invalid @enderror" id="name" wire:model.defer="name">
+                                @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Icon:</label>
+                                <label class="form-label">Icon</label>
                                 <div class="input-group">
                                     <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>'!!}</span>
                                     <input type="text" class="form-control" wire:model.defer="icon">
@@ -30,47 +30,51 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="form-label">Thumbnail Image:</label>
+                                <label class="form-label">Thumbnail Image</label>
                                 <input type='file' id="business_category_thumbnail" class="form-control" wire:model.defer="thumbnail">
                                 <label for="business_category_thumbnail">
                                     @if($thumbnail)
                                         <img src="{{$thumbnail->temporaryUrl()}}" class="label-thumbnail">
                                     @elseif ($showThumbnail)
                                         <img src="{{asset('storage/'.$showThumbnail)}}" class="label-thumbnail">
+                                    @else
+                                        <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
                                     @endif
                                 </label>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Banner Image:</label>
+                                <label class="form-label">Banner Image</label>
                                 <input type='file' id="business_category_banner" class="form-control" wire:model.defer="banner">
                                 <label for="business_category_banner">
                                     @if($banner)
                                         <img src="{{$banner->temporaryUrl()}}" class="label-banner">
                                     @elseif ($showBanner)
                                         <img src="{{asset('storage/'.$showBanner)}}" class="label-banner">
+                                    @else
+                                        <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
                                     @endif
                                 </label>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Meta Title:</label>
+                                <label class="form-label">Meta Title</label>
                                 <input type='text' class="form-control mb-3 mb-md-0" wire:model.defer='meta_title'>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Meta Keywords:</label>
+                                <label class="form-label">Meta Keywords</label>
                                 <input type='text' class="form-control" wire:model.defer='meta_keywords'>
                             </div>
                         </div>
                         <div class="row mb-3">
                            <div class="col-12">
-                                <label for="FormControlTextarea" class="form-label">Meta Description:</label>
+                                <label for="FormControlTextarea" class="form-label">Meta Description</label>
                                 <textarea class="form-control" id="FormControlTextarea" rows="5" wire:model.defer='meta_description'></textarea>
                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-warning">Submit</button>
+                                <x-submit-btn text="{{$hidden_id?'Update':'Save'}}" />
                             </div>
                         </div>
                     </form>

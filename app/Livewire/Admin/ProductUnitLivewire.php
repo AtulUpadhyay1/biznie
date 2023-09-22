@@ -15,7 +15,7 @@ class ProductUnitLivewire extends Component
     public function render()
     {
         $list = ProductUnit::latest()->get();
-        return view('admin.product_unit.index', compact('list'));
+        return view('admin.product_unit.index', compact('list'), ['page_title' => 'Product Unit']);
     }
 
     public function create()

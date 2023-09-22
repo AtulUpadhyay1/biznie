@@ -18,7 +18,7 @@ class BusinessCategoryLivewire extends Component
     public function render()
     {
         $list = BusinessCategory::latest()->get();
-        return view('admin.business_category.index', compact('list'));
+        return view('admin.business_category.index', compact('list'), ['page_title' => 'Business Category']);
     }
 
     public function create()
@@ -77,17 +77,24 @@ class BusinessCategoryLivewire extends Component
             $this->formMode = false;
             $this->resetInputFields();
 
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Business category updated successfully !!'
+            );
+
         }catch (\Exception $e) {
-            $this->dispatchBrowserEvent('alert',[
-                'type' => 'error',
-                'message' => 'something went wrong',
-            ]);
+
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
         }
     }
 
     public function edit($id)
     {
         $this->hidden_id = $id;
+
         $data = BusinessCategory::find($id);
         $this->name = $data->name;
         $this->icon = $data->icon;
@@ -128,27 +135,75 @@ class BusinessCategoryLivewire extends Component
             $this->formMode = false;
             $this->resetInputFields();
 
-        }catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Business category updated successfully !!'
+            );
 
+        }catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
         }
     }
 
     public function updateStatus($id)
     {
-        $data = BusinessCategory::find($id);
-        $data->status = $data->status ? 0 : 1;
-        $data->save();
+        try{
+
+            $data = BusinessCategory::find($id);
+            $data->status = $data->status ? 0 : 1;
+            $data->save();
+            $this->dispatch('alert',
+                type: $data->status==1 ? 'success' : 'error',
+                message: $data->status== 1 ? 'Business category active successfully !!': 'Business category inactive successfully !!'
+            );
+
+        }catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
     }
 
     public function updateFeatured($id)
     {
-        $data = BusinessCategory::find($id);
-        $data->featured = $data->featured ? 0 : 1;
-        $data->save();
+        try{
+            $data = BusinessCategory::find($id);
+            $data->featured = $data->featured ? 0 : 1;
+            $data->save();
+
+            $this->dispatch('alert',
+                type: $data->featured==1 ? 'success' : 'error',
+                message: $data->featured== 1 ? 'Business category featured successfully !!': 'Business category unfeatured successfully !!'
+            );
+
+        }catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
     }
 
     public function delete($id)
     {
-        BusinessCategory::destroy($id);
+        try{
+
+            BusinessCategory::destroy($id);
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Business category deleted successfully !!'
+            );
+
+        }catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
+
     }
 }
