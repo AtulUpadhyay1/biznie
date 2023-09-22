@@ -17,7 +17,8 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label" for="name">Name</label>
-                                <input type="text" class="form-control mb-3 mb-md-0" id="name" wire:model.defer="name">
+                                <input type="text" class="form-control mb-3 mb-md-0 @error('name') is-invalid @enderror" id="name" wire:model.defer="name">
+                                @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Icon</label>
