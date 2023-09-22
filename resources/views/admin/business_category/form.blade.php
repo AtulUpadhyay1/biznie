@@ -8,8 +8,7 @@
                             <h4>Add Business Category</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-icon-text float-end align-items-center" wire:click="cancel()">
-                                <i class="bi bi-x-lg me-1"></i>Cancel</a>
+                            <x-cancel-btn text="Cancel" function="cancel()" />
                         </div>
                     </div>
                 </div>
