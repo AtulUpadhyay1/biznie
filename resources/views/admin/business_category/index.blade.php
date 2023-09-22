@@ -51,7 +51,7 @@
                                                     <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="ActionBtn_{{$data->id}}">
-                                                    <a class="dropdown-item d-flex align-items-center" href=""><i
+                                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
                                                             class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
                                                     <a href="javascript:;" class="dropdown-item d-flex align-items-center" wire:click="edit({{$data->id}})"><i
                                                             class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
