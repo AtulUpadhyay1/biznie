@@ -11,9 +11,7 @@
                             <h4>Product Sub Categories</h4>
                         </div>
                         <div class="col-6">
-                            <a class="btn btn-danger btn-icon-text float-end align-items-center"
-                            wire:click="create()"><i class="bi bi-plus-lg me-1"></i>Add Sub Category
-                            </a>
+                            <x-add-btn text="Add Sub Category" function="create()" />
                         </div>
                     </div>
                 </div>
