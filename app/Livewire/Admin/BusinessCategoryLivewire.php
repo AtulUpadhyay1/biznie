@@ -52,8 +52,12 @@ class BusinessCategoryLivewire extends Component
     {
         $this->validate([
             'name'  => 'required',
+            'icon' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
+            'meta_title' => 'required',
+            'meta_keywords' => 'required',
+            'meta_description' => 'required',
         ]);
 
         try{
@@ -79,7 +83,7 @@ class BusinessCategoryLivewire extends Component
 
             $this->dispatch('alert',
                 type: 'success',
-                message: 'Business category updated successfully !!'
+                message: 'Business category created successfully !!'
             );
 
         }catch (\Exception $e) {
@@ -112,6 +116,10 @@ class BusinessCategoryLivewire extends Component
             'name'      => 'required',
             'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
             'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
+            'icon' => 'required',
+            'meta_title' => 'required',
+            'meta_keywords' => 'required',
+            'meta_description' => 'required',
         ]);
 
         try{

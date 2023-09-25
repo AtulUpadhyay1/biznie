@@ -12,8 +12,7 @@
                                 <h4>All Vendors</h4>
                             </div>
                             <div class="col-6 text-end">
-                                <a class="btn btn-danger btn-icon-text float-end align-items-center" wire:click="create()"><i
-                                        class="bi bi-plus-lg me-1"></i>Add Vendor Type</a>
+                                <x-add-btn text="Add Vendor Type" function="create()" />
                             </div>
                         </div>
                     </div>

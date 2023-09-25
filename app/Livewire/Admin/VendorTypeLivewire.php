@@ -53,6 +53,10 @@ class VendorTypeLivewire extends Component
             'name' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
+            'icon' => 'required',
+            'meta_title' => 'required',
+            'meta_keywords' => 'required',
+            'meta_description' => 'required',
         ]);
 
         try
@@ -76,6 +80,11 @@ class VendorTypeLivewire extends Component
 
             $this->formMode = false;
             $this->resetInputFields();
+
+            $this->dispatch('alert',
+            type: 'success',
+            message: 'Vendor type created successfully !!'
+        );
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[
@@ -105,6 +114,10 @@ class VendorTypeLivewire extends Component
             'name'  => 'required',
             'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
             'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
+            'icon' => 'required',
+            'meta_title' => 'required',
+            'meta_keywords' => 'required',
+            'meta_description' => 'required',
         ]);
 
         try
@@ -128,6 +141,11 @@ class VendorTypeLivewire extends Component
 
             $this->formMode = false;
             $this->resetInputFields();
+
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Vendor type updated successfully !!'
+            );
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[
@@ -139,20 +157,57 @@ class VendorTypeLivewire extends Component
 
     public function updateStatus($id)
     {
-        $data = VendorType::find($id);
-        $data->status = $data->status ? 0 : 1;
-        $data->save();
+        try{
+            $data = VendorType::find($id);
+            $data->status = $data->status ? 0 : 1;
+            $data->save();
+            $this->dispatch('alert',
+                type: $data->status==1 ? 'success' : 'error',
+                message: $data->status== 1 ? 'Vendor type active successfully !!': 'Vendor type inactive successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
     }
 
     public function updateFeatured($id)
     {
-        $data = VendorType::find($id);
-        $data->featured = $data->featured ? 0 : 1;
-        $data->save();
+        try{
+            $data = VendorType::find($id);
+            $data->featured = $data->featured ? 0 : 1;
+            $data->save();
+
+            $this->dispatch('alert',
+                type: $data->featured==1 ? 'success' : 'error',
+                message: $data->featured== 1 ? 'Vendor type featured successfully !!': 'Vendor type unfeatured successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
     }
 
     public function delete($id)
     {
-        VendorType::destroy($id);
+        try{
+            VendorType::destroy($id);
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Vendor type deleted successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
     }
 }
