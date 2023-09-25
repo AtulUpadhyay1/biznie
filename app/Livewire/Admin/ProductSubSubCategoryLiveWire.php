@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use App\Models\ProductCategory;
 use App\Models\BusinessCategory;
@@ -22,7 +23,7 @@ class ProductSubSubCategoryLiveWire extends Component
     public function render()
     {
         $list = ProductSubSubCategory::latest()->get();
-        return view('admin.product_sub_sub_category.index', compact('list'));
+        return view('admin.product_sub_sub_category.index', compact('list'), ['page_title' => 'Product Sub Sub Category']);
     }
 
     public function setProductCategoryList()
@@ -67,33 +68,180 @@ class ProductSubSubCategoryLiveWire extends Component
 
     public function save()
     {
-        $this->validate([
-            'name' => 'required',
-            'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
-            'banner' => 'required|image|mimes:jpg,png,jpeg',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required',
+                'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
+                'banner' => 'required|image|mimes:jpg,png,jpeg',
+                'icon' => 'required',
+                'meta_title' => 'required',
+                'meta_keywords' => 'required',
+                'meta_description' => 'required',
+                'business_category_id' => 'required',
+                'product_category_id' => 'required',
+                'product_sub_category_id' => 'required',
+            ]);
 
-        $data = new ProductSubSubCategory;
-        $data->product_sub_category_id = $this->product_sub_category_id;
-        $data->product_category_id = $this->product_category_id;
-        $data->business_category_id = $this->business_category_id;
-        $data->name = $this->name;
-        $data->slug = Str::slug($this->name);
-        $data->icon = $this->icon;
-        $data->meta_title = $this->meta_title;
-        $data->meta_description = $this->meta_description;
-        $data->meta_keywords = $this->meta_keywords;
-        if($this->thumbnail){
-            $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
-            $data->thumbnail = $this->thumbnail->storeAs('product_subsubcategory', $thumbnail_name, 'public');
-        }
-        if($this->banner){
-            $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
-            $data->banner = $this->banner->storeAs('product_subsubcategory', $banner_name, 'public');
-        }
-        $data->save();
+            $data = new ProductSubSubCategory;
+            $data->product_sub_category_id = $this->product_sub_category_id;
+            $data->product_category_id = $this->product_category_id;
+            $data->business_category_id = $this->business_category_id;
+            $data->name = $this->name;
+            $data->slug = Str::slug($this->name);
+            $data->icon = $this->icon;
+            $data->meta_title = $this->meta_title;
+            $data->meta_description = $this->meta_description;
+            $data->meta_keywords = $this->meta_keywords;
+            if($this->thumbnail){
+                $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
+                $data->thumbnail = $this->thumbnail->storeAs('product_subsubcategory', $thumbnail_name, 'public');
+            }
+            if($this->banner){
+                $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
+                $data->banner = $this->banner->storeAs('product_subsubcategory', $banner_name, 'public');
+            }
+            $data->save();
 
-        $this->formMode = false;
-        $this->resetInputFields();
+            $this->formMode = false;
+            $this->resetInputFields();
+
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Product sub category created successfully !!'
+             );
+        }
+        catch (\Exception $e) {
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => 'something went wrong',
+            ]);
+        }
+    }
+
+    public function edit($id)
+    {
+        $this->hidden_id = $id;
+        $data = ProductSubSubCategory::find($id);
+        $this->business_category_list=BusinessCategory::where('status',1)->get();
+        $this->product_category_list=ProductCategory::where('business_category_id',$data->business_category_id)->get();
+        $this->product_sub_category_list = ProductSubCategory::where('product_category_id', $data->product_category_id)->get();
+        $this->name = $data->name;
+        $this->product_sub_category_id = $data->product_sub_category_id;
+        $this->product_category_id = $data->product_category_id;
+        $this->business_category_id = $data->business_category_id;
+        $this->icon = $data->icon;
+        $this->showThumbnail = $data->thumbnail;
+        $this->showBanner = $data->banner;
+        $this->meta_title= $data->meta_title;
+        $this->meta_keywords = $data->meta_keywords;
+        $this->meta_description = $data->meta_description;
+        $this->formMode = true;
+    }
+
+    public function update()
+    {
+        try{
+            $this->validate([
+                'name'  => 'required',
+                'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
+                'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
+                'icon' => 'required',
+                'meta_title' => 'required',
+                'meta_keywords' => 'required',
+                'meta_description' => 'required',
+                'business_category_id' => 'required',
+                'product_category_id' => 'required',
+            ]);
+
+            $data = ProductSubSubCategory::find($this->hidden_id);
+            $data->name = $this->name;
+            $data->slug = Str::slug($this->name);
+            $data->icon = $this->icon;
+            $data->meta_title = $this->meta_title;
+            $data->meta_description = $this->meta_description;
+            $data->meta_keywords = $this->meta_keywords;
+            if($this->thumbnail){
+                $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
+                $data->thumbnail = $this->thumbnail->storeAs('product_subsubcategory', $thumbnail_name, 'public');
+            }
+            if($this->banner){
+                $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
+                $data->banner = $this->banner->storeAs('product_subsubcategory', $banner_name, 'public');
+            }
+            $data->save();
+
+            $this->formMode = false;
+            $this->resetInputFields();
+
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Product sub category Updated successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => 'something went wrong',
+            ]);
+        }
+    }
+
+    public function updateStatus($id)
+    {
+        try{
+            $data = ProductSubSubCategory::find($id);
+            $data->status = $data->status ? 0 : 1;
+            $data->save();
+
+            $this->dispatch('alert',
+                type: $data->status==1 ? 'success' : 'error',
+                message: $data->status== 1 ? 'Product sub sub category active successfully !!': 'Product sub sub category inactive successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => 'something went wrong',
+            ]);
+        }
+
+    }
+
+    public function updateFeatured($id)
+    {
+        try{
+            $data = ProductSubSubCategory::find($id);
+            $data->featured = $data->featured ? 0 : 1;
+            $data->save();
+            $this->dispatch('alert',
+                type: $data->featured==1 ? 'success' : 'error',
+                message: $data->featured== 1 ? 'Product sub sub category featured successfully !!': 'Product sub sub category unfeatured successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => 'something went wrong',
+            ]);
+        }
+    }
+
+    public function delete($id)
+    {
+        try{
+            ProductSubSubCategory::destroy($id);
+
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Product sub sub category deleted successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
+
     }
 }

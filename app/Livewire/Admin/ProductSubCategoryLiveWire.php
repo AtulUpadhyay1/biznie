@@ -225,7 +225,7 @@ class ProductSubCategoryLiveWire extends Component
 
             $this->dispatch('alert',
                 type: 'success',
-                message: 'Product Category deleted successfully !!'
+                message: 'Product sub category deleted successfully !!'
             );
         }
         catch (\Exception $e) {

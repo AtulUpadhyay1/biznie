@@ -1,4 +1,5 @@
 <div>
+    @section('title', config('app.name') . ' | '.$page_title)
     @if ($formMode)
         @include('admin.product_sub_sub_category.form')
     @else
@@ -10,9 +11,7 @@
                             <h4>Product Sub Sub Categories</h4>
                         </div>
                         <div class="col-6">
-                            <a class="btn btn-danger btn-icon-text float-end align-items-center"
-                                wire:click="create()"><i class="bi bi-plus-lg me-1"></i>Add Sub Sub Category
-                            </a>
+                            <x-add-btn text="Add Sub Sub Category" function="create()" />
                         </div>
                     </div>
                 </div>
@@ -29,7 +28,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($list as $data)
+                                @forelse ($list as $data)
                                     <tr>
                                         <td><img src="{{ asset('storage/' . $data->thumbnail) }}" alt="image"></td>
                                         <td>{{ $data->name }}</td>
@@ -66,7 +65,9 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <x-table-no-data />
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
