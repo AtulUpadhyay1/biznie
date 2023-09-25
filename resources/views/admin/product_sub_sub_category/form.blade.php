@@ -48,7 +48,7 @@
                                 @error('product_sub_category_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label" for="name">Name</label>
+                                <label class="form-label mt-3 mt-md-0" for="name">Name</label>
                                 <input type="text" id="name" class="form-control mb-3 mb-md-0 @error('name') is-invalid @enderror" wire:model.defer="name">
                                 @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
