@@ -55,9 +55,6 @@ class BusinessCategoryLivewire extends Component
             'icon' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
-            'meta_title' => 'required',
-            'meta_keywords' => 'required',
-            'meta_description' => 'required',
         ]);
 
         try{
@@ -117,9 +114,6 @@ class BusinessCategoryLivewire extends Component
             'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
             'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
             'icon' => 'required',
-            'meta_title' => 'required',
-            'meta_keywords' => 'required',
-            'meta_description' => 'required',
         ]);
 
         try{

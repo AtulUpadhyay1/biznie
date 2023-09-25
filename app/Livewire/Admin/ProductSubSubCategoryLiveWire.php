@@ -68,19 +68,16 @@ class ProductSubSubCategoryLiveWire extends Component
 
     public function save()
     {
+        $this->validate([
+            'name' => 'required',
+            'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
+            'banner' => 'required|image|mimes:jpg,png,jpeg',
+            'icon' => 'required',
+            'business_category_id' => 'required',
+            'product_category_id' => 'required',
+            'product_sub_category_id' => 'required',
+        ]);
         try{
-            $this->validate([
-                'name' => 'required',
-                'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
-                'banner' => 'required|image|mimes:jpg,png,jpeg',
-                'icon' => 'required',
-                'meta_title' => 'required',
-                'meta_keywords' => 'required',
-                'meta_description' => 'required',
-                'business_category_id' => 'required',
-                'product_category_id' => 'required',
-                'product_sub_category_id' => 'required',
-            ]);
 
             $data = new ProductSubSubCategory;
             $data->product_sub_category_id = $this->product_sub_category_id;
@@ -108,9 +105,8 @@ class ProductSubSubCategoryLiveWire extends Component
             $this->dispatch('alert',
                 type: 'success',
                 message: 'Product sub category created successfully !!'
-             );
-        }
-        catch (\Exception $e) {
+            );
+        } catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[
                 'type' => 'error',
                 'message' => 'something went wrong',
@@ -140,19 +136,18 @@ class ProductSubSubCategoryLiveWire extends Component
 
     public function update()
     {
-        try{
-            $this->validate([
-                'name'  => 'required',
-                'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
-                'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
-                'icon' => 'required',
-                'meta_title' => 'required',
-                'meta_keywords' => 'required',
-                'meta_description' => 'required',
-                'business_category_id' => 'required',
-                'product_category_id' => 'required',
-            ]);
 
+        $this->validate([
+            'name'  => 'required',
+            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
+            'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
+            'icon' => 'required',
+            'business_category_id' => 'required',
+            'product_category_id' => 'required',
+            'product_sub_category_id' => 'required',
+        ]);
+
+        try{
             $data = ProductSubSubCategory::find($this->hidden_id);
             $data->name = $this->name;
             $data->slug = Str::slug($this->name);

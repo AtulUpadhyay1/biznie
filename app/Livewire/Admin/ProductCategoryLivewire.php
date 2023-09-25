@@ -58,9 +58,6 @@ class ProductCategoryLivewire extends Component
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
             'icon' => 'required',
-            'meta_title' => 'required',
-            'meta_keywords' => 'required',
-            'meta_description' => 'required',
             'business_category_id' => 'required',
         ]);
 
@@ -123,9 +120,6 @@ class ProductCategoryLivewire extends Component
             'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
             'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
             'icon' => 'required',
-            'meta_title' => 'required',
-            'meta_keywords' => 'required',
-            'meta_description' => 'required',
             'business_category_id' => 'required',
         ]);
 
