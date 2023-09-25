@@ -57,6 +57,11 @@ class ProductCategoryLivewire extends Component
             'name' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
+            'icon' => 'required',
+            'meta_title' => 'required',
+            'meta_keywords' => 'required',
+            'meta_description' => 'required',
+            'business_category_id' => 'required',
         ]);
 
         try
@@ -81,6 +86,11 @@ class ProductCategoryLivewire extends Component
 
             $this->formMode = false;
             $this->resetInputFields();
+
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Product category created successfully !!'
+            );
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[
@@ -112,6 +122,11 @@ class ProductCategoryLivewire extends Component
             'name'  => 'required',
             'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
             'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
+            'icon' => 'required',
+            'meta_title' => 'required',
+            'meta_keywords' => 'required',
+            'meta_description' => 'required',
+            'business_category_id' => 'required',
         ]);
 
         try
@@ -135,6 +150,11 @@ class ProductCategoryLivewire extends Component
 
             $this->formMode = false;
             $this->resetInputFields();
+
+                $this->dispatch('alert',
+                type: 'success',
+                message: 'Product category updated successfully !!'
+            );
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[
@@ -147,20 +167,57 @@ class ProductCategoryLivewire extends Component
 
     public function updateStatus($id)
     {
-        $data = ProductCategory::find($id);
-        $data->status = $data->status ? 0 : 1;
-        $data->save();
+        try{
+            $data = ProductCategory::find($id);
+            $data->status = $data->status ? 0 : 1;
+            $data->save();
+            $this->dispatch('alert',
+                type: $data->status==1 ? 'success' : 'error',
+                message: $data->status== 1 ? 'Product category active successfully !!': 'Product category inactive successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
+
     }
 
     public function updateFeatured($id)
     {
-        $data = ProductCategory::find($id);
-        $data->featured = $data->featured ? 0 : 1;
-        $data->save();
+        try{
+            $data = ProductCategory::find($id);
+            $data->featured = $data->featured ? 0 : 1;
+            $data->save();
+            $this->dispatch('alert',
+                type: $data->featured==1 ? 'success' : 'error',
+                message: $data->featured== 1 ? 'Product category featured successfully !!': 'Product category unfeatured successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
     }
 
     public function delete($id)
     {
-        ProductCategory::destroy($id);
+        try{
+            ProductCategory::destroy($id);
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Product Category deleted successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
     }
 }
