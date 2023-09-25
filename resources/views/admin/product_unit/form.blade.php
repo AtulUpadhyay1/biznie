@@ -8,8 +8,7 @@
                             <h4>Add Unit</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-icon-text float-end align-items-center" wire:click="cancel()">
-                                <i class="bi bi-x-lg me-1"></i>Cancel</a>
+                            <x-cancel-btn text="Cancel" function="cancel()" />
                         </div>
                     </div>
                 </div>
@@ -17,17 +16,19 @@
                     <form class="forms-sample" wire:submit.prevent="{{$hidden_id ? 'update()' : 'save()'}}">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Name:</label>
-                                <input type="text" class="form-control mb-4 mb-md-0" wire:model.defer="name">
+                                <label class="form-label" for="name">Name:</label>
+                                <input type="text" id="name" class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror" wire:model.defer="name">
+                                @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Unit:</label>
-                                <input type="text" class="form-control mb-4 mb-md-0" wire:model.defer="unit">
+                                <label class="form-label" for="unit">Unit:</label>
+                                <input type="text" id="unit" class="form-control mb-4 mb-md-0 @error('unit') is-invalid @enderror" wire:model.defer="unit">
+                                @error('unit') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-warning">Submit</button>
+                                <x-submit-btn text="{{$hidden_id?'Update':'Save'}}" />
                             </div>
                         </div>
                     </form>

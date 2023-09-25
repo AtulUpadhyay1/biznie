@@ -53,6 +53,11 @@ class ProductUnitLivewire extends Component
             $data->save();
             $this->formMode = false;
             $this->resetInputFields();
+
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Product unit created successfully !!'
+            );
         }
 
         catch(\Exception $e)
@@ -88,6 +93,11 @@ class ProductUnitLivewire extends Component
             $data->save();
             $this->formMode = false;
             $this->resetInputFields();
+
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Product unit updated successfully !!'
+            );
         }
 
         catch(\Exception $e)
@@ -101,13 +111,38 @@ class ProductUnitLivewire extends Component
 
     public function updateStatus($id)
     {
-        $data = ProductUnit::find($id);
-        $data->status = $data->status ? 0 : 1;
-        $data->save();
+        try{
+            $data = ProductUnit::find($id);
+            $data->status = $data->status ? 0 : 1;
+            $data->save();
+            $this->dispatch('alert',
+                type: $data->status==1 ? 'success' : 'error',
+                message: $data->status== 1 ? 'Product unit active successfully !!': 'Product unit inactive successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
+
     }
 
     public function delete($id)
     {
-        ProductUnit::destroy($id);
+        try{
+            ProductUnit::destroy($id);
+            $this->dispatch('alert',
+                type: 'success',
+                message: 'Product unit deleted successfully !!'
+            );
+        }
+        catch (\Exception $e) {
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'Something went wrong !!'
+            );
+        }
     }
 }
