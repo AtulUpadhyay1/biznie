@@ -17,12 +17,12 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label" for="name">Name</label>
-                                <input type="text" id="name" class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror" wire:model.defer="name">
+                                <input type="text" id="name" class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror" wire:model.defer="name" placeholder="Enter name">
                                 @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="unit">Unit</label>
-                                <input type="text" id="unit" class="form-control mb-4 mb-md-0 @error('unit') is-invalid @enderror" wire:model.defer="unit">
+                                <input type="text" id="unit" class="form-control mb-4 mb-md-0 @error('unit') is-invalid @enderror" wire:model.defer="unit" placeholder="Enter unit">
                                 @error('unit') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                         </div>
