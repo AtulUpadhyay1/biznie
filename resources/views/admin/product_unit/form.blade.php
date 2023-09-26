@@ -15,6 +15,7 @@
                 <div class="card-body">
                     <form class="forms-sample" wire:submit.prevent="{{$hidden_id ? 'update()' : 'save()'}}">
                         <div class="row mb-3">
+                            <h5 class="card-heading-h5">Unit Details:</h5>
                             <div class="col-md-6">
                                 <label class="form-label" for="name">Name</label>
                                 <input type="text" id="name" class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror" wire:model.defer="name" placeholder="Enter name">
