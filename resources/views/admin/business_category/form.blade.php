@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-12 mb-3">
                                         <label for="FormControlTextarea" class="form-label">Meta Description</label>
-                                        <textarea class="form-control @error('meta_description') is-invalid @enderror" id="FormControlTextarea" rows="5" wire:model.defer='meta_description' placeholder="Enter Description"></textarea>
+                                        <textarea class="form-control @error('meta_description') is-invalid @enderror" id="FormControlTextarea" rows="5" wire:model.defer='meta_description' placeholder="Enter description"></textarea>
                                         @error('meta_description') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                 </div>
