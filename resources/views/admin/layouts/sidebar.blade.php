@@ -77,7 +77,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('admin.products')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="shopping-bag"></i>
                     <span class="link-title">Products</span>
                 </a>

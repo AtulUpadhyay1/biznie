@@ -48,6 +48,9 @@ Route::group(['as'=>'admin.'], function () {
         //Product Unit
         Route::get('product-unit', AdminRoot\ProductUnitLivewire::class)->name('product-unit');
 
+        //Products
+        Route::get('products', AdminRoot\ProductsLivewire::class)->name('products');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });
