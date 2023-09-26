@@ -33,7 +33,7 @@
             </li>
 
             <!--Category & products-->
-            <li class="nav-item nav-category">Product & Attribute</li>
+            <li class="nav-item nav-category">Attributes</li>
             {{-- <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
                     aria-expanded="false" aria-controls="business">
@@ -76,12 +76,6 @@
                     <span class="link-title">Unit</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{route('admin.products')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="shopping-bag"></i>
-                    <span class="link-title">Products</span>
-                </a>
-            </li>
 
             <!--Businesses-->
             <li class="nav-item nav-category">Business</li>
@@ -89,12 +83,6 @@
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="pie-chart"></i>
                     <span class="link-title">Tax Type</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="dollar-sign"></i>
-                    <span class="link-title">Discount Type</span>
                 </a>
             </li>
             <li class="nav-item">
