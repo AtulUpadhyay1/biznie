@@ -32,8 +32,8 @@
                 </a>
             </li>
 
-            <!--Category-->
-            <li class="nav-item nav-category">Attributes</li>
+            <!--Category & products-->
+            <li class="nav-item nav-category">Product & Attribute</li>
             {{-- <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
                     aria-expanded="false" aria-controls="business">
@@ -74,6 +74,12 @@
                 <a href="{{route('admin.product-unit')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Unit</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="link-icon" data-feather="shopping-bag"></i>
+                    <span class="link-title">Products</span>
                 </a>
             </li>
 

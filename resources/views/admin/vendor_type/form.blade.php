@@ -27,7 +27,7 @@
                                         <label class="form-label" for="icon">Icon</label>
                                         <div class="input-group">
                                             <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>'!!}</span>
-                                            <input type="text" id="icon" class="form-control @error('icon') is-invalid @enderror" wire:model.defer="icon" placeholder="Enter icon">
+                                            <input type="text" id="icon" class="form-control @error('icon') is-invalid @enderror" wire:model.defer="icon" placeholder="Enter fa icon">
                                         </div>
                                         @error('icon') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
