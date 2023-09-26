@@ -340,3 +340,10 @@
     object-fit: cover;
 }
 /*End of Admin pages*/
+
+.card-heading-h5{
+    color: #cc0000;
+    border-bottom: 1.5px solid #e9ecef;
+    margin-bottom: 1rem;
+    padding: 1rem .7rem;
+}

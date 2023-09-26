@@ -2405,7 +2405,7 @@ progress {
     color: #000;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid #e9ecef;
+    border: 1px solid #CAF1DE;
     appearance: none;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
