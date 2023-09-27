@@ -48,6 +48,9 @@ Route::group(['as'=>'admin.'], function () {
         //Product Unit
         Route::get('product-unit', AdminRoot\ProductUnitLivewire::class)->name('product-unit');
 
+        //Tax Types
+        Route::get('tax-type', AdminRoot\TaxTypeLivewire::class)->name('tax-type');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });
