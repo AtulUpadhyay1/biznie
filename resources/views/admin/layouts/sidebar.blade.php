@@ -27,13 +27,13 @@
             </li>
             <li class="nav-item">
                 <a href="{{route('admin.vendor-type')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="users"></i>
+                    <i class="link-icon" data-feather="user-plus"></i>
                     <span class="link-title">Vendor Type</span>
                 </a>
             </li>
 
             <!--Category & products-->
-            <li class="nav-item nav-category">Attributes</li>
+            <li class="nav-item nav-category">Products</li>
             {{-- <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
                     aria-expanded="false" aria-controls="business">
@@ -85,6 +85,12 @@
 
             <!--Businesses-->
             <li class="nav-item nav-category">Business</li>
+            <li class="nav-item">
+                <a href="{{route('admin.all-vendors')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="users"></i>
+                    <span class="link-title">All Vendors</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
