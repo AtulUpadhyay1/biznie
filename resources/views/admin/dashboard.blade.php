@@ -10,10 +10,10 @@
                         data-feather="calendar" class="text-danger"></i></span>
                 <input type="text" class="form-control bg-transparent border-danger" placeholder="Select date" data-input>
             </div>
-            <button type="button" class="btn btn-outline-danger btn-icon-text me-2 mb-2 mb-md-0">
+            {{-- <button type="button" class="btn btn-outline-danger btn-icon-text me-2 mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="printer"></i>
                 Print
-            </button>
+            </button> --}}
             <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="download-cloud"></i>
                 Download Report

@@ -352,3 +352,64 @@
 {
     color: #937e7e;
 }
+
+.vendors-list-group
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.vendors-list-group .list-group-item
+{
+    width: 350px;
+}
+
+.vendors-table
+{
+    width: 100%;
+}
+
+.vendors-table thead
+{
+    background-color: whitesmoke;
+}
+
+.vendors-table tbody b
+{
+    font-weight: 600;
+    color: #8A0707;
+    margin-right: 5px;
+}
+
+.vendors-table tbody td
+{
+    color: #242b39;
+}
+
+.vendors-table th, td
+{
+    padding: .9rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.vendors-table td
+{
+    display: table-cell;
+}
+
+.vendor-edit-btn
+{
+    align-items: center;
+    justify-content: center;
+    padding: .7rem;
+    background-color: #cc0000;
+}
+
+@media (max-width:768px)
+{
+    .vendors-list-group{
+        display: flex;
+        flex-flow: row;
+        flex-wrap: wrap;
+    }
+}
