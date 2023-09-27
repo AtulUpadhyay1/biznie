@@ -9,7 +9,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-6 card-title">
-                                <h4>All Vendors</h4>
+                                <h4>Vendor Types</h4>
                             </div>
                             <div class="col-6 text-end">
                                 <x-add-btn text="Add Vendor Type" function="create()" />

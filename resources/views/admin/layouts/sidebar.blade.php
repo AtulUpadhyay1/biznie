@@ -76,15 +76,15 @@
                     <span class="link-title">Unit</span>
                 </a>
             </li>
-
-            <!--Businesses-->
-            <li class="nav-item nav-category">Business</li>
             <li class="nav-item">
                 <a href="{{route('admin.tax-type')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="pie-chart"></i>
                     <span class="link-title">Tax Type</span>
                 </a>
             </li>
+
+            <!--Businesses-->
+            <li class="nav-item nav-category">Business</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
