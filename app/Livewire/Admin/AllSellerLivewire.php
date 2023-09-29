@@ -5,14 +5,14 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class AllVendorsLivewire extends Component
+class AllSellerLivewire extends Component
 {
     use WithFileUploads;
     public $formMode = false;
 
     public function render()
     {
-        return view('admin.all_vendors.index', ['page_title' => 'All Vendors']);
+        return view('admin.all_seller.index', ['page_title' => 'All Seller']);
     }
 
     public function create()

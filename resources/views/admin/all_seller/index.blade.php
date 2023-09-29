@@ -1,7 +1,7 @@
 <div>
     @section('title', config('app.name') . ' | ' . $page_title)
     @if($formMode)
-        @include('admin.all_vendors.form')
+        @include('admin.all_seller.form')
     @else
         <div class="row">
             <div class="col-12">
@@ -9,7 +9,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-6 card-title">
-                                <h4>All Vendors</h4>
+                                <h4>All Sellers</h4>
                             </div>
                             <div class="col-6">
                                 <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <ul class="list-group list-group-horizontal vendors-list-group">
+                        <ul class="list-group list-group-horizontal filter-list-group">
                             <li class="list-group-item border-0">
                                 <select class="form-select">
                                     <option>Textile</option>
@@ -65,7 +65,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="vendors-table">
+                            <table class="custom-table">
                                 <thead>
                                     <tr>
                                         <th>#Id</th>
@@ -103,7 +103,7 @@
                                                     class="bi bi-chat-square-dots"></i>: <b>0</b></span>
                                         </td>
                                         <td><img src="{{ asset('admin_css/assets/images/avatar.png') }}"
-                                                class="vendor-user-img" alt="user" data-bs-toggle="tooltip"
+                                                class="seller-user-img" alt="user" data-bs-toggle="tooltip"
                                                 title="Business Image"></td>
                                         <td>
                                             <i class="bi bi-telephone"></i><span class="ms-2">6390041900</span>
@@ -128,7 +128,7 @@
                                         </td>
                                         <td class="text-center">
                                             <div class="custom-dropdown">
-                                                <a class="vendor-status-btn rounded text-white" href="javascript:;"
+                                                <a class="custom-status-btn rounded text-white" href="javascript:;"
                                                     role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" title="Status"
                                                     aria-haspopup="true" aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical"></i>
@@ -163,7 +163,7 @@
                                             <div class="mt-3 fw-bolder text-success">Active</div>
                                         </td>
                                         <td class="text-center">
-                                            <a href="javascript:;" class="vendor-edit-btn rounded text-white"
+                                            <a href="javascript:;" class="custom-edit-btn rounded text-white"
                                                 title="edit" wire:click="create()">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>

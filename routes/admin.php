@@ -54,8 +54,8 @@ Route::group(['as'=>'admin.'], function () {
         //Tax Types
         Route::get('tax-type', AdminRoot\TaxTypeLivewire::class)->name('tax-type');
 
-        //All Vendors List
-        Route::get('all-vendors', AdminRoot\AllVendorsLivewire::class)->name('all-vendors');
+        //All Sellers List
+        Route::get('all-seller', AdminRoot\AllSellerLivewire::class)->name('all-seller');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');

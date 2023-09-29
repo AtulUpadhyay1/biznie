@@ -5,7 +5,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>Vendor Details</h4>
+                            <h4>Seller Details</h4>
                         </div>
                         <div class="col-6 text-end">
                             <x-cancel-btn text="Cancel" function="cancel()" />
@@ -22,9 +22,9 @@
                                     <input type="text" class="form-control" id="business-name" placeholder="Business Name">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="vendor-type" class="form-label">Vendor Type</label>
-                                    <select class="form-select" id="vendor-type">
-                                        <option value="1">Vendor Type</option>
+                                    <label for="Seller-type" class="form-label">Seller Type</label>
+                                    <select class="form-select" id="Seller-type">
+                                        <option value="1">Seller Type</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
@@ -63,10 +63,10 @@
                                         <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
                                     </label>
                                 </div>
-                                <h5 class="card-heading-h5">Vendor Information</h5>
+                                <h5 class="card-heading-h5">Seller Information</h5>
                                 <div class="col-md-6 mb-3">
-                                    <label for="vendor-name" class="form-label">Vendor Name</label>
-                                    <input type="text" class="form-control" id="vendor-name" placeholder="Vendor Name">
+                                    <label for="Seller-name" class="form-label">Seller Name</label>
+                                    <input type="text" class="form-control" id="Seller-name" placeholder="Seller Name">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="gender">Gender</label>

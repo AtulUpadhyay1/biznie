@@ -91,9 +91,9 @@
             <!--Businesses-->
             <li class="nav-item nav-category">Business</li>
             <li class="nav-item">
-                <a href="{{route('admin.all-vendors')}}" class="nav-link" wire:navigate>
+                <a href="{{route('admin.all-seller')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="users"></i>
-                    <span class="link-title">All Vendors</span>
+                    <span class="link-title">All Sellers</span>
                 </a>
             </li>
             <li class="nav-item">
