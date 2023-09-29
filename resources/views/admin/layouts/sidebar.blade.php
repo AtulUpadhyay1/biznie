@@ -20,21 +20,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="inbox"></i>
-                    <span class="link-title">Business Category</span>
+                <a href="#" class="nav-link">
+                    <i class="link-icon" data-feather="users"></i>
+                    <span class="link-title">All Customers</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('admin.vendor-type')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="user-plus"></i>
-                    <span class="link-title">Vendor Type</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{route('admin.seller-type')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="shopping-bag"></i>
-                    <span class="link-title">Seller Type</span>
+                <a href="{{route('admin.all-seller')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="users"></i>
+                    <span class="link-title">All Sellers</span>
                 </a>
             </li>
             <!--Category & products-->
@@ -76,6 +70,45 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="link-icon" data-feather="plus-circle"></i>
+                    <span class="link-title">All Products</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="link-icon" data-feather="plus-circle"></i>
+                    <span class="link-title">Order Book</span>
+                </a>
+            </li>
+
+            <!--Businesses-->
+            <li class="nav-item nav-category">Business Setup</li>
+            <li class="nav-item">
+                <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="inbox"></i>
+                    <span class="link-title">Business Category</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('admin.vendor-type')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="user-plus"></i>
+                    <span class="link-title">Vendor Type</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('admin.seller-type')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="shopping-bag"></i>
+                    <span class="link-title">Seller Type</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('admin.gst-type')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">GST Type</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{route('admin.product-unit')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Unit</span>
@@ -87,27 +120,15 @@
                     <span class="link-title">Tax Type</span>
                 </a>
             </li>
-
-            <!--Businesses-->
-            <li class="nav-item nav-category">Business</li>
-            <li class="nav-item">
-                <a href="{{route('admin.all-seller')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="users"></i>
-                    <span class="link-title">All Sellers</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{route('admin.gst-type')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="box"></i>
-                    <span class="link-title">GST Type</span>
-                </a>
-            </li>
             <li class="nav-item">
                 <a href="{{route('admin.identity-type')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
                     <span class="link-title">Identity Type</span>
                 </a>
             </li>
+
+            <!--Transaction-->
+            <li class="nav-item nav-category">Transaction</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
@@ -116,14 +137,14 @@
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="plus-circle"></i>
-                    <span class="link-title">Order Book</span>
+                    <i class="link-icon" data-feather="credit-card"></i>
+                    <span class="link-title">Payment List</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="credit-card"></i>
-                    <span class="link-title">Payment List</span>
+                    <i class="link-icon" data-feather="aperture"></i>
+                    <span class="link-title">Analytics</span>
                 </a>
             </li>
 
@@ -159,18 +180,6 @@
 
             <!--Others-->
             <li class="nav-item nav-category">Others</li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="aperture"></i>
-                    <span class="link-title">Analytics</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="users"></i>
-                    <span class="link-title">Customers</span>
-                </a>
-            </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="help-circle"></i>
