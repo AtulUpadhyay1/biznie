@@ -31,7 +31,12 @@
                     <span class="link-title">Vendor Type</span>
                 </a>
             </li>
-
+            <li class="nav-item">
+                <a href="{{route('admin.seller-type')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="shopping-bag"></i>
+                    <span class="link-title">Seller Type</span>
+                </a>
+            </li>
             <!--Category & products-->
             <li class="nav-item nav-category">Products</li>
             {{-- <li class="nav-item">
@@ -89,6 +94,12 @@
                 <a href="{{route('admin.all-vendors')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="users"></i>
                     <span class="link-title">All Vendors</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">GST Type</span>
                 </a>
             </li>
             <li class="nav-item">

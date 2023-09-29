@@ -36,6 +36,9 @@ Route::group(['as'=>'admin.'], function () {
         //Vendor Type
         Route::get('vendor-type', AdminRoot\VendorTypeLivewire::class)->name('vendor-type');
 
+         //Seller Type
+         Route::get('seller-type', AdminRoot\SellerTypeLivewire::class)->name('seller-type');
+
         //Product Category
         Route::get('product-category', AdminRoot\ProductCategoryLivewire::class)->name('product-category');
 
