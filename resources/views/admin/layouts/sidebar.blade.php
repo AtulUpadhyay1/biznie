@@ -12,7 +12,6 @@
     </div>
     <div class="sidebar-body">
         <ul class="nav">
-            <li class="nav-item nav-category">Home</li>
             <li class="nav-item">
                 <a href="{{route('admin.dashboard')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="home"></i>
@@ -31,8 +30,7 @@
                     <span class="link-title">All Sellers</span>
                 </a>
             </li>
-            <!--Category & products-->
-            <li class="nav-item nav-category">Products</li>
+            <!--products-->
             {{-- <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
                     aria-expanded="false" aria-controls="business">
@@ -40,17 +38,17 @@
                     <span class="link-title">Products</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="collapse" id="business">
-                    <ul class="nav sub-menu">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">All Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Add Products</a>
-                        </li>
-                    </ul>
-                </div>
-            </li> --}}
+            </li>
+            <div class="collapse" id="business">
+                <ul class="nav sub-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">All Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Add Products</a>
+                    </li>
+                </ul>
+            </div> --}}
             <li class="nav-item">
                 <a href="{{route('admin.product-category')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="box"></i>
@@ -83,7 +81,6 @@
             </li>
 
             <!--Businesses-->
-            <li class="nav-item nav-category">Business Setup</li>
             <li class="nav-item">
                 <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="inbox"></i>
@@ -128,7 +125,6 @@
             </li>
 
             <!--Transaction-->
-            <li class="nav-item nav-category">Transaction</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
@@ -149,7 +145,6 @@
             </li>
 
             <!--Inboxes-->
-            <li class="nav-item nav-category">Inbox</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="compass"></i>
@@ -164,7 +159,6 @@
             </li>
 
             <!--Shop Setup-->
-            <li class="nav-item nav-category">Profile</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="tool"></i>
@@ -179,7 +173,6 @@
             </li>
 
             <!--Others-->
-            <li class="nav-item nav-category">Others</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="help-circle"></i>

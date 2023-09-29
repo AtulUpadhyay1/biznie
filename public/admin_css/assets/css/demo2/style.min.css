@@ -24357,7 +24357,7 @@ div.tox .buy-now-wrapper .tox-button svg {
 .sidebar .sidebar-body .nav .nav-item.active .nav-link {
     color: #6571ff
 }
-
+/*
 .sidebar .sidebar-body .nav .nav-item.active .nav-link::before {
     content: "";
     width: 3px;
@@ -24365,7 +24365,7 @@ div.tox .buy-now-wrapper .tox-button svg {
     background: #6571ff;
     position: absolute;
     left: -25px
-}
+} */
 
 .sidebar .sidebar-body .nav .nav-item.active .nav-link .link-icon {
     fill: rgba(239, 243, 255, .5);
@@ -24385,7 +24385,8 @@ div.tox .buy-now-wrapper .tox-button svg {
     color: #000;
     font-size: 13px;
     -webkit-transition: all .3s ease-in-out;
-    transition: all .3s ease-in-out
+    transition: all .3s ease-in-out;
+    border-radius: 10px 0 0 10px;
 }
 /*
 .sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link::before {
@@ -24404,23 +24405,24 @@ div.tox .buy-now-wrapper .tox-button svg {
 }
 */
 .sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link.active {
-    color: #6571ff
+    color: #6571ff;
+    border-radius: 10px 0 0 10px;
 }
-
+/*
 .sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link.active::before {
-    border: 1px solid #6571ff;
-    background: #6571ff
-}
+    border: 2px solid #fff;
+    background: #fff;
+} */
 
 .sidebar .sidebar-body .nav.sub-menu .nav-item:hover .nav-link {
     color: #6571ff;
     margin-left: 3px
 }
-
+/*
 .sidebar .sidebar-body .nav.sub-menu .nav-item:hover .nav-link::before {
     border: 1px solid #6571ff;
     background: #6571ff
-}
+} */
 
 @media (max-width:991px) {
     .sidebar {

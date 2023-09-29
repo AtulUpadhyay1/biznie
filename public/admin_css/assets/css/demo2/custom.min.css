@@ -260,22 +260,22 @@
 .sidebar .sidebar-header .sidebar-toggler span{
     background-color: #fff;
 }
-
+/*
 .sidebar .sidebar-body .nav .nav-item.nav-category{
     color: #fff;
     padding: 0 0 22px 0;
     border-bottom: 1px solid #acaaaa;
-}
+} */
 
 .sidebar .sidebar-body .nav{
-    padding: 25px 15px;
+    padding: 25px 0px 40px 0px;
 }
 
 .sidebar .sidebar-body .nav .nav-item .nav-link{
     color: #fff !important;
-    padding: 20px 10px 20px 10px;
-    border-radius: 10px;
-    margin: 3px 0;
+    padding: 20px;
+    border-radius: 0px;
+    margin: 2px 0;
 }
 
 .sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link{
@@ -286,12 +286,22 @@
 .sidebar .sidebar-body .nav .nav-item .nav-link:hover{
     color: #ffdf00;
     background-color: #cc0000;
-    border-radius: 10px;
+    border-radius: 0px;
+}
+
+.sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link:hover{
+    color: #ffdf00;
+    background-color: #cc0000;
+    border-radius: 10px 0 0 10px;
 }
 
 .sidebar .sidebar-body .nav .nav-item:hover .nav-link .link-icon{
     color: #ffdf00;
     fill: none !important;
+}
+
+.sidebar .sidebar-body .nav.sub-menu{
+    padding: 0 0 5px 30px;
 }
 
 /*Sublist Hover */
@@ -308,7 +318,7 @@
 .sidebar .sidebar-body .nav .nav-item.active .nav-link{
     color: #ffdf00;
     background-color: #cc0000;
-    border-radius: 10px;
+    border-radius: 0px;
     font-weight: 600;
 }
 
@@ -316,12 +326,7 @@
     color: #ffdf00;
     fill: none !important;
 }
-
-.sidebar .sidebar-body .nav .nav-item.active .nav-link::before{
-    left: -15px;
-    background: #fff;
-}
-
+/*End of Nav Page*/
 
 /*Admin Pages start*/
 .page-content .card-title{
