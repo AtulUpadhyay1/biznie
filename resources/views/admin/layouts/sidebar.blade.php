@@ -103,6 +103,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{{route('admin.identity-type')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Identity Type</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="calendar"></i>
                     <span class="link-title">Invoice</span>

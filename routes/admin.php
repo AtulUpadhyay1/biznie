@@ -57,6 +57,9 @@ Route::group(['as'=>'admin.'], function () {
         //GST Types
         Route::get('gst-type', AdminRoot\GstTypeLivewire::class)->name('gst-type');
 
+         //Identity Types
+         Route::get('identity-type', AdminRoot\IdentityTypeLivewire::class)->name('identity-type');
+
         //All Sellers List
         Route::get('all-seller', AdminRoot\AllSellerLivewire::class)->name('all-seller');
 
