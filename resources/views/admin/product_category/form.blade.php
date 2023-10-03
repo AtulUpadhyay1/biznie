@@ -63,7 +63,7 @@
                                 <div class="row">
                                     <h5 class="card-heading-h5">Images:</h5>
                                     <div class="col-md-12">
-                                        <label class="form-label">Thumbnail Image</label>
+                                        <label class="form-label" for="product_category_thumbnail">Thumbnail Image</label>
                                         <input type='file' id="product_category_thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" wire:model.defer="thumbnail">
                                         <label for="product_category_thumbnail">
                                             @if($thumbnail)
@@ -77,7 +77,7 @@
                                         @error('thumbnail') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="form-label">Banner Image</label>
+                                        <label class="form-label" for="product_category_banner">Banner Image</label>
                                         <input type='file' id="product_category_banner" class="form-control @error('banner') is-invalid @enderror" wire:model.defer="banner">
                                         <label for="product_category_banner">
                                             @if($banner)
