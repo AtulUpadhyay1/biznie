@@ -68,10 +68,10 @@
                             <table class="custom-table">
                                 <thead>
                                     <tr>
-                                        <th>#Id</th>
+                                        <th>Id</th>
                                         <th style="width: 25%;">Business Details</th>
                                         <th>Image</th>
-                                        <th style="width:20%;">Contacts</th>
+                                        <th style="width:20%;">Contact info</th>
                                         <th>Address</th>
                                         <th>Status</th>
                                         <th>Action</th>

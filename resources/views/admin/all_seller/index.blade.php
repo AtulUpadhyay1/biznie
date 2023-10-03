@@ -29,7 +29,7 @@
                             <table class="custom-table">
                                 <thead>
                                     <tr>
-                                        <th>#Id</th>
+                                        <th>Id</th>
                                         <th style="width: 25%">Name</th>
                                         <th>Phone</th>
                                         <th>Email Address</th>

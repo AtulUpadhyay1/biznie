@@ -66,6 +66,9 @@ Route::group(['as'=>'admin.'], function () {
         //Business Listing
         Route::get('business-listing', AdminRoot\BusinessListingLivewire::class)->name('business-listing');
 
+        //All Customers List
+         Route::get('all-customers', AdminRoot\CustomerListLivewire::class)->name('all-customers');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

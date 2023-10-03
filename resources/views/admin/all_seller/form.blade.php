@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <form>
                         <div class="row mb-3">
-                            <h5 class="card-heading-h5">Seller Information</h5>
+                            <h5 class="card-heading-h5">Seller Information:</h5>
                             <div class="col-md-4 mb-3">
                                 <label for="name" class="form-label">Seller Name</label>
                                 <input type="text" class="form-control" id="name" placeholder="Seller name">
