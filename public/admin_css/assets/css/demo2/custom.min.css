@@ -456,3 +456,34 @@
     color: #d83838;
     background-color: rgba(101, 113, 255, .1);
 }
+
+.custom-un-li
+{
+    list-style: none;
+    padding: 0;
+}
+
+.custom-un-li .nav-item .nav-link
+{
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: #FF033E;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1.5px solid #FF033E;
+    color: #fff;
+    transition: ease-in .1s;
+    border-radius: 10px 0 10px 0;
+}
+
+.custom-un-li .nav-item .bi
+{
+    font-size: 15px;
+}
+
+.custom-un-li .nav-item:hover .nav-link
+{
+    background-color: transparent;
+    color: #FF033E;
+}
