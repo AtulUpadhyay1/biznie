@@ -31,8 +31,7 @@
                                     <tr>
                                         <th>Id</th>
                                         <th style="width: 25%">Name</th>
-                                        <th>Phone</th>
-                                        <th>Email Address</th>
+                                        <th>Contact info</th>
                                         <th>Registration Date</th>
                                         <th>Updation Date</th>
                                         <th style="width: 10%">Last Active</th>
@@ -49,72 +48,11 @@
                                             <b>User Name:</b>
                                             <span>Sudhanshu Kumar Jhandewala</span>
                                         </td>
-                                        <td>6390041900</td>
-                                        <td>Shudhanshu@gmail.com</td>
-                                        <td>03/10/2023</td>
-                                        <td>03/10/2023</td>
-                                        <td>03/10/2023, <br>5.45 Pm</td>
-                                        <td class="text-center">
-                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                                <a class="dropdown-item d-flex align-items-center" href=""><i
-                                                        class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a href="javascript:;"
-                                                    class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                                <a href="javascript:;"
-                                                    class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>1</td>
                                         <td>
-                                            <b>Business Name:</b>
-                                            <span>Sudhanshu Textile Indusrty</span>
+                                            <i class="bi bi-telephone"></i><span class="ms-2">6390041900</span>
                                             <br>
-                                            <b>User Name:</b>
-                                            <span>Sudhanshu Kumar Jhandewala</span>
+                                            <i class="bi bi-envelope-at"></i><span class="ms-2">sudhanshu@gmail.com</span>
                                         </td>
-                                        <td>6390041900</td>
-                                        <td>Shudhanshu@gmail.com</td>
-                                        <td>03/10/2023</td>
-                                        <td>03/10/2023</td>
-                                        <td>03/10/2023, <br>5.45 Pm</td>
-                                        <td class="text-center">
-                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                                <a class="dropdown-item d-flex align-items-center" href=""><i
-                                                        class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a href="javascript:;"
-                                                    class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                                <a href="javascript:;"
-                                                    class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>1</td>
-                                        <td>
-                                            <b>Business Name:</b>
-                                            <span>Sudhanshu Textile Indusrty</span>
-                                            <br>
-                                            <b>User Name:</b>
-                                            <span>Sudhanshu Kumar Jhandewala</span>
-                                        </td>
-                                        <td>6390041900</td>
-                                        <td>Shudhanshu@gmail.com</td>
                                         <td>03/10/2023</td>
                                         <td>03/10/2023</td>
                                         <td>03/10/2023, <br>5.45 Pm</td>

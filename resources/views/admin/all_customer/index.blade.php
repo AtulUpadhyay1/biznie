@@ -31,10 +31,10 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Name</th>
-                                    <th>Phone</th>
-                                    <th  style="width: 15%">Email Address</th>
+                                    <th>Contact Info</th>
                                     <th>Registration Date</th>
                                     <th>Last Active</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -42,10 +42,14 @@
                                 <tr>
                                     <td>1</td>
                                     <td>Vishal Aaryan</td>
-                                    <td>6390041900</td>
-                                    <td>sudhanshukumar1234@gmail.com</td>
+                                    <td>
+                                        <i class="bi bi-telephone"></i><span class="ms-2">6390041900</span>
+                                        <br>
+                                        <i class="bi bi-envelope-at"></i><span class="ms-2">sudhanshukumar1234@gmail.com</span>
+                                    </td>
                                     <td>03/10/2023</td>
                                     <td>03/10/2023, <br>6.45 Am</td>
+                                    <td><span class="text-success fw-bolder">Active</span></td>
                                     <td class="text-center">
                                         <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
