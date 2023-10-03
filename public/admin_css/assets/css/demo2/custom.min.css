@@ -268,7 +268,7 @@
 } */
 
 .sidebar .sidebar-body .nav{
-    padding: 25px 0px 40px 0px;
+    padding: 10px 0px;
 }
 
 .sidebar .sidebar-body .nav .nav-item .nav-link{
@@ -301,7 +301,7 @@
 }
 
 .sidebar .sidebar-body .nav.sub-menu{
-    padding: 0 0 5px 30px;
+    padding: 0 0 0 30px;
 }
 
 /*Sublist Hover */
