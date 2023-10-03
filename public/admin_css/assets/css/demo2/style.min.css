@@ -26058,10 +26058,10 @@ div.tox .btn-icon-text.btn-lg.tox-button .btn-icon-prepend {
 
 .table thead th {
     border-top: 0;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 12px;
     text-transform: uppercase;
-    color: #7987a1
+    color: #000;
 }
 
 .table thead th i {

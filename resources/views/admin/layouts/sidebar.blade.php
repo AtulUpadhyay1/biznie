@@ -30,6 +30,12 @@
                     <span class="link-title">All Sellers</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{route('admin.business-listing')}}" class="nav-link" wire:navigate>
+                    <i class="link-icon" data-feather="users"></i>
+                    <span class="link-title">Business Listings</span>
+                </a>
+            </li>
             <!--products-->
             {{-- <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
