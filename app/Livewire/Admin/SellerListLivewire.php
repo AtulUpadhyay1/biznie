@@ -12,7 +12,7 @@ class SellerListLivewire extends Component
 
     public function render()
     {
-        return view('admin.seller_list.index', ['page_title' => 'All Seller']);
+        return view('admin.seller_list.index', ['page_title' => 'Seller List']);
     }
 
     public function create()
