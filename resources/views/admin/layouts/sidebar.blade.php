@@ -19,7 +19,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('admin.customer-list')}}" class="nav-link" wire:navigate>
+                <a href="{{route('admin.customers')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="users"></i>
                     <span class="link-title">All Customers</span>
                 </a>

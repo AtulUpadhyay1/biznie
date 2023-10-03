@@ -67,10 +67,10 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('business-listing', AdminRoot\BusinessListingLivewire::class)->name('business-listing');
 
         //All Customers List
-         Route::get('customer-list', AdminRoot\CustomerListLivewire::class)->name('customer-list');
+         Route::get('customers', AdminRoot\Customer\Index::class)->name('customers');
 
         //Cutomer Profile
-        Route::get('customer-profile', AdminRoot\CustomerProfileLivewire::class)->name('customer-profile');
+        Route::get('customer-profile', AdminRoot\Customer\Profile::class)->name('customer-profile');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');

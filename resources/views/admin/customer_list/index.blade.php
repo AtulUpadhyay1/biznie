@@ -56,9 +56,9 @@
                                             <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                            <a class="dropdown-item d-flex align-items-center" href=""><i
+                                            <a class="dropdown-item d-flex align-items-center" href="{{route('admin.customer-profile')}}" wire:navigate><i
                                                 class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href=""><i
+                                            <a class="dropdown-item d-flex align-items-center" href="#"><i
                                                 class="bi bi-person-slash icon-sm me-2"></i><span>Block</span></a>
                                             <a href="javascript:;"
                                                 class="dropdown-item d-flex align-items-center"><i
