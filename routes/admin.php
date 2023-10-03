@@ -61,13 +61,16 @@ Route::group(['as'=>'admin.'], function () {
          Route::get('identity-type', AdminRoot\IdentityTypeLivewire::class)->name('identity-type');
 
         //All Sellers List
-        Route::get('all-seller', AdminRoot\AllSellerLivewire::class)->name('all-seller');
+        Route::get('seller-list', AdminRoot\SellerListLivewire::class)->name('seller-list');
 
         //Business Listing
         Route::get('business-listing', AdminRoot\BusinessListingLivewire::class)->name('business-listing');
 
         //All Customers List
-         Route::get('all-customers', AdminRoot\CustomerListLivewire::class)->name('all-customers');
+         Route::get('customer-list', AdminRoot\CustomerListLivewire::class)->name('customer-list');
+
+        //Cutomer Profile
+        Route::get('customer-profile', AdminRoot\CustomerProfileLivewire::class)->name('customer-profile');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');

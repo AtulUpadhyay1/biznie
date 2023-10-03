@@ -1,7 +1,7 @@
 <div>
     @section('title', config('app.name') . ' | ' . $page_title)
     @if ($formMode)
-        @include('admin.all_seller.form')
+        @include('admin.seller_list.form')
     @else
         <div class="row">
             <div class="col-12">
