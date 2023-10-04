@@ -397,6 +397,12 @@
     border-top: 1px solid #dee2e6;
 }
 
+.custom-table thead th{
+    text-transform: capitalize !important;
+    font-weight: 700;
+    font-size: 14px;
+}
+
 .custom-table td
 {
     display: table-cell;

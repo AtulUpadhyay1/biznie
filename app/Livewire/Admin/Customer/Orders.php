@@ -11,6 +11,6 @@ class Orders extends Component
 
     public function render()
     {
-        return view('livewire.admin.customer.orders');
+        return view('admin.customer_list.orders', ['page_title' => 'Customer Orders List']);
     }
 }
