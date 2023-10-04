@@ -376,7 +376,7 @@
 
 .custom-table thead
 {
-    background-color: #ffa500;
+    background-color: #ffa50036;
 }
 
 .custom-table tbody b
@@ -523,4 +523,4 @@
 {
     border-color: #cc0000 !important;
 }
-/*End of custom buttons
+/*End of custom buttons*/
