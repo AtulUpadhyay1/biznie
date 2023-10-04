@@ -5,7 +5,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>Add New Seller</h4>
+                            <h4>Edit Seller</h4>
                         </div>
                         <div class="col-6 text-end">
                             <x-cancel-btn text="Cancel" function="cancel()" />

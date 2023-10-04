@@ -15,7 +15,7 @@ class SellerListLivewire extends Component
         return view('admin.seller_list.index', ['page_title' => 'Seller List']);
     }
 
-    public function create()
+    public function edit()
     {
         $this->formMode = true;
     }
