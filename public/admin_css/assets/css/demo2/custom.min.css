@@ -487,3 +487,8 @@
     background-color: transparent;
     color: #FF033E;
 }
+
+.customer-profile-card.fixed-top
+{
+    top: 60px;
+}

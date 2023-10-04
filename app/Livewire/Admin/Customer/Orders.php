@@ -5,12 +5,12 @@ namespace App\Livewire\Admin\Customer;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class Profile extends Component
+class Orders extends Component
 {
     use WithFileUploads;
 
     public function render()
     {
-        return view('admin.customer_list.profile', ['page_title' => 'Customer Profile']);
+        return view('livewire.admin.customer.orders');
     }
 }
