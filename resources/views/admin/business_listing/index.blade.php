@@ -103,7 +103,7 @@
                                                     class="bi bi-chat-square-dots"></i>: <b>0</b></span>
                                         </td>
                                         <td><img src="{{ asset('admin_css/assets/images/avatar.png') }}"
-                                                class="seller-user-img" alt="user" data-bs-toggle="tooltip"
+                                                class="custom-table-img" alt="user" data-bs-toggle="tooltip"
                                                 title="Business Image"></td>
                                         <td>
                                             <i class="bi bi-telephone"></i><span class="ms-2">6390041900</span>

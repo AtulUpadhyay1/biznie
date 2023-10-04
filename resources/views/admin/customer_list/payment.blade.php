@@ -40,7 +40,7 @@
                                     <td><img src="{{asset('admin_css/assets/images/arrow-up.png')}}" alt=""></td>
                                     <td>#12345674542321</td>
                                     <td>04/10/2023<br>6.45 PM</td>
-                                    <td><span class="text-danger fw-bolder">RS 14000</span></td>
+                                    <td><b>RS 14000</b></td>
                                     <td class="text-success fw-bolder">Completed</td>
                                     <td class="text-center">
                                         <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
@@ -57,7 +57,7 @@
                                     <td><img src="{{asset('admin_css/assets/images/arrow-down.png')}}" alt=""></td>
                                     <td>#12345674542321</td>
                                     <td>04/10/2023<br>6.45 PM</td>
-                                    <td><span class="text-danger fw-bolder">RS 14000</span></td>
+                                    <td><b>RS 14000</b></td>
                                     <td class="text-danger fw-bolder">Refund</td>
                                     <td class="text-center">
                                         <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">

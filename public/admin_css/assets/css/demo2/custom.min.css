@@ -376,7 +376,7 @@
 
 .custom-table thead
 {
-    background-color: whitesmoke;
+    background-color: #ffa500;
 }
 
 .custom-table tbody b
@@ -409,7 +409,7 @@
     display: table-cell;
 }
 
-.seller-user-img
+.custom-table-img
 {
     width: 60px !important;
     height: 60px !important;
@@ -512,3 +512,15 @@
 {
     top: 60px;
 }
+
+/*Custom Button color Changed form bootstrap buttons*/
+.btn-danger{
+    background: #cc0000 !important;
+    border: 0 !important;
+}
+
+.border-danger
+{
+    border-color: #cc0000 !important;
+}
+/*End of custom buttons

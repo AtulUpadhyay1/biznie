@@ -40,7 +40,7 @@
                                     <td>1</td>
                                     <td>#000134e8263826823</td>
                                     <td>12</td>
-                                    <td><span class="text-danger fw-bolder">RS 14000</span></td>
+                                    <td><b>RS 14000</b></td>
                                     <td class="text-primary fw-bolder">Pending</td>
                                     <td class="text-center">
                                         <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
@@ -57,7 +57,7 @@
                                     <td>1</td>
                                     <td>#000134e8263826823</td>
                                     <td>12</td>
-                                    <td><span class="text-danger fw-bolder">RS 14000</span></td>
+                                    <td><b>RS 14000</b></td>
                                     <td class="text-success fw-bolder">Completed</td>
                                     <td class="text-center">
                                         <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
@@ -74,7 +74,7 @@
                                     <td>1</td>
                                     <td>#000134e8263826823</td>
                                     <td>12</td>
-                                    <td><span class="text-danger fw-bolder">RS 14000</span></td>
+                                    <td><b>RS 14000</b></td>
                                     <td class="text-danger fw-bolder">Cancelled</td>
                                     <td class="text-center">
                                         <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
@@ -91,7 +91,7 @@
                                     <td>1</td>
                                     <td>#000134e8263826823</td>
                                     <td>12</td>
-                                    <td><span class="text-danger fw-bolder">RS 14000</span></td>
+                                    <td><b>RS 14000</b></td>
                                     <td class="text-warning fw-bolder">Dispatched</td>
                                     <td class="text-center">
                                         <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
