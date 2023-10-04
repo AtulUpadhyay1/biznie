@@ -75,6 +75,9 @@ Route::group(['as'=>'admin.'], function () {
         //Cutomer Orders List
         Route::get('customer-orders-list', AdminRoot\Customer\Orders::class)->name('customer-orders-list');
 
+        //Cutomer Payment List
+        Route::get('customer-payment-list', AdminRoot\Customer\Payments::class)->name('customer-payment-list');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

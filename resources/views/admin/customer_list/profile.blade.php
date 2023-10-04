@@ -3,38 +3,7 @@
 
     <div class="row">
         <div class="col-md-4">
-            <div class="card position-sticky customer-profile-card fixed-top">
-                <div class="card-header">
-                    <div class="text-center">
-                        <img src="{{asset('admin_css/assets/images/avatar.png')}}" alt="" class="w-25 h-25">
-                        <h5 class="text-dark mt-3">Sushanshu Kumar</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <ul class="custom-un-li">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.customer-profile')}}" wire:navigate>Customer Profile
-                                <i class="bi bi-chevron-right"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.customer-orders-list')}}" wire:navigate>Order Details
-                                <i class="bi bi-chevron-right"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Payment History
-                                <i class="bi bi-chevron-right"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">RFQ
-                                <i class="bi bi-chevron-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+           @include('admin.customer_list.customer_nav')
         </div>
         <div class="col-md-8">
             <div class="card">

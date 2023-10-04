@@ -389,6 +389,7 @@
 .custom-table tbody td
 {
     color: #242b39;
+    font-size: 14px;
 }
 
 .custom-table th, td
@@ -410,8 +411,15 @@
 
 .seller-user-img
 {
-    width: 60px;
-    height: 60px;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 100% !important;
+}
+
+.custom-table td img
+{
+    width: 36px;
+    height: 36px;
     border-radius: 100%;
 }
 
@@ -489,6 +497,12 @@
 }
 
 .custom-un-li .nav-item:hover .nav-link
+{
+    background-color: transparent;
+    color: #FF033E;
+}
+
+.custom-un-li .nav-item .nav-link.nav_active
 {
     background-color: transparent;
     color: #FF033E;
