@@ -11,6 +11,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('admin.customer_list.index', ['page_title' => 'All Customers']);
+        return view('admin.customer_list.index', ['page_title' => ' Customer List']);
     }
 }

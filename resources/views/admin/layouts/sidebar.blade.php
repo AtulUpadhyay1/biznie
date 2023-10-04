@@ -56,7 +56,7 @@
             <div class="collapse" id="customer">
                 <ul class="nav sub-menu">
                     <li class="nav-item">
-                        <a href="{{route('admin.customers')}}" class="nav-link" wire:navigate>
+                        <a href="{{route('admin.customer-list')}}" class="nav-link" wire:navigate>
                             All Customers
                         </a>
                     </li>
@@ -75,11 +75,11 @@
             </li>
             <div class="collapse" id="products">
                 <ul class="nav sub-menu">
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="#" class="nav-link">Add New Products</a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
-                        <a href="#" class="nav-link">All Products</a>
+                        <a href="{{route('admin.product-list')}}" class="nav-link" wire:navigate>All Products</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{route('admin.product-category')}}" class="nav-link" wire:navigate>

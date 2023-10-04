@@ -67,7 +67,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('business-listing', AdminRoot\BusinessListingLivewire::class)->name('business-listing');
 
         //All Customers List
-         Route::get('customers', AdminRoot\Customer\Index::class)->name('customers');
+         Route::get('customer-list', AdminRoot\Customer\Index::class)->name('customer-list');
 
         //Cutomer Profile
         Route::get('customer-profile', AdminRoot\Customer\Profile::class)->name('customer-profile');
@@ -77,6 +77,9 @@ Route::group(['as'=>'admin.'], function () {
 
         //Cutomer Payment List
         Route::get('customer-payment-list', AdminRoot\Customer\Payments::class)->name('customer-payment-list');
+
+        //Product List
+        Route::get('product-list', AdminRoot\Product\Index::class)->name('product-list');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
