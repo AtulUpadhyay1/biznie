@@ -360,14 +360,13 @@
 
 .filter-list-group
 {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
 .filter-list-group .list-group-item
 {
-    width: 40%;
+    width: 350px;
+    padding: 0.5rem;
 }
 
 .custom-table
