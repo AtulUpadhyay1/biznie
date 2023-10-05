@@ -84,6 +84,9 @@ Route::group(['as'=>'admin.'], function () {
         //Product List
         Route::get('product-list', AdminRoot\Product\Index::class)->name('product-list');
 
+        //Edit Product
+        Route::get('edit-product', AdminRoot\Product\Edit::class)->name('edit-product');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

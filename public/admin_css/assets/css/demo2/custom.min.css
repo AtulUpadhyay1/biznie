@@ -395,7 +395,7 @@
 .custom-table th, td
 {
     padding: .9rem;
-    border-top: 1px solid #dee2e6;
+    border: 1px solid #dee2e6;
 }
 
 .custom-table thead th{

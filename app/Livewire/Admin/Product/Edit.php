@@ -8,6 +8,6 @@ class Edit extends Component
 {
     public function render()
     {
-        return view('livewire.admin.product.edit');
+        return view('admin.product.edit', ['page_title' => 'Edit Product']);
     }
 }
