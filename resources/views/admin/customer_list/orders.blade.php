@@ -3,7 +3,9 @@
 
     <div class="row">
         <div class="col-md-4">
-            @include('admin.customer_list.customer_nav')
+            <div class="position-sticky customer-profile-card fixed-top">
+                @include('admin.customer_list.customer_nav')
+            </div>
         </div>
         <div class="col-md-8">
             <div class="card">

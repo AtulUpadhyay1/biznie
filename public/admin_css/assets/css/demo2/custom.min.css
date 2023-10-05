@@ -511,6 +511,7 @@
 .customer-profile-card.fixed-top
 {
     top: 60px;
+    z-index: 9;
 }
 
 /*Custom Button color Changed form bootstrap buttons*/

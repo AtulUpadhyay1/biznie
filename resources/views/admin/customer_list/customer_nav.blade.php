@@ -1,6 +1,6 @@
 <div>
     <style>
-        .card-header.customer-profile-card{
+        .card-header.customer-profile-header{
             background: url("{{asset('admin_css/assets/images/doodle.jpg')}}");
             background-size: cover;
             background-position: center;
@@ -8,9 +8,8 @@
             border: 0;
         }
     </style>
-
-    <div class="card position-sticky customer-profile-card fixed-top">
-        <div class="card-header customer-profile-card">
+    <div class="card ">
+        <div class="card-header customer-profile-header">
             <div class="text-center">
                 <img src="{{asset('admin_css/assets/images/avatar.png')}}" alt="" class="w-25 h-25">
                 <h5 class="text-dark mt-3">Sushanshu Kumar</h5>
