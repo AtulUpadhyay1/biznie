@@ -28,6 +28,50 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <ul class="list-group list-group-horizontal filter-list-group">
+                            <li class="list-group-item border-0">
+                                <form class="custom-search-bar">
+                                    <div class="input-group">
+                                        <span class="input-group-text"> <i data-feather="search"></i></span>
+                                        <input type="text" class="form-control" placeholder="Search here...">
+                                    </div>
+                                </form>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <select class="form-select">
+                                    <option>Type</option>
+                                    <option>Dairy</option>
+                                </select>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <select class="form-select">
+                                    <option selected disabled>City</option>
+                                </select>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <select class="form-select">
+                                    <option selected disabled>State</option>
+                                </select>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <select class="form-select">
+                                    <option selected disabled>Pincode</option>
+                                </select>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <select class="form-select">
+                                    <option selected disabled>Status</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="custom-table">
                                 <thead>

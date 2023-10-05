@@ -30,8 +30,16 @@
                     <div class="card-body">
                         <ul class="list-group list-group-horizontal filter-list-group">
                             <li class="list-group-item border-0">
+                                <form class="custom-search-bar">
+                                    <div class="input-group">
+                                        <span class="input-group-text"> <i data-feather="search"></i></span>
+                                        <input type="text" class="form-control" placeholder="Search here...">
+                                    </div>
+                                </form>
+                            </li>
+                            <li class="list-group-item border-0">
                                 <select class="form-select">
-                                    <option>Textile</option>
+                                    <option>Type</option>
                                     <option>Dairy</option>
                                 </select>
                             </li>
@@ -91,13 +99,13 @@
                                             <b>User Name:</b>
                                             <span>Sudhanhsu Kumar</span>
                                             <br>
-                                            <span class="pe-2 border-end" data-bs-toggle="tooltip" title="Total orders"><i
-                                                    class="bi bi-bag-plus"></i> : <b>0</b></span>
-                                            <span class="pe-2 border-end" data-bs-toggle="tooltip" title="Total users"><i
-                                                    class="bi bi-people"></i> : <b>273</b></span>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total orders"><i class="bi bi-bag-plus"></i> : <b>0</b></span>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total users"><i class="bi bi-people"></i> : <b>273</b></span>
                                             <br>
-                                            <span class="pe-2 border-end" data-bs-toggle="tooltip" title="Total earnings"><i
-                                                    class="bi bi-wallet2"></i> : <i
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total earnings"><i class="bi bi-wallet2"></i> : <i
                                                     class="bi bi-currency-rupee"></i><b>5L</b></span>
                                             <span class="pe-2" data-bs-toggle="tooltip" title="Total messages"><i
                                                     class="bi bi-chat-square-dots"></i>: <b>0</b></span>
@@ -129,32 +137,36 @@
                                         <td class="text-center">
                                             <div class="custom-dropdown">
                                                 <a class="custom-status-btn rounded text-white" href="javascript:;"
-                                                    role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" title="Status"
-                                                    aria-haspopup="true" aria-expanded="false">
+                                                    role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                                    title="Status" aria-haspopup="true" aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical"></i>
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                     <a class="dropdown-item" href="javascript:;">
                                                         <div class="form-check form-switch">
-                                                            <input type="checkbox" class="form-check-input status_update">
+                                                            <input type="checkbox"
+                                                                class="form-check-input status_update">
                                                         </div>
                                                         <span>Featured</span>
                                                     </a>
                                                     <a class="dropdown-item" href="javascript:;">
                                                         <div class="form-check form-switch">
-                                                            <input type="checkbox" class="form-check-input status_update">
+                                                            <input type="checkbox"
+                                                                class="form-check-input status_update">
                                                         </div>
                                                         <span>Verified</span>
                                                     </a>
                                                     <a class="dropdown-item" href="javascript:;">
                                                         <div class="form-check form-switch">
-                                                            <input type="checkbox" class="form-check-input status_update">
+                                                            <input type="checkbox"
+                                                                class="form-check-input status_update">
                                                         </div>
                                                         <span>Top Sellers</span>
                                                     </a>
                                                     <a class="dropdown-item" href="javascript:;">
                                                         <div class="form-check form-switch">
-                                                            <input type="checkbox" class="form-check-input status_update">
+                                                            <input type="checkbox"
+                                                                class="form-check-input status_update">
                                                         </div>
                                                         <span>Inactive</span>
                                                     </a>
