@@ -552,7 +552,7 @@
 .custom-search-bar .input-group-text
 {
     padding: 0;
-    background: #fff;
+    background: transparent;
     border-top: 0;
     border-right: 0;
     border-left: 0;
@@ -567,5 +567,6 @@
     border-right: 0;
     border-radius: 0;
     padding-right: 0;
+    background: transparent;
 }
 /*End of custom search bar */
