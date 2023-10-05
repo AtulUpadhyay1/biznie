@@ -27,6 +27,14 @@
                 <div class="card-body">
                     <ul class="list-group list-group-horizontal filter-list-group">
                         <li class="list-group-item border-0">
+                            <form class="custom-search-bar">
+                                <div class="input-group">
+                                    <span class="input-group-text"> <i data-feather="search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search here...">
+                                </div>
+                            </form>
+                        </li>
+                        <li class="list-group-item border-0">
                             <select class="form-select">
                                 <option>Category</option>
                             </select>
