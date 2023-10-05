@@ -11,7 +11,15 @@
                             <h4>Product Sub Sub Categories</h4>
                         </div>
                         <div class="col-6">
-                            <x-add-btn text="Add Sub Sub Category" function="create()" />
+                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
+                                <form class="custom-search-bar me-3 mb-2 mb-md-0">
+                                    <div class="input-group">
+                                        <span class="input-group-text"> <i data-feather="search"></i></span>
+                                        <input type="text" class="form-control" placeholder="Search here...">
+                                    </div>
+                                </form>
+                                <x-add-btn text="Add Sub Sub Category" function="create()" />
+                            </div>
                         </div>
                     </div>
                 </div>
