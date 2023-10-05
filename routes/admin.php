@@ -72,6 +72,9 @@ Route::group(['as'=>'admin.'], function () {
         //Cutomer Profile
         Route::get('customer-profile', AdminRoot\Customer\Profile::class)->name('customer-profile');
 
+        //Edit Customer Info
+        Route::get('edit-customer-info', AdminRoot\Customer\EditInfo::class)->name('edit-customer-info');
+
         //Cutomer Orders List
         Route::get('customer-orders-list', AdminRoot\Customer\Orders::class)->name('customer-orders-list');
 

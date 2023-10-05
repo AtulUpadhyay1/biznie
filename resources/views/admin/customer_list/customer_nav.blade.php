@@ -18,8 +18,9 @@
         <div class="card-body">
             <ul class="custom-un-li">
                 <li class="nav-item">
-                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-profile') nav_active @endif" href="{{route('admin.customer-profile')}}"
-                    wire:navigate>Customer Profile
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-profile' || Route::currentRouteName()=='admin.edit-customer-info') nav_active @endif"
+                        href="{{route('admin.customer-profile')}}"  wire:navigate>
+                        Customer Profile
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>

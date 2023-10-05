@@ -514,6 +514,17 @@
     z-index: 9;
 }
 
+.borderless-table
+{
+    border: transparent !important;
+    border-width: 0;
+}
+
+.borderless-table tbody tr td
+{
+    border: 0 !important;
+}
+
 /*Custom Button color Changed form bootstrap buttons*/
 .btn-danger{
     background: #cc0000 !important;
@@ -523,5 +534,15 @@
 .border-danger
 {
     border-color: #cc0000 !important;
+}
+
+.text-danger
+{
+    color: #cc0000 !important;
+}
+
+.bg-orange-light
+{
+    background-color: #ffa50036;
 }
 /*End of custom buttons*/
