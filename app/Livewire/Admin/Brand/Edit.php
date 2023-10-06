@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Product;
+namespace App\Livewire\Admin\Brand;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -11,6 +11,6 @@ class Edit extends Component
 
     public function render()
     {
-        return view('admin.product.edit', ['page_title' => 'Edit Product']);
+        return view('admin.brand.form', ['page_title' => 'Edit Brand']);
     }
 }

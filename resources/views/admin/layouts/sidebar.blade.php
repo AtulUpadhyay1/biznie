@@ -188,6 +188,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{route('admin.brand')}}" class="nav-link" wire:navigate>
+                           Brand
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{route('admin.gst-type')}}" class="nav-link" wire:navigate>
                            GST Type
                         </a>
