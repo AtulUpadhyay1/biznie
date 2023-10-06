@@ -17,37 +17,58 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form wire:submit.prevent="{{ $hidden_id ? 'update()' : 'save()' }}">
                         <div class="row mb-3">
                             <div class="col-md-8 border-end">
                                 <div class="row">
                                     <h5 class="card-heading-h5">Brand Details:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="name">Name</label>
-                                        <input type="text" class="form-control" id="name"
-                                            placeholder="Enter name">
+                                        <input type="text" class="form-control  @error('name') is-invalid @enderror"
+                                            id="name" wire:model.defer="name" placeholder="Enter name">
+                                        @error('name')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="icon">Icon</label>
                                         <div class="input-group">
-                                            <span class="input-group-text"><i class="fa fa-circle-o"
-                                                    aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control" id="icon"
-                                                placeholder="Enter fa icon">
+                                            <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>' !!}</span>
+                                            <input type="text" id="icon"
+                                                class="form-control @error('icon') is-invalid @enderror"
+                                                wire:model.defer="icon" placeholder="Enter fa icon">
                                         </div>
+                                        @error('icon')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <h5 class="card-heading-h5">SEO Section:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="title">Meta Title</label>
-                                        <input type="text" class="form-control" id="title" placeholder="Enter title">
+                                        <input type="text"
+                                            class="form-control @error('meta_title') is-invalid @enderror"
+                                            wire:model.defer='meta_title' id="title" placeholder="Enter title">
+                                        @error('meta_title')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="keyword">Meta Keywords</label>
-                                        <input type="text" class="form-control" id="keyword" placeholder="Enter keywords">
+                                        <input type="text"
+                                            class="form-control @error('meta_keywords') is-invalid @enderror"
+                                            wire:model.defer='meta_keywords' id="keyword"
+                                            placeholder="Enter keywords">
+                                        @error('meta_keywords')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label" for="desc">Meta Description</label>
-                                        <textarea class="form-control" id="desc" rows="5" placeholder="Enter description"></textarea>
+                                        <textarea class="form-control @error('meta_description') is-invalid @enderror" id="desc" rows="5"
+                                            wire:model.defer='meta_description' placeholder="Enter description"></textarea>
+                                        @error('meta_description')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -56,24 +77,44 @@
                                     <h5 class="card-heading-h5">Images:</h5>
                                     <div class="col-md-12">
                                         <label class="form-label" for="brand_thumbnail">Thumbnail Image</label>
-                                        <input type="file" class="form-control" id="brand_thummbnail">
+                                        <input type="file"
+                                            class="form-control @error('thumbnail') is-invalid @enderror"
+                                            wire:model.defer="thumbnail" id="brand_thumbnail">
                                         <label for="brand_thumbnail">
-                                            <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
+                                            @if ($thumbnail)
+                                                <img src="{{ $thumbnail->temporaryUrl() }}" class="label-thumbnail">
+                                            @elseif ($showThumbnail)
+                                                <img src="{{ asset('storage/' . $showThumbnail) }}"
+                                                    class="label-thumbnail">
+                                            @else
+                                                <img class="label-thumbnail"
+                                                    src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                            @endif
                                         </label>
+                                        @error('thumbnail')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="brand_banner">Banner Image</label>
-                                        <input type="file" class="form-control" id="brand_bannner">
+                                        <input type="file" class="form-control @error('banner') is-invalid @enderror" wire:model.defer="banner" id="brand_banner">
                                         <label for="brand_banner">
+                                            @if($banner)
+                                                <img src="{{$banner->temporaryUrl()}}" class="label-banner">
+                                            @elseif ($showBanner)
+                                                <img src="{{asset('storage/'.$showBanner)}}" class="label-banner">
+                                            @else
                                             <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
+                                            @endif
                                         </label>
+                                        @error('banner') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <x-submit-btn text="Save" />
+                                <x-submit-btn text="{{ $hidden_id ? 'Update' : 'Save' }}" />
                             </div>
                         </div>
                     </form>

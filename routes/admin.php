@@ -60,7 +60,7 @@ Route::group(['as'=>'admin.'], function () {
         //Brands
         Route::get('brand', AdminRoot\Brand\Index::class)->name('brand');
         Route::get('create-brand', AdminRoot\Brand\Create::class)->name('create-brand');
-        Route::get('edit-brand', AdminRoot\Brand\Edit::class)->name('edit-brand');
+        Route::get('edit-brand/{id}', AdminRoot\Brand\Edit::class)->name('edit-brand');
 
          //Identity Types
          Route::get('identity-type', AdminRoot\IdentityTypeLivewire::class)->name('identity-type');
