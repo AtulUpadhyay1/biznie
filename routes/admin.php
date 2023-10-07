@@ -67,8 +67,9 @@ Route::group(['as'=>'admin.'], function () {
          //Identity Types
          Route::get('identity-type', AdminRoot\IdentityTypeLivewire::class)->name('identity-type');
 
-        //All Sellers List
-        Route::get('seller-list', AdminRoot\SellerListLivewire::class)->name('seller-list');
+        //Sellers List
+        Route::get('seller-list', AdminRoot\Seller\Index::class)->name('seller-list');
+        Route::get('edit-seller', AdminRoot\Seller\Edit::class)->name('edit-seller');
 
         //Business Listing
         Route::get('business-listing', AdminRoot\BusinessListing\Index::class)->name('business-listing');
