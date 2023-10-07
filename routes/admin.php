@@ -47,7 +47,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('edit-product-category/{id}', AdminRoot\ProductCategory\Edit::class)->name('edit-product-category');
 
         //Product Sub Category
-        Route::get('product-sub-category', AdminRoot\ProductSubCategoryLivewire::class)->name('product-sub-category');
+        Route::get('product-sub-category', AdminRoot\ProductSubCategory\Index::class)->name('product-sub-category');
+        Route::get('create-product-sub-category', AdminRoot\ProductSubCategory\Create::class)->name('create-product-sub-category');
+        Route::get('edit-product-sub-category/{id}', AdminRoot\ProductSubCategory\Edit::class)->name('edit-product-sub-category');
 
         //Product Sub Sub Category
         Route::get('product-sub-subcategory', AdminRoot\ProductSubSubCategoryLivewire::class)->name('product-sub-subcategory');

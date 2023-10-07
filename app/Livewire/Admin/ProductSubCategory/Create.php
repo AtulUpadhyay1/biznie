@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Livewire\Admin\ProductSubCategory;
+
+use Livewire\Component;
+use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
+use App\Models\BusinessCategory;
+use App\Models\ProductSubCategory;
+use App\Models\ProductCategory;
+
+class Create extends Component
+{
+    use WithFileUploads;
+    public $hidden_id, $product_category_id, $business_category_id, $name, $icon,
+    $thumbnail, $showThumbnail, $banner, $showBanner, $meta_title, $meta_keywords, $meta_description;
+    public $product_category_list = [];
+    public $business_category_list  = null;
+
+    public function render()
+    {
+        $this->business_category_list=BusinessCategory::where('status',1)->get();
+        return view('admin.product_sub_category.form', ['page_title' => 'Create Product Sub Category']);
+    }
+
+    public function setProductCategoryList()
+    {
+        $this->product_category_list=ProductCategory::where('business_category_id',$this->business_category_id)->get();
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'name' => 'required',
+            'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
+            'banner' => 'required|image|mimes:jpg,png,jpeg',
+            'icon' => 'required',
+            'business_category_id' => 'required',
+            'product_category_id' => 'required',
+        ]);
+
+        try
+        {
+            $data = new ProductSubCategory;
+            $data->product_category_id = $this->product_category_id;
+            $data->business_category_id = $this->business_category_id;
+            $data->name = $this->name;
+            $data->slug = Str::slug($this->name);
+            $data->icon = $this->icon;
+            $data->meta_title = $this->meta_title;
+            $data->meta_description = $this->meta_description;
+            $data->meta_keywords = $this->meta_keywords;
+            if($this->thumbnail){
+                $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
+                $data->thumbnail = $this->thumbnail->storeAs('product_subcategory', $thumbnail_name, 'public');
+            }
+            if($this->banner){
+                $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
+                $data->banner = $this->banner->storeAs('product_subcategory', $banner_name, 'public');
+            }
+            $data->save();
+
+            session()->flash('success', 'Product sub category created successfully !!');
+            return $this->redirect('/admin/product-sub-category',navigate: true);
+        }
+        catch (\Exception $e) {
+            $this->dispatchBrowserEvent('alert',[
+                'type' => 'error',
+                'message' => 'something went wrong',
+            ]);
+        }
+
+    }
+}
