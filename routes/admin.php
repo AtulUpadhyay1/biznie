@@ -63,9 +63,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('tax-type', AdminRoot\TaxTypeLivewire::class)->name('tax-type');
 
         //GST Types
-        Route::get('gst-type', AdminRoot\Gst\Index::class)->name('gst-type');
-        Route::get('create-gst-type', AdminRoot\Gst\Create::class)->name('create-gst-type');
-        Route::get('edit-gst-type/{id}', AdminRoot\Gst\Edit::class)->name('edit-gst-type');
+        Route::get('gst-type', AdminRoot\GstType\Index::class)->name('gst-type');
+        Route::get('create-gst-type', AdminRoot\GstType\Create::class)->name('create-gst-type');
+        Route::get('edit-gst-type/{id}', AdminRoot\GstType\Edit::class)->name('edit-gst-type');
 
         //Brands
         Route::get('brand', AdminRoot\Brand\Index::class)->name('brand');

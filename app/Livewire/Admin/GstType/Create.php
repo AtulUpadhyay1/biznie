@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Gst;
+namespace App\Livewire\Admin\GstType;
 
 use App\Models\GstType;
 use Livewire\Component;
