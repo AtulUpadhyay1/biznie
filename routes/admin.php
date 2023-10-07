@@ -42,7 +42,9 @@ Route::group(['as'=>'admin.'], function () {
          Route::get('seller-type', AdminRoot\SellerTypeLivewire::class)->name('seller-type');
 
         //Product Category
-        Route::get('product-category', AdminRoot\ProductCategoryLivewire::class)->name('product-category');
+        Route::get('product-category', AdminRoot\ProductCategory\Index::class)->name('product-category');
+        Route::get('create-product-category', AdminRoot\ProductCategory\Create::class)->name('create-product-category');
+        Route::get('edit-product-category/{id}', AdminRoot\ProductCategory\Edit::class)->name('edit-product-category');
 
         //Product Sub Category
         Route::get('product-sub-category', AdminRoot\ProductSubCategoryLivewire::class)->name('product-sub-category');
