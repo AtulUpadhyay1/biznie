@@ -71,7 +71,8 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('seller-list', AdminRoot\SellerListLivewire::class)->name('seller-list');
 
         //Business Listing
-        Route::get('business-listing', AdminRoot\BusinessListingLivewire::class)->name('business-listing');
+        Route::get('business-listing', AdminRoot\BusinessListing\Index::class)->name('business-listing');
+        Route::get('edit-business', AdminRoot\BusinessListing\Edit::class)->name('edit-business');
 
         //All Customers List
          Route::get('customer-list', AdminRoot\Customer\Index::class)->name('customer-list');
