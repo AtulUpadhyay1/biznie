@@ -11,8 +11,6 @@ use App\Models\BusinessCategory;
 class Index extends Component
 {
     use WithFileUploads;
-    public $hidden_id,$business_category_id, $name, $icon, $thumbnail, $showThumbnail, $banner, $showBanner, $meta_title, $meta_keywords, $meta_description;
-    public $business_category_list=null;
 
     public function render()
     {

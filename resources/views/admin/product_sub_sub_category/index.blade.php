@@ -1,8 +1,6 @@
 <div>
     @section('title', config('app.name') . ' | '.$page_title)
-    @if ($formMode)
-        @include('admin.product_sub_sub_category.form')
-    @else
+    <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -18,7 +16,11 @@
                                         <input type="text" class="form-control" placeholder="Search here...">
                                     </div>
                                 </form>
-                                <x-add-btn text="Add Sub Sub Category" function="create()" />
+                                <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center"
+                                title="add" href="{{ route('admin.create-product-sub-subcategory') }}" wire:navigate>
+                                <i class="bi bi-plus-lg btn-icon-prepend"></i>
+                                Add Sub Sub Category
+                            </a>
                             </div>
                         </div>
                     </div>
@@ -62,9 +64,9 @@
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn_{{$data->id}}">
                                                 <a class="dropdown-item d-flex align-items-center" href=""><i
                                                         class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a href="javascript:;"
+                                                <a href="{{route('admin.edit-product-sub-subcategory', $data->id)}}"
                                                     class="dropdown-item d-flex align-items-center"
-                                                    wire:click="edit({{ $data->id }})"><i
+                                                    wire:navigate><i
                                                         class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
                                                 <a href="javascript:;"
                                                     class="dropdown-item d-flex align-items-center"
@@ -82,5 +84,5 @@
                 </div>
             </div>
         </div>
-    @endif
+    </div>
 </div>
