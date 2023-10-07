@@ -61,7 +61,7 @@
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn_{{$data->id}}">
                                                 <a class="dropdown-item d-flex align-items-center" href=""><i
                                                         class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a href="{{route('admin.edit-brand', $data->id)}}" class="dropdown-item d-flex align-items-center"><i
+                                                <a href="{{route('admin.edit-brand', $data->id)}}" class="dropdown-item d-flex align-items-center" wire:navigate><i
                                                         class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
                                                 <a href="javascript:;" class="dropdown-item d-flex align-items-center" wire:click="delete({{$data->id}})"><i
                                                         class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>

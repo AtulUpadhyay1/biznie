@@ -31,7 +31,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('dashboard', AdminRoot\DashboardLivewire::class)->name('dashboard');
 
         // Business Category
-        Route::get('business-category', AdminRoot\BusinessCategoryLivewire::class)->name('business-category');
+        Route::get('business-category', AdminRoot\BusinessCategory\Index::class)->name('business-category');
+        Route::get('create-business-category', AdminRoot\BusinessCategory\Create::class)->name('create-business-category');
+        Route::get('edit-business-category/{id}', AdminRoot\BusinessCategory\Edit::class)->name('edit-business-category');
 
         //Vendor Type
         Route::get('vendor-type', AdminRoot\VendorTypeLivewire::class)->name('vendor-type');
