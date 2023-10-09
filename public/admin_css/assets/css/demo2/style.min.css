@@ -2406,7 +2406,7 @@ progress {
     color: #000;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid #CAF1DE;
+    border: 1px solid #81dfdb;
     appearance: none;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
@@ -2609,7 +2609,7 @@ textarea.form-control-lg {
     background-repeat: no-repeat;
     background-position: right .8rem center;
     background-size: 16px 12px;
-    border: 1px solid #e9ecef;
+    border: 1px solid #81dfdb;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     appearance: none
