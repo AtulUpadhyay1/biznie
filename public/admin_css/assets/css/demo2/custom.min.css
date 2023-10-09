@@ -326,6 +326,16 @@
     color: #ffdf00;
     fill: none !important;
 }
+
+.sidebar .sidebar-body .nav.sub-menu .nav-item.active .nav-link
+{
+    height: 25px;
+    color: #000;
+    font-size: 13px;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+    border-radius: 10px 0 0 10px;
+}
 /*End of Nav Page*/
 
 /*Admin Pages start*/

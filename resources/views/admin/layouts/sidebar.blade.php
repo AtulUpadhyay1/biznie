@@ -12,7 +12,7 @@
     </div>
     <div class="sidebar-body">
         <ul class="nav">
-            <li class="nav-item">
+            <li class="nav-item {{ isActiveRoute(['admin.dashboard']) ? 'active' : '' }}">
                 <a href="{{route('admin.dashboard')}}" class="nav-link" wire:navigate>
                     <i class="link-icon" data-feather="home"></i>
                     <span class="link-title">Dashboard</span>
@@ -20,7 +20,7 @@
             </li>
 
             <!--Sellers-->
-            <li class="nav-item">
+            <li class="nav-item {{ isActiveRoute(['admin.seller-list', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#sellers" role="button"
                     aria-expanded="false" aria-controls="sellers">
                     <i class="link-icon" data-feather="user-plus"></i>
@@ -28,14 +28,14 @@
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
             </li>
-            <div class="collapse" id="sellers">
+            <div class="collapse {{ isActiveRoute(['admin.seller-list', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller']) ? 'show' : '' }}" id="sellers">
                 <ul class="nav sub-menu">
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.seller-list', 'admin.edit-seller']) ? 'active' : '' }}">
                         <a href="{{route('admin.seller-list')}}" class="nav-link" wire:navigate>
                            All Sellers
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.business-listing', 'admin.edit-business']) ? 'active' : '' }}">
                         <a href="{{route('admin.business-listing')}}" class="nav-link" wire:navigate>
                            Business Listings
                         </a>
@@ -45,7 +45,8 @@
             <!--End of seller -->
 
             <!--Customers-->
-            <li class="nav-item">
+            <li class="nav-item {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
+            'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#customer" role="button"
                     aria-expanded="false" aria-controls="customer">
                     <i class="link-icon" data-feather="users"></i>
@@ -53,9 +54,11 @@
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
             </li>
-            <div class="collapse" id="customer">
+            <div class="collapse {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
+                'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info']) ? 'show' : '' }}" id="customer">
                 <ul class="nav sub-menu">
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
+                        'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info']) ? 'active' : '' }}">
                         <a href="{{route('admin.customer-list')}}" class="nav-link" wire:navigate>
                             All Customers
                         </a>
@@ -65,7 +68,10 @@
             <!--End of customer -->
 
             <!--products-->
-            <li class="nav-item">
+            <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
+            'admin.product-category', 'admin.create-product-category', 'admin.edit-product-category',
+            'admin.product-sub-category', 'admin.create-product-sub-category', 'admin.create-product-sub-subcategory',
+            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#products" role="button"
                     aria-expanded="false" aria-controls="products">
                     <i class="link-icon" data-feather="shopping-cart"></i>
@@ -73,25 +79,28 @@
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
             </li>
-            <div class="collapse" id="products">
+            <div class="collapse {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
+            'admin.product-category','admin.create-product-category', 'admin.edit-product-category',
+            'admin.product-sub-category', 'admin.create-product-sub-category', 'admin.create-product-sub-subcategory',
+            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory']) ? 'show' : '' }}" id="products">
                 <ul class="nav sub-menu">
                     {{-- <li class="nav-item">
                         <a href="#" class="nav-link">Add New Products</a>
                     </li> --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-list')}}" class="nav-link" wire:navigate>All Products</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.product-category','admin.create-product-category', 'admin.edit-product-category']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-category')}}" class="nav-link" wire:navigate>
                             Category
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.product-sub-category', 'admin.create-product-sub-category', 'admin.edit-product-sub-category']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-sub-category')}}" class="nav-link" wire:navigate>
                             Sub Category
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.product-sub-subcategory', 'admin.create-product-sub-subcategory', 'admin.edit-product-sub-subcategory']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-sub-subcategory')}}" class="nav-link" wire:navigate>
                             Sub Sub Category
                         </a>
@@ -170,44 +179,51 @@
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
             </li>
-            <div class="collapse" id="master-setting">
+            <div class="collapse @if(Route::currentRouteName()=='admin.business-category' ||
+                Route::currentRouteName()=='admin.vendor-type' ||
+                Route::currentRouteName()=='admin.seller-type' ||
+                Route::currentRouteName()=='admin.brand' ||
+                Route::currentRouteName()=='admin.gst-type' ||
+                Route::currentRouteName()=='admin.product-unit' ||
+                Route::currentRouteName()=='admin.tax-type'||
+                Route::currentRouteName()=='admin.identity-type') show @endif" id="master-setting">
                 <ul class="nav sub-menu">
-                    <li class="nav-item">
+                    <li class="nav-item @if(Route::currentRouteName()=='admin.business-category') active @endif">
                         <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
                            Business Category
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if(Route::currentRouteName()=='admin.vendor-type') active @endif">
                         <a href="{{route('admin.vendor-type')}}" class="nav-link" wire:navigate>
                             Vendor Type
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if(Route::currentRouteName()=='admin.seller-type') active @endif">
                         <a href="{{route('admin.seller-type')}}" class="nav-link" wire:navigate>
                            Seller Type
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if(Route::currentRouteName()=='admin.brand') active @endif">
                         <a href="{{route('admin.brand')}}" class="nav-link" wire:navigate>
                            Brand
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if(Route::currentRouteName()=='admin.gst-type') active @endif">
                         <a href="{{route('admin.gst-type')}}" class="nav-link" wire:navigate>
                            GST Type
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if(Route::currentRouteName()=='admin.product-unit') active @endif">
                         <a href="{{route('admin.product-unit')}}" class="nav-link" wire:navigate>
                            Product Unit
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if(Route::currentRouteName()=='admin.tax-type') active @endif">
                         <a href="{{route('admin.tax-type')}}" class="nav-link" wire:navigate>
                            Tax Type
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @if(Route::currentRouteName()=='admin.identity-type') active @endif">
                         <a href="{{route('admin.identity-type')}}" class="nav-link" wire:navigate>
                             Identity Type
                         </a>
