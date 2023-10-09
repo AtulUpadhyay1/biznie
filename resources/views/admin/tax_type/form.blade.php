@@ -1,4 +1,6 @@
 <div>
+    @section('title', config('app.name') . ' | '.$page_title)
+
     <div class="row">
         <div class="col-md-12 grid-margin">
             <div class="card">
@@ -8,7 +10,10 @@
                             <h4>Add Tax Type</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <x-cancel-btn text="Cancel" function="cancel()" />
+                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
+                                href="{{ route('admin.tax-type') }}" wire:navigate>
+                                <i class="bi bi-x-lg btn-icon-prepend"></i>Cancel
+                            </a>
                         </div>
                     </div>
                 </div>
