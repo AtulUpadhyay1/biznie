@@ -199,7 +199,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{route('admin.product-unit')}}" class="nav-link" wire:navigate>
-                           Unit
+                           Product Unit
                         </a>
                     </li>
                     <li class="nav-item">

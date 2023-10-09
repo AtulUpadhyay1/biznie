@@ -57,7 +57,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('edit-product-sub-subcategory/{id}', AdminRoot\ProductSubSubCategory\Edit::class)->name('edit-product-sub-subcategory');
 
         //Product Unit
-        Route::get('product-unit', AdminRoot\ProductUnitLivewire::class)->name('product-unit');
+        Route::get('product-unit', AdminRoot\ProductUnit\Index::class)->name('product-unit');
+        Route::get('create-product-unit', AdminRoot\ProductUnit\Create::class)->name('create-product-unit');
+        Route::get('edit-product-unit/{id}', AdminRoot\ProductUnit\Edit::class)->name('edit-product-unit');
 
         //Tax Types
         Route::get('tax-type', AdminRoot\TaxTypeLivewire::class)->name('tax-type');
