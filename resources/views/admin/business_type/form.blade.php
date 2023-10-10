@@ -6,11 +6,11 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>Add Vendor Type</h4>
+                            <h4>Add Business Type</h4>
                         </div>
                         <div class="col-6 text-end">
                             <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
-                                href="{{ route('admin.vendor-type') }}" wire:navigate>
+                                href="{{ route('admin.business-type') }}" wire:navigate>
                                 <i class="bi bi-x-lg btn-icon-prepend"></i>Cancel
                             </a>
                         </div>
@@ -21,7 +21,7 @@
                         <div class="row mb-3">
                             <div class="col-md-8 border-end">
                                 <div class="row">
-                                    <h5 class="card-heading-h5">Vendor Details:</h5>
+                                    <h5 class="card-heading-h5">Business Details:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="name">Name</label>
                                         <input type="text" id="name"

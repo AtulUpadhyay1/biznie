@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\VendorType;
+namespace App\Livewire\Admin\BusinessType;
 
 use Livewire\Component;
-use App\Models\VendorType;
+use App\Models\BusinessType;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 
@@ -14,13 +14,13 @@ class Edit extends Component
 
     public function render()
     {
-        return view('admin.vendor_type.form', ['page_title' => 'Edit Vendor Type']);
+        return view('admin.business_type.form', ['page_title' => 'Edit Business Type']);
     }
 
     public function mount($id)
     {
         $this->hidden_id = $id;
-        $data = VendorType::find($id);
+        $data = BusinessType::find($id);
         $this->name = $data->name;
         $this->icon = $data->icon;
         $this->showThumbnail = $data->thumbnail;
@@ -41,7 +41,7 @@ class Edit extends Component
 
         try
         {
-            $data = VendorType::find($this->hidden_id);
+            $data = BusinessType::find($this->hidden_id);
             $data->name = $this->name;
             $data->slug = Str::slug($this->name);
             $data->icon = $this->icon;
@@ -50,16 +50,16 @@ class Edit extends Component
             $data->meta_keywords = $this->meta_keywords;
             if($this->thumbnail){
                 $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
-                $data->thumbnail = $this->thumbnail->storeAs('vendors', $thumbnail_name, 'public');
+                $data->thumbnail = $this->thumbnail->storeAs('business_type', $thumbnail_name, 'public');
             }
             if($this->banner){
                 $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
-                $data->banner = $this->banner->storeAs('vendors', $banner_name, 'public');
+                $data->banner = $this->banner->storeAs('business_type', $banner_name, 'public');
             }
             $data->save();
 
-            session()->flash('success', 'Vendor type updated successfully !!');
-            return $this->redirect('/admin/vendor-type',navigate: true);
+            session()->flash('success', 'Business type updated successfully !!');
+            return $this->redirect('/admin/business-type',navigate: true);
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[

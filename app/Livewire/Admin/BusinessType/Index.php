@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\VendorType;
+namespace App\Livewire\Admin\BusinessType;
 
 use Livewire\Component;
-use App\Models\VendorType;
+use App\Models\BusinessType;
 use Illuminate\Support\Str;
 
 class Index extends Component
@@ -11,19 +11,19 @@ class Index extends Component
 
     public function render()
     {
-        $list = VendorType::latest()->get();
-        return view('admin.vendor_type.index', compact('list'), ['page_title' => 'Vendor Type']);
+        $list = BusinessType::latest()->get();
+        return view('admin.business_type.index', compact('list'), ['page_title' => 'Business Type']);
     }
 
     public function updateStatus($id)
     {
         try{
-            $data = VendorType::find($id);
+            $data = BusinessType::find($id);
             $data->status = $data->status ? 0 : 1;
             $data->save();
             $this->dispatch('alert',
                 type: $data->status==1 ? 'success' : 'error',
-                message: $data->status== 1 ? 'Vendor type active successfully !!': 'Vendor type inactive successfully !!'
+                message: $data->status== 1 ? 'Business type active successfully !!': 'Business type inactive successfully !!'
             );
         }
         catch (\Exception $e) {
@@ -37,13 +37,13 @@ class Index extends Component
     public function updateFeatured($id)
     {
         try{
-            $data = VendorType::find($id);
+            $data = BusinessType::find($id);
             $data->featured = $data->featured ? 0 : 1;
             $data->save();
 
             $this->dispatch('alert',
                 type: $data->featured==1 ? 'success' : 'error',
-                message: $data->featured== 1 ? 'Vendor type featured successfully !!': 'Vendor type unfeatured successfully !!'
+                message: $data->featured== 1 ? 'Business type featured successfully !!': 'Business type unfeatured successfully !!'
             );
         }
         catch (\Exception $e) {
@@ -57,10 +57,10 @@ class Index extends Component
     public function delete($id)
     {
         try{
-            VendorType::destroy($id);
+            BusinessType::destroy($id);
             $this->dispatch('alert',
                 type: 'success',
-                message: 'Vendor type deleted successfully !!'
+                message: 'Business type deleted successfully !!'
             );
         }
         catch (\Exception $e) {
