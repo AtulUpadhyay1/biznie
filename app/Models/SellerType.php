@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class SellerType extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public static function active()
+    {
+        return SellerType::where('status', '1');
+    }
 }

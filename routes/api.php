@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Vendors api routes
+Route::group(['namespace' => 'App\Http\Controllers\Api\Vendors', 'prefix' => 'vendors'], function () {
+
+    // Registeration form info
+    Route::get('registration-form-info', 'InfoApiController@registrationFormInfo');
+
+    // Vendors authenticated route
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    });
+
+});
