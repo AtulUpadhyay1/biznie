@@ -171,7 +171,7 @@
             <!--End of messages-->
 
             <!--Biznie Set up-->
-            <li class="nav-item">
+            <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.brand', 'admin.create-brand', 'admin.edit-brand', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#master-setting" role="button"
                     aria-expanded="false" aria-controls="master-setting">
                     <i class="link-icon" data-feather="settings"></i>
@@ -179,51 +179,44 @@
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
             </li>
-            <div class="collapse @if(Route::currentRouteName()=='admin.business-category' ||
-                Route::currentRouteName()=='admin.vendor-type' ||
-                Route::currentRouteName()=='admin.seller-type' ||
-                Route::currentRouteName()=='admin.brand' ||
-                Route::currentRouteName()=='admin.gst-type' ||
-                Route::currentRouteName()=='admin.product-unit' ||
-                Route::currentRouteName()=='admin.tax-type'||
-                Route::currentRouteName()=='admin.identity-type') show @endif" id="master-setting">
+            <div class="collapse {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.vendor-type', 'admin.seller-type', 'admin.brand', 'admin.gst-type', 'admin.product-unit', 'admin.tax-type', 'admin.identity-type', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.brand', 'admin.create-brand', 'admin.edit-brand', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'show' : ''}}" id="master-setting">
                 <ul class="nav sub-menu">
-                    <li class="nav-item @if(Route::currentRouteName()=='admin.business-category') active @endif">
+                    <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category']) ? 'active' : ''}}">
                         <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
                            Business Category
                         </a>
                     </li>
-                    <li class="nav-item @if(Route::currentRouteName()=='admin.vendor-type') active @endif">
-                        <a href="{{route('admin.vendor-type')}}" class="nav-link" wire:navigate>
-                            Vendor Type
+                    <li class="nav-item {{ isActiveRoute(['admin.business-type', 'admin.create-business-type', 'admin.edit-business-type']) ? 'active' : ''}}">
+                        <a href="{{route('admin.business-type')}}" class="nav-link" wire:navigate>
+                            Business Type
                         </a>
                     </li>
-                    <li class="nav-item @if(Route::currentRouteName()=='admin.seller-type') active @endif">
+                    <li class="nav-item  {{ isActiveRoute(['admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type']) ? 'active' : ''}}">
                         <a href="{{route('admin.seller-type')}}" class="nav-link" wire:navigate>
                            Seller Type
                         </a>
                     </li>
-                    <li class="nav-item @if(Route::currentRouteName()=='admin.brand') active @endif">
+                    <li class="nav-item {{ isActiveRoute(['admin.brand', 'admin.create-brand', 'admin.edit-brand']) ? 'active' : ''}}">
                         <a href="{{route('admin.brand')}}" class="nav-link" wire:navigate>
                            Brand
                         </a>
                     </li>
-                    <li class="nav-item @if(Route::currentRouteName()=='admin.gst-type') active @endif">
+                    <li class="nav-item {{ isActiveRoute(['admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type']) ? 'active' : ''}} ">
                         <a href="{{route('admin.gst-type')}}" class="nav-link" wire:navigate>
                            GST Type
                         </a>
                     </li>
-                    <li class="nav-item @if(Route::currentRouteName()=='admin.product-unit') active @endif">
+                    <li class="nav-item {{ isActiveRoute(['admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit']) ? 'active' : ''}}">
                         <a href="{{route('admin.product-unit')}}" class="nav-link" wire:navigate>
                            Product Unit
                         </a>
                     </li>
-                    <li class="nav-item @if(Route::currentRouteName()=='admin.tax-type') active @endif">
+                    <li class="nav-item {{ isActiveRoute(['admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type']) ? 'active' : ''}}">
                         <a href="{{route('admin.tax-type')}}" class="nav-link" wire:navigate>
                            Tax Type
                         </a>
                     </li>
-                    <li class="nav-item @if(Route::currentRouteName()=='admin.identity-type') active @endif">
+                    <li class="nav-item {{ isActiveRoute(['admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'active' : ''}}">
                         <a href="{{route('admin.identity-type')}}" class="nav-link" wire:navigate>
                             Identity Type
                         </a>
@@ -257,12 +250,6 @@
                 <a href="#" class="nav-link">
                     <i class="link-icon" data-feather="help-circle"></i>
                     <span class="link-title">Help Center</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="log-out"></i>
-                    <span class="link-title">Log Out</span>
                 </a>
             </li>
         </ul>

@@ -35,10 +35,10 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('create-business-category', AdminRoot\BusinessCategory\Create::class)->name('create-business-category');
         Route::get('edit-business-category/{id}', AdminRoot\BusinessCategory\Edit::class)->name('edit-business-category');
 
-        //Vendor Type
-        Route::get('vendor-type', AdminRoot\VendorType\Index::class)->name('vendor-type');
-        Route::get('create-vendor-type', AdminRoot\VendorType\Create::class)->name('create-vendor-type');
-        Route::get('edit-vendor-type/{id}', AdminRoot\VendorType\Edit::class)->name('edit-vendor-type');
+        //Business Type
+        Route::get('business-type', AdminRoot\BusinessType\Index::class)->name('business-type');
+        Route::get('create-business-type', AdminRoot\BusinessType\Create::class)->name('create-business-type');
+        Route::get('edit-business-type/{id}', AdminRoot\BusinessType\Edit::class)->name('edit-business-type');
 
          //Seller Type
          Route::get('seller-type', AdminRoot\SellerType\Index::class)->name('seller-type');
