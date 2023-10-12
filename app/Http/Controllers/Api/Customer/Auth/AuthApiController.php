@@ -194,6 +194,9 @@ class AuthApiController extends Controller
                 $user_log_history->save();
 
                 Auth::login($user);
+
+                $temp_user->delete();
+
                 return response([
                     'success'   => true,
                     'token'     => $user->createToken('auth_token')->plainTextToken,
