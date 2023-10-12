@@ -147,6 +147,13 @@ class AuthApiController extends Controller
 
         $user = User::where('phone', $request->phone)->first();
         $checkOtp = UserOtp::where('phone', $request->phone)->where('otp', $request->otp)->first();
+        if(!$checkOtp){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid otp entered.',
+            ],400);
+        }
+
         if($user){
 
             if($user->status != 'active'){
@@ -156,22 +163,15 @@ class AuthApiController extends Controller
                 ],400);
             }
 
-            if($checkOtp){
+            $checkOtp->delete();
 
-                $checkOtp->delete();
-
-                Auth::login($user);
-                return response([
-                    'success'   => true,
-                    'token'     => $user->createToken('auth_token')->plainTextToken,
-                    'message'   => 'You are successfully login.',
-                    'data'      => new LoginResource(auth()->user()),
-                ],200);
-            }
+            Auth::login($user);
             return response([
-                'success'   => false,
-                'message'   => 'Invalid otp entered.',
-            ],400);
+                'success'   => true,
+                'token'     => $user->createToken('auth_token')->plainTextToken,
+                'message'   => 'You are successfully login.',
+                'data'      => new LoginResource(auth()->user()),
+            ],200);
 
         }else{
 
