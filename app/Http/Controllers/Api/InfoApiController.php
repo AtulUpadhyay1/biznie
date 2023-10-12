@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Vendors;
+namespace App\Http\Controllers\Api;
 
 use App\Models\GstType;
 use App\Models\SellerType;

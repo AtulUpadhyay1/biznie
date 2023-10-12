@@ -18,13 +18,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Vendors api routes
-Route::group(['namespace' => 'App\Http\Controllers\Api\Vendors', 'prefix' => 'vendors'], function () {
+// Registeration form info
+Route::get('registration-form-info', [App\Http\Controllers\Api\InfoApiController::class, 'registrationFormInfo']);
 
-    // Registeration form info
-    Route::get('registration-form-info', 'InfoApiController@registrationFormInfo');
+// Customer api routes
+Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'customer'], function () {
 
-    // Vendors authenticated route
+    // Customer registration & login
+    Route::post('register', 'Auth\AuthApiController@register');
+    Route::post('otp-login', 'Auth\AuthApiController@otpLogin');
+    Route::post('verify-otp', 'Auth\AuthApiController@verifyOtp');
+    Route::post('email-login', 'Auth\AuthApiController@emailLogin');
+
+    // Seller authenticated route
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    });
+
+});
+
+// Seller api routes
+Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'seller'], function () {
+
+    // Seller authenticated route
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
     });
