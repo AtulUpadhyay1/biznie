@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ImageUpload;
 use Illuminate\Support\Facades\DB;
     if(! function_exists('isActiveRoute')){
         function isActiveRoute($routes=[])
@@ -45,6 +46,30 @@ use Illuminate\Support\Facades\DB;
                 $time = dateTimeFormat($data->updated_at);
             }
             return $time;
+        }
+    }
+
+    if(! function_exists('imageUrl')){
+        function imageUrl($id){
+            $imageUrl="";
+            $data = ImageUpload::find($id);
+            if($data && $data->image){
+                $imageUrl = asset('storage/'.$data->image);
+            }
+            return $imageUrl;
+        }
+    }
+
+    if(! function_exists('imageUpload')){
+        function imageUpload($image, $folder)
+        {
+            $data = new ImageUpload;
+            $data->extension = $image->extension();
+            $image_name = time().'-'.rand(10, 99).'.'.$image->extension();
+            $data->image = $image->storeAs($folder, $image_name, 'public');
+            $data->save();
+
+            return $data->id;
         }
     }
 ?>

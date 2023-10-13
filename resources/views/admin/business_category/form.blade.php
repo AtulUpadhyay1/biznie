@@ -63,7 +63,7 @@
                                             @if($thumbnail)
                                                 <img src="{{$thumbnail->temporaryUrl()}}" class="label-thumbnail">
                                             @elseif ($showThumbnail)
-                                                <img src="{{asset('storage/'.$showThumbnail)}}" class="label-thumbnail">
+                                                <img src="{{$showThumbnail}}" class="label-thumbnail">
                                             @else
                                                 <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
                                             @endif
@@ -77,7 +77,7 @@
                                             @if($banner)
                                                 <img src="{{$banner->temporaryUrl()}}" class="label-banner">
                                             @elseif ($showBanner)
-                                                <img src="{{asset('storage/'.$showBanner)}}" class="label-banner">
+                                                <img src="{{$showBanner}}" class="label-banner">
                                             @else
                                                 <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
                                             @endif

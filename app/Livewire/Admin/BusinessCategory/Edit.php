@@ -19,8 +19,8 @@ class Edit extends Component
         $data = BusinessCategory::find($id);
         $this->name = $data->name;
         $this->icon = $data->icon;
-        $this->showThumbnail = $data->thumbnail;
-        $this->showBanner = $data->banner;
+        $this->showThumbnail = imageUrl($data->thumbnail);
+        $this->showBanner = imageUrl($data->banner);
         $this->meta_title= $data->meta_title;
         $this->meta_keywords = $data->meta_keywords;
         $this->meta_description = $data->meta_description;
@@ -49,12 +49,10 @@ class Edit extends Component
             $data->meta_description = $this->meta_description;
             $data->meta_keywords = $this->meta_keywords;
             if($this->thumbnail){
-                $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
-                $data->thumbnail = $this->thumbnail->storeAs('business_category', $thumbnail_name, 'public');
+                $data->thumbnail = imageUpload($this->thumbnail, 'business_category');
             }
             if($this->banner){
-                $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
-                $data->banner = $this->banner->storeAs('business_category', $banner_name, 'public');
+                $data->banner = imageUpload($this->banner, 'business_category');
             }
             $data->save();
 
