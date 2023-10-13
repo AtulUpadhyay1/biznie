@@ -24,7 +24,7 @@
                                     <h5 class="card-heading-h5">Product Sub Category Details:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label for="business-category" class="form-label">Business Category</label>
-                                        <select class="form-select @error('business_category_id') is-invalid @enderror" id="business-category"  wire:model.defer="business_category_id" wire:change="setProductCategoryList()">
+                                        <select class="form-select @error('business_category_id') is-invalid @enderror" id="business-category"  wire:model="business_category_id" wire:change="setProductCategoryList()">
                                             <option selected="">Select Business Category</option>
                                             @foreach($business_category_list as $business_category)
                                             <option value="{{$business_category->id}}">{{$business_category->name}}</option>
@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="business-product-category" class="form-label">Product Category</label>
-                                        <select class="form-select @error('product_category_id') is-invalid @enderror" id="business-product-category"  wire:model.defer="product_category_id">
+                                        <select class="form-select @error('product_category_id') is-invalid @enderror" id="business-product-category"  wire:model="product_category_id">
                                             <option selected="">Select Product Category</option>
                                             @foreach($product_category_list as $product_category)
                                             <option value="{{$product_category->id}}">{{$product_category->name}}</option>
@@ -44,31 +44,31 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="name">Name</label>
-                                        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" wire:model.defer="name" placeholder="Enter name">
+                                        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" wire:model="name" placeholder="Enter name">
                                         @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="icon">Icon</label>
                                         <div class="input-group">
                                             <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>'!!}</span>
-                                            <input type="text" id="icon" class="form-control @error('icon') is-invalid @enderror" wire:model.defer="icon" placeholder="Enter fa icon">
+                                            <input type="text" id="icon" class="form-control @error('icon') is-invalid @enderror" wire:model="icon" placeholder="Enter fa icon">
                                         </div>
                                         @error('icon') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <h5 class="card-heading-h5">SEO Section:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="title">Meta Title</label>
-                                        <input type='text' id="title" class="form-control @error('meta_title') is-invalid @enderror" wire:model.defer='meta_title' placeholder="Enter title">
+                                        <input type='text' id="title" class="form-control @error('meta_title') is-invalid @enderror" wire:model='meta_title' placeholder="Enter title">
                                         @error('meta_title') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="keyword">Meta Keywords</label>
-                                        <input type='text' id="keyword" class="form-control @error('meta_keywords') is-invalid @enderror" wire:model.defer='meta_keywords' placeholder="Enter keywords">
+                                        <input type='text' id="keyword" class="form-control @error('meta_keywords') is-invalid @enderror" wire:model='meta_keywords' placeholder="Enter keywords">
                                         @error('meta_keywords') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <label for="FormControlTextarea" class="form-label">Meta Description</label>
-                                        <textarea class="form-control @error('meta_description') is-invalid @enderror" id="FormControlTextarea" rows="5" wire:model.defer='meta_description' placeholder="Enter description"></textarea>
+                                        <textarea class="form-control @error('meta_description') is-invalid @enderror" id="FormControlTextarea" rows="5" wire:model='meta_description' placeholder="Enter description"></textarea>
                                         @error('meta_description') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                                     <h5 class="card-heading-h5">Images:</h5>
                                     <div class="col-md-12">
                                         <label class="form-label" for="product_subcategory_thumbnail">Thumbnail Image</label>
-                                        <input type='file' id="product_subcategory_thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" wire:model.defer="thumbnail">
+                                        <input type='file' id="product_subcategory_thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" wire:model="thumbnail">
                                         <label for="product_subcategory_thumbnail">
                                             @if($thumbnail)
                                                 <img src="{{$thumbnail->temporaryUrl()}}" class="label-thumbnail">
@@ -92,7 +92,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="product_subcategory_banner">Banner Image</label>
-                                        <input type='file' id="product_subcategory_banner" class="form-control @error('banner') is-invalid @enderror" wire:model.defer="banner">
+                                        <input type='file' id="product_subcategory_banner" class="form-control @error('banner') is-invalid @enderror" wire:model="banner">
                                         <label for="product_subcategory_banner">
                                             @if($banner)
                                                 <img src="{{$banner->temporaryUrl()}}" class="label-banner">

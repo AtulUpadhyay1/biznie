@@ -25,7 +25,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="name">Name</label>
                                         <input type="text" class="form-control  @error('name') is-invalid @enderror"
-                                            id="name" wire:model.defer="name" placeholder="Enter name">
+                                            id="name" wire:model="name" placeholder="Enter name">
                                         @error('name')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -36,7 +36,7 @@
                                             <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>' !!}</span>
                                             <input type="text" id="icon"
                                                 class="form-control @error('icon') is-invalid @enderror"
-                                                wire:model.defer="icon" placeholder="Enter fa icon">
+                                                wire:model="icon" placeholder="Enter fa icon">
                                         </div>
                                         @error('icon')
                                             <small class="text-danger">{{ $message }}</small>
@@ -47,7 +47,7 @@
                                         <label class="form-label" for="title">Meta Title</label>
                                         <input type="text"
                                             class="form-control @error('meta_title') is-invalid @enderror"
-                                            wire:model.defer='meta_title' id="title" placeholder="Enter title">
+                                            wire:model='meta_title' id="title" placeholder="Enter title">
                                         @error('meta_title')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -56,7 +56,7 @@
                                         <label class="form-label" for="keyword">Meta Keywords</label>
                                         <input type="text"
                                             class="form-control @error('meta_keywords') is-invalid @enderror"
-                                            wire:model.defer='meta_keywords' id="keyword"
+                                            wire:model='meta_keywords' id="keyword"
                                             placeholder="Enter keywords">
                                         @error('meta_keywords')
                                             <small class="text-danger">{{ $message }}</small>
@@ -65,7 +65,7 @@
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label" for="desc">Meta Description</label>
                                         <textarea class="form-control @error('meta_description') is-invalid @enderror" id="desc" rows="5"
-                                            wire:model.defer='meta_description' placeholder="Enter description"></textarea>
+                                            wire:model='meta_description' placeholder="Enter description"></textarea>
                                         @error('meta_description')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -79,7 +79,7 @@
                                         <label class="form-label" for="brand_thumbnail">Thumbnail Image</label>
                                         <input type="file"
                                             class="form-control @error('thumbnail') is-invalid @enderror"
-                                            wire:model.defer="thumbnail" id="brand_thumbnail">
+                                            wire:model="thumbnail" id="brand_thumbnail">
                                         <label for="brand_thumbnail">
                                             @if ($thumbnail)
                                                 <img src="{{ $thumbnail->temporaryUrl() }}" class="label-thumbnail">
@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="brand_banner">Banner Image</label>
-                                        <input type="file" class="form-control @error('banner') is-invalid @enderror" wire:model.defer="banner" id="brand_banner">
+                                        <input type="file" class="form-control @error('banner') is-invalid @enderror" wire:model="banner" id="brand_banner">
                                         <label for="brand_banner">
                                             @if($banner)
                                                 <img src="{{$banner->temporaryUrl()}}" class="label-banner">

@@ -2,12 +2,16 @@
 
 namespace App\Livewire\Admin\Customer;
 
+use App\Models\User;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 class Profile extends Component
 {
-    use WithFileUploads;
+    public $data;
+    public function mount($id)
+    {
+        $this->data = User::find($id);
+    }
 
     public function render()
     {

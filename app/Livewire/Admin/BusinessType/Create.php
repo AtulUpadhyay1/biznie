@@ -47,7 +47,7 @@ class Create extends Component
             $data->save();
 
             session()->flash('success', 'Business type created successfully !!');
-            return $this->redirect('/admin/vendor-type',navigate: true);
+            return $this->redirect('/admin/business-type',navigate: true);
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[

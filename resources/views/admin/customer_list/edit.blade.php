@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-6 text-end">
                             <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center"
-                                title="Cancel" href="{{route('admin.customer-profile')}}" wire:navigate>
+                                title="Cancel" href="{{route('admin.customer-profile', $data->id)}}" wire:navigate>
                                 <i class="bi bi-x-lg btn-icon-prepend"></i>
                                 Cancel
                             </a>
@@ -29,7 +29,7 @@
                             <h5 class="card-heading-h5">Customer Details</h5>
                             <div class="col-md-6 mb-3">
                                 <label for="name" class="form-label">Customer Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Customer name">
+                                <input type="text" class="form-control" id="name" placeholder="Customer name"  wire:model="name">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="phone" class="form-label">Mobile No</label>

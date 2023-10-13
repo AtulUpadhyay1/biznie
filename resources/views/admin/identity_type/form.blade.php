@@ -24,7 +24,7 @@
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" id="name"
                                     class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror"
-                                    wire:model.defer="name" placeholder="Enter identity name">
+                                    wire:model="name" placeholder="Enter identity name">
                                 @error('name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

@@ -97,16 +97,16 @@ Route::group(['as'=>'admin.'], function () {
          Route::get('customer-list', AdminRoot\Customer\Index::class)->name('customer-list');
 
         //Cutomer Profile
-        Route::get('customer-profile', AdminRoot\Customer\Profile::class)->name('customer-profile');
+        Route::get('customer-profile/{id}', AdminRoot\Customer\Profile::class)->name('customer-profile');
 
         //Edit Customer Info
-        Route::get('edit-customer-info', AdminRoot\Customer\EditInfo::class)->name('edit-customer-info');
+        Route::get('edit-customer-info/{id}', AdminRoot\Customer\EditInfo::class)->name('edit-customer-info');
 
         //Cutomer Orders List
-        Route::get('customer-orders-list', AdminRoot\Customer\Orders::class)->name('customer-orders-list');
+        Route::get('customer-orders-list/{id}', AdminRoot\Customer\Orders::class)->name('customer-orders-list');
 
         //Cutomer Payment List
-        Route::get('customer-payment-list', AdminRoot\Customer\Payments::class)->name('customer-payment-list');
+        Route::get('customer-payment-list/{id}', AdminRoot\Customer\Payments::class)->name('customer-payment-list');
 
         //Product List
         Route::get('product-list', AdminRoot\Product\Index::class)->name('product-list');
