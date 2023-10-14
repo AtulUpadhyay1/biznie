@@ -15,4 +15,14 @@ class Business extends Model
         'type'          => 'array',
         'seller_type'   => 'array',
     ];
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getSellerKycDetail()
+    {
+        return $this->belongsTo(SellerKycDetail::class, 'user_id', 'user_id');
+    }
 }

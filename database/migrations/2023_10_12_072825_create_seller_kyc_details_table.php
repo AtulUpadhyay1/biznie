@@ -35,8 +35,8 @@ return new class extends Migration
             $table->string('business_registration_certificate')->nullable();
             $table->string('business_registration_number')->nullable();
             $table->string('trademark_registration_proof')->nullable();
-            $table->string('gest_type')->nullable();
-            $table->string('gest_number')->nullable();
+            $table->string('gst_type')->nullable();
+            $table->string('gst_number')->nullable();
             $table->enum('status', ['pending', 'uploaded', 'approved', 'rejected'])->nullable()->default('pending');
             $table->bigInteger('status_updated_by')->nullable()->unsigned();
             $table->softDeletes();

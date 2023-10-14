@@ -114,8 +114,8 @@ class BecomeSellerApiController extends Controller
             'address_proof'         => 'required',
             'business_registration_certificate' => 'required',
             'business_registration_number'      => 'required',
-            'gest_type'             => 'required',
-            'gest_number'           => 'required',
+            'gst_type'             => 'required',
+            'gst_number'           => 'required',
         ]);
         $data = SellerKycDetail::where('user_id', auth()->id())->first();
         if(!$data){
@@ -130,8 +130,8 @@ class BecomeSellerApiController extends Controller
         $data->business_registration_certificate = $request->business_registration_certificate;
         $data->business_registration_number = $request->business_registration_number;
         $data->trademark_registration_proof = $request->trademark_registration_proof;
-        $data->gest_type = $request->gest_type;
-        $data->gest_number = $request->gest_number;
+        $data->gst_type = $request->gst_type;
+        $data->gst_number = $request->gst_number;
         $data->status = 'uploaded';
         $data->save();
         return response([
