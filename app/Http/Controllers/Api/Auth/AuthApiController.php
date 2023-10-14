@@ -184,6 +184,7 @@ class AuthApiController extends Controller
                 $user->type = "customer";
                 $user->email = $temp_user->email;
                 $user->phone = $temp_user->phone;
+                $user->phone_verified_at = date('Y-m-d H:i:s');
                 $user->password = $temp_user->password;
                 $user->save();
 
