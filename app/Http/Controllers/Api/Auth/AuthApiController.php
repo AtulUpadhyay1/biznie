@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Customer\Auth;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User;
 use App\Models\UserOtp;
@@ -127,7 +127,6 @@ class AuthApiController extends Controller
                 'message'=> 'Your account has been deactivated.',
             ],400);
         }
-
 
         return response([
             'success'   => true,

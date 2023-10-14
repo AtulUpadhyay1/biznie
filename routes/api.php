@@ -18,18 +18,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Registeration form info
-Route::get('registration-form-info', [App\Http\Controllers\Api\InfoApiController::class, 'registrationFormInfo']);
-Route::post('image-upload', [App\Http\Controllers\Api\ImageUploadController::class, 'imageUpload'])->middleware('auth:sanctum');
+Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
-// Customer api routes
-Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'customer'], function () {
+    // Registeration form info
+    Route::get('registration-form-info', 'InfoApiController@registrationFormInfo');
+    Route::post('image-upload', 'ImageUploadController@imageUpload')->middleware('auth:sanctum');
 
-    // Customer registration & login
+    // Registration & login
     Route::post('register', 'Auth\AuthApiController@register');
     Route::post('otp-login', 'Auth\AuthApiController@otpLogin');
     Route::post('verify-otp', 'Auth\AuthApiController@verifyOtp');
     Route::post('email-login', 'Auth\AuthApiController@emailLogin');
+});
+
+
+// Customer api routes
+Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'customer'], function () {
 
     // Customer authenticated route
     Route::group(['middleware' => ['auth:sanctum']], function () {
