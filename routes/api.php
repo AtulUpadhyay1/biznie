@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Registeration form info
 Route::get('registration-form-info', [App\Http\Controllers\Api\InfoApiController::class, 'registrationFormInfo']);
+Route::post('image-upload', [App\Http\Controllers\Api\ImageUploadController::class, 'imageUpload'])->middleware('auth:sanctum');
 
 // Customer api routes
 Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'customer'], function () {
@@ -30,8 +31,14 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
     Route::post('verify-otp', 'Auth\AuthApiController@verifyOtp');
     Route::post('email-login', 'Auth\AuthApiController@emailLogin');
 
-    // Seller authenticated route
+    // Customer authenticated route
     Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Become Seller
+        Route::post('become-seller', 'Authenticated\BecomeSellerApiController@becomeSeller');
+        Route::post('updated-address', 'Authenticated\BecomeSellerApiController@updatedAddress');
+        Route::post('updated-bank-details', 'Authenticated\BecomeSellerApiController@updatedBankDetails');
+        Route::post('updated-kyc-details', 'Authenticated\BecomeSellerApiController@updatedKycDetails');
 
     });
 

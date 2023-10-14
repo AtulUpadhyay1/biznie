@@ -21,7 +21,7 @@ class InfoApiController extends Controller
                 'business_type'     => BusinessType::active()->get(['id', 'name']),
                 'seller_type'       => SellerType::active()->get(['id', 'name']),
                 'gst_type'          => GstType::active()->get(['id', 'name']),
-            ]);
+            ],200);
 
         } catch (\Throwable $th) {
             return response([

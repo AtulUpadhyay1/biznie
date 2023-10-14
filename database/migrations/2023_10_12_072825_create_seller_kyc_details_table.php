@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->string('account_number')->nullable();
+            $table->string('account_holder_name')->nullable();
             $table->string('bank_name')->nullable();
             $table->string('ifsc_code')->nullable();
             $table->string('bank_proof_type')->nullable();
             $table->string('bank_proof')->nullable();
+            $table->string('bank_status')->nullable();
+            $table->longText('bank_response')->nullable();
             $table->text('address')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('city')->nullable();
@@ -34,6 +37,8 @@ return new class extends Migration
             $table->string('trademark_registration_proof')->nullable();
             $table->string('gest_type')->nullable();
             $table->string('gest_number')->nullable();
+            $table->enum('status', ['pending', 'uploaded', 'approved', 'rejected'])->nullable()->default('pending');
+            $table->bigInteger('status_updated_by')->nullable()->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });
