@@ -143,8 +143,8 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                                <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                        class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.seller-kyc-detail', $data->id)}}" wire:navigate><i
+                                                        class="bi bi-eye icon-sm me-2"></i><span>Kyc Detail</span></a>
                                                 <a href="{{route('admin.edit-seller')}}" wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
                                                         class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>

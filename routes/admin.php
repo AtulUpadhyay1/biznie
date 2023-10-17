@@ -87,6 +87,7 @@ Route::group(['as'=>'admin.'], function () {
 
         //Sellers List
         Route::get('seller-list', AdminRoot\Seller\Index::class)->name('seller-list');
+        Route::get('seller-kyc-detail/{id}', AdminRoot\Seller\KycDetail::class)->name('seller-kyc-detail');
         Route::get('edit-seller', AdminRoot\Seller\Edit::class)->name('edit-seller');
 
         //Business Listing
