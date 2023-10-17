@@ -13,7 +13,7 @@ class Index extends Component
 
     public function render()
     {
-        $list = User::where('type', 'seller')->with('getBusiness')->latest()->paginate(getPaginate());
+        $list = User::where('type', 'seller')->with('getBusiness', 'getSellerKycDetail')->latest()->paginate(getPaginate());
         return view('admin.seller_list.index', compact('list'), ['page_title' => 'Seller List']);
     }
 

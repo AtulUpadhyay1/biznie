@@ -75,11 +75,10 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th style="width: 25%">Name</th>
-                                    <th>Contact info</th>
-                                    <th>Registration Date</th>
-                                    <th>Updation Date</th>
-                                    <th style="width: 10%">Last Active</th>
+                                    <th style="width: 25%">Seller Details</th>
+                                    <th style="width: 30%;">Business Details</th>
+                                    <th>Activity Details</th>
+                                    <th>Address</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -88,20 +87,56 @@
                                     <tr>
                                         <th>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</th>
                                         <td>
-                                            <b>Business Name:</b>
-                                            <span> {{ $data->getBusiness->name }} </span>
-                                            <br>
                                             <b>User Name:</b>
                                             <span>{{ $data->name }}</span>
-                                        </td>
-                                        <td>
+                                            <br>
                                             <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>
                                             <br>
                                             <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $data->email }}</span>
                                         </td>
-                                        <td> {{ dateFormat($data->getBusiness->created_at) }} </td>
-                                        <td> {{ dateFormat($data->getBusiness->updated_at) }} </td>
-                                        <td>{{ lastActive($data->id) }}</td>
+                                        <td>
+                                            <b>Business Name:</b>
+                                            <span class="text-primary"> {{ $data->getBusiness->name }} </span>
+                                            <i class="bi bi-patch-check-fill text-danger"></i>
+                                            <br>
+                                            <b>Business Category:</b>
+                                            <span class="text-success">Textile</span>
+                                            <br>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total orders"><i class="bi bi-bag-plus"></i> : <b>0</b></span>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total users"><i class="bi bi-people"></i> : <b>273</b></span>
+                                            <br>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total earnings"><i class="bi bi-wallet2"></i> : <i
+                                                    class="bi bi-currency-rupee"></i><b>5L</b></span>
+                                            <span class="pe-2" data-bs-toggle="tooltip" title="Total messages"><i
+                                                    class="bi bi-chat-square-dots"></i>: <b>0</b></span>
+                                        </td>
+                                        <td>
+                                            <b>Registration Date:</b>
+                                            {{ dateFormat($data->getBusiness->created_at) }} <br>
+                                            <b>Updation Date:</b>
+                                            {{ dateFormat($data->getBusiness->updated_at) }} <br>
+                                            <b>Last Active:</b>
+                                            {{ lastActive($data->id) }}
+                                        </td>
+                                        <td>
+                                            <b>Pincode:</b>
+                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->postal_code : '' }}</span>
+                                            <br>
+                                            <b>Area:</b>
+                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address : '' }}</span>
+                                            <br>
+                                            <b>City:</b>
+                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '' }}</span>
+                                            <br>
+                                            <b>State:</b>
+                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->state : '' }}</span>
+                                            <br>
+                                            <b>Country</b>
+                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->country : '' }}</span>
+                                        </td>
                                         <td class="text-center">
                                             <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">

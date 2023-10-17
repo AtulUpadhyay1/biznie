@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Business::class);
     }
+
+    public function getSellerKycDetail()
+    {
+        return $this->hasOne(SellerKycDetail::class);
+    }
 }

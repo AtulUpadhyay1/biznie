@@ -35,11 +35,11 @@
                            All Sellers
                         </a>
                     </li>
-                    <li class="nav-item {{ isActiveRoute(['admin.business-listing', 'admin.edit-business']) ? 'active' : '' }}">
+                    {{-- <li class="nav-item {{ isActiveRoute(['admin.business-listing', 'admin.edit-business']) ? 'active' : '' }}">
                         <a href="{{route('admin.business-listing')}}" class="nav-link" wire:navigate>
                            Business Listings
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
             <!--End of seller -->
