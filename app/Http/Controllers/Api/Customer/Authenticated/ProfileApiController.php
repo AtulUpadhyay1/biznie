@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Customer\ProfileResource;
 
-class ProfileApiCustomer extends Controller
+class ProfileApiController extends Controller
 {
     public function profile()
     {

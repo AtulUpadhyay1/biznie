@@ -125,8 +125,10 @@ class BecomeSellerApiController extends Controller
         $data->identity_type = $request->identity_type;
         $data->identity_number = $request->identity_number;
         $data->identity_proof = $request->identity_proof;
+        $data->identity_proof_bank = $request->identity_proof_bank;
         $data->address_type = $request->address_type;
         $data->address_proof = $request->address_proof;
+        $data->address_proof_back = $request->address_proof_back ?? null;
         $data->business_registration_certificate = $request->business_registration_certificate;
         $data->business_registration_number = $request->business_registration_number;
         $data->trademark_registration_proof = $request->trademark_registration_proof;

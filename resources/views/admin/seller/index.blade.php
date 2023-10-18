@@ -97,7 +97,15 @@
                                         <td>
                                             <b>Business Name:</b>
                                             <span class="text-primary"> {{ $data->getBusiness->name }} </span>
-                                            <i class="bi bi-patch-check-fill text-danger"></i>
+                                            @if ($data->getSellerKycDetail)
+                                                @if ($data->getSellerKycDetail->status == 'uploaded' || $data->getSellerKycDetail->status == 'pending')
+                                                    <i class="bi bi-stopwatch-fill text-warning"></i>
+                                                @elseif ($data->getSellerKycDetail->status == 'approved')
+                                                    <i class="bi bi-patch-check-fill text-success"></i>
+                                                @elseif (($data->getSellerKycDetail->status == 'rejected'))
+                                                    <i class="bi bi-x-circle-fill text-danger"></i>
+                                                @endif
+                                            @endif
                                             <br>
                                             <b>Business Category:</b>
                                             <span class="text-success">Textile</span>

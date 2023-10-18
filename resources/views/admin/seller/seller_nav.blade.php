@@ -12,7 +12,17 @@
         <div class="card-header customer-profile-header">
             <div class="text-center">
                 <img src="{{asset('admin_css/assets/images/avatar.png')}}" alt="" class="w-25 h-25">
-                <h5 class="text-dark mt-3"> {{ $data->name }} </h5>
+                <h5 class="text-dark mt-3"> {{ $data->name }}
+                    @if ($data->getSellerKycDetail)
+                        @if ($data->getSellerKycDetail->status == 'uploaded' || $data->getSellerKycDetail->status == 'pending')
+                            <i class="bi bi-stopwatch-fill text-warning"></i>
+                        @elseif ($data->getSellerKycDetail->status == 'approved')
+                            <i class="bi bi-patch-check-fill text-success"></i>
+                        @elseif (($data->getSellerKycDetail->status == 'rejected'))
+                            <i class="bi bi-x-circle-fill text-danger"></i>
+                        @endif
+                    @endif
+                </h5>
             </div>
         </div>
         <div class="card-body">

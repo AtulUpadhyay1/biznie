@@ -30,8 +30,10 @@ return new class extends Migration
             $table->string('identity_type')->nullable();
             $table->string('identity_number')->nullable();
             $table->string('identity_proof')->nullable();
+            $table->string('identity_proof_back')->nullable();
             $table->string('address_type')->nullable();
             $table->string('address_proof')->nullable();
+            $table->string('address_proof_back')->nullable();
             $table->string('business_registration_certificate')->nullable();
             $table->string('business_registration_number')->nullable();
             $table->string('trademark_registration_proof')->nullable();

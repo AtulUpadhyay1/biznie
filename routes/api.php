@@ -45,7 +45,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
         Route::post('updated-kyc-details', 'Authenticated\BecomeSellerApiController@updatedKycDetails');
 
         // Profile
-        Route::get('profile', 'Authenticated\ProfileApiCustomer@profile');
+        Route::get('profile', 'Authenticated\ProfileApiController@profile');
 
     });
 
@@ -56,6 +56,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
 
     // Seller authenticated route
     Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Profile
+        Route::get('profile', 'Authenticated\ProfileApiController@profile');
 
     });
 
