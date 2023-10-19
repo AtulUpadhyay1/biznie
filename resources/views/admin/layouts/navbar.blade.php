@@ -7,13 +7,13 @@
         <form class="search-form">
             <div class="input-group">
                 <div class="input-group-text">
-                    <i data-feather="search"></i>
+                    <i class="bi bi-search"></i>
                 </div>
                 <input type="text" class="form-control" id="navbarForm" placeholder="Search here...">
             </div>
         </form>
         <ul class="navbar-nav">
-            <li class="nav-item me-3">
+            {{-- <li class="nav-item me-3">
                 <form>
                     <div class="d-flex flex-row">
                         <h6 class="me-2">Shop Status</h6>
@@ -23,11 +23,11 @@
                         </label>
                     </div>
                 </form>
-            </li>
+            </li> --}}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i data-feather="mail"></i>
+                    <i class="bi bi-envelope fs-4"></i>
                 </a>
                 <div class="dropdown-menu p-0" aria-labelledby="messageDropdown">
                     <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
@@ -109,7 +109,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown"
                     role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i data-feather="bell"></i>
+                    <i class="bi bi-bell fs-4"></i>
                     <div class="indicator">
                         <div class="circle"></div>
                     </div>
@@ -196,26 +196,26 @@
                     </div>
                     <ul class="list-unstyled p-1">
                         <li class="dropdown-item py-2">
-                            <a href="pages/general/profile.html" class="text-body ms-0">
-                                <i class="me-2 icon-md" data-feather="user"></i>
+                            <a href="javascript:;" class="text-body ms-0">
+                                <i class="bi bi-person me-2 icon-md"></i>
                                 <span>Profile</span>
                             </a>
                         </li>
                         <li class="dropdown-item py-2">
                             <a href="javascript:;" class="text-body ms-0">
-                                <i class="me-2 icon-md" data-feather="edit"></i>
+                                <i class="bi bi-pencil-square me-2 icon-md"></i>
                                 <span>Edit Profile</span>
                             </a>
                         </li>
                         <li class="dropdown-item py-2">
                             <a href="javascript:;" class="text-body ms-0">
-                                <i class="me-2 icon-md" data-feather="repeat"></i>
+                                <i class="bi bi-arrow-left-right me-2 icon-md"></i>
                                 <span>Switch User</span>
                             </a>
                         </li>
                         <li class="dropdown-item py-2">
                             <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-body ms-0">
-                                <i class="me-2 icon-md" data-feather="log-out"></i>
+                                <i class="bi bi-box-arrow-right me-2 icon-md"></i>
                                 <span>Log Out</span>
                             </a>
                             <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">

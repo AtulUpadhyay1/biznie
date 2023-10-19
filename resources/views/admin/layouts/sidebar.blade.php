@@ -5,16 +5,14 @@
             <img src="{{asset('admin_css/assets/images/logo.png')}}" style="width: 70%;">
         </a>
         <div class="sidebar-toggler not-active">
-            <span></span>
-            <span></span>
-            <span></span>
+            <i class="bi bi-list fs-3 text-white"></i>
         </div>
     </div>
     <div class="sidebar-body">
         <ul class="nav">
             <li class="nav-item {{ isActiveRoute(['admin.dashboard']) ? 'active' : '' }}">
                 <a href="{{route('admin.dashboard')}}" class="nav-link" wire:navigate>
-                    <i class="link-icon" data-feather="home"></i>
+                    <i class="bi bi-speedometer"></i>
                     <span class="link-title">Dashboard</span>
                 </a>
             </li>
@@ -23,7 +21,7 @@
             <li class="nav-item {{ isActiveRoute(['admin.seller-list', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller', 'admin.seller-kyc-detail']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#sellers" role="button"
                     aria-expanded="false" aria-controls="sellers">
-                    <i class="link-icon" data-feather="user-plus"></i>
+                    <i class="bi bi-person-plus"></i>
                     <span class="link-title">Sellers</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
@@ -49,7 +47,7 @@
             'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#customer" role="button"
                     aria-expanded="false" aria-controls="customer">
-                    <i class="link-icon" data-feather="users"></i>
+                    <i class="bi bi-people"></i>
                     <span class="link-title">Customers</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
@@ -74,7 +72,7 @@
             'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#products" role="button"
                     aria-expanded="false" aria-controls="products">
-                    <i class="link-icon" data-feather="shopping-cart"></i>
+                    <i class="bi bi-cart"></i>
                     <span class="link-title">Products</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
@@ -114,7 +112,7 @@
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
                     aria-expanded="false" aria-controls="business">
-                    <i class="link-icon" data-feather="shopping-bag"></i>
+                    <i class="bi bi-building"></i>
                     <span class="link-title">Business</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
@@ -149,7 +147,7 @@
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#message" role="button"
                     aria-expanded="false" aria-controls="message">
-                    <i class="link-icon" data-feather="message-square"></i>
+                    <i class="bi bi-chat-left"></i>
                     <span class="link-title">Messages</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
@@ -174,7 +172,7 @@
             <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.brand', 'admin.create-brand', 'admin.edit-brand', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#master-setting" role="button"
                     aria-expanded="false" aria-controls="master-setting">
-                    <i class="link-icon" data-feather="settings"></i>
+                    <i class="bi bi-building-gear"></i>
                     <span class="link-title">Biznie Setup</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
@@ -229,7 +227,7 @@
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#app-setup" role="button"
                     aria-expanded="false" aria-controls="app-setup">
-                    <i class="link-icon" data-feather="tool"></i>
+                    <i class="bi bi-gear"></i>
                     <span class="link-title">App Setup</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
@@ -248,7 +246,7 @@
             <!--Others-->
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="link-icon" data-feather="help-circle"></i>
+                    <i class="bi bi-question-circle"></i>
                     <span class="link-title">Help Center</span>
                 </a>
             </li>
