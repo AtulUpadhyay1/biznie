@@ -23,7 +23,7 @@
                     aria-expanded="false" aria-controls="sellers">
                     <i class="bi bi-person-plus"></i>
                     <span class="link-title">Sellers</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
             <div class="collapse {{ isActiveRoute(['admin.seller-list', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller', 'admin.seller-kyc-detail']) ? 'show' : '' }}" id="sellers">
@@ -49,7 +49,7 @@
                     aria-expanded="false" aria-controls="customer">
                     <i class="bi bi-people"></i>
                     <span class="link-title">Customers</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
             <div class="collapse {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
@@ -74,7 +74,7 @@
                     aria-expanded="false" aria-controls="products">
                     <i class="bi bi-cart"></i>
                     <span class="link-title">Products</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
             <div class="collapse {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
@@ -114,7 +114,7 @@
                     aria-expanded="false" aria-controls="business">
                     <i class="bi bi-building"></i>
                     <span class="link-title">Business</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
             <div class="collapse" id="business">
@@ -149,7 +149,7 @@
                     aria-expanded="false" aria-controls="message">
                     <i class="bi bi-chat-left"></i>
                     <span class="link-title">Messages</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
             <div class="collapse" id="message">
@@ -174,7 +174,7 @@
                     aria-expanded="false" aria-controls="master-setting">
                     <i class="bi bi-building-gear"></i>
                     <span class="link-title">Biznie Setup</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
             <div class="collapse {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.vendor-type', 'admin.seller-type', 'admin.brand', 'admin.gst-type', 'admin.product-unit', 'admin.tax-type', 'admin.identity-type', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.brand', 'admin.create-brand', 'admin.edit-brand', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'show' : ''}}" id="master-setting">
@@ -229,7 +229,7 @@
                     aria-expanded="false" aria-controls="app-setup">
                     <i class="bi bi-gear"></i>
                     <span class="link-title">App Setup</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
+                    <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
             <div class="collapse" id="app-setup">
