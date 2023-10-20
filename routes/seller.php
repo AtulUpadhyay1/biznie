@@ -29,7 +29,8 @@ Route::group(['as'=>'seller.'], function () {
         //  Dashboard
         Route::get('dashboard', SellerRoot\DashboardLivewire::class)->name('dashboard');
 
-
+        // Kyc detail
+        Route::get('kyc-detail', SellerRoot\KycDetailLivewire::class)->name('kyc-detail');
 
 
         //Logout

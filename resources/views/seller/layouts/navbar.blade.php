@@ -190,11 +190,28 @@
                                 alt="">
                         </div>
                         <div class="text-center">
-                            <p class="tx-16 fw-bolder">{{auth()->user()->name}}</p>
+                            <p class="tx-16 fw-bolder">
+                                {{auth()->user()->name}}
+                                @if (auth()->user()->getSellerKycDetail)
+                                    @if (auth()->user()->getSellerKycDetail->status == 'uploaded' || auth()->user()->getSellerKycDetail->status == 'pending')
+                                        <i class="bi bi-stopwatch-fill text-warning"></i>
+                                    @elseif (auth()->user()->getSellerKycDetail->status == 'approved')
+                                        <i class="bi bi-patch-check-fill text-success"></i>
+                                    @elseif ((auth()->user()->getSellerKycDetail->status == 'rejected'))
+                                        <i class="bi bi-x-circle-fill text-danger"></i>
+                                    @endif
+                                @endif
+                            </p>
                             <p class="tx-12 text-muted">{{auth()->user()->email}}</p>
                         </div>
                     </div>
                     <ul class="list-unstyled p-1">
+                        <li class="dropdown-item py-2">
+                            <a href="{{route('seller.kyc-detail')}}?address_data=true" class="text-body ms-0" wire:navigate>
+                                <i class="bi bi-ticket-detailed me-2 icon-md"></i>
+                                <span>Kyc Detail</span>
+                            </a>
+                        </li>
                         <li class="dropdown-item py-2">
                             <a href="javascript:;" class="text-body ms-0">
                                 <i class="bi bi-person me-2 icon-md"></i>
