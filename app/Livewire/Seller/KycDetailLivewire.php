@@ -8,6 +8,8 @@ use App\Models\SellerKycDetail;
 
 class KycDetailLivewire extends Component
 {
+    public $page_title = 'Seller Kyc Detail';
+
     public $business_section = false;
     public $business_name, $business_about, $selected_category, $selected_type, $selected_seller_type;
 
@@ -29,7 +31,7 @@ class KycDetailLivewire extends Component
             $this->business_section = true;
             $this->showBusinessData();
         }
-        return view('seller.kyc_detail', ['page_title' => 'Seller Kyc Detail'])->layout('seller.layouts.app');
+        return view('seller.kyc_detail')->layout('seller.layouts.app');
     }
 
     public function showBusinessData()

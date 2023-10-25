@@ -6,8 +6,9 @@ use Livewire\Component;
 
 class DashboardLivewire extends Component
 {
+    public $page_title = 'Seller Dashboard';
     public function render()
     {
-        return view('seller.dashboard', ['page_title' => 'Seller Dashboard'])->layout('seller.layouts.app');
+        return view('seller.dashboard')->layout('seller.layouts.app');
     }
 }

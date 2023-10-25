@@ -284,14 +284,13 @@
 
 /*Hovering List */
 .sidebar .sidebar-body .nav .nav-item .nav-link:hover{
-    color: #ffdf00;
-    background-color: #cc0000;
+    background-color: #005385;
     border-radius: 0px;
 }
 
 .sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link:hover{
     color: #ffdf00;
-    background-color: #cc0000;
+    background-color: #005385;
     border-radius: 10px 0 0 10px;
 }
 

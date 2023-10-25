@@ -32,6 +32,10 @@ Route::group(['as'=>'seller.'], function () {
         // Kyc detail
         Route::get('kyc-detail', SellerRoot\KycDetailLivewire::class)->name('kyc-detail');
 
+        //Product
+        Route::get('product', SellerRoot\Product\Index::class)->name('product.index');
+        Route::get('product-create', SellerRoot\Product\Create::class)->name('product.create');
+
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Seller\Auth\LoginController::class, 'logout'])->name('logout');
