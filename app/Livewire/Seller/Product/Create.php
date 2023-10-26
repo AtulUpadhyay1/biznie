@@ -10,6 +10,7 @@ class Create extends Component
 
     public function render()
     {
+        
         return view('seller.product.create')->layout('seller.layouts.app');
     }
 }
