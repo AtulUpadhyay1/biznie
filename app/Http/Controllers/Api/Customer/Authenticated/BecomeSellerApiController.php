@@ -16,9 +16,12 @@ class BecomeSellerApiController extends Controller
             'user_name'         => 'required',
             'name'              => 'required',
             'about'             => 'required',
-            'category'          => 'required',
-            'type'              => 'required',
-            'seller_type'       => 'required',
+            'category'          => 'required|array|min:1',
+            'category.*'        => 'required|integer|min:1',
+            'type'              => 'required|array|min:1',
+            'type.*'            => 'required|integer|min:1',
+            'seller_type'       => 'required|array|min:1',
+            'seller_type.*'     => 'required|integer|min:1',
         ]);
 
         $user = auth()->user();
