@@ -28,13 +28,13 @@
             </li>
             <div class="collapse {{ isActiveRoute(['seller.product.index', 'seller.product.create']) ? 'show' : '' }}" id="product">
                 <ul class="nav sub-menu">
-                    <li class="nav-item {{ isActiveRoute(['seller.product.index', 'seller.product.create']) ? 'active' : '' }}">
+                    <li class="nav-item {{ isActiveRoute(['seller.product.index']) ? 'active' : '' }}">
                         <a href="{{route('seller.product.index')}}" class="nav-link" wire:navigate>
                            Product List
                         </a>
                     </li>
-                    <li class="nav-item {{ isActiveRoute(['admin.business-listing', 'admin.edit-business']) ? 'active' : '' }}">
-                        <a href="#" class="nav-link" wire:navigate>
+                    <li class="nav-item {{ isActiveRoute(['seller.product.create']) ? 'active' : '' }}">
+                        <a href="{{route('seller.product.create')}}" class="nav-link" wire:navigate>
                            Add Product
                         </a>
                     </li>

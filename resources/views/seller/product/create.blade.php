@@ -33,47 +33,47 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="category" class="form-label">Category</label>
-                            <select class="form-select mb-3" id="category">
-                                <option selected="">Select Category</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select @error('product_category_id') is-invalid @enderror" id="category" wire:model="category_id" wire:change="setSubCategoryList()">
+                                <option>Select Category</option>
+                                @foreach ($category_list as $category_data)
+                                    <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="sub_category" class="form-label">Sub Category</label>
-                            <select class="form-select mb-3" id="sub_category">
-                                <option selected="">Select Sub Category</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select @error('sub_category') is-invalid @enderror" id="sub_category" wire:model="sub_category_id" wire:change="setSubSubCategoryList()">
+                                <option>Select Sub Category</option>
+                                @foreach ($sub_category_list as $sub_category_data)
+                                    <option value="{{$sub_category_data->id}}">{{$sub_category_data->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="sub_sub_category" class="form-label">Sub Sub Category</label>
-                            <select class="form-select mb-3" id="sub_sub_category">
-                                <option selected="">Select Sub Sub Category</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select" id="sub_sub_category">
+                                <option>Select Sub Sub Category</option>
+                                @foreach ($sub_sub_category_list as $sub_sub_category_data)
+                                    <option value="{{$sub_sub_category_data->id}}">{{$sub_sub_category_data->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="brand" class="form-label">Brand</label>
-                            <select class="form-select mb-3" id="brand">
-                                <option selected="">Select Brand</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select" id="brand">
+                                <option>Select Brand</option>
+                                @foreach ($brand_list as $brand_data)
+                                    <option value="{{ $brand_data->id }}">{{ $brand_data->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="unit" class="form-label">Unit</label>
-                            <select class="form-select mb-3" id="unit">
-                                <option selected="">Select Brand</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select" id="unit">
+                                <option>Select Unit</option>
+                                @foreach ($unit_list as $unit_data)
+                                    <option value="{{ $unit_data->id }}">{{ $unit_data->short_name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
@@ -107,7 +107,7 @@
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="discount_type" class="form-label">Discount Type</label>
-                            <select class="form-select mb-3" id="discount_type">
+                            <select class="form-select" id="discount_type">
                                 <option value="flat">Flat</option>
                                 <option value="percent">Percent</option>
                             </select>
@@ -122,7 +122,7 @@
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="tax_calculation" class="form-label">Tax Calculation</label>
-                            <select class="form-select mb-3" id="tax_calculation">
+                            <select class="form-select" id="tax_calculation">
                                 <option value="include">Include with product</option>
                                 <option value="exclude">Exclude with product</option>
                             </select>

@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProductCategory extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public static function getSellerCategory()
+    {
+        return ProductCategory::whereIn('business_category_id', auth()->user()->getBusiness->category)->where('status', 1);
+    }
 }

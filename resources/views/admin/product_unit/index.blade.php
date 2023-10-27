@@ -32,7 +32,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Unit</th>
+                                    <th>Short Name</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -41,7 +41,7 @@
                                 @forelse ($list as $data)
                                     <tr>
                                         <td>{{ $data->name }}</td>
-                                        <td>{{ $data->unit }}</td>
+                                        <td>{{ $data->short_name }}</td>
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input type="checkbox" class="form-check-input status_update"
@@ -55,8 +55,6 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn_{{ $data->id }}">
-                                                <a class="dropdown-item d-flex align-items-center" href=""><i
-                                                        class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
                                                 <a href="{{route('admin.edit-product-unit', $data->id)}}"
                                                     class="dropdown-item d-flex align-items-center" wire:navigate><i
                                                         class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>

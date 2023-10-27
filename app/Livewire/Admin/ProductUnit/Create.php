@@ -9,7 +9,7 @@ use Livewire\WithFileUploads;
 class Create extends Component
 {
     use WithFileUploads;
-    public $hidden_id, $name, $unit;
+    public $hidden_id, $name, $short_name;
 
     public function render()
     {
@@ -19,15 +19,15 @@ class Create extends Component
     public function save()
     {
         $this->validate([
-            'name' => 'required',
-            'unit' => 'required',
+            'name'          => 'required',
+            'short_name'    => 'required',
         ]);
 
         try
         {
             $data = new ProductUnit;
             $data->name = $this->name;
-            $data->unit = $this->unit;
+            $data->short_name = $this->short_name;
             $data->save();
 
             session()->flash('success', 'Product unit created successfully !!');
