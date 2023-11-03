@@ -64,7 +64,12 @@
                 </ul>
             </div>
             <!--End of customer -->
-
+            <li class="nav-item {{ isActiveRoute(['admin.attribute.index', 'admin.attribute.create']) ? 'active' : '' }}">
+                <a href="{{route('admin.attribute.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-opencollective"></i>
+                    <span class="link-title">Product Attributes</span>
+                </a>
+            </li>
             <!--products-->
             <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
             'admin.product-category', 'admin.create-product-category', 'admin.edit-product-category',

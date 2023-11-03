@@ -40,10 +40,15 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('create-business-type', AdminRoot\BusinessType\Create::class)->name('create-business-type');
         Route::get('edit-business-type/{id}', AdminRoot\BusinessType\Edit::class)->name('edit-business-type');
 
-         //Seller Type
-         Route::get('seller-type', AdminRoot\SellerType\Index::class)->name('seller-type');
-         Route::get('create-seller-type', AdminRoot\SellerType\Create::class)->name('create-seller-type');
-         Route::get('edit-seller-type/{id}', AdminRoot\SellerType\Edit::class)->name('edit-seller-type');
+        //Seller Type
+        Route::get('seller-type', AdminRoot\SellerType\Index::class)->name('seller-type');
+        Route::get('create-seller-type', AdminRoot\SellerType\Create::class)->name('create-seller-type');
+        Route::get('edit-seller-type/{id}', AdminRoot\SellerType\Edit::class)->name('edit-seller-type');
+
+        //Product Attributes
+        Route::get('attribute', AdminRoot\Attributes\Index::class)->name('attribute.index');
+        Route::get('attribute/create', AdminRoot\Attributes\Create::class)->name('attribute.create');
+        Route::get('attribute/edit/{id}', AdminRoot\Attributes\Edit::class)->name('attribute.edit');
 
         //Product Category
         Route::get('product-category', AdminRoot\ProductCategory\Index::class)->name('product-category');

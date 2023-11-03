@@ -1,6 +1,15 @@
 <div>
     @section('title', config('app.name') . ' | '.$page_title)
-
+    <style>
+        .select2-container--default .color-preview {
+            height: 12px;
+            width: 12px;
+            display: inline-block;
+            margin-right: 5px;
+            margin-left: 3px;
+            margin-top: 2px;
+        }
+    </style>
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -14,15 +23,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="col-md-12 mb-3">
-                        <label for="name" class="form-label">Product Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter product name">
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" cols="30" rows="5" placeholder="Enter product description"></textarea>
-                    </div>
+            </div>
+            <div class="card card-body">
+                <div class="col-md-12 mb-3">
+                    <label for="name" class="form-label">Product Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter product name" wire:model="name">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" cols="30" rows="5" placeholder="Enter product description"></textarea>
                 </div>
             </div>
             <div class="card mt-3">
@@ -31,9 +40,9 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3" wire:ignore>
                             <label for="category" class="form-label">Category</label>
-                            <select class="form-select @error('product_category_id') is-invalid @enderror" id="category" wire:model="category_id" wire:change="setSubCategoryList()">
+                            <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
                                 <option>Select Category</option>
                                 @foreach ($category_list as $category_data)
                                     <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
@@ -42,7 +51,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="sub_category" class="form-label">Sub Category</label>
-                            <select class="form-select @error('sub_category') is-invalid @enderror" id="sub_category" wire:model="sub_category_id" wire:change="setSubSubCategoryList()">
+                            <select class="form-select select2 sub_category @error('sub_category') is-invalid @enderror" id="sub_category" wire:model="sub_category_id">
                                 <option>Select Sub Category</option>
                                 @foreach ($sub_category_list as $sub_category_data)
                                     <option value="{{$sub_category_data->id}}">{{$sub_category_data->name}}</option>
@@ -51,7 +60,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="sub_sub_category" class="form-label">Sub Sub Category</label>
-                            <select class="form-select" id="sub_sub_category">
+                            <select class="form-select select2 @error('sub_category') is-invalid @enderror" id="sub_sub_category">
                                 <option>Select Sub Sub Category</option>
                                 @foreach ($sub_sub_category_list as $sub_sub_category_data)
                                     <option value="{{$sub_sub_category_data->id}}">{{$sub_sub_category_data->name}}</option>
@@ -138,6 +147,32 @@
 
             <div class="card mt-3">
                 <div class="card-header">
+                    <h5>Product variation setup</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3" wire:ignore>
+                            <label for="colors" class="form-label">Select Colors </label>
+                            <select class="form-control select2 color-var-select" id="colors">
+                                @foreach ($colors_list as $color_data)
+                                    <option value="{{$color_data->code}}">{{ $color_data->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3" wire:ignore>
+                            <label for="attribute" class="form-label">Select Attributes</label>
+                            <select class="form-control select2" id="attribute" multiple>
+                                @foreach ($attributes_list as $attributes_data)
+                                    <option value="{{ $attributes_data->id }}">{{ $attributes_data->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
                     <h5>Product video</h5>
                 </div>
                 <div class="card-body">
@@ -175,4 +210,41 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function () {
+                $('.select2').on('change', function (e) {
+                    let elementName = $(this).attr('id');
+                    var data = $(this).select2("val");
+                    @this.set(elementName, data);
+                });
+
+                $('.color-var-select').select2({
+                    templateResult: colorCodeSelect,
+                    templateSelection: colorCodeSelect,
+                    escapeMarkup: function(m) {
+                        return m;
+                    }
+                });
+
+                function colorCodeSelect(state) {
+                    var colorCode = $(state.element).val();
+                    if (!colorCode) return state.text;
+                    return "<span class='color-preview' style='background-color:" + colorCode + ";'></span>" + state
+                        .text;
+                }
+
+                $('#category_id').on('change', function (e) {
+                    @this.setSubCategoryList();
+                });
+
+                $('#sub_category').on('change', function (e) {
+                    @this.setSubSubCategoryList();
+                });
+                window.addEventListener('render-select2', event => {
+                    $('.select2').select2();
+                })
+            });
+        </script>
+    @endpush
 </div>

@@ -34,7 +34,7 @@ Route::group(['as'=>'seller.'], function () {
 
         //Product
         Route::get('product', SellerRoot\Product\Index::class)->name('product.index');
-        Route::get('product-create', SellerRoot\Product\Create::class)->name('product.create');
+        Route::get('product/create', SellerRoot\Product\Create::class)->name('product.create');
 
 
         //Logout
