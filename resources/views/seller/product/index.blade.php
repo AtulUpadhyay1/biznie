@@ -27,7 +27,6 @@
                                 <tr>
                                     <th>SL</th>
                                     <th>Product Name</th>
-                                    <th>Product Type</th>
                                     <th>Purchase Price</th>
                                     <th>Selling Price</th>
                                     <th>Verify Status</th>
@@ -40,16 +39,18 @@
                                     <tr>
                                         <th>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</th>
                                         <td>
-
+                                            <img src="{{imageUrl($data->thumbnail)}}" alt="image" >
+                                            {{ $data->name }}
                                         </td>
+                                        <td> {{ $data->purchase_price }} </td>
+                                        <td> {{ $data->unit_price }} </td>
+                                        <td> {{ $data->request_status }} </td>
                                         <td>
-
-                                        </td>
-                                        <td>
-
-                                        </td>
-                                        <td>
-
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input featured_update"
+                                                    wire:click="updateFeatured({{ $data->id }})"
+                                                    {{ $data->featured == 1 ? 'checked' : '' }}>
+                                            </div>
                                         </td>
                                         <td class="text-center">
                                             <a type="button" id="ActionBtn" data-bs-toggle="dropdown"

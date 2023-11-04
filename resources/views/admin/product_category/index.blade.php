@@ -51,7 +51,7 @@
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input type="checkbox" class="form-check-input featured_update"
-                                                    wire:click="updateFeatured({{ $data->id }})" value="20"
+                                                    wire:click="updateFeatured({{ $data->id }})"
                                                     {{ $data->featured == 1 ? 'checked' : '' }}>
                                             </div>
                                         </td>

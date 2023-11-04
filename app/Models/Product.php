@@ -9,4 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $casts = [
+        'images'            => 'array',
+        'color_image'       => 'array',
+        'colors'             => 'array',
+        'attributes'        => 'array',
+        'choice_options'    => 'array',
+        'variation'         => 'array',
+    ];
 }

@@ -14,7 +14,7 @@ class Index extends Component
     public $page_title = "Product List";
     public function render()
     {
-        $list = Product::where('user_id', auth()->id())->paginate(getPaginate());
+        $list = Product::where('user_id', auth()->user()->getBusiness->user_id)->paginate(getPaginate());
         return view('seller.product.index', compact('list'))->layout('seller.layouts.app');
     }
 }

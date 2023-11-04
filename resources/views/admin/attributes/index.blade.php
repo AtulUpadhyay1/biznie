@@ -41,8 +41,7 @@
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input type="checkbox" class="form-check-input status_update"
-                                                    wire:click="updateStatus({{ $data->id }})" value="20"
-                                                    {{ $data->status == 1 ? 'checked' : '' }}>
+                                                    wire:click="updateStatus({{ $data->id }})" {{ $data->status == 1 ? 'checked' : '' }}>
                                             </div>
                                         </td>
                                         <td>
