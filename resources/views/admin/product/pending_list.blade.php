@@ -81,9 +81,6 @@
                                     <th>Number Of Sale</th>
                                     <th>Total Stock</th>
                                     <th>Base Price</th>
-                                    <th>Rating</th>
-                                    <th>Status</th>
-                                    <th>Featured</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -99,26 +96,9 @@
                                         <td> 0 </td>
                                         <td> {{ $data->current_stock }} </td>
                                         <td><b class="text-sucess">RS {{ $data->unit_price }}</b></td>
-                                        <td>3.6<i class="bi bi-star-fill text-warning ms-1"></i></td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input type="checkbox" class="form-check-input" {{ $data->status ? 'checked' : '' }}  wire:change="updateStatus({{ $data->id }})">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input type="checkbox" class="form-check-input" {{ $data->featured_status ? 'checked' : '' }} wire:change="updateFeatureStatus({{ $data->id }})">
-                                            </div>
-                                        </td>
                                         <td class="text-center">
-                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.edit-product')}}" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                                <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-copy icon-sm me-2"></i><span>Duplicate</span></a>
-                                                <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                            </div>
+                                            <button class="btn btn-success btn-sm" wire:click="updateRequestStatus({{$data->id}}, 'approved')">Approve</button>
+                                            <button class="btn btn-danger btn-sm" wire:click="updateRequestStatus({{$data->id}}, 'rejected')">Reject</button>
                                         </td>
                                     </tr>
                                 @empty

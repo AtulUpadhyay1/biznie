@@ -18,4 +18,9 @@ class Product extends Model
         'choice_options'    => 'array',
         'variation'         => 'array',
     ];
+
+    public function getBusiness()
+    {
+        return $this->belongsTo(Business::class, 'user_id', 'user_id');
+    }
 }

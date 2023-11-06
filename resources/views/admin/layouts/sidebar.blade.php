@@ -91,7 +91,13 @@
                         <a href="#" class="nav-link">Add New Products</a>
                     </li> --}}
                     <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
-                        <a href="{{route('admin.product-list')}}" class="nav-link" wire:navigate>All Products</a>
+                        <a href="{{route('admin.product-list')}}?status=pending" class="nav-link" wire:navigate>New Request Products</a>
+                    </li>
+                    <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
+                        <a href="{{route('admin.product-list')}}?status=approved" class="nav-link" wire:navigate>Approved Products</a>
+                    </li>
+                    <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
+                        <a href="{{route('admin.product-list')}}?status=rejected" class="nav-link" wire:navigate>Rejected Products</a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.product-category','admin.create-product-category', 'admin.edit-product-category']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-category')}}" class="nav-link" wire:navigate>
