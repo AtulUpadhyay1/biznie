@@ -22,13 +22,23 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
     // Registeration form info
     Route::get('registration-form-info', 'InfoApiController@registrationFormInfo');
-    Route::post('image-upload', 'ImageUploadController@imageUpload')->middleware('auth:sanctum');
 
     // Registration & login
     Route::post('register', 'Auth\AuthApiController@register');
     Route::post('otp-login', 'Auth\AuthApiController@otpLogin');
     Route::post('verify-otp', 'Auth\AuthApiController@verifyOtp');
     Route::post('email-login', 'Auth\AuthApiController@emailLogin');
+
+    // Category
+    Route::get('category', 'CategoryApiController@category');
+
+    // Common api
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Image upload
+        Route::post('image-upload', 'ImageUploadController@imageUpload');
+
+    });
 });
 
 

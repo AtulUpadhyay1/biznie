@@ -39,7 +39,7 @@
                             <tbody>
                                 @forelse ($list as $data)
                                     <tr>
-                                        <td><img src="{{ asset('storage/' . $data->thumbnail) }}" alt="image"></td>
+                                        <td><img src="{{ imageUrl($data->thumbnail) }}" alt="image"></td>
                                         <td>{{ $data->name }}</td>
                                         <td>
                                             <div class="form-check form-switch">

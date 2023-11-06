@@ -47,8 +47,8 @@ class Edit extends Component
         $this->product_category_id = $data->product_category_id;
         $this->business_category_id = $data->business_category_id;
         $this->icon = $data->icon;
-        $this->showThumbnail = $data->thumbnail;
-        $this->showBanner = $data->banner;
+        $this->showThumbnail = imageUrl($data->thumbnail);
+        $this->showBanner = imageUrl($data->banner);
         $this->meta_title= $data->meta_title;
         $this->meta_keywords = $data->meta_keywords;
         $this->meta_description = $data->meta_description;
@@ -75,14 +75,10 @@ class Edit extends Component
             $data->meta_title = $this->meta_title;
             $data->meta_description = $this->meta_description;
             $data->meta_keywords = $this->meta_keywords;
-            if($this->thumbnail){
-                $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
-                $data->thumbnail = $this->thumbnail->storeAs('product_subsubcategory', $thumbnail_name, 'public');
-            }
-            if($this->banner){
-                $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
-                $data->banner = $this->banner->storeAs('product_subsubcategory', $banner_name, 'public');
-            }
+            $data->thumbnail = imageUpload($this->thumbnail, 'product_subsubcategory');
+            $data->banner = imageUpload($this->banner, 'product_subsubcategory');
+            $data->thumbnail = $this->thumbnail ? imageUpload($this->thumbnail, 'product_subcategory') : $data->thumbnail;
+            $data->banner = $this->banner ? imageUpload($this->banner, 'product_subcategory') : $data->banner;
             $data->save();
 
             session()->flash('success', 'Product sub sub category updated successfully !!');

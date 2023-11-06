@@ -32,10 +32,10 @@ class Index extends Component
             );
         }
         catch (\Exception $e) {
-            $this->dispatchBrowserEvent('alert',[
-                'type' => 'error',
-                'message' => 'something went wrong',
-            ]);
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'something went wrong',
+            );
         }
 
     }
@@ -52,10 +52,10 @@ class Index extends Component
             );
         }
         catch (\Exception $e) {
-            $this->dispatchBrowserEvent('alert',[
-                'type' => 'error',
-                'message' => 'something went wrong',
-            ]);
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'something went wrong',
+            );
         }
     }
 
