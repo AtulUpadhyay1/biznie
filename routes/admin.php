@@ -120,6 +120,10 @@ Route::group(['as'=>'admin.'], function () {
         //Edit Product
         Route::get('edit-product', AdminRoot\Product\Edit::class)->name('edit-product');
 
+        // Banner
+        Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
+
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

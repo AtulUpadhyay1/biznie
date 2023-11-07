@@ -64,6 +64,7 @@
                 </ul>
             </div>
             <!--End of customer -->
+            <li class="nav-item nav-category">Product Management</li>
             <li class="nav-item {{ isActiveRoute(['admin.attribute.index', 'admin.attribute.create']) ? 'active' : '' }}">
                 <a href="{{route('admin.attribute.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-opencollective"></i>
@@ -118,6 +119,15 @@
                 </ul>
             </div>
             <!--End of product -->
+            <li class="nav-item nav-category">Promotion Management</li>
+            <li class="nav-item {{ isActiveRoute(['admin.banner.index']) ? 'active' : '' }}">
+                <a href="{{route('admin.banner.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-image"></i>
+                    <span class="link-title">Banners</span>
+                </a>
+            </li>
+
+            <li class="nav-item nav-category">Setup</li>
 
             <!--Businesses-->
             <li class="nav-item">
