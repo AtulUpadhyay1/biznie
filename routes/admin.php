@@ -122,6 +122,8 @@ Route::group(['as'=>'admin.'], function () {
 
         // Banner
         Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
+        Route::get('banner/create', AdminRoot\Banner\Create::class)->name('banner.create');
+        Route::get('banner/edit/{id}', AdminRoot\Banner\Edit::class)->name('banner.edit');
 
 
         //Logout

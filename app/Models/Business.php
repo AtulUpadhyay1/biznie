@@ -16,6 +16,11 @@ class Business extends Model
         'seller_type'   => 'array',
     ];
 
+    public static function active()
+    {
+        return Business::where('status', 1);
+    }
+
     public function getUser()
     {
         return $this->belongsTo(User::class, 'user_id');
