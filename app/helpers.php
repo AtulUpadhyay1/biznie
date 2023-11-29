@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Attribute;
 use App\Models\ImageUpload;
 use Illuminate\Support\Facades\DB;
     if(! function_exists('isActiveRoute')){
@@ -70,6 +71,12 @@ use Illuminate\Support\Facades\DB;
             $data->save();
 
             return $data->id;
+        }
+    }
+
+    if(! function_exists('getAttribute')){
+        function getAttribute($id){
+            return Attribute::find($id);
         }
     }
 ?>

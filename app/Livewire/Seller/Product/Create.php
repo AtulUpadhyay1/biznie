@@ -23,7 +23,7 @@ class Create extends Component
     public $sub_category_list = [];
     public $sub_sub_category_list = [];
 
-    public $name, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $min_qty, $refundable, $images, $color_image, $thumbnail, $featured, $flash_deal, $video_url, $colors="", $variant_product, $attribute, $choice_options, $variation, $published, $unit_price, $purchase_price, $tax=0, $tax_type='percent', $tax_model='include', $discount=0, $discount_type='flat', $current_stock=0, $minimum_order_qty=1, $details, $free_shipping, $attachment, $status, $featured_status, $shipping_cost=0, $multiply_qty, $code, $meta_title, $meta_description, $meta_image, $search_tags, $request_status, $request_status_updated_by;
+    public $name, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $min_qty, $refundable, $images, $color_image, $thumbnail, $featured, $flash_deal, $video_url, $colors="", $variant_product, $attribute=[], $choice_options=[], $variation, $published, $unit_price, $purchase_price, $tax=0, $tax_type='percent', $tax_model='include', $discount=0, $discount_type='flat', $current_stock=0, $minimum_order_qty=1, $details, $free_shipping, $attachment, $status, $featured_status, $shipping_cost=0, $multiply_qty, $code, $meta_title, $meta_description, $meta_image, $search_tags, $request_status, $request_status_updated_by;
 
     public function render()
     {
@@ -79,8 +79,8 @@ class Create extends Component
         $data->thumbnail = imageUpload($this->thumbnail, 'product_thumbnail');
         $data->video_url = $this->video_url;
         $data->colors = [];
-        $data->attributes = [];
-        $data->choice_options = [];
+        $data->attributes = $this->attribute;
+        $data->choice_options = $this->choice_options;
         $data->variation = [];
         $data->unit_price = $this->unit_price;
         $data->purchase_price = $this->purchase_price;

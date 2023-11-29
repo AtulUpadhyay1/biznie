@@ -204,13 +204,21 @@
 
                             <div class="col-md-6 mb-3" wire:ignore>
                                 <label for="attribute" class="form-label">Select Attributes</label>
-                                <select class="form-control select2 @error('attributes') is-invalid @enderror" id="attribute" multiple wire:model="attributes">
+                                <select class="form-control select2 @error('attributes') is-invalid @enderror" id="attribute" multiple wire:model="attribute">
                                     @foreach ($attributes_list as $attributes_data)
                                         <option value="{{ $attributes_data->id }}">{{ $attributes_data->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('attributes') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+
+                            @foreach ($attribute as $attribute_id)
+                                <div class="col-md-6 mb-3">
+                                    <label for="choice_options" class="form-label">{{ getAttribute($attribute_id)->name }}</label>
+                                    <input type="text" class="form-control @error('choice_options.{{$attribute_id}}') is-invalid @enderror" id="choice_options" placeholder="Enter {{ getAttribute($attribute_id)->name }} value" wire:model="choice_options.{{$attribute_id}}">
+                                    @error('choice_options.{{$attribute_id}}') <small class="text-danger">{{ $message }}</small>@enderror
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
