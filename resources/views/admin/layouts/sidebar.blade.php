@@ -71,11 +71,19 @@
                     <span class="link-title">Product Attributes</span>
                 </a>
             </li>
+
+            <li class="nav-item {{ isActiveRoute(['admin.brand', 'admin.create-brand', 'admin.edit-brand']) ? 'active' : ''}}">
+                <a href="{{route('admin.brand')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-bing"></i>
+                    <span class="link-title">Brand</span>
+                </a>
+            </li>
+
             <!--products-->
             <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
             'admin.product-category', 'admin.create-product-category', 'admin.edit-product-category',
             'admin.product-sub-category', 'admin.create-product-sub-category', 'admin.create-product-sub-subcategory',
-            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory']) ? 'active' : '' }}">
+            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#products" role="button"
                     aria-expanded="false" aria-controls="products">
                     <i class="bi bi-cart"></i>
@@ -86,12 +94,12 @@
             <div class="collapse {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
             'admin.product-category','admin.create-product-category', 'admin.edit-product-category',
             'admin.product-sub-category', 'admin.create-product-sub-category', 'admin.create-product-sub-subcategory',
-            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory']) ? 'show' : '' }}" id="products">
+            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit']) ? 'show' : '' }}" id="products">
                 <ul class="nav sub-menu">
                     {{-- <li class="nav-item">
                         <a href="#" class="nav-link">Add New Products</a>
                     </li> --}}
-                    <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
+                    {{-- <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-list')}}?status=pending" class="nav-link" wire:navigate>New Request Products</a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
@@ -99,13 +107,13 @@
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-list')}}?status=rejected" class="nav-link" wire:navigate>Rejected Products</a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item {{ isActiveRoute(['admin.product-category','admin.create-product-category', 'admin.edit-product-category']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-category')}}" class="nav-link" wire:navigate>
                             Category
                         </a>
                     </li>
-                    <li class="nav-item {{ isActiveRoute(['admin.product-sub-category', 'admin.create-product-sub-category', 'admin.edit-product-sub-category']) ? 'active' : '' }}">
+                    {{-- <li class="nav-item {{ isActiveRoute(['admin.product-sub-category', 'admin.create-product-sub-category', 'admin.edit-product-sub-category']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-sub-category')}}" class="nav-link" wire:navigate>
                             Sub Category
                         </a>
@@ -114,11 +122,17 @@
                         <a href="{{route('admin.product-sub-subcategory')}}" class="nav-link" wire:navigate>
                             Sub Sub Category
                         </a>
+                    </li> --}}
+                    <li class="nav-item {{ isActiveRoute(['admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit']) ? 'active' : '' }}">
+                        <a href="{{route('admin.commodity-product.index')}}" class="nav-link" wire:navigate>
+                            Commodity Product
+                        </a>
                     </li>
 
                 </ul>
             </div>
             <!--End of product -->
+
             <li class="nav-item nav-category">Promotion Management</li>
             <li class="nav-item {{ isActiveRoute(['admin.banner.index']) ? 'active' : '' }}">
                 <a href="{{route('admin.banner.index')}}" class="nav-link" wire:navigate>
@@ -190,7 +204,7 @@
             <!--End of messages-->
 
             <!--Biznie Set up-->
-            <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.brand', 'admin.create-brand', 'admin.edit-brand', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#master-setting" role="button"
                     aria-expanded="false" aria-controls="master-setting">
                     <i class="bi bi-building-gear"></i>
@@ -198,7 +212,7 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.vendor-type', 'admin.seller-type', 'admin.brand', 'admin.gst-type', 'admin.product-unit', 'admin.tax-type', 'admin.identity-type', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.brand', 'admin.create-brand', 'admin.edit-brand', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'show' : ''}}" id="master-setting">
+            <div class="collapse {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.vendor-type', 'admin.seller-type', 'admin.brand', 'admin.gst-type', 'admin.product-unit', 'admin.tax-type', 'admin.identity-type', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'show' : ''}}" id="master-setting">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category']) ? 'active' : ''}}">
                         <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
@@ -213,11 +227,6 @@
                     <li class="nav-item  {{ isActiveRoute(['admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type']) ? 'active' : ''}}">
                         <a href="{{route('admin.seller-type')}}" class="nav-link" wire:navigate>
                            Seller Type
-                        </a>
-                    </li>
-                    <li class="nav-item {{ isActiveRoute(['admin.brand', 'admin.create-brand', 'admin.edit-brand']) ? 'active' : ''}}">
-                        <a href="{{route('admin.brand')}}" class="nav-link" wire:navigate>
-                           Brand
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type']) ? 'active' : ''}} ">

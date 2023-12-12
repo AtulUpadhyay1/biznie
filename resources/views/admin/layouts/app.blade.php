@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/custom.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
-
+    <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/select2/select2.min.css')}}">
     <!-- core:js -->
     <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
     <!-- endinject -->
