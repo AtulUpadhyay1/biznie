@@ -62,9 +62,17 @@ use Illuminate\Support\Facades\DB;
     }
 
     if(! function_exists('imageUpload')){
-        function imageUpload($image, $folder)
+        function imageUpload($image, $folder, $id=0)
         {
             $data = new ImageUpload;
+            if($data){
+                $image_path = 'storage/'.$data->image;
+                if(File::exists($image_path)) {
+                    File::delete($image_path);
+                }
+            }else{
+                $data = new ImageUpload;
+            }
             $data->extension = $image->extension();
             $image_name = time().'-'.rand(10, 99).'.'.$image->extension();
             $data->image = $image->storeAs($folder, $image_name, 'public');

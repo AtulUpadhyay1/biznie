@@ -8,7 +8,7 @@
                         <div class="col-6 card-title">
                             <h4>
                                 {{ $page_title }}
-                                <span class="badge bg-secondary rounded-pill fs-6 ms-1">0</span>
+                                <span class="badge bg-secondary rounded-pill fs-6 ms-1">{{$total}}</span>
                             </h4>
                         </div>
 
@@ -26,6 +26,58 @@
                                 </a>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Base Price</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($list as $key => $data)
+                                    <tr>
+                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>
+                                            <img src="{{imageUrl($data->thumbnail)}}" alt="image" >
+                                            {{ $data->name }}
+                                        </td>
+                                        <td>{{ $data->getCategory->name }}</td>
+                                        <td><b class="text-sucess">₹ {{ $data->base_price }}</b></td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" {{ $data->status == 'active' ? 'checked' : '' }}  wire:change="updateStatus({{ $data->id }})">
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
+                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.edit', $data->id)}}" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-copy icon-sm me-2"></i><span>Duplicate</span></a>
+                                                <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <x-table-no-data />
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,56 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('commodity_products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->bigInteger('category_id')->unsigned()->nullable();
+            $table->bigInteger('sub_category_id')->unsigned()->nullable();
+            $table->bigInteger('brand_id')->unsigned()->nullable();
+            $table->bigInteger('unit_id')->unsigned()->nullable();
+            $table->longText('description')->nullable();
+            $table->double('base_price', 15, 2)->default(0);
+            $table->double('loading_charge', 15, 2)->default(0);
+            $table->double('insurance_charge', 15, 2)->default(0);
+            $table->double('quantity_charge', 15, 2)->default(0);
+            $table->longText('charge_name')->nullable();
+            $table->longText('charge_price')->nullable();
+            $table->longText('operator')->nullable();
+            $table->longText('size')->nullable();
+            $table->longText('size_price')->nullable();
+            $table->longText('dimension')->nullable();
+            $table->longText('dimension_price')->nullable();
+            $table->tinyInteger('is_quality')->default(0);
+            $table->longText('quality')->nullable();
+            $table->longText('quality_price')->nullable();
+            $table->string('thumbnail')->nullable();
+            $table->longText('images')->nullable();
+            $table->longText('video_url')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->longText('meta_description')->nullable();
+            $table->string('meta_image')->nullable();
+            $table->enum('status', ['active', 'inactive'])->nullable()->default('active');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('commodity_products');
+    }
+};
