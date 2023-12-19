@@ -32,14 +32,12 @@ class Create extends Component
 
             session()->flash('success', 'Product unit created successfully !!');
             return $this->redirect('/admin/product-unit',navigate: true);
-        }
 
-        catch(\Exception $e)
-        {
-            $this->dispatchBrowserEvent('alert',[
-                'type' => 'error',
-                'message' => 'something went wrong',
-            ]);
+        } catch (\Throwable $th) {
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'something went wrong',
+            );
         }
     }
 }
