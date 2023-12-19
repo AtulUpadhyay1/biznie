@@ -23,6 +23,11 @@ class CommodityProduct extends Model
         'images'                => 'array',
     ];
 
+    public static function active()
+    {
+        return CommodityProduct::where('status', 'active');
+    }
+
     public function getCategory()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');

@@ -25,7 +25,7 @@ class Index extends Component
         try {
 
             $data = CommodityProduct::findOrFail($id);
-            $data->status = $data->status == 'active' ? 'inactive' : 'inactive';
+            $data->status = $data->status == 'active' ? 'inactive' : 'active';
             $data->save();
 
             $this->dispatch('alert',

@@ -36,6 +36,8 @@ Route::group(['as'=>'seller.'], function () {
         Route::get('product', SellerRoot\Product\Index::class)->name('product.index');
         Route::get('product/create', SellerRoot\Product\Create::class)->name('product.create');
 
+        // Commodity Product
+        Route::get('commodity-product', SellerRoot\CommodityProduct\Index::class)->name('commodity-product.index');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Seller\Auth\LoginController::class, 'logout'])->name('logout');
