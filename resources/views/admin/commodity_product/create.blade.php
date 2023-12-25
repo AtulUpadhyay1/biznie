@@ -57,6 +57,28 @@
                             </div>
 
                             <div class="col-md-4 mb-3" wire:ignore>
+                                <label for="sub_category" class="form-label">Sub Category</label>
+                                <select class="form-select select2 @error('category_id') is-invalid @enderror" id="sub_category_id" wire:model="category_id">
+                                    <option>Select Sub Category</option>
+                                    @foreach ($category_list as $category_data)
+                                        <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('category_id') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3" wire:ignore>
+                                <label for="sub_sub_category" class="form-label">Sub Sub Category</label>
+                                <select class="form-select select2 @error('category_id') is-invalid @enderror" id="sub_sub_category_id" wire:model="category_id">
+                                    <option>Select Sub Sub Category</option>
+                                    @foreach ($category_list as $category_data)
+                                        <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('category_id') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3" wire:ignore>
                                 <label for="brand_id" class="form-label">Brand</label>
                                 <select class="form-select select2 @error('brand_id') is-invalid @enderror" id="brand_id" wire:model="brand_id">
                                     <option>Select Brand</option>
@@ -67,7 +89,7 @@
                                 @error('brand_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-4 mb-3" wire:ignore>
+                            <div class="col-md-6 mb-3" wire:ignore>
                                 <label for="unit_id" class="form-label">Unit</label>
                                 <select class="form-select select2 @error('unit_id') is-invalid @enderror" id="unit_id" wire:model="unit_id">
                                     <option>Select Unit</option>
@@ -105,8 +127,8 @@
                             </div>
 
                             <div class="col-md-3 mb-3">
-                                <label for="quantity_charge" class="form-label">Quantity Charge</label>
-                                <input type="number" class="form-control @error('quantity_charge') is-invalid @enderror" id="quantity_charge" min="0" step="0.01" placeholder="Enter quantity charge" wire:model="quantity_charge">
+                                <label for="quantity_charge" class="form-label">Quality Inspection Charge</label>
+                                <input type="number" class="form-control @error('quantity_charge') is-invalid @enderror" id="quantity_charge" min="0" step="0.01" placeholder="Enter quality charge" wire:model="quantity_charge">
                                 @error('quantity_charge') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
@@ -170,7 +192,7 @@
                                 @error('size_price.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            {{--<div class="col-md-6 mb-3">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Dimension</span>
                                     <input type="text" class="form-control @error('dimension.0') is-invalid @enderror" placeholder="Enter Dimension" wire:model="dimension.0">
@@ -179,6 +201,14 @@
                                 </div>
                                 @error('dimension.0') <small class="text-danger">{{ $message }}</small>@enderror
                                 @error('dimension_price.0') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div> --}}
+
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Specification</span>
+                                    <textarea class="form-control @error('specification.0') is-invalid @enderror" wire:model="specification.0" rows="1"></textarea>
+                                </div>
+                                @error('specification.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
                             <div class="col-md-1 mb-3">
@@ -198,7 +228,7 @@
                                     @error('size_price.'.$variation_input) <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
 
-                                <div class="col-md-6 mb-3">
+                                {{-- <div class="col-md-6 mb-3">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Dimension</span>
                                         <input type="text" class="form-control @error('dimension.'.$variation_input) is-invalid @enderror" placeholder="Enter Dimension" wire:model="dimension.{{$variation_input}}">
@@ -207,6 +237,14 @@
                                     </div>
                                     @error('dimension.'.$variation_input) <small class="text-danger">{{ $message }}</small>@enderror
                                     @error('dimension_price.'.$variation_input) <small class="text-danger">{{ $message }}</small>@enderror
+                                </div> --}}
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Specification</span>
+                                        <textarea class="form-control @error('specification.'.$variation_input) is-invalid @enderror" wire:model="specification.{{$variation_input}}" rows="1"></textarea>
+                                    </div>
+                                    @error('specification.'.$variation_input) <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
 
                                 <div class="col-md-1 mb-3">
