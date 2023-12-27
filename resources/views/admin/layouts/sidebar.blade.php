@@ -65,10 +65,17 @@
             </div>
             <!--End of customer -->
             <li class="nav-item nav-category">Product Management</li>
-            <li class="nav-item {{ isActiveRoute(['admin.attribute.index', 'admin.attribute.create']) ? 'active' : '' }}">
+            <li class="nav-item {{ isActiveRoute(['admin.attribute.index', 'admin.attribute.create', 'admin.attribute.edit']) ? 'active' : '' }}">
                 <a href="{{route('admin.attribute.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-opencollective"></i>
                     <span class="link-title">Product Attributes</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ isActiveRoute(['admin.packaging-type.index', 'admin.packaging-type.create', 'admin.packaging-type.edit']) ? 'active' : '' }}">
+                <a href="{{route('admin.packaging-type.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-box"></i>
+                    <span class="link-title">Packaging Type</span>
                 </a>
             </li>
 

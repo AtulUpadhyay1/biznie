@@ -131,6 +131,12 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('banner/create', AdminRoot\Banner\Create::class)->name('banner.create');
         Route::get('banner/edit/{id}', AdminRoot\Banner\Edit::class)->name('banner.edit');
 
+        // Packaging Type
+        Route::get('packaging-type', AdminRoot\PackagingType\Index::class)->name('packaging-type.index');
+        Route::get('packaging-type/create', AdminRoot\PackagingType\Create::class)->name('packaging-type.create');
+        Route::get('packaging-type/edit/{id}', AdminRoot\PackagingType\Edit::class)->name('packaging-type.edit');
+
+
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
