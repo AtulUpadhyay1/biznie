@@ -120,7 +120,7 @@
                             Category
                         </a>
                     </li>
-                    {{-- <li class="nav-item {{ isActiveRoute(['admin.product-sub-category', 'admin.create-product-sub-category', 'admin.edit-product-sub-category']) ? 'active' : '' }}">
+                    <li class="nav-item {{ isActiveRoute(['admin.product-sub-category', 'admin.create-product-sub-category', 'admin.edit-product-sub-category']) ? 'active' : '' }}">
                         <a href="{{route('admin.product-sub-category')}}" class="nav-link" wire:navigate>
                             Sub Category
                         </a>
@@ -129,7 +129,7 @@
                         <a href="{{route('admin.product-sub-subcategory')}}" class="nav-link" wire:navigate>
                             Sub Sub Category
                         </a>
-                    </li> --}}
+                    </li>
                     <li class="nav-item {{ isActiveRoute(['admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit']) ? 'active' : '' }}">
                         <a href="{{route('admin.commodity-product.index')}}" class="nav-link" wire:navigate>
                             Commodity Product

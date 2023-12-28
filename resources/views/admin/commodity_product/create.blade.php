@@ -7,6 +7,11 @@
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             top: 8px;
         }
+
+        .select2.is-invalid {
+            border-color: #dc3545 !important; /* Set the border color to the invalid state color */
+        }
+
     </style>
     <div class="row">
         <div class="col-12">
@@ -24,7 +29,6 @@
             </div>
             <form wire:submit.prevent="save()">
                 <div class="card card-body">
-
                     <div class="col-md-12 mb-3">
                         <label for="name" class="form-label">Product Name</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter product name" wire:model="name">
@@ -37,6 +41,12 @@
                         @error('description') <small class="text-danger">{{ $message }}</small>@enderror
                     </div>
 
+                    <div class="col-md-12 mb-3">
+                        <label for="specification_notes" class="form-label">Specification Notes</label>
+                        <textarea class="form-control @error('specification_notes') is-invalid @enderror" id="specification_notes" cols="30" rows="5" placeholder="Enter product specification notes" wire:model="specification_notes"></textarea>
+                        @error('specification_notes') <small class="text-danger">{{ $message }}</small>@enderror
+                    </div>
+
                 </div>
                 <div class="card mt-3">
                     <div class="card-header">
@@ -44,61 +54,88 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-
-                            <div class="col-md-4 mb-3" wire:ignore>
-                                <label for="category" class="form-label">Category</label>
-                                <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
-                                    <option>Select Category</option>
-                                    @foreach ($category_list as $category_data)
-                                        <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="col-md-4 mb-3">
+                                <div wire:ignore>
+                                    <label for="category" class="form-label">Category</label>
+                                    <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
+                                        <option value="">Select Category</option>
+                                        @foreach ($category_list as $category_data)
+                                            <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @error('category_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-4 mb-3" wire:ignore>
+                            <div class="col-md-4 mb-3">
                                 <label for="sub_category" class="form-label">Sub Category</label>
-                                <select class="form-select select2 @error('category_id') is-invalid @enderror" id="sub_category_id" wire:model="category_id">
+                                <select class="form-select select2 sub_category @error('sub_category') is-invalid @enderror" id="sub_category" wire:model="sub_category_id">
                                     <option>Select Sub Category</option>
-                                    @foreach ($category_list as $category_data)
-                                        <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
+                                    @foreach ($sub_category_list as $sub_category_data)
+                                        <option value="{{$sub_category_data->id}}">{{$sub_category_data->name}}</option>
                                     @endforeach
                                 </select>
-                                @error('category_id') <small class="text-danger">{{ $message }}</small>@enderror
+                                @error('sub_category') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-4 mb-3" wire:ignore>
+                            <div class="col-md-4 mb-3">
                                 <label for="sub_sub_category" class="form-label">Sub Sub Category</label>
-                                <select class="form-select select2 @error('category_id') is-invalid @enderror" id="sub_sub_category_id" wire:model="category_id">
+                                <select class="form-select select2 @error('sub_sub_category_id') is-invalid @enderror" id="sub_sub_category" wire:model="sub_sub_category_id">
                                     <option>Select Sub Sub Category</option>
-                                    @foreach ($category_list as $category_data)
-                                        <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
+                                    @foreach ($sub_sub_category_list as $sub_sub_category_data)
+                                        <option value="{{$sub_sub_category_data->id}}">{{$sub_sub_category_data->name}}</option>
                                     @endforeach
                                 </select>
-                                @error('category_id') <small class="text-danger">{{ $message }}</small>@enderror
+                                @error('sub_sub_category_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-6 mb-3" wire:ignore>
-                                <label for="brand_id" class="form-label">Brand</label>
-                                <select class="form-select select2 @error('brand_id') is-invalid @enderror" id="brand_id" wire:model="brand_id">
-                                    <option>Select Brand</option>
-                                    @foreach ($brand_list as $brand_data)
-                                        <option value="{{ $brand_data->id }}">{{ $brand_data->name }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="col-md-4 mb-3">
+                                <div wire:ignore>
+                                    <label for="brand_id" class="form-label">Brand</label>
+                                    <select class="form-select select2 @error('brand_id') is-invalid @enderror" id="brand_id" wire:model="brand_id">
+                                        <option>Select Brand</option>
+                                        @foreach ($brand_list as $brand_data)
+                                            <option value="{{ $brand_data->id }}">{{ $brand_data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @error('brand_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-6 mb-3" wire:ignore>
-                                <label for="unit_id" class="form-label">Unit</label>
-                                <select class="form-select select2 @error('unit_id') is-invalid @enderror" id="unit_id" wire:model="unit_id">
-                                    <option>Select Unit</option>
-                                    @foreach ($unit_list as $unit_data)
-                                        <option value="{{ $unit_data->id }}">{{ $unit_data->short_name }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="col-md-4 mb-3">
+                                <div wire:ignore>
+                                    <label for="unit_id" class="form-label">Unit</label>
+                                    <select class="form-select select2 @error('unit_id') is-invalid @enderror" id="unit_id" wire:model="unit_id">
+                                        <option>Select Unit</option>
+                                        @foreach ($unit_list as $unit_data)
+                                            <option value="{{ $unit_data->id }}">{{ $unit_data->short_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 @error('unit_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+
+                            <div class="col-md-4 mb-3">
+                                <div wire:ignore>
+                                    <label for="packaging_type" class="form-label">Packaging Type</label>
+                                    <select class="form-select select2 @error('packaging_type') is-invalid @enderror" id="packaging_type" wire:model="packaging_type" data-placeholder="Select packaging type" multiple>
+                                        @foreach ($packaging_type_list as $packaging_type_data)
+                                            <option value="{{ $packaging_type_data->id }}">{{ $packaging_type_data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('packaging_type') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            @foreach ($packaging_type_name as $packaging_types)
+                                <div class="col-md-4 mb-3">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">{{$packaging_types}}</span>
+                                        <input type="number" class="form-control " placeholder="Enter {{$packaging_types}} Price" wire:model="packaging_type_price.{{$loop->iteration}}">
+                                    </div>
+                                </div>
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
@@ -108,28 +145,40 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="base_price" class="form-label">Base Price</label>
                                 <input type="number" class="form-control @error('base_price') is-invalid @enderror" id="base_price" min="0" step="0.01" placeholder="Enter purchase price" wire:model="base_price">
                                 @error('base_price') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="loading_charge" class="form-label">Loading Charge</label>
                                 <input type="number" class="form-control @error('loading_charge') is-invalid @enderror" id="loading_charge" min="0" step="0.01" placeholder="Enter loading charge" wire:model="loading_charge">
                                 @error('loading_charge') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="insurance_charge" class="form-label">Insurance Charge</label>
                                 <input type="number" class="form-control @error('insurance_charge') is-invalid @enderror" id="insurance_charge" min="0" step="0.01" placeholder="Enter insurance charge" wire:model="insurance_charge">
                                 @error('insurance_charge') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-3 mb-3">
-                                <label for="quantity_charge" class="form-label">Quality Inspection Charge</label>
-                                <input type="number" class="form-control @error('quantity_charge') is-invalid @enderror" id="quantity_charge" min="0" step="0.01" placeholder="Enter quality charge" wire:model="quantity_charge">
-                                @error('quantity_charge') <small class="text-danger">{{ $message }}</small>@enderror
+                            <div class="col-md-4 mb-3">
+                                <label for="quality_charge" class="form-label">Quality Inspection Charge</label>
+                                <input type="number" class="form-control @error('quality_charge') is-invalid @enderror" id="quality_charge" min="0" step="0.01" placeholder="Enter quality charge" wire:model="quality_charge">
+                                @error('quality_charge') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="gst" class="form-label">GST (%)</label>
+                                <input type="number" class="form-control @error('gst') is-invalid @enderror" id="gst" min="0" step="0.01" placeholder="Enter gst charge" wire:model="gst">
+                                @error('gst') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="tcs" class="form-label">TCS (%)</label>
+                                <input type="number" class="form-control @error('tcs') is-invalid @enderror" id="tcs" min="0" step="0.01" placeholder="Enter tcs charge" wire:model="tcs">
+                                @error('tcs') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
                             <div class="col-md-12 mb-3">
@@ -404,6 +453,14 @@
                 window.addEventListener('render-select2', event => {
                     $('.select2').select2();
                 })
+            });
+
+            $('#category_id').on('change', function (e) {
+                @this.setSubCategoryList();
+            });
+
+            $('#sub_category').on('change', function (e) {
+                @this.setSubSubCategoryList();
             });
         </script>
     @endpush

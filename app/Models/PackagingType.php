@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PackagingType extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public static function active()
+    {
+        return PackagingType::where('status', 1);
+    }
 }

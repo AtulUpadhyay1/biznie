@@ -16,11 +16,14 @@ class CommodityProduct extends Model
         'operator'              => 'array',
         'size'                  => 'array',
         'size_price'            => 'array',
+        'specification'         => 'array',
         'dimension'             => 'array',
         'dimension_price'       => 'array',
         'quality'               => 'array',
         'quality_price'         => 'array',
         'images'                => 'array',
+        'packaging_type'        => 'array',
+        'packaging_type_price'  => 'array',
     ];
 
     public static function active()

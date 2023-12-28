@@ -8,32 +8,44 @@ use Livewire\Component;
 use App\Models\Attribute;
 use App\Models\ProductUnit;
 use Illuminate\Support\Str;
+use App\Models\PackagingType;
 use Livewire\WithFileUploads;
 use App\Models\ProductCategory;
 use App\Models\CommodityProduct;
+use App\Models\ProductSubCategory;
+use App\Models\ProductSubSubCategory;
 
 class Create extends Component
 {
     public $page_title = "Add Commodity Product";
     use WithFileUploads;
 
-    public $name, $category_id, $brand_id, $unit_id, $base_price, $loading_charge, $insurance_charge, $quantity_charge, $description, $thumbnail, $images, $video_url, $meta_title, $meta_description, $meta_image;
+    public $name, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $base_price, $loading_charge, $insurance_charge, $quality_charge, $gst, $tcs, $description, $thumbnail, $images, $video_url, $meta_title, $meta_description, $meta_image, $specification_notes;
 
     public $charge_name=[], $charge_price=[], $operator=[];
     public $charge = 0, $charge_inputs = [];
 
-    public $size=[], $size_price=[], $dimension=[], $dimension_price=[];
+    public $size=[], $size_price=[], $dimension=[], $dimension_price=[], $specification=[];
     public $variation = 0, $variation_inputs = [];
 
     public $is_quality = 0, $quality=[], $quality_price=[];
     public $quality_field = 0, $quality_inputs = [];
+
+    public $sub_category_list = [];
+    public $sub_sub_category_list = [];
+
+    public $packaging_type = [], $packaging_type_name = [], $packaging_type_price = [];
 
     public function render()
     {
         $category_list = ProductCategory::active()->orderBy('name', 'asc')->get();
         $brand_list = Brand::active()->orderBy('name', 'asc')->get();
         $unit_list = ProductUnit::active()->orderBy('name', 'asc')->get();
-        return view('admin.commodity_product.create', compact('category_list', 'brand_list', 'unit_list'));
+        $packaging_type_list = PackagingType::active()->orderBy('name', 'asc')->get();
+
+        $this->packaging_type_name = PackagingType::whereIn('id', $this->packaging_type)->pluck('name');
+
+        return view('admin.commodity_product.create', compact('category_list', 'brand_list', 'unit_list', 'packaging_type_list'));
     }
 
     public function addOtherChargesField($charge)
@@ -72,14 +84,26 @@ class Create extends Component
         unset($this->quality_inputs[$quality_field]);
     }
 
+    public function setSubCategoryList()
+    {
+        $this->sub_category_list = ProductSubCategory::active()->where('product_category_id', $this->category_id)->get();
+        $this->sub_sub_category_list = [];
+    }
+
+    public function setSubSubCategoryList()
+    {
+        $this->sub_sub_category_list = ProductSubSubCategory::active()->where('product_sub_category_id', $this->sub_category_id)->get();
+    }
+
     public function save()
     {
         $this->validate([
-            'name'  => 'required',
+            'name'              => 'required',
             'category_id'       => 'required',
             'brand_id'          => 'required',
             'unit_id'           => 'required',
             'base_price'        => 'required',
+            'packaging_type'    => 'required',
             'charge_name.*'     => 'required',
             'charge_price.*'    => 'required',
             'operator.*'        => 'required',
@@ -92,6 +116,9 @@ class Create extends Component
             'thumbnail'         => 'required',
         ]);
 
+        $allErrors = $this->errors->all();
+        dd($allErrors);
+
         // $allInputData = request()->all();
         // dd($allInputData);
 
@@ -99,13 +126,20 @@ class Create extends Component
         $data->name             = $this->name;
         $data->slug             = Str::slug($this->name);
         $data->category_id      = $this->category_id;
+        $data->sub_category_id  = $this->sub_category_id;
+        $data->sub_sub_category_id  = $this->sub_sub_category_id;
         $data->brand_id         = $this->brand_id;
         $data->unit_id          = $this->unit_id;
+        $data->packaging_type   = $this->packaging_type;
+        $data->packaging_type_price = $this->packaging_type_price;
         $data->description      = $this->description;
+        $data->specification_notes  = $this->specification_notes;
         $data->base_price       = $this->base_price;
         $data->loading_charge   = $this->loading_charge;
         $data->insurance_charge = $this->insurance_charge;
-        $data->quantity_charge  = $this->quantity_charge;
+        $data->quality_charge   = $this->quality_charge;
+        $data->gst              = $this->gst;
+        $data->tcs              = $this->tcs;
         $data->charge_name      = $this->charge_name;
         $data->charge_price     = $this->charge_price;
         $data->operator         = $this->operator;
@@ -113,6 +147,7 @@ class Create extends Component
         $data->size_price       = $this->size_price;
         $data->dimension        = $this->dimension;
         $data->dimension_price  = $this->dimension_price;
+        $data->specification    = $this->specification;
         $data->is_quality       = $this->is_quality;
         $data->quality          = $this->quality;
         $data->quality_price    = $this->quality_price;

@@ -13,7 +13,7 @@ class Product extends Model
     protected $casts = [
         'images'            => 'array',
         'color_image'       => 'array',
-        'colors'             => 'array',
+        'colors'            => 'array',
         'attributes'        => 'array',
         'choice_options'    => 'array',
         'variation'         => 'array',
