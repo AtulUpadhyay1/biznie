@@ -365,6 +365,7 @@
 
                             </label>
                             <input type="file" id="thumbnail" wire:model="thumbnail" hidden accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
+                            @error('thumbnail') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                     </div>
                     <div class="col-md-8">

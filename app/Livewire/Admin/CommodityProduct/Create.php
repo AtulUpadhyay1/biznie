@@ -116,9 +116,6 @@ class Create extends Component
             'thumbnail'         => 'required',
         ]);
 
-        $allErrors = $this->errors->all();
-        dd($allErrors);
-
         // $allInputData = request()->all();
         // dd($allInputData);
 
