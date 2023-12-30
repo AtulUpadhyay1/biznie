@@ -2,6 +2,7 @@
 
 use App\Models\Attribute;
 use App\Models\ImageUpload;
+use App\Models\PackagingType;
 use Illuminate\Support\Facades\DB;
     if(! function_exists('isActiveRoute')){
         function isActiveRoute($routes=[])
@@ -85,6 +86,12 @@ use Illuminate\Support\Facades\DB;
     if(! function_exists('getAttribute')){
         function getAttribute($id){
             return Attribute::find($id);
+        }
+    }
+
+    if(! function_exists('getPackagingType')){
+        function getPackagingType($id){
+            return PackagingType::find($id);
         }
     }
 ?>

@@ -5,8 +5,11 @@ namespace App\Livewire\Seller\CommodityProduct;
 use App\Models\Brand;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\PackagingType;
 use App\Models\ProductCategory;
 use App\Models\CommodityProduct;
+use App\Models\ProductSubCategory;
+use App\Models\ProductSubSubCategory;
 
 class Index extends Component
 {
@@ -14,8 +17,12 @@ class Index extends Component
     protected $paginationTheme = 'bootstrap';
     public $page_title = "Add Product";
 
-    public $category_id, $product_id, $brand_list, $quality = [], $quality_price = [], $size=[], $size_price=[], $dimension=[], $dimension_price=[], $charge_name=[], $charge_price=[], $operator=[];
-    public $quality_arr = [], $variant_arr =[], $charge_arr = [];
+    public $category_id, $sub_category_id, $sub_sub_category_id, $product_id, $quality = [], $quality_price = [], $size=[], $size_price=[], $dimension=[], $dimension_price=[], $specification=[], $charge_name=[], $charge_price=[], $operator=[], $packaging_type_id=[], $packaging_type_price=[];
+
+    public $sub_category_list = [];
+    public $sub_sub_category_list = [];
+
+    public $quality_arr = [], $variant_arr = [], $charge_arr = [], $packaging_type_arr = [];
 
     public function render()
     {
@@ -45,13 +52,14 @@ class Index extends Component
         if($product_data && count($product_data->size) > 0){
             $this->size             = $product_data->size;
             $this->size_price       = $product_data->size_price;
-            $this->dimension        = $product_data->dimension;
-            $this->dimension_price  = $product_data->dimension_price;
+            // $this->dimension        = $product_data->dimension;
+            // $this->dimension_price  = $product_data->dimension_price;
+            $this->specification    = $product_data->specification;
 
             foreach($product_data->size as $size_key => $size_value){
                 $variant_arr_data['size'] = $size_value;
 
-                $variant_arr_data['dimension'] = $product_data->dimension[$size_key];
+                // $variant_arr_data['dimension'] = $product_data->dimension[$size_key];
 
                 $this->variant_arr[] = $variant_arr_data;
             }
@@ -74,6 +82,31 @@ class Index extends Component
             }
 
         }
+
+        $this->packaging_type_arr = [];
+
+        if($product_data && count($product_data->packaging_type) > 0){
+            foreach ($product_data->packaging_type as $packaging_type_key => $packaging_type_id) {
+                $packaging_type = PackagingType::find($packaging_type_id);
+                $packaging_type_data['id']  = $packaging_type->id;
+                $packaging_type_data['name'] = $packaging_type->name;
+                $packaging_type_data['price'] = $product_data->packaging_type_price[$packaging_type_key+1];
+
+                $this->packaging_type_arr[] = $packaging_type_data;
+            }
+        }
+
+    }
+
+    public function setSubCategoryList()
+    {
+        $this->sub_category_list = ProductSubCategory::active()->where('product_category_id', $this->category_id)->get();
+        $this->sub_sub_category_list = [];
+    }
+
+    public function setSubSubCategoryList()
+    {
+        $this->sub_sub_category_list = ProductSubSubCategory::active()->where('product_sub_category_id', $this->sub_category_id)->get();
     }
 
 }
