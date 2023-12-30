@@ -29,7 +29,7 @@
             <link rel="shortcut icon" href="{{asset('admin/assets/images/favicon.png')}}" />
         @endif --}}
         <link rel="shortcut icon" href="{{asset('admin_css/assets/images/favicon.png')}}" />
-
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
 
     <body>
@@ -59,12 +59,13 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                                <div class="input-area pass">
+
+                                <div class="input-area pass" x-data="{ showPassword: false }">
                                     <div class="input-icon">
-                                        <i class="bi bi-key-fill"></i>
+                                        <i x-bind:class="showPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'" x-bind:title="showPassword ? 'Hide Password' : 'Show Password'" x-on:click="showPassword = ! showPassword"></i>
                                     </div>
                                     <div class="input-text-area">
-                                        <input type="password" class="input @error('password') is-invalid @enderror" id="password" autocomplete="current-password" name="password" placeholder="Password">
+                                        <input x-bind:type="showPassword ? 'text' : 'password'" class="input @error('password') is-invalid @enderror" id="password" autocomplete="current-password" name="password" placeholder="Password">
                                     </div>
                                 </div>
                                 @error('password')
@@ -72,6 +73,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+
                                 <a href="#">Forgot Password?</a>
 				                <input type="submit" class="submit-btn" value="Login">
                             </form>
