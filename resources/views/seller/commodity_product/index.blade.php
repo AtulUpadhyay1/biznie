@@ -85,6 +85,42 @@
                             @error('product_id') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
 
+                        <div class="col-md-4 mb-3">
+                            <label for="base_price" class="form-label">Base Price</label>
+                            <input type="number" class="form-control @error('base_price') is-invalid @enderror" id="base_price" placeholder="Enter base price" min="0" step="0.01" wire:model="base_price">
+                            @error('base_price') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="loading_charge" class="form-label">Loading Charge</label>
+                            <input type="number" class="form-control @error('loading_charge') is-invalid @enderror" id="loading_charge" min="0" step="0.01" placeholder="Enter loading charge" wire:model="loading_charge">
+                            @error('loading_charge') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="insurance_charge" class="form-label">Insurance Charge</label>
+                            <input type="number" class="form-control @error('insurance_charge') is-invalid @enderror" id="insurance_charge" min="0" step="0.01" placeholder="Enter insurance charge" wire:model="insurance_charge">
+                            @error('insurance_charge') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="quality_charge" class="form-label">Quality Inspection Charge</label>
+                            <input type="number" class="form-control @error('quality_charge') is-invalid @enderror" id="quality_charge" min="0" step="0.01" placeholder="Enter quality charge" wire:model="quality_charge">
+                            @error('quality_charge') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="gst" class="form-label">GST (%)</label>
+                            <input type="number" class="form-control @error('gst') is-invalid @enderror" id="gst" min="0" step="0.01" placeholder="Enter gst charge" wire:model="gst">
+                            @error('gst') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="tcs" class="form-label">TCS (%)</label>
+                            <input type="number" class="form-control @error('tcs') is-invalid @enderror" id="tcs" min="0" step="0.01" placeholder="Enter tcs charge" wire:model="tcs">
+                            @error('tcs') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+
                         @if (count($quality_arr) > 0)
                             <div class="col-md-12 mb-3">
                                 <label for="" class="form-label">Select Quality</label><br>
@@ -97,15 +133,16 @@
                                     </div>
                                 @endforeach
                             </div>
-
-                            @foreach ($quality as $quality_name)
-                                <div class="col-md-4 mb-3">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">{{$quality_name}}</span>
-                                        <input type="number" class="form-control " placeholder="Enter {{$quality_name}} Price" wire:model="quality_price">
+                            <div class="row">
+                                @foreach ($quality as $quality_name)
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">{{$quality_name}}</span>
+                                            <input type="number" class="form-control " placeholder="Enter {{$quality_name}} Price" wire:model="quality_price">
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         @endif
 
                         @if (count($variant_arr) > 0)
@@ -175,75 +212,42 @@
                                     </div>
                                 @endforeach
                             </div>
-
-                            @foreach ($packaging_type_id as $selected_packaging)
-                                <div class="col-md-4 mb-3">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">{{getPackagingType($selected_packaging)->name}}</span>
-                                        <input type="number" class="form-control " placeholder="Enter {{getPackagingType($selected_packaging)->name}} Price" wire:model="packaging_type_price">
+                            <div class="row">
+                                @foreach ($packaging_type_id as $selected_packaging)
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">{{getPackagingType($selected_packaging)->name}}</span>
+                                            <input type="number" class="form-control " placeholder="Enter {{getPackagingType($selected_packaging)->name}} Price" wire:model="packaging_type_price">
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         @endif
 
-                        <div class="col-md-12 mb-3">
-                            <label for="uploading_address" class="form-label">Uploading Address</label>
+                        <div class="col-md-3 mb-3">
+                            <label for="uploading_address" class="form-label">Upload Address</label>
                             <input type="text" class="form-control @error('uploading_address') is-invalid @enderror" id="uploading_address" placeholder="Enter packaging type" wire:model="uploading_address">
                             @error('uploading_address') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-3 mb-3">
                             <label for="state" class="form-label">State</label>
                             <input type="text" class="form-control @error('state') is-invalid @enderror" id="state" placeholder="Enter state" wire:model="state">
                             @error('state') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-3 mb-3">
                             <label for="city" class="form-label">City</label>
                             <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" placeholder="Enter city" wire:model="city">
                             @error('city') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-3 mb-3">
                             <label for="pincode" class="form-label">Pincode</label>
                             <input type="number" class="form-control @error('pincode') is-invalid @enderror" id="pincode" placeholder="Enter pincode" wire:model="pincode">
                             @error('pincode') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label for="base_price" class="form-label">Base Price</label>
-                            <input type="number" class="form-control @error('base_price') is-invalid @enderror" id="base_price" placeholder="Enter base price" min="0" step="0.01" wire:model="base_price">
-                            @error('base_price') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="loading_charge" class="form-label">Loading Charge</label>
-                            <input type="number" class="form-control @error('loading_charge') is-invalid @enderror" id="loading_charge" min="0" step="0.01" placeholder="Enter loading charge" wire:model="loading_charge">
-                            @error('loading_charge') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="insurance_charge" class="form-label">Insurance Charge</label>
-                            <input type="number" class="form-control @error('insurance_charge') is-invalid @enderror" id="insurance_charge" min="0" step="0.01" placeholder="Enter insurance charge" wire:model="insurance_charge">
-                            @error('insurance_charge') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="tcs" class="form-label">Select TCS</label>
-                            <select class="form-select select2 @error('tcs') is-invalid @enderror" id="tcs" wire:model="tcs">
-                                <option value="1%">1%</option>
-                            </select>
-                            @error('tcs') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="gst_type" class="form-label">Select GST type</label>
-                            <select class="form-select select2 @error('gst_type') is-invalid @enderror" id="gst_type" wire:model="gst_type">
-                                <option value="GST">GST</option>
-                                <option value="CGST">CGST</option>
-                            </select>
-                            @error('gst_type') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
                     </div>
                 </div>
             </div>
