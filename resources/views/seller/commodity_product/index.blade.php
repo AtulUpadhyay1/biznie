@@ -9,6 +9,7 @@
         }
     </style>
     <div class="row">
+        <x-loader />
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
