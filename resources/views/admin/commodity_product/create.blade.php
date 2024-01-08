@@ -433,13 +433,15 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 text-end">
-                        <x-submit-btn text=" Save" />
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-end">
+                                <x-submit-btn text=" Save" />
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>

@@ -15,21 +15,21 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>
-                                {{ $page_title }}
-                            </h4>
+                            <h4>{{ $page_title }}</h4>
                         </div>
 
                         <div class="col-6 text-end">
-                            <a href="{{route('seller.commodity-product.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
+                            <a href="{{route('seller.commodity-product.create')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+            </div>
+            <form wire:submit.prevent="save()">
+                <div class="card card-body">
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <div wire:ignore>
-                                <label for="category" class="form-label">Category</label>
+                                <label for="category_id" class="form-label">Category</label>
                                 <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
                                     <option value="">Select Category</option>
                                     @foreach ($category_list as $category_data)
@@ -105,9 +105,9 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label for="quality_charge" class="form-label">Quality Inspection Charge</label>
-                            <input type="number" class="form-control @error('quality_charge') is-invalid @enderror" id="quality_charge" min="0" step="0.01" placeholder="Enter quality charge" wire:model="quality_charge">
-                            @error('quality_charge') <small class="text-danger">{{ $message }}</small>@enderror
+                            <label for="quality_inspection_charge" class="form-label">Quality Inspection Charge</label>
+                            <input type="number" class="form-control @error('quality_inspection_charge') is-invalid @enderror" id="quality_inspection_charge" min="0" step="0.01" placeholder="Enter quality inspection charge" wire:model="quality_inspection_charge">
+                            @error('quality_inspection_charge') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
 
                         <div class="col-md-4 mb-3">
@@ -124,7 +124,7 @@
 
                         @if (count($quality_arr) > 0)
                             <div class="col-md-12 mb-3">
-                                <label for="" class="form-label">Select Quality</label><br>
+                                <label class="form-label">Select Quality</label><br>
                                 @foreach ($quality_arr as $quality_key => $quality_data)
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="check_quality_{{$loop->iteration}}" value="{{$quality_key}}" wire:model.live="quality">
@@ -139,7 +139,7 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">{{$quality_name}}</span>
-                                            <input type="number" class="form-control " placeholder="Enter {{$quality_name}} Price" wire:model="quality_price">
+                                            <input type="number" class="form-control " placeholder="Enter {{$quality_name}} Price" wire:model="quality_price.{{$loop->iteration}}">
                                         </div>
                                     </div>
                                 @endforeach
@@ -148,7 +148,12 @@
 
                         @if (count($variant_arr) > 0)
                             <div class="row">
-                                <label for="" class="form-label">Variant</label>
+                                <div class="col-md-6">
+                                    <label class="form-label">Variant</label>
+                                </div>
+                                <div class="col-md-6">
+                                    {{$specification_notes}}
+                                </div>
                                 @foreach ($variant_arr as $variant_key => $variant)
                                     <div class="col-md-6 mb-3">
                                         <div class="input-group mb-3">
@@ -195,6 +200,7 @@
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">{{$charge['charge_name']}}</span>
                                             <input type="number" class="form-control " placeholder="Enter {{$charge['charge_name']}} Price" wire:model="charge_price.{{$charge_key+1}}">
+                                            <span class="input-group-text fw-bold">{{$charge['operator']}}</span>
                                         </div>
                                     </div>
                                 @endforeach
@@ -203,7 +209,7 @@
 
                         @if (count($packaging_type_arr) > 0)
                             <div class="col-md-12 mb-3">
-                                <label for="" class="form-label">Select Packaging Type</label><br>
+                                <label class="form-label">Select Packaging Type</label><br>
                                 @foreach ($packaging_type_arr as $packaging_type_key => $packaging_type_data)
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="check_packaging_type_{{$loop->iteration}}" value="{{$packaging_type_data['id']}}" wire:model.live="packaging_type_id">
@@ -218,40 +224,75 @@
                                     <div class="col-md-4 mb-3">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">{{getPackagingType($selected_packaging)->name}}</span>
-                                            <input type="number" class="form-control " placeholder="Enter {{getPackagingType($selected_packaging)->name}} Price" wire:model="packaging_type_price">
+                                            <input type="number" class="form-control " placeholder="Enter {{getPackagingType($selected_packaging)->name}} Price" wire:model="packaging_type_price.{{$selected_packaging}}">
                                         </div>
                                     </div>
                                 @endforeach
                             </div>
                         @endif
-
-                        <div class="col-md-3 mb-3">
-                            <label for="uploading_address" class="form-label">Upload Address</label>
-                            <input type="text" class="form-control @error('uploading_address') is-invalid @enderror" id="uploading_address" placeholder="Enter packaging type" wire:model="uploading_address">
-                            @error('uploading_address') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label for="state" class="form-label">State</label>
-                            <input type="text" class="form-control @error('state') is-invalid @enderror" id="state" placeholder="Enter state" wire:model="state">
-                            @error('state') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label for="city" class="form-label">City</label>
-                            <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" placeholder="Enter city" wire:model="city">
-                            @error('city') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <label for="pincode" class="form-label">Pincode</label>
-                            <input type="number" class="form-control @error('pincode') is-invalid @enderror" id="pincode" placeholder="Enter pincode" wire:model="pincode">
-                            @error('pincode') <small class="text-danger">{{ $message }}</small>@enderror
-                        </div>
-
                     </div>
                 </div>
-            </div>
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Loading Address</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Pincode</span>
+                                    <input type="text" class="form-control @error('pincode.0') is-invalid @enderror" placeholder="Enter Pincode" wire:model="pincode.0">
+                                </div>
+                                @error('pincode.0') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Address</span>
+                                    <textarea class="form-control @error('address.0') is-invalid @enderror" wire:model="address.0" placeholder="Enter Loading Address" rows="1"></textarea>
+                                </div>
+                                @error('address.0') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-1 mb-3">
+                                <button type="button" class="btn btn-inverse-success" wire:click="addAddressField({{$loading_address_count}})">Add</button>
+                            </div>
+
+                            @foreach ($loading_address_inputs as $loading_address_input_key => $loading_address_input)
+                                <div class="col-md-5 mb-3">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Pincode</span>
+                                        <input type="number" class="form-control @error('pincode.'.$loading_address_input) is-invalid @enderror" placeholder="Enter Pincode" wire:model="pincode.{{$loading_address_input}}">
+                                    </div>
+                                    @error('pincode.'.$loading_address_input) <small class="text-danger">{{ $message }}</small>@enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Address</span>
+                                        <textarea class="form-control @error('address.'.$loading_address_input) is-invalid @enderror" wire:model="address.{{$loading_address_input}}" placeholder="Enter Loading Address" rows="1"></textarea>
+                                    </div>
+                                    @error('address.'.$loading_address_input) <small class="text-danger">{{ $message }}</small>@enderror
+                                </div>
+
+                                <div class="col-md-1 mb-3">
+                                    <button type="button" class="btn btn-inverse-danger" wire:click="removeAddressField({{$loading_address_input_key}})">Remove</button>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-end">
+                                <x-submit-btn text=" Save" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
         </div>
     </div>
     @push('scripts')
