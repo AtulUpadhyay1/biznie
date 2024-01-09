@@ -18,7 +18,7 @@
             </li>
 
             <!--Sellers-->
-            <li class="nav-item {{ isActiveRoute(['seller.product.index', 'seller.commodity-product.create']) ? 'active' : '' }}">
+            <li class="nav-item {{ isActiveRoute(['seller.commodity-product.index', 'seller.commodity-product.create']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#product" role="button"
                     aria-expanded="false" aria-controls="product">
                     <i class="bi bi-bag-check"></i>
@@ -26,10 +26,10 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['seller.product.index', 'seller.commodity-product.create']) ? 'show' : '' }}" id="product">
+            <div class="collapse {{ isActiveRoute(['seller.commodity-product.index', 'seller.commodity-product.create']) ? 'show' : '' }}" id="product">
                 <ul class="nav sub-menu">
-                    <li class="nav-item {{ isActiveRoute(['seller.product.index']) ? 'active' : '' }}">
-                        <a href="{{route('seller.product.index')}}" class="nav-link" wire:navigate>
+                    <li class="nav-item {{ isActiveRoute(['seller.commodity-product.index']) ? 'active' : '' }}">
+                        <a href="{{route('seller.commodity-product.index')}}" class="nav-link" wire:navigate>
                            Product List
                         </a>
                     </li>

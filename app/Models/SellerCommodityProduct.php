@@ -18,7 +18,13 @@ class SellerCommodityProduct extends Model
         'operator'              => 'array',
         'size'                  => 'array',
         'size_price'            => 'array',
+        'dimension'             => 'array',
+        'dimension_price'       => 'array',
+        'specification'         => 'array',
+        'quality'               => 'array',
+        'quality_price'         => 'array',
         'pincode'               => 'array',
         'address'               => 'array',
+        'images'                => 'array',
     ];
 }

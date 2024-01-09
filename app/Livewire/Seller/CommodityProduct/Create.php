@@ -138,13 +138,12 @@ class Create extends Component
 
     public function save()
     {
-        dd(request()->all());
         $this->validate([
-            'commodity_product_id'  => 'required',
+            'product_id'            => 'required',
             'base_price'            => 'required',
         ]);
 
-        $product_data = CommodityProduct::find($this->commodity_product_id);
+        $product_data = CommodityProduct::find($this->product_id);
         if(!$product_data){
             $this->dispatch('alert',
                 type : 'error',
@@ -169,7 +168,7 @@ class Create extends Component
         $data->base_price           = $this->base_price;
         $data->loading_charge       = $this->loading_charge;
         $data->insurance_charge     = $this->insurance_charge;
-        $data->quality_charge       = $this->quality_charge;
+        $data->quality_charge       = $this->quality_inspection_charge;
         $data->gst                  = $this->gst;
         $data->tcs                  = $this->tcs;
         $data->charge_name          = $this->charge_name;
