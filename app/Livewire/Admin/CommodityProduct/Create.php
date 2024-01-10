@@ -45,7 +45,7 @@ class Create extends Component
 
         $this->packaging_type_name = PackagingType::whereIn('id', $this->packaging_type)->pluck('name');
 
-        return view('admin.commodity_product.create', compact('category_list', 'brand_list', 'unit_list', 'packaging_type_list'));
+        return view('admin.commodity_product.form', compact('category_list', 'brand_list', 'unit_list', 'packaging_type_list'));
     }
 
     public function addOtherChargesField($charge)
@@ -104,15 +104,15 @@ class Create extends Component
             'unit_id'           => 'required',
             'base_price'        => 'required',
             'packaging_type'    => 'required',
-            'charge_name.*'     => 'required',
-            'charge_price.*'    => 'required',
-            'operator.*'        => 'required',
-            'size.*'            => 'required',
-            'size_price.*'      => 'required',
-            'dimension.*'       => 'required',
-            'dimension_price.*' => 'required',
-            'quality.*'         => 'required',
-            'quality_price.*'   => 'required',
+            // 'charge_name.*'     => 'required',
+            // 'charge_price.*'    => 'required',
+            // 'operator.*'        => 'required',
+            // 'size.*'            => 'required',
+            // 'size_price.*'      => 'required',
+            // 'dimension.*'       => 'required',
+            // 'dimension_price.*' => 'required',
+            // 'quality.*'         => 'required',
+            // 'quality_price.*'   => 'required',
             'thumbnail'         => 'required',
         ]);
 
