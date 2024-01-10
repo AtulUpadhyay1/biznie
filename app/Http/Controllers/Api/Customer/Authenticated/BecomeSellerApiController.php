@@ -13,19 +13,22 @@ class BecomeSellerApiController extends Controller
     public function becomeSeller(Request $request)
     {
         $this->validate($request, [
-            'user_name'         => 'required',
+            //'user_name'         => 'required',
             'name'              => 'required',
             'about'             => 'required',
-            'category'          => 'required|array|min:1',
-            'category.*'        => 'required|integer|min:1',
-            'type'              => 'required|array|min:1',
-            'type.*'            => 'required|integer|min:1',
+            // 'category'          => 'required|array|min:1',
+            // 'category.*'        => 'required|integer|min:1',
+            // 'type'              => 'required|array|min:1',
+            // 'type.*'            => 'required|integer|min:1',
             'seller_type'       => 'required|array|min:1',
             'seller_type.*'     => 'required|integer|min:1',
+            'pan_number'        => 'required',
+            'gst_type'          => 'required',
+            'gst_number'        => 'required'
         ]);
 
         $user = auth()->user();
-        $user->name = $request->user_name;
+        // $user->name = $request->user_name;
         $user->type = 'seller';
         $user->save();
 
@@ -38,15 +41,26 @@ class BecomeSellerApiController extends Controller
         $business = new Business;
         $business->user_id = $user->id;
         $business->name = $request->name;
-        $business->about = $request->about;
-        $business->category = $request->category;
-        $business->type = $request->type;
+        // $business->about = $request->about;
+        // $business->category = $request->category;
+        // $business->type = $request->type;
         $business->seller_type = $request->seller_type;
         $business->save();
 
+        $data = SellerKycDetail::where('user_id', auth()->id())->first();
+        if(!$data){
+            $data = new SellerKycDetail;
+            $data->user_id = auth()->id();
+        }
+        $data->identity_type = 'pan';
+        $data->identity_number = $request->pan_number;
+        $data->gst_type = $request->gst_type;
+        $data->gst_number = $request->gst_number;
+        $data->save();
+
         return response([
             'success'   => true,
-            'message'   => 'Congratulations, Now you are a seller. Complete your next steps.'
+            'message'   => 'Congratulations, Now you are a seller.'
         ],200);
 
     }

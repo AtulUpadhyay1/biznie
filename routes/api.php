@@ -25,9 +25,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
     // Registration & login
     Route::post('register', 'Auth\AuthApiController@register');
+    Route::post('email-login', 'Auth\AuthApiController@emailLogin');
     Route::post('otp-login', 'Auth\AuthApiController@otpLogin');
     Route::post('verify-otp', 'Auth\AuthApiController@verifyOtp');
-    Route::post('email-login', 'Auth\AuthApiController@emailLogin');
 
     // Category
     Route::get('category', 'CategoryApiController@category');

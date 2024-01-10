@@ -67,40 +67,48 @@ class AuthApiController extends Controller
         ]);
 
         $user = User::where('phone', $request->phone)->first();
-        if($user){
-            if($user->status == 'active'){
 
-                $otp = 1234;
-                $data = UserOtp::where('phone', $request->phone)->first();
-                if(!$data){
-                    $data = new UserOtp;
-                }
-                $data->phone = $request->phone;
-                $data->otp = $otp;
-                $data->save();
-
-                return response([
-                    'success'   => true,
-                    'message'   => 'Otp send successfully.'
-                ],200);
-
-            }else{
-
-                return response([
-                    'success'   => false,
-                    'message'=> 'Your account has been deactivated.',
-                ],400);
-
+        if(!$user){
+            $temp_user = TempUser::where('phone', $request->phone)->first();
+            if(!$temp_user){
+                $temp_user = new TempUser;
             }
+            $temp_user->name = 'User';
+            $temp_user->type = 'customer';
+            $temp_user->email = NULL;
+            $temp_user->phone = $request->phone;
+            $temp_user->password = NULL;
+            $temp_user->save();
+        }
 
-        }else{
-
+        if($user && $user->status == 'in_active'){
             return response([
                 'success'   => false,
-                'message'=> 'Phone not found.',
+                'message'   => 'Your account has been deactivated.',
             ],400);
-
         }
+
+        $otp = 1234;
+
+        // $otp = rand(1111, 9999);
+
+        // if(config('app.env') == 'production' && $request->phone != "8920976591"){
+        //     Msg91::sms()->to('91'.$request->phone)->flow('648d8690d6fc051b591f1ec3')->variable('user', $user->name)->variable('otp', $otp)->send();
+        // }
+
+        $data = UserOtp::where('phone', $request->phone)->first();
+        if(!$data){
+            $data = new UserOtp;
+        }
+        $data->phone = $request->phone;
+        $data->otp = $otp;
+        $data->save();
+
+        return response([
+            'success'   => true,
+            'message'   => 'Otp send successfully.'
+        ],200);
+
     }
 
     public function emailLogin(Request $request)
