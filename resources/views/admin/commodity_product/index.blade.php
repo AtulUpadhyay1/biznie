@@ -56,7 +56,13 @@
                                             {{ $data->name }}
                                         </td>
                                         <td>{{ $data->getCategory->name }}</td>
-                                        <td><b class="text-sucess">₹ {{ $data->base_price }}</b></td>
+                                        <td>
+                                            @if ($data->base_price)
+                                                <b class="text-sucess">₹ {{ $data->base_price }}</b>
+                                            @else
+                                                <a href="{{route('admin.commodity-product.price', $data->id)}}" wire:navigate> Set Price</a>
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input type="checkbox" class="form-check-input" {{ $data->status == 'active' ? 'checked' : '' }}  wire:change="updateStatus({{ $data->id }})">
@@ -68,6 +74,8 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn">
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.edit', $data->id)}}" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.price', $data->id)}}" wire:navigate><i class="bi bi-currency-rupee icon-sm me-2"></i><span>Pricing & others</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.variation', $data->id)}}" wire:navigate><i class="bi bi-tags icon-sm me-2"></i><span>Variation</span></a>
                                                 {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-copy icon-sm me-2"></i><span>Duplicate</span></a>
                                                 <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
                                             </div>

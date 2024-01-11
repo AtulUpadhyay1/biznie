@@ -22,6 +22,7 @@ class CommodityProduct extends Model
         'quality'               => 'array',
         'quality_price'         => 'array',
         'images'                => 'array',
+        'brand_id'              => 'array',
         'packaging_type'        => 'array',
         'packaging_type_price'  => 'array',
     ];

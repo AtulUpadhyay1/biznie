@@ -125,6 +125,10 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product/create', AdminRoot\CommodityProduct\Create::class)->name('commodity-product.create');
         Route::get('commodity-product/edit/{id}', AdminRoot\CommodityProduct\Edit::class)->name('commodity-product.edit');
 
+        Route::get('commodity-product/price/{id}', AdminRoot\CommodityProduct\PriceForm::class)->name('commodity-product.price');
+        Route::get('commodity-product/variation/{id}', AdminRoot\CommodityProduct\VariationForm::class)->name('commodity-product.variation');
+
+
 
         // Banner
         Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
