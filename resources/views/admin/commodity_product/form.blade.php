@@ -148,6 +148,8 @@
                                 <br>
                                 @if ($thumbnail)
                                     <img src="{{ $thumbnail->temporaryUrl() }}" height="200" width="200">
+                                @elseif ($show_thumbnail)
+                                    <img src="{{asset($show_thumbnail)}}" height="200" width="200">
                                 @else
                                     <img src="{{asset('common/images/upload.png')}}" height="200" width="200">
                                 @endif
@@ -164,6 +166,8 @@
                                 <br>
                                 @if ($images)
                                     <img src="{{ $images->temporaryUrl() }}" height="200" width="200">
+                                @elseif ($show_image)
+                                    <img src="{{asset($show_image)}}" height="200" width="200">
                                 @else
                                     <img src="{{asset('common/images/upload.png')}}" height="200" width="200">
                                 @endif
@@ -213,6 +217,8 @@
                                     <br>
                                     @if ($meta_image)
                                         <img src="{{ $meta_image->temporaryUrl() }}" height="200" width="200">
+                                    @elseif ($show_meta_image)
+                                        <img src="{{asset($show_meta_image)}}" height="200" width="200">
                                     @else
                                         <img src="{{asset('common/images/upload.png')}}" height="200" width="200">
                                     @endif
