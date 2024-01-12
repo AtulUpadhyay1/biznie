@@ -127,6 +127,7 @@ Route::group(['as'=>'admin.'], function () {
 
         Route::get('commodity-product/price/{id}', AdminRoot\CommodityProduct\PriceForm::class)->name('commodity-product.price');
         Route::get('commodity-product/variation/{id}', AdminRoot\CommodityProduct\VariationForm::class)->name('commodity-product.variation');
+        Route::get('commodity-product/quality/{id}', AdminRoot\CommodityProduct\QualityForm::class)->name('commodity-product.quality');
 
 
 

@@ -140,53 +140,6 @@
                     </div>
                 </div>
 
-                <div class="card mt-3">
-                    <div class="card-header d-flex">
-                        <h5>Product quality setup</h5>
-                        <div class="form-check form-switch ms-3">
-                            <input type="checkbox" class="form-check-input" id="quality_switch" value="{{$is_quality ? 1 : 0}}" wire:model.live="is_quality">
-                        </div>
-
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @if ($is_quality)
-                                <div class="col-md-11 mb-3">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">Quality</span>
-                                        <input type="text" class="form-control @error('quality.0') is-invalid @enderror" placeholder="Enter Quality" wire:model="quality.0">
-                                        <span class="input-group-text">Price</span>
-                                        <input type="number" class="form-control @error('quality_price.0') is-invalid @enderror" placeholder="Enter Quality Price" wire:model="quality_price.0">
-                                    </div>
-                                    @error('quality.0') <small class="text-danger">{{ $message }}</small>@enderror
-                                    @error('quality_price.0') <small class="text-danger">{{ $message }}</small>@enderror
-                                </div>
-                                <div class="col-md-1 mb-3">
-                                    <button type="button" class="btn btn-inverse-success" wire:click="addQualityField({{$quality_field}})">Add</button>
-                                </div>
-
-                                @foreach ($quality_inputs as $quality_key => $quality_input)
-
-                                    <div class="col-md-11 mb-3">
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">Quality</span>
-                                            <input type="text" class="form-control @error('quality.'.$quality_input) is-invalid @enderror" placeholder="Enter Quality" wire:model="quality.{{$quality_input}}">
-                                            <span class="input-group-text">Price</span>
-                                            <input type="number" class="form-control @error('quality_price.'.$quality_input) is-invalid @enderror" placeholder="Enter Quality Price" wire:model="quality_price.{{$quality_input}}">
-                                        </div>
-                                        @error('quality.'.$quality_input) <small class="text-danger">{{ $message }}</small>@enderror
-                                        @error('quality_price.'.$quality_input) <small class="text-danger">{{ $message }}</small>@enderror
-                                    </div>
-                                    <div class="col-md-1 mb-3">
-                                        <button type="button" class="btn btn-inverse-danger" wire:click="removeQualityField({{$quality_key}})">Remove</button>
-                                    </div>
-
-                                @endforeach
-
-                            @endif
-                        </div>
-                    </div>
-                </div>
                 <div class="row mt-3">
                     <div class="col-md-4">
                         <div class="card card-body">
