@@ -20,7 +20,7 @@ class Create extends Component
     public $page_title = "Add Commodity Product";
     use WithFileUploads;
 
-    public $name, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id = [], $unit_id, $base_price, $loading_charge, $insurance_charge, $quality_charge, $gst, $tcs, $description, $thumbnail, $images, $video_url, $meta_title, $meta_description, $meta_image, $specification_notes;
+    public $name, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id = [], $unit_id, $base_price, $loading_charge, $insurance_charge, $quality_charge, $gst, $tcs, $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes;
 
     public $charge_name=[], $charge_price=[], $operator=[];
     public $charge = 0, $charge_inputs = [];
