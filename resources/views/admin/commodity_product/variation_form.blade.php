@@ -44,7 +44,7 @@
                                 @error('dimension_price.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div> --}}
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-5 mb-3">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Specification</span>
                                     <textarea class="form-control @error('specification.0') is-invalid @enderror" wire:model="specification.0" rows="1"></textarea>
@@ -52,9 +52,9 @@
                                 @error('specification.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            {{-- <div class="col-md-1 mb-3">
-                                <button type="button" class="btn btn-inverse-success" wire:click="addVariationField({{$variation}})">Add</button>
-                            </div> --}}
+                            <div class="col-md-1 mb-3">
+                                <button type="button" class="btn btn-inverse-success" wire:click="addVariationField({{$variation}}, false)">Add</button>
+                            </div>
 
                             @foreach ($variation_inputs as $variation_key => $variation_input)
                                 <div class="col-md-5 mb-3">
