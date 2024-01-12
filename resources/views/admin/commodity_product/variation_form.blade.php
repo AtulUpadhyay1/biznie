@@ -59,7 +59,7 @@
                             @foreach ($variation_inputs as $variation_key => $variation_input)
                                 <div class="col-md-5 mb-3">
                                     <div class="input-group">
-                                        <span class="input-group-text"><span class="badge bg-light text-dark">{{$variation_input+1}}</span>&nbsp; Size</span>
+                                        <span class="input-group-text"><span class="badge bg-light text-dark">{{$variation_key+2}}</span>&nbsp; Size</span>
                                         <input type="text" class="form-control @error('size.'.$variation_input) is-invalid @enderror" placeholder="Enter Size" wire:model="size.{{$variation_input}}">
                                         <span class="input-group-text">Price</span>
                                         <input type="number" class="form-control @error('size_price.'.$variation_input) is-invalid @enderror" placeholder="Enter Size Price" wire:model="size_price.{{$variation_input}}">
