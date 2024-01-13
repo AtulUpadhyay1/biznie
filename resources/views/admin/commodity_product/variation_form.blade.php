@@ -25,10 +25,6 @@
                                     <input type="number" class="form-control @error('size_price.0') is-invalid @enderror" placeholder="Enter Size Price" wire:model="size_price.0">
                                 </div>
 
-                                @if ($variation == 0)
-                                    <button type="button" class="btn btn-inverse-success btn-sm py-1" wire:click="addVariationField({{$variation}}, false)">Add</button>
-                                @endif
-
                                 @error('size.0') <small class="text-danger">{{ $message }}</small>@enderror
                                 @error('size_price.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
@@ -44,7 +40,7 @@
                                 @error('dimension_price.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div> --}}
 
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Specification</span>
                                     <textarea class="form-control @error('specification.0') is-invalid @enderror" wire:model="specification.0" rows="1"></textarea>
@@ -52,22 +48,18 @@
                                 @error('specification.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-1 mb-3">
-                                <button type="button" class="btn btn-inverse-success" wire:click="addVariationField({{$variation}}, false)">Add</button>
-                            </div>
-
                             @foreach ($variation_inputs as $variation_key => $variation_input)
                                 <div class="col-md-5 mb-3">
                                     <div class="input-group">
-                                        <span class="input-group-text"><span class="badge bg-light text-dark">{{$variation_key+2}}</span>&nbsp; Size</span>
+                                        <span class="input-group-text"><span class="badge bg-light text-dark">{{ $loop->iteration+1 }}</span>&nbsp; Size</span>
                                         <input type="text" class="form-control @error('size.'.$variation_input) is-invalid @enderror" placeholder="Enter Size" wire:model="size.{{$variation_input}}">
                                         <span class="input-group-text">Price</span>
                                         <input type="number" class="form-control @error('size_price.'.$variation_input) is-invalid @enderror" placeholder="Enter Size Price" wire:model="size_price.{{$variation_input}}">
                                     </div>
 
-                                    @if ($variation == $variation_key+1)
+                                    {{-- @if ($variation == $variation_key+1)
                                         <button type="button" class="btn btn-inverse-success btn-sm py-1" wire:click="addVariationField({{$variation}}, false)">Add</button>
-                                    @endif
+                                    @endif --}}
 
                                     @error('size.'.$variation_input) <small class="text-danger">{{ $message }}</small>@enderror
                                     @error('size_price.'.$variation_input) <small class="text-danger">{{ $message }}</small>@enderror
@@ -96,8 +88,12 @@
                                     <button type="button" class="btn btn-inverse-danger" wire:click="removeVariationField({{$variation_key}})">Remove</button>
                                 </div>
                             @endforeach
+
+                            <div style="margin-top: -30px;">
+                                <button type="button" class="btn btn-inverse-success btn-sm py-1" wire:click="addVariationField({{$variation}}, false)">Add More</button>
+                            </div>
+
                         </div>
-                        {{-- {{$variation}} {{ count($variation_inputs)}} --}}
                     </div>
                     <div class="card-footer">
                         <div class="row">
