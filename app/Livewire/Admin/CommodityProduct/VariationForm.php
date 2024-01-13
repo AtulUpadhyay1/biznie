@@ -94,7 +94,7 @@ class VariationForm extends Component
         $data->save();
 
         if($redirect == true){
-            session()->flash('success', 'Product price updated successfully !!');
+            session()->flash('success', 'Product variation updated successfully !!');
             return $this->redirect('/admin/commodity-product',navigate: true);
         }
     }
