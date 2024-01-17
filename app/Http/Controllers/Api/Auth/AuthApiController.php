@@ -63,7 +63,7 @@ class AuthApiController extends Controller
     public function otpLogin(Request $request)
     {
         $this->validate($request, [
-            'phone'     => 'required|numeric',
+            'phone'     => 'required|numeric|digits:10',
         ]);
 
         $user = User::where('phone', $request->phone)->first();
@@ -148,7 +148,7 @@ class AuthApiController extends Controller
     public function verifyOtp(Request $request)
     {
         $this->validate($request, [
-            'phone' => 'required|numeric',
+            'phone' => 'required|numeric|digits:10',
             'otp' => 'required|numeric',
         ]);
 
