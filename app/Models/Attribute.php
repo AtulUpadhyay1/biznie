@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Attribute extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public static function active()
+    {
+        return Attribute::where('status', '1');
+    }
 }

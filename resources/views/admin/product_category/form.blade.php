@@ -27,7 +27,7 @@
                                         <select class="form-select @error('business_category_id') is-invalid @enderror" id="business-category"  wire:model="business_category_id">
                                             <option selected="">Select Business Category</option>
                                             @foreach($business_category_list as $business_category)
-                                            <option value="{{$business_category->id}}">{{$business_category->name}}</option>
+                                                <option value="{{$business_category->id}}">{{$business_category->name}}</option>
                                             @endforeach
                                         </select>
                                         @error('business_category_id') <small class="text-danger">{{ $message }}</small>@enderror
@@ -44,6 +44,17 @@
                                             <input type="text" id="icon" class="form-control @error('icon') is-invalid @enderror" wire:model="icon" placeholder="Enter fa icon">
                                         </div>
                                         @error('icon') <small class="text-danger">{{ $message }}</small>@enderror
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <div wire:ignore>
+                                            <label class="form-label" for="attribute">Attribute</label>
+                                            <select class="form-select select2 @error('attribute') is-invalid @enderror" id="attribute" wire:model="attribute" data-placeholder="Select Attribute" multiple>
+                                                @foreach($attribute_list as $attribute_data)
+                                                    <option value="{{$attribute_data->id}}">{{$attribute_data->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @error('attribute') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <h5 class="card-heading-h5">SEO Section:</h5>
                                     <div class="col-md-6 mb-3">
@@ -107,4 +118,15 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function () {
+                $('.select2').on('change', function (e) {
+                    let elementName = $(this).attr('id');
+                    var data = $(this).select2("val");
+                    @this.set(elementName, data);
+                });
+            });
+        </script>
+    @endpush
 </div>
