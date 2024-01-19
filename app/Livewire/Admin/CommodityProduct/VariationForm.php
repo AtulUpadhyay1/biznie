@@ -1,96 +1,102 @@
 <?php
 
-namespace App\Livewire\Admin\CommodityProduct;
+namespace App\Livewire\Admin\Commodityproduct;
 
 use Livewire\Component;
+use App\Models\ProductUnit;
 use App\Models\CommodityProduct;
 
 class VariationForm extends Component
 {
-    public $page_title = "Product variation setup";
+    public $page_title = "Product variation";
 
-    public $hidden_id, $size=[], $size_price=[], $dimension=[], $dimension_price=[], $specification=[];
-    public $variation = 0, $variation_inputs = [];
+    public $hidden_id, $variation_count = 0, $variation_inputs = [], $selected_attributes = [], $variation = [];
 
     public function mount($id)
     {
         $this->hidden_id = $id;
 
         $data = CommodityProduct::findOrFail($this->hidden_id);
-        $this->size             = $data->size;
-        $this->size_price       = $data->size_price;
-        // $this->dimension        = $data->dimension;
-        // $this->dimension_price  = $data->dimension_price;
-        $this->specification    = $data->specification;
-        if($data->size){
-            foreach($data->size as $key => $value){
+        $this->selected_attributes = $data->attributes;
+
+        $this->variation = $data->variation;
+
+        if($data->variation && count($data->variation) > 0){
+            foreach($data->variation['Price'] as $key => $value){
                 if($key != 0){
                     array_push($this->variation_inputs, $key);
                 }
             }
         }
 
-        $this->variation = $key??0;
-
-        $this->size_price[0] = 0;
-        $this->specification[0] = '';
+        $this->variation_count = $key??0;
+        if($data->variation && count($data->variation) > 0) {
+            $this->variation['Price'] = $data->variation['Price'];
+        }else{
+            $this->variation['Price'][0] = 0;
+        }
 
     }
 
     public function render()
     {
-        return view('admin.commodity_product.variation_form');
+        $unit_list = ProductUnit::active()->orderBy('name', 'asc')->get();
+        return view('admin.commodity_product.variation_form', compact('unit_list'));
     }
 
-    public function addVariationField($variation, $redirect)
+    public function addVariationField($variation_count, $redirect)
     {
         $this->save($redirect);
 
-        $variation = $variation + 1;
-        $this->variation = $variation;
-        array_push($this->variation_inputs, $variation);
+        $variation_count = $variation_count + 1;
+        $this->variation_count = $variation_count;
+        array_push($this->variation_inputs, $variation_count);
 
-        $this->size_price[$variation] = 0;
-        $this->specification[$variation] = '';
-    }
-
-    public function removeVariationField($variation)
-    {
-        unset($this->variation_inputs[$variation]);
-
-        unset($this->size[$variation+1]);
-        unset($this->size_price[$variation+1]);
-        unset($this->specification[$variation+1]);
+        $this->variation['Price'][$variation_count] = 0;
 
     }
 
-    public function save($redirect=true)
+    public function removeVariationField($variation_count)
     {
+        unset($this->variation_inputs[$variation_count]);
+
+        foreach ($this->selected_attributes as $attribute) {
+            unset($this->variation[getAttribute($attribute)->name][$variation_count+1]);
+        }
+        unset($this->variation['Price'][$variation_count+1]);
+
+    }
+
+    function save($redirect=true)
+    {
+        //dd($this->variation);
+
         $this->validate([
-            'size.0'          => 'required',
-            'size_price.0'    => 'required|min:0',
-            //'specification.'.$value => 'required',
+            'variation.Price.0'          => 'required|min:0',
         ],[
-            'size.0.required' => 'Enter size.',
-            'size_price.0.required' => 'Enter price.'
+            'variation.Price.0.required' => 'Enter price.',
         ]);
-        foreach ($this->variation_inputs as $value) {
+        foreach ($this->selected_attributes as $attribute) {
             $this->validate([
-                'size.'.$value          => 'required',
-                'size_price.'.$value    => 'required|min:0',
-                //'specification.'.$value => 'required',
+                'variation.'.getAttribute($attribute)->name.'.0'    => 'required',
             ],[
-                'size.'.$value.'.required'       => 'Enter size.',
-                'size_price.'.$value.'.required' => 'Enter price.'
+                'variation.'.getAttribute($attribute)->name.'.0'    => 'Enter '.getAttribute($attribute)->name.'.',
             ]);
+
+            foreach ($this->variation_inputs as $value) {
+                $this->validate([
+                    'variation.'.getAttribute($attribute)->name.'.'.$value  => 'required',
+                    'variation.Price.'.$value                               => 'required|min:0',
+                ],[
+                    'variation.'.getAttribute($attribute)->name.'.'.$value  => 'Enter '.getAttribute($attribute)->name.'.',
+                    'variation.Price.'.$value.'.required'                   => 'Enter price.',
+
+                ]);
+            }
         }
 
         $data = CommodityProduct::find($this->hidden_id);
-        $data->size             = array_values($this->size);
-        $data->size_price       = array_values($this->size_price);
-        $data->dimension        = array_values($this->dimension);
-        $data->dimension_price  = array_values($this->dimension_price);
-        $data->specification    = array_values($this->specification);
+        $data->variation = $this->variation;
         $data->save();
 
         if($redirect == true){

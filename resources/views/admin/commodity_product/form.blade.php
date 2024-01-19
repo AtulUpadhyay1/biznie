@@ -61,7 +61,7 @@
                                     <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
                                         <option value="">Select Category</option>
                                         @foreach ($category_list as $category_data)
-                                            <option value="{{ $category_data->id }}">{{ $category_data->name }}</option>
+                                            <option value="{{ $category_data->id }}"> {{ $category_data->name }} @if($category_data->attributes) (@foreach ($category_data->attributes as $attributes) {{getAttribute($attributes)->name}}@if(!$loop->last),@endif @endforeach)@endif </option>
                                         @endforeach
                                     </select>
                                 </div>

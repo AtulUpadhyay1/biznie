@@ -14,6 +14,8 @@ class CommodityProduct extends Model
         'charge_name'           => 'array',
         'charge_price'          => 'array',
         'operator'              => 'array',
+        'attributes'            => 'array',
+        'variation'             => 'array',
         'size'                  => 'array',
         'size_price'            => 'array',
         'specification'         => 'array',

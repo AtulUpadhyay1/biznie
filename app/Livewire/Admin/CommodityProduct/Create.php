@@ -140,6 +140,7 @@ class Create extends Component
         $data->charge_name      = $this->charge_name;
         $data->charge_price     = $this->charge_price;
         $data->operator         = $this->operator;
+        $data->attributes       = ProductCategory::find($this->category_id)->attributes;
         $data->size             = $this->size;
         $data->size_price       = $this->size_price;
         $data->dimension        = $this->dimension;

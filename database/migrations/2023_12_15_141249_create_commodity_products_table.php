@@ -32,6 +32,8 @@ return new class extends Migration
             $table->longText('charge_name')->nullable();
             $table->longText('charge_price')->nullable();
             $table->longText('operator')->nullable();
+            $table->text('attributes')->nullable();
+            $table->longText('variation')->nullable();
             $table->longText('size')->nullable();
             $table->longText('size_price')->nullable();
             $table->longText('dimension')->nullable();
