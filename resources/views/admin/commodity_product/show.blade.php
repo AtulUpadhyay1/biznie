@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    {{ $data }}
+                    {{-- {{ $data }} --}}
                     <h4>{{ $data->name }}</h4>
                     <hr>
                     <p><b>Category :</b> {{ $data->getCategory ? $data->getCategory->name : '--' }}</p>
@@ -36,7 +36,7 @@
 
                     <p><b>PackagingType :</b>
                         @foreach ($data->packaging_type as $packaging_type)
-                            {{ getPackagingType($packaging_type)->name}} - ₹ {{ $data->packaging_type_price[$loop->iteration] }}@if(!$loop->last), @endif
+                            {{ getPackagingType($packaging_type)->name}} - ₹ {{ $data->packaging_type_price ? $data->packaging_type_price[$loop->iteration] : 0 }}@if(!$loop->last), @endif
                         @endforeach
                     </p>
                     <hr>
