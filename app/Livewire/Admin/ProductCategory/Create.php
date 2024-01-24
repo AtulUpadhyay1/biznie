@@ -17,7 +17,7 @@ class Create extends Component
     public function render()
     {
         $business_category_list =BusinessCategory::active()->get();
-        $attribute_list = Attribute::active()->orderBy('name', 'asc')->get();
+        $attribute_list = Attribute::active()->get();
         return view('admin.product_category.form', compact('business_category_list', 'attribute_list'), ['page_title' => 'Create Product Category']);
     }
 

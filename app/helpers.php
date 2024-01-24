@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Brand;
 use App\Models\Attribute;
 use App\Models\ImageUpload;
 use App\Models\PackagingType;
@@ -92,6 +93,12 @@ use Illuminate\Support\Facades\DB;
     if(! function_exists('getPackagingType')){
         function getPackagingType($id){
             return PackagingType::find($id);
+        }
+    }
+
+    if(! function_exists('getBrand')){
+        function getBrand($id){
+            return Brand::find($id);
         }
     }
 ?>
