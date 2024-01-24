@@ -50,9 +50,38 @@
                     <p><b>TCS (%) :</b> ₹ {{ $data->tcs }}</p>
                     <p><b>Other Charges :</b>
                         @foreach ($data->charge_name as $charge_name)
-                            {{ $charge_name }} - ₹ {{ $data->operator[$loop->iteration] }}{{ $data->charge_price[$loop->iteration] }},
+                            {{ $charge_name }} - ₹ {{ $data->operator[$loop->iteration] }}{{ $data->charge_price[$loop->iteration] }}@if(!$loop->last), @endif
                         @endforeach
                     </p>
+                    <hr>
+                    <h4>Product Variation</h4>
+                    <hr>
+                    @if ($data->variation)
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        @foreach ($data->attributes as $attributes_id)
+                                            <th>{{ getAttribute($attributes_id)->name }}</th>
+                                        @endforeach
+                                        <th>Gauge <br> Difference</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data->variation['Price'] as $key => $variation)
+                                        <tr>
+                                            <td><span class="badge bg-danger">{{$loop->iteration}}</span></td>
+                                                @foreach ($data->attributes as $attributes_id)
+                                                    <td>{{ $data->variation[getAttribute($attributes_id)->name][$key] }}</td>
+                                                @endforeach
+                                            <td>{{$variation}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

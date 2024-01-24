@@ -24,7 +24,7 @@ class Create extends Component
             'name' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
-            'icon' => 'required',
+            // 'icon' => 'required',
         ]);
 
         try
