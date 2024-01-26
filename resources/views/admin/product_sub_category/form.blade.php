@@ -55,6 +55,17 @@
                                         </div>
                                         @error('icon') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
+                                    <div class="col-md-12 mb-3">
+                                        <div wire:ignore>
+                                            <label class="form-label" for="attribute">Attribute</label>
+                                            <select class="form-select select2 @error('attribute') is-invalid @enderror" id="attribute" wire:model="attribute" data-placeholder="Select Attribute" multiple>
+                                                @foreach($attribute_list as $attribute_data)
+                                                    <option value="{{$attribute_data->id}}">{{$attribute_data->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @error('attribute') <small class="text-danger">{{ $message }}</small>@enderror
+                                    </div>
                                     <h5 class="card-heading-h5">SEO Section:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="title">Meta Title</label>
@@ -117,5 +128,15 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function () {
+                $('.select2').on('change', function (e) {
+                    let elementName = $(this).attr('id');
+                    var data = $(this).select2("val");
+                    @this.set(elementName, data);
+                });
+            });
+        </script>
+    @endpush
 </div>
-

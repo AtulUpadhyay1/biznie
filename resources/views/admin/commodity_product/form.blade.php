@@ -73,10 +73,10 @@
                                 <select class="form-select select2 sub_category @error('sub_category') is-invalid @enderror" id="sub_category" wire:model="sub_category_id">
                                     <option>Select Sub Category</option>
                                     @foreach ($sub_category_list as $sub_category_data)
-                                        <option value="{{$sub_category_data->id}}">{{$sub_category_data->name}}</option>
+                                        <option value="{{$sub_category_data->id}}">{{$sub_category_data->name}} @if($sub_category_data->attributes) (@foreach ($sub_category_data->attributes as $attributes) {{getAttribute($attributes)->name}}@if(!$loop->last),@endif @endforeach)@endif</option>
                                     @endforeach
                                 </select>
-                                @error('sub_category') <small class="text-danger">{{ $message }}</small>@enderror
+                                @error('sub_category_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
                             <div class="col-md-4 mb-3">

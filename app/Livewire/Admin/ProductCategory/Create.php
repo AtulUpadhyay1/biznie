@@ -25,10 +25,10 @@ class Create extends Component
     {
         $this->validate([
             'name' => 'required',
-            'attribute' => 'required|array',
+            //'attribute' => 'required|array',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
-            'icon' => 'required',
+            // 'icon' => 'required',
             'business_category_id' => 'required',
         ]);
 

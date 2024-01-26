@@ -100,6 +100,7 @@ class Create extends Component
         $this->validate([
             'name'              => 'required',
             'category_id'       => 'required',
+            'sub_category_id'   => 'required',
             'brand_id'          => 'required',
             'unit_id'           => 'required',
             //'base_price'        => 'required',
@@ -140,7 +141,7 @@ class Create extends Component
         $data->charge_name      = $this->charge_name;
         $data->charge_price     = $this->charge_price;
         $data->operator         = $this->operator;
-        $data->attributes       = ProductCategory::find($this->category_id)->attributes;
+        $data->attributes       = ProductSubCategory::find($this->sub_category_id)->attributes;
         $data->size             = $this->size;
         $data->size_price       = $this->size_price;
         $data->dimension        = $this->dimension;

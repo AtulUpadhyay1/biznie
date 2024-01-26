@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('business_category_id')->unsigned();
             $table->string('name');
+            $table->text('attributes')->nullable();
             $table->string('slug');
             $table->string('icon')->nullable();
             $table->string('thumbnail')->nullable();
