@@ -39,6 +39,7 @@ class BecomeSellerApiController extends Controller
         }
 
         $user->name = $request->user_name;
+        $user->email = $request->email;
         $user->type = 'seller';
         $user->save();
 

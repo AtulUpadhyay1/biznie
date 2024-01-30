@@ -54,6 +54,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
         Route::post('updated-bank-details', 'Authenticated\BecomeSellerApiController@updatedBankDetails');
         Route::post('updated-kyc-details', 'Authenticated\BecomeSellerApiController@updatedKycDetails');
 
+        // Become Transporter
+        Route::post('become-transporter', 'Authenticated\BecomeTransporterApiController@becomeTransport');
+
         // Profile
         Route::get('profile', 'Authenticated\ProfileApiController@profile');
         Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
