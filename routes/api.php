@@ -56,6 +56,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
 
         // Profile
         Route::get('profile', 'Authenticated\ProfileApiController@profile');
+        Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
+
 
     });
 
