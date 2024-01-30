@@ -13,9 +13,10 @@ class BecomeSellerApiController extends Controller
     public function becomeSeller(Request $request)
     {
         $this->validate($request, [
-            //'user_name'         => 'required',
-            'name'              => 'required',
-            'about'             => 'required',
+            'user_name'         => 'required',
+            'email'             => 'required|unique:users,email,'.auth()->id(),
+            'company_name'      => 'required',
+            // 'about'             => 'required',
             // 'category'          => 'required|array|min:1',
             // 'category.*'        => 'required|integer|min:1',
             // 'type'              => 'required|array|min:1',
@@ -23,12 +24,21 @@ class BecomeSellerApiController extends Controller
             'seller_type'       => 'required|array|min:1',
             'seller_type.*'     => 'required|integer|min:1',
             'pan_number'        => 'required',
-            'gst_type'          => 'required',
-            'gst_number'        => 'required'
+            // 'gst_type'          => 'required',
+            'gst_number'        => 'required',
+            'address'           => 'required',
         ]);
 
         $user = auth()->user();
-        // $user->name = $request->user_name;
+
+        if($user->type == 'seller'){
+            return response([
+                'success'   => false,
+                'message'   => 'Yor are already a seller.'
+            ],400);
+        }
+
+        $user->name = $request->user_name;
         $user->type = 'seller';
         $user->save();
 
@@ -40,7 +50,7 @@ class BecomeSellerApiController extends Controller
 
         $business = new Business;
         $business->user_id = $user->id;
-        $business->name = $request->name;
+        $business->name = $request->company_name;
         // $business->about = $request->about;
         // $business->category = $request->category;
         // $business->type = $request->type;
@@ -56,6 +66,7 @@ class BecomeSellerApiController extends Controller
         $data->identity_number = $request->pan_number;
         $data->gst_type = $request->gst_type;
         $data->gst_number = $request->gst_number;
+        $data->address  = $request->address;
         $data->save();
 
         return response([
