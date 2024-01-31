@@ -3,6 +3,7 @@
 use App\Models\Brand;
 use App\Models\Attribute;
 use App\Models\ImageUpload;
+use App\Models\ProductUnit;
 use App\Models\PackagingType;
 use Illuminate\Support\Facades\DB;
     if(! function_exists('isActiveRoute')){
@@ -99,6 +100,12 @@ use Illuminate\Support\Facades\DB;
     if(! function_exists('getBrand')){
         function getBrand($id){
             return Brand::find($id);
+        }
+    }
+
+    if(! function_exists('getProductUnit')){
+        function getProductUnit($id){
+            return ProductUnit::find($id);
         }
     }
 ?>
