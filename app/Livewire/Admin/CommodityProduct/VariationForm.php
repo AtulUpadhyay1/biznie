@@ -10,7 +10,7 @@ class VariationForm extends Component
 {
     public $page_title = "Product variation";
 
-    public $hidden_id, $variation_count = 0, $variation_inputs = [], $selected_attributes = [], $variation = [];
+    public $hidden_id, $variation_count = 0, $variation_inputs = [], $selected_attributes = [], $variation = [], $unit = [];
 
     public function mount($id)
     {
@@ -34,6 +34,10 @@ class VariationForm extends Component
             $this->variation['Price'] = $data->variation['Price'];
         }else{
             $this->variation['Price'][0] = 0;
+        }
+
+        foreach ($this->selected_attributes as $attribute) {
+            $this->unit[getAttribute($attribute)->name] = $data->unit ? $data->unit[getAttribute($attribute)->name] : '';
         }
 
     }
@@ -96,6 +100,7 @@ class VariationForm extends Component
         }
 
         $data = CommodityProduct::find($this->hidden_id);
+        $data->unit = $this->unit;
         $data->variation = $this->variation;
         $data->save();
 

@@ -25,10 +25,10 @@
                                         @foreach ($selected_attributes as $attribute)
                                             <th class="text-center">
                                                 {{getAttribute($attribute)->name}} <br> <hr style="margin: 3px; border: 0; border-top: 1px solid; opacity: 1.1;">
-                                                <select class="form-control form-control-sm text-center">
+                                                <select class="form-control form-control-sm text-center" wire:model="unit.{{getAttribute($attribute)->name}}">
                                                     <option value="">Select Unit</option>
                                                     @foreach ($unit_list as $unit_data)
-                                                        <option value="{{$unit_data->id}}">{{$unit_data->name}}</option>
+                                                        <option value="{{$unit_data->id}}">{{$unit_data->name}} ({{$unit_data->short_name}})</option>
                                                     @endforeach
                                                 </select>
                                             </th>

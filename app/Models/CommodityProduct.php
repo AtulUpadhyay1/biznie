@@ -13,6 +13,7 @@ class CommodityProduct extends Model
     protected $casts = [
         'charge_name'           => 'array',
         'charge_price'          => 'array',
+        'unit'                  => 'array',
         'operator'              => 'array',
         'attributes'            => 'array',
         'variation'             => 'array',
