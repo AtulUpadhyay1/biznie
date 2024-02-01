@@ -141,10 +141,17 @@
             <!--End of product -->
 
             <li class="nav-item nav-category">Promotion Management</li>
-            <li class="nav-item {{ isActiveRoute(['admin.banner.index']) ? 'active' : '' }}">
+            <li class="nav-item {{ isActiveRoute(['admin.banner.index', 'admin.banner.create', 'admin.banner.edit']) ? 'active' : '' }}">
                 <a href="{{route('admin.banner.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-image"></i>
                     <span class="link-title">Banners</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ isActiveRoute(['admin.market-news.index', 'admin.market-news.create', 'admin.market-news.edit']) ? 'active' : '' }}">
+                <a href="{{route('admin.market-news.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-newspaper"></i>
+                    <span class="link-title">Market News</span>
                 </a>
             </li>
 

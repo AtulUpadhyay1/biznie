@@ -142,7 +142,10 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('packaging-type/create', AdminRoot\PackagingType\Create::class)->name('packaging-type.create');
         Route::get('packaging-type/edit/{id}', AdminRoot\PackagingType\Edit::class)->name('packaging-type.edit');
 
-
+        // Market News
+        Route::get('market-news', AdminRoot\MarketNews\Index::class)->name('market-news.index');
+        Route::get('market-news/create', AdminRoot\MarketNews\Create::class)->name('market-news.create');
+        Route::get('market-news/edit/{id}', AdminRoot\MarketNews\Edit::class)->name('market-news.edit');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');

@@ -16,7 +16,7 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $photo, $banner_type="Main Banner", $url, $resource_type, $resource_id;
+    public $photo, $showPhoto, $banner_type="Main Banner", $url, $resource_type, $resource_id;
     public function render()
     {
         $product_list   = Product::where('request_status', 'approved')->get();
