@@ -61,7 +61,7 @@ class Edit extends Component
             $data->banner = $this->banner ? imageUpload($this->banner, 'product_category') : $data->banner;
             $data->save();
             session()->flash('success', 'Product category created successfully !!');
-            return $this->redirect('/admin/product-category',navigate: true);
+            return $this->redirectRoute('admin.product-category',navigate: true);
 
         }catch (\Exception $e) {
             $this->dispatch('alert',

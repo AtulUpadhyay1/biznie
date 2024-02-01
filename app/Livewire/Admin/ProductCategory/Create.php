@@ -47,7 +47,7 @@ class Create extends Component
             $data->banner = imageUpload($this->banner, 'product_category');
             $data->save();
             session()->flash('success', 'Product category created successfully !!');
-            return $this->redirect('/admin/product-category',navigate: true);
+            return $this->redirectRoute('admin.product-category',navigate: true);
 
         }catch (\Exception $e) {
             $this->dispatch('alert',

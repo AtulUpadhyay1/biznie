@@ -54,7 +54,7 @@ class Edit extends Component
             'name'  => 'required',
             'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
             'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
-            'icon' => 'required',
+            // 'icon' => 'required',
             'business_category_id' => 'required',
             'product_category_id' => 'required',
             'attribute' => 'required|array',
@@ -75,7 +75,7 @@ class Edit extends Component
             $data->save();
 
             session()->flash('success', 'Product sub category updated successfully !!');
-            return $this->redirect('/admin/product-sub-category',navigate: true);
+            return $this->redirectRoute('admin.product-sub-category',navigate: true);
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[

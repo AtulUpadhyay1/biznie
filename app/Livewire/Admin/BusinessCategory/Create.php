@@ -44,7 +44,7 @@ class Create extends Component
             $data->save();
 
             session()->flash('success', 'Business category created successfully !!');
-            return $this->redirect('/admin/business-category',navigate: true);
+            return $this->redirectRoute('admin.business-category',navigate: true);
 
         }catch (\Exception $e) {
 

@@ -59,7 +59,7 @@ class Edit extends Component
             $data->save();
 
             session()->flash('success', 'Brand updated successfully !!');
-            return $this->redirect('/admin/brand',navigate: true);
+            return $this->redirectRoute('admin.brand',navigate: true);
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[

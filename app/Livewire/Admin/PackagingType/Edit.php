@@ -32,6 +32,6 @@ class Edit extends Component
         $data->name = $this->name;
         $data->save();
         session()->flash('success', 'Attribute created successfully !!');
-        return $this->redirect('/admin/packaging-type',navigate: true);
+        return $this->redirectRoute('admin.packaging-type.index',navigate: true);
     }
 }

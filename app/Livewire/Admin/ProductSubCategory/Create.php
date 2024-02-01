@@ -58,7 +58,7 @@ class Create extends Component
             $data->save();
 
             session()->flash('success', 'Product sub category created successfully !!');
-            return $this->redirect('/admin/product-sub-category',navigate: true);
+            return $this->redirectRoute('admin.product-sub-category',navigate: true);
 
         // }catch (\Exception $e) {
         //     $this->dispatchBrowserEvent('alert',[

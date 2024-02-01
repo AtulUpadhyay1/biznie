@@ -57,7 +57,7 @@ class Edit extends Component
             $data->save();
 
             session()->flash('success', 'Business category updated successfully !!');
-            return $this->redirect('/admin/business-category',navigate: true);
+            return $this->redirectRoute('admin.business-category',navigate: true);
 
         }catch (\Exception $e) {
             $this->dispatch('alert',

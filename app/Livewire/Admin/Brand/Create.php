@@ -47,7 +47,7 @@ class Create extends Component
             $data->save();
 
             session()->flash('success', 'Brand created successfully !!');
-            return $this->redirect('/admin/brand',navigate: true);
+            return $this->redirectRoute('admin.brand',navigate: true);
 
         }
         catch (\Exception $e) {

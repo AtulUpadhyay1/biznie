@@ -106,7 +106,7 @@ class VariationForm extends Component
 
         if($redirect == true){
             session()->flash('success', 'Product variation updated successfully !!');
-            return $this->redirect('/admin/commodity-product',navigate: true);
+            return $this->redirectRoute('admin.commodity-product.index',navigate: true);
         }
     }
 }

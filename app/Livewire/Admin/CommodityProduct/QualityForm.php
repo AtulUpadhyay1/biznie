@@ -73,7 +73,7 @@ class QualityForm extends Component
         $data->save();
 
         session()->flash('success', 'Product price updated successfully !!');
-        return $this->redirect('/admin/commodity-product',navigate: true);
+        return $this->redirectRoute('admin.commodity-product.index',navigate: true);
     }
 
 }

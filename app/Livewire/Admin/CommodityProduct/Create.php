@@ -158,6 +158,6 @@ class Create extends Component
         $data->meta_image       = $this->meta_image ? imageUpload($this->meta_image, 'product_meta') : '';
         $data->save();
         session()->flash('success', 'Product created successfully !!');
-        return $this->redirect('/admin/commodity-product',navigate: true);
+        return $this->redirectRoute('admin.commodity-product.index',navigate: true);
     }
 }

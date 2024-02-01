@@ -41,7 +41,7 @@ class Create extends Component
             'name' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
-            'icon' => 'required',
+            // 'icon' => 'required',
             'business_category_id' => 'required',
             'product_category_id' => 'required',
             'product_sub_category_id' => 'required',
@@ -63,7 +63,7 @@ class Create extends Component
             $data->save();
 
             session()->flash('success', 'Product sub sub category created successfully !!');
-            return $this->redirect('/admin/product-sub-subcategory',navigate: true);
+            return $this->redirectRoute('admin.product-sub-subcategory',navigate: true);
 
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[

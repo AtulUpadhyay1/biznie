@@ -50,7 +50,7 @@ class Create extends Component
             $data->resource_id = $this->resource_id;
             $data->save();
             session()->flash('success', 'Banner added successfully !!');
-            return $this->redirect('/admin/banner',navigate: true);
+            return $this->redirectRoute('admin.banner.index',navigate: true);
 
         } catch (\Throwable $th) {
             $this->dispatch('alert',
