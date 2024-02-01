@@ -147,6 +147,11 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('market-news/create', AdminRoot\MarketNews\Create::class)->name('market-news.create');
         Route::get('market-news/edit/{id}', AdminRoot\MarketNews\Edit::class)->name('market-news.edit');
 
+        // Testimonial
+        Route::get('testimonial', AdminRoot\Testimonial\Index::class)->name('testimonial.index');
+        Route::get('testimonial/create', AdminRoot\Testimonial\Create::class)->name('testimonial.create');
+        Route::get('testimonial/edit/{id}', AdminRoot\Testimonial\Edit::class)->name('testimonial.edit');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

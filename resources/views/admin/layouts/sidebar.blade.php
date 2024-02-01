@@ -155,6 +155,13 @@
                 </a>
             </li>
 
+            <li class="nav-item {{ isActiveRoute(['admin.testimonial.index', 'admin.testimonial.create', 'admin.testimonial.edit']) ? 'active' : '' }}">
+                <a href="{{route('admin.testimonial.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-chat-right-quote-fill"></i>
+                    <span class="link-title">Testimonial</span>
+                </a>
+            </li>
+
             <li class="nav-item nav-category">Setup</li>
 
             <!--Businesses-->

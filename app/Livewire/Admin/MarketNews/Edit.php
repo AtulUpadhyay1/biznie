@@ -36,7 +36,7 @@ class Edit extends Component
             'title'         => 'required',
             'description'   => 'required',
             //'tags'          => 'required',
-            'image'         => 'required|image|mimes:png,jpg,jpeg',
+            'image'         => 'nullable|image|mimes:png,jpg,jpeg',
         ]);
 
         $data = MarketNews::find($this->hidden_id);
@@ -44,7 +44,7 @@ class Edit extends Component
         $data->slug         = Str::slug($this->title);
         $data->description  = $this->description;
         $data->tags         = $this->tags;
-        $data->image        = imageUpload($this->image, 'market_news');
+        $data->image        = $this->image ? imageUpload($this->image, 'market_news') : $this->image;
         $data->added_by     = auth()->id();
         $data->save();
         session()->flash('success', 'Product created successfully !!');
