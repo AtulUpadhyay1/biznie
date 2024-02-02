@@ -49,10 +49,10 @@ class Edit extends Component
             $data->meta_description = $this->meta_description;
             $data->meta_keywords = $this->meta_keywords;
             if($this->thumbnail){
-                $data->thumbnail = imageUpload($this->thumbnail, 'business_type');
+                $data->thumbnail = imageUpload($this->thumbnail, 'business_type', $data->thumbnail);
             }
             if($this->banner){
-                $data->banner = imageUpload($this->banner, 'business_type');
+                $data->banner = imageUpload($this->banner, 'business_type', $data->banner);
             }
             $data->save();
 

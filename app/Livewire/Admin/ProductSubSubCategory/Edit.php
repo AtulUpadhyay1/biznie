@@ -75,10 +75,8 @@ class Edit extends Component
             $data->meta_title = $this->meta_title;
             $data->meta_description = $this->meta_description;
             $data->meta_keywords = $this->meta_keywords;
-            $data->thumbnail = imageUpload($this->thumbnail, 'product_subsubcategory');
-            $data->banner = imageUpload($this->banner, 'product_subsubcategory');
-            $data->thumbnail = $this->thumbnail ? imageUpload($this->thumbnail, 'product_subcategory') : $data->thumbnail;
-            $data->banner = $this->banner ? imageUpload($this->banner, 'product_subcategory') : $data->banner;
+            $data->thumbnail = $this->thumbnail ? imageUpload($this->thumbnail, 'product_subcategory', $data->thumbnail) : $data->thumbnail;
+            $data->banner = $this->banner ? imageUpload($this->banner, 'product_subcategory', $data->banner) : $data->banner;
             $data->save();
 
             session()->flash('success', 'Product sub sub category updated successfully !!');

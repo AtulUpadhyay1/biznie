@@ -44,7 +44,7 @@ class Edit extends Component
         $data->slug         = Str::slug($this->title);
         $data->description  = $this->description;
         $data->tags         = $this->tags;
-        $data->image        = $this->image ? imageUpload($this->image, 'market_news') : $this->image;
+        $data->image        = $this->image ? imageUpload($this->image, 'market_news', $data->image) : $data->image;
         $data->added_by     = auth()->id();
         $data->save();
         session()->flash('success', 'Product created successfully !!');

@@ -54,7 +54,7 @@ class Edit extends Component
         try {
 
             $data = Banner::findOrFail($this->hidden_id);
-            $data->photo = $this->photo ? imageUpload($this->photo, 'banner') : $data->photo;
+            $data->photo = $this->photo ? imageUpload($this->photo, 'banner', $data->photo) : $data->photo;
             $data->banner_type = $this->banner_type;
             $data->url = $this->url;
             $data->resource_type = $this->resource_type;

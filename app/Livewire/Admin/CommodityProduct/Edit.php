@@ -97,8 +97,8 @@ class Edit extends Component
         $data->packaging_type_price = $this->packaging_type_price;
         $data->description      = $this->description;
         $data->specification_notes  = $this->specification_notes;
-        $data->thumbnail        = $this->thumbnail ? imageUpload($this->thumbnail, 'product_thumbnail') : $data->thumbnail;
-        $data->images           = $this->images ? [imageUpload($this->images, 'product_images')] : $data->images;
+        $data->thumbnail        = $this->thumbnail ? imageUpload($this->thumbnail, 'product_thumbnail', $data->thumbnail) : $data->thumbnail;
+        $data->images           = $this->images ? [imageUpload($this->images, 'product_images', $data->images)] : $data->images;
         $data->video_url        = $this->video_url;
         $data->meta_title       = $this->meta_title;
         $data->meta_description = $this->meta_description;

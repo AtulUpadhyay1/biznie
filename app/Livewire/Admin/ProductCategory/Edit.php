@@ -57,8 +57,8 @@ class Edit extends Component
             $data->meta_title = $this->meta_title;
             $data->meta_description = $this->meta_description;
             $data->meta_keywords = $this->meta_keywords;
-            $data->thumbnail = $this->thumbnail ? imageUpload($this->thumbnail, 'product_category') : $data->thumbnail;
-            $data->banner = $this->banner ? imageUpload($this->banner, 'product_category') : $data->banner;
+            $data->thumbnail = $this->thumbnail ? imageUpload($this->thumbnail, 'product_category', $data->thumbnail) : $data->thumbnail;
+            $data->banner = $this->banner ? imageUpload($this->banner, 'product_category', $data->banner) : $data->banner;
             $data->save();
             session()->flash('success', 'Product category created successfully !!');
             return $this->redirectRoute('admin.product-category',navigate: true);
