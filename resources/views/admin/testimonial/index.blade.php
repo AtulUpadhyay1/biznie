@@ -57,7 +57,7 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn_{{$data->id}}">
-                                                <a href="{{route('admin.market-news.edit', $data->id)}}" class="dropdown-item d-flex align-items-center" wire:navigate><i
+                                                <a href="{{route('admin.testimonial.edit', $data->id)}}" class="dropdown-item d-flex align-items-center" wire:navigate><i
                                                         class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
                                                 <a href="javascript:;" class="dropdown-item d-flex align-items-center" wire:click="delete({{$data->id}})"><i
                                                         class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>

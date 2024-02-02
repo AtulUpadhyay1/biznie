@@ -67,7 +67,7 @@ use Illuminate\Support\Facades\DB;
     if(! function_exists('imageUpload')){
         function imageUpload($image, $folder, $id=0)
         {
-            $data = new ImageUpload;
+            $data = ImageUpload::find($id);
             if($data){
                 $image_path = 'storage/'.$data->image;
                 if(File::exists($image_path)) {
