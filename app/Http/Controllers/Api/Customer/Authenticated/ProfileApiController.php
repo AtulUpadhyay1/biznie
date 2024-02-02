@@ -45,7 +45,5 @@ class ProfileApiController extends Controller
             'message'   => 'Profile updated successfully.',
             'data'      => new ProfileResource($user)
         ],200);
-
-        return $request->all();
     }
 }
