@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->text('business_interest')->nullable();
             $table->enum('status', ['active', 'in_active'])->nullable()->default('active');
             $table->rememberToken();
             $table->softDeletes();

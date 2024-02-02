@@ -220,4 +220,18 @@ class AuthApiController extends Controller
             ],400);
         }
     }
+
+    public function businessInterest(Request $request)
+    {
+        $this->validate($request, [
+            'business_interest'   => 'required|array'
+        ]);
+        $user = auth()->user();
+        $user->business_interest = $request->business_interest;
+        $user->save();
+        return response([
+            'success'   => true,
+            'message'   => 'Interest business category updated successfully.',
+        ],200);
+    }
 }

@@ -38,6 +38,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         // Image upload
         Route::post('image-upload', 'ImageUploadController@imageUpload');
 
+        Route::post('business-interest', 'Auth\AuthApiController@businessInterest');
+
     });
 });
 
