@@ -40,6 +40,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         Route::post('business-interest', 'Auth\AuthApiController@businessInterest');
 
+        // Product Catalogue Api
+        Route::get('commodity-product-list', 'CommodityProductApiController@index');
     });
 });
 

@@ -87,6 +87,28 @@
                             </table>
                         </div>
                     @endif
+                    {{-- <hr>
+                    <h4>Product Quality</h4>
+                    <hr>
+                    @if ($data->quality)
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Quality</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data->quality as $key => $quality)
+                                    <tr>
+                                        <td>{{ $quality }}</td>
+                                        <td>{{ $data->quality_price[$key] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif --}}
                 </div>
             </div>
         </div>

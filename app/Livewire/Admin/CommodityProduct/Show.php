@@ -16,7 +16,7 @@ class Show extends Component
 
     public function render()
     {
-        $data = CommodityProduct::with('getCategory', 'getSubCategory', 'getSubSubCategory', 'getUnit')->find($this->hidden_id);
+        $data = CommodityProduct::with('getCategory', 'getSubCategory', 'getSubSubCategory', 'getUnit')->findOrFail($this->hidden_id);
         return view('admin.commodity_product.show', compact('data'));
     }
 }
