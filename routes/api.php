@@ -39,9 +39,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::post('image-upload', 'ImageUploadController@imageUpload');
 
         Route::post('business-interest', 'Auth\AuthApiController@businessInterest');
-
-        // Product Catalogue Api
-        Route::get('commodity-product-list', 'CommodityProductApiController@index');
     });
 });
 
@@ -80,6 +77,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::get('profile', 'Authenticated\ProfileApiController@profile');
         Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
 
+        // Product Catalogue Api
+        Route::get('commodity-product-list', 'Authenticated\CommodityProductApiController@index');
     });
 
 });

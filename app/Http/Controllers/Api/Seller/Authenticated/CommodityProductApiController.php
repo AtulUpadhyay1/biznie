@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Seller\Authenticated;
 
 use Illuminate\Http\Request;
 use App\Models\CommodityProduct;
