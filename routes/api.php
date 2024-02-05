@@ -79,6 +79,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
 
         // Product Catalogue Api
         Route::get('commodity-product-list', 'Authenticated\CommodityProductApiController@index');
+        Route::get('my-commodity-product-list', 'Authenticated\CommodityProductApiController@myCommodityProductList');
+        Route::post('store-commodity-product', 'Authenticated\CommodityProductApiController@store');
     });
 
 });

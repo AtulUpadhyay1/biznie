@@ -29,4 +29,24 @@ class SellerCommodityProduct extends Model
         'packaging_type'        => 'array',
         'packaging_type_price'  => 'array',
     ];
+
+    public function getCategory()
+    {
+        return $this->belongsTo(ProductCategory::class, 'category_id');
+    }
+
+    public function getSubCategory()
+    {
+        return $this->belongsTo(ProductSubCategory::class, 'sub_category_id');
+    }
+
+    public function getSubSubCategory()
+    {
+        return $this->belongsTo(ProductSubSubCategory::class, 'sub_sub_category_id');
+    }
+
+    public function getUnit()
+    {
+        return $this->belongsTo(ProductUnit::class, 'unit_id');
+    }
 }
