@@ -10,6 +10,7 @@ use App\Models\SellerCommodityProduct;
 use App\Models\SellerCommodityProductHistory;
 use App\Http\Resources\CommodityProductResource;
 use App\Http\Resources\Seller\MyCommodityProductResource;
+use App\Http\Resources\Seller\MyCommodityProductPriceResource;
 
 class CommodityProductApiController extends Controller
 {
@@ -41,8 +42,20 @@ class CommodityProductApiController extends Controller
 
     public function myCommodityProductList()
     {
-        $list = SellerCommodityProduct::where('user_id', auth()->id())->paginate(getPaginate());
-        return MyCommodityProductResource::collection($list);
+        try {
+
+            $list = SellerCommodityProduct::where('user_id', auth()->id())->paginate(getPaginate());
+            return MyCommodityProductResource::collection($list);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+
     }
 
     public function store(Request $request)
@@ -52,7 +65,7 @@ class CommodityProductApiController extends Controller
         ]);
 
         try {
-            
+
             $commodity_product = CommodityProduct::find($request->product_id);
             if(!$commodity_product){
                 return response([
@@ -123,6 +136,75 @@ class CommodityProductApiController extends Controller
                 'error'     => $th->getMessage()
             ],500);
 
+        }
+    }
+
+    public function getPrice($id)
+    {
+        try {
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+
+            return response([
+                'success'   => true,
+                'data'      => new MyCommodityProductPriceResource($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
+
+    public function updatePrice(Request $request, $id)
+    {
+        try {
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+            $data->base_price       = $request->base_price;
+            $data->loading_charge   = $request->loading_charge;
+            $data->insurance_charge = $request->insurance_charge;
+            $data->quality_charge   = $request->quality_charge;
+            $data->gst              = $request->gst;
+            $data->tcs              = $request->tcs;
+            $data->charge_name      = $request->charge_name ?? $data->charge_name;
+            $data->charge_price     = $request->charge_price ?? $data->charge_price;
+            $data->operator         = $request->operator ?? $data->operator;
+            $data->save();
+
+            $data_history               = new SellerCommodityProductHistory;
+            $data_history->user_id      = auth()->id();
+            $data_history->commodity_product_id = $data->commodity_product_id;
+            $data_history->seller_commodity_product_id = $data->id;
+            $data_history->seller_commodity_product_detail = $data;
+            $data_history->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Product price updated successfully.',
+                'data'      => new MyCommodityProductPriceResource($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
         }
     }
 
