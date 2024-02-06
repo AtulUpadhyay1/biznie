@@ -11,6 +11,7 @@ use App\Models\SellerCommodityProductHistory;
 use App\Http\Resources\CommodityProductResource;
 use App\Http\Resources\Seller\MyCommodityProductResource;
 use App\Http\Resources\Seller\MyCommodityProductPriceResource;
+use App\Http\Resources\Seller\MyCommodityProductVariationResource;
 
 class CommodityProductApiController extends Controller
 {
@@ -182,9 +183,9 @@ class CommodityProductApiController extends Controller
             $data->quality_charge   = $request->quality_charge;
             $data->gst              = $request->gst;
             $data->tcs              = $request->tcs;
-            $data->charge_name      = $request->charge_name ?? $data->charge_name;
-            $data->charge_price     = $request->charge_price ?? $data->charge_price;
-            $data->operator         = $request->operator ?? $data->operator;
+            // $data->charge_name      = $request->charge_name ?? $data->charge_name;
+            // $data->charge_price     = $request->charge_price ?? $data->charge_price;
+            // $data->operator         = $request->operator ?? $data->operator;
             $data->save();
 
             $data_history               = new SellerCommodityProductHistory;
@@ -206,6 +207,32 @@ class CommodityProductApiController extends Controller
                 'message'   => 'Something went wrong. Please try again.',
                 'error'     => $th->getMessage()
             ],500);
+        }
+    }
+
+    public function getVariation($id)
+    {
+        try {
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+
+            return response([
+                'success'   => true,
+                'data'      => new MyCommodityProductVariationResource($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
         }
     }
 
