@@ -126,7 +126,8 @@ class CommodityProductApiController extends Controller
 
             return response([
                 'success'   => true,
-                'message'   => 'Product added successfully.'
+                'message'   => 'Product added successfully.',
+                'data'      => new MyCommodityProductResource($data)
             ],200);
 
         } catch (\Throwable $th) {
