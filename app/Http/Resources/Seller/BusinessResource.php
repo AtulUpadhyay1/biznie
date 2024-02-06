@@ -59,7 +59,7 @@ class BusinessResource extends JsonResource
                 $business_seller_type_data['name'] = $business_seller_type->name;
                 $business_seller_type_arr[] = $business_seller_type_data;
             }
-            $data['seller_type'] = $business_type_arr;
+            $data['seller_type'] = $business_seller_type_arr;
         }
 
         return $data;
