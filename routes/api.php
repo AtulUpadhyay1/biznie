@@ -81,8 +81,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::get('commodity-product-list', 'Authenticated\CommodityProductApiController@index');
         Route::get('my-commodity-product-list', 'Authenticated\CommodityProductApiController@myCommodityProductList');
         Route::post('store-commodity-product', 'Authenticated\CommodityProductApiController@store');
-        Route::get('edit-commodity-product/{id}', 'Authenticated\CommodityProductApiController@edit');
-        Route::post('update-commodity-product/{id}', 'Authenticated\CommodityProductApiController@update');
+        Route::get('get-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@edit');
+        Route::post('update-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@update');
         Route::get('get-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@getPrice');
         Route::post('update-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@updatePrice');
         Route::get('get-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@getVariation');

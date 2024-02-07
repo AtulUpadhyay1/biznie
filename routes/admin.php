@@ -152,6 +152,11 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('testimonial/create', AdminRoot\Testimonial\Create::class)->name('testimonial.create');
         Route::get('testimonial/edit/{id}', AdminRoot\Testimonial\Edit::class)->name('testimonial.edit');
 
+        // Address
+        Route::get('address', AdminRoot\Address\Index::class)->name('address.index');
+        Route::get('address/create', AdminRoot\Address\Create::class)->name('address.create');
+        Route::get('address/edit/{id}', AdminRoot\Address\Edit::class)->name('address.edit');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });
