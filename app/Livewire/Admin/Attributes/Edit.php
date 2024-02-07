@@ -26,7 +26,7 @@ class Edit extends Component
     public function update()
     {
         $this->validate([
-            'name'  => 'required|unique:attributes,name,'.$this->hidden_id,
+            'name'  => 'required||not_regex:/[.,\/@#$%&*+_=\-!~`]/|unique:attributes,name,'.$this->hidden_id,
         ]);
         $data = Attribute::findOrFail($this->hidden_id);
         $data->name = $this->name;

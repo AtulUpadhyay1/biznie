@@ -19,7 +19,7 @@ class Create extends Component
     public function save()
     {
         $this->validate([
-            'name'  => 'required|unique:attributes,name',
+            'name'  => 'required|unique:attributes,name|not_regex:/[.,\/@#$%&*+_=\-!~`]/',
         ]);
         $data = new Attribute;
         $data->name = $this->name;
