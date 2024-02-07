@@ -141,6 +141,64 @@ class CommodityProductApiController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        try {
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+
+            return response([
+                'success'   => true,
+                'data'      => new MyCommodityProductResource($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name'  => 'required',
+        ]);
+        try {
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+            $data->name = $request->name;
+            $data->slug = Str::slug($request->name);
+            $data->save();
+
+            return response([
+                'success'   => true,
+                'data'      => new MyCommodityProductResource($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
+
     public function getPrice($id)
     {
         try {
