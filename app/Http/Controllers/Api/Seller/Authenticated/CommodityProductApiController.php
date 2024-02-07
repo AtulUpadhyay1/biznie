@@ -262,6 +262,13 @@ class CommodityProductApiController extends Controller
             $data->variation = $variation;
             $data->save();
 
+            $data_history               = new SellerCommodityProductHistory;
+            $data_history->user_id      = auth()->id();
+            $data_history->commodity_product_id = $data->commodity_product_id;
+            $data_history->seller_commodity_product_id = $data->id;
+            $data_history->seller_commodity_product_detail = $data;
+            $data_history->save();
+
             return response([
                 'success'   => true,
                 'message'   => 'Variation price updated successfully.',
