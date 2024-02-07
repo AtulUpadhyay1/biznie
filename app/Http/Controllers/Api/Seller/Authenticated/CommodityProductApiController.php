@@ -236,4 +236,45 @@ class CommodityProductApiController extends Controller
         }
     }
 
+    public function updateVariation(Request $request, $id)
+    {
+        $this->validate($request, [
+            'Price'     => 'required|array'
+        ]);
+        try {
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+
+            if(count($data->variation['Price']) != count($request->Price)){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Price array mismatch.',
+                ],400);
+            }
+
+            $variation = $data->variation;
+            $variation['Price'] = $request->Price;
+            $data->variation = $variation;
+            $data->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Variation price updated successfully.',
+                'data'      => new MyCommodityProductVariationResource($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
 }
