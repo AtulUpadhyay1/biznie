@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Seller\Auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -34,9 +35,29 @@ class LoginController extends Controller
         return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors(['password' => ['These credentials don\'t match our records.','Or Incorrect Password']]);
     }
 
+    public function phoneLoginForm()
+    {
+        return view('seller.auth.phone_login',['page_title' => 'Seller Login']);
+    }
+
+    public function phoneLogin(Request $request)
+    {
+        $this->validate($request, [
+            'phone' => 'required|numeric|digits:10',
+        ]);
+
+        $user = User::where('phone', $request->phone)->where('type', 'seller')->first();
+        if(!$user){
+            return redirect()->route('seller.phone.login')->with('error', 'Phone number not found !!');
+        }
+        Auth::login($user);
+        return redirect()->route('seller.dashboard')->with('success', 'Signed in successfully !!');
+
+    }
+
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('seller.login')->with('success', 'Signed Out successfully !!');
+        return redirect()->route('seller.phone.login')->with('success', 'Signed Out successfully !!');
     }
 }

@@ -23,6 +23,9 @@ Route::group(['as'=>'seller.'], function () {
     Route::get('login', [App\Http\Controllers\Seller\Auth\LoginController::class, 'showLoginForm'])->name('login');
     Route::post('login', [App\Http\Controllers\Seller\Auth\LoginController::class, 'login'])->name('login');
 
+    Route::get('phone-login', [App\Http\Controllers\Seller\Auth\LoginController::class, 'phoneLoginForm'])->name('phone.login');
+    Route::post('phone-login', [App\Http\Controllers\Seller\Auth\LoginController::class, 'phoneLogin'])->name('phone.login');
+
     // Authenticated Routes
     Route::group(['middleware' => 'auth'], function () {
 
