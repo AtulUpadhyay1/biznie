@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Testimonial extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public static function active()
+    {
+        return Testimonial::where('status', 1);
+    }
 }

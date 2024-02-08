@@ -35,6 +35,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     // Address
     Route::get('get-address/{pincode}', 'AddressApiController@getAddress');
 
+    // Home Api
+    Route::get('home', 'HomeApiController@home');
+
     // Common api
     Route::group(['middleware' => ['auth:sanctum']], function () {
 
