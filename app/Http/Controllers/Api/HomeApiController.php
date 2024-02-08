@@ -47,7 +47,7 @@ class HomeApiController extends Controller
 
     public function viewMarketNews($slug)
     {
-        $market_news = MarketNews::where('slug', $slug)->first(['title', 'slug', 'image', 'description']);
+        $market_news = MarketNews::where('slug', $slug)->first(['title', 'slug', 'image', 'description', 'created_at']);
         $market_news->image = imageUrl($market_news->image);
         return response([
             'success'           => true,
