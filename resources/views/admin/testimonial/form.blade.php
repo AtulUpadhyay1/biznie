@@ -38,7 +38,8 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="message">Message</label>
-                                <textarea id="message" class="form-control @error('message') is-invalid @enderror" wire:model="message" rows="5" placeholder="Enter message"></textarea>
+                                <textarea id="message" class="form-control @error('message') is-invalid @enderror" wire:model.live="message" rows="5" placeholder="Enter message"></textarea>
+                                <small class="badge bg-success float-end">{{ 300-$characterCount }}</small>
                                 @error('message')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

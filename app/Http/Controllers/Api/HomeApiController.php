@@ -18,7 +18,7 @@ class HomeApiController extends Controller
                 $banner_data->photo = imageUrl($banner_data->photo);
             }
 
-            $market_news = MarketNews::active()->latest()->get(['title', 'slug', 'image', 'description']);
+            $market_news = MarketNews::active()->latest()->get(['title', 'slug', 'image', 'description', 'created_at']);
             foreach ($market_news as $news) {
                 $news->image = imageUrl($news->image);
             }

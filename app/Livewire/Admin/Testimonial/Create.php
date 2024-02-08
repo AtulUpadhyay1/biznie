@@ -12,11 +12,24 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $hidden_id, $name, $designation, $message, $image, $showImage;
+    public $hidden_id, $name, $designation, $message, $image, $showImage, $characterCount = 0;
 
     public function render()
     {
+        $this->updatedText();
         return view('admin.testimonial.form');
+    }
+
+    public function updatedText()
+    {
+        // Remove non-alphabet characters
+        // $text = preg_replace('/[^A-Za-z]/', '', $this->message);
+
+        // Limit text to 300 characters
+        $this->message = substr($this->message, 0, 300);
+
+        // Update character count
+        $this->characterCount = strlen($this->message);
     }
 
     public function save()
