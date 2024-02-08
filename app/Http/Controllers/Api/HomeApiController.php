@@ -44,4 +44,14 @@ class HomeApiController extends Controller
 
         }
     }
+
+    public function viewMarketNews($slug)
+    {
+        $market_news = MarketNews::where('slug', $slug)->first(['title', 'slug', 'image', 'description']);
+        $market_news->image = imageUrl($market_news->image);
+        return response([
+            'success'           => true,
+            'market_news'       => $market_news
+        ],200);
+    }
 }

@@ -37,6 +37,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
     // Home Api
     Route::get('home', 'HomeApiController@home');
+    Route::get('view-market-news/{slug}', 'HomeApiController@viewMarketNews');
 
     // Common api
     Route::group(['middleware' => ['auth:sanctum']], function () {
