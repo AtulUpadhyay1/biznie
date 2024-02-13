@@ -42,7 +42,7 @@
                                 @forelse ($list as $data)
                                     <tr>
                                         <td><img src="{{ imageUrl($data->image) }}" alt="image"></td>
-                                        <td>{{$data->title}}</td>
+                                        <td>{{mb_strimwidth($data->title, 0, 50, '....')}}</td>
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input type="checkbox" class="form-check-input status_update" wire:click="updateStatus({{$data->id}})"
