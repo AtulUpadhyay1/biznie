@@ -42,6 +42,10 @@ Route::group(['as'=>'seller.'], function () {
         // Commodity Product
         Route::get('commodity-product', SellerRoot\CommodityProduct\Index::class)->name('commodity-product.index');
         Route::get('commodity-product/create', SellerRoot\CommodityProduct\Create::class)->name('commodity-product.create');
+        Route::get('commodity-product/edit/{id}', SellerRoot\CommodityProduct\Edit::class)->name('commodity-product.edit');
+        Route::get('commodity-product/price/{id}', SellerRoot\CommodityProduct\PriceForm::class)->name('commodity-product.price');
+        Route::get('commodity-product/variation/{id}', SellerRoot\CommodityProduct\VariationForm::class)->name('commodity-product.variation');
+        Route::get('commodity-product/show/{id}', SellerRoot\CommodityProduct\Show::class)->name('commodity-product.show');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Seller\Auth\LoginController::class, 'logout'])->name('logout');
