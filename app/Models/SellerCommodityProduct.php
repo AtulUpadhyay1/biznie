@@ -28,6 +28,7 @@ class SellerCommodityProduct extends Model
         'brand_id'              => 'array',
         'packaging_type'        => 'array',
         'packaging_type_price'  => 'array',
+        'loading_address'       => 'array',
     ];
 
     public function getCategory()
