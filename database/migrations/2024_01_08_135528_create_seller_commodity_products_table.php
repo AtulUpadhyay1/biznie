@@ -48,6 +48,7 @@ return new class extends Migration
             $table->longText('specification_notes')->nullable();
             $table->string('thumbnail')->nullable();
             $table->longText('images')->nullable();
+            $table->text('loading_address')->nullable();
             $table->longText('video_url')->nullable();
             $table->string('meta_title')->nullable();
             $table->longText('meta_description')->nullable();
