@@ -292,7 +292,42 @@
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'active' : ''}}">
                         <a href="{{route('admin.faq.index')}}" class="nav-link">
-                           FAQ</span>
+                           FAQ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            About Us
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Returns Policy
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Logistics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Terms & Condition
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Privacy Policy
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Credit Facilities
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            Contact Us
                         </a>
                     </li>
                 </ul>
