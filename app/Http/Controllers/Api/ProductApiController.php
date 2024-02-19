@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\CommodityProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductDetailResource;
 
 class ProductApiController extends Controller
 {
@@ -36,13 +37,41 @@ class ProductApiController extends Controller
 
     public function commodityProductList(Request $request)
     {
-        $list = CommodityProduct::active()->latest()->get(['id', 'name', 'slug', 'thumbnail']);
-        foreach ($list as $data) {
-            $data->thumbnail = imageUrl($data->thumbnail);
+        try {
+
+            $list = CommodityProduct::active()->latest()->get(['id', 'name', 'slug', 'thumbnail']);
+            foreach ($list as $data) {
+                $data->thumbnail = imageUrl($data->thumbnail);
+            }
+            return response([
+                'success'        => true,
+                'products_list'  => $list
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
         }
-        return response([
-            'success'        => true,
-            'products_list'  => $list
-        ],200);
+    }
+
+    public function show($id)
+    {
+        try {
+            $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand')->findOrFail($id);
+            return response([
+                'success'        => true,
+                'products_data'  => new ProductDetailResource($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+        }
     }
 }
