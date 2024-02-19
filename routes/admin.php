@@ -162,8 +162,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('faq/create', AdminRoot\Faq\Create::class)->name('faq.create');
         Route::get('faq/edit/{id}', AdminRoot\Faq\Edit::class)->name('faq.edit');
 
+        //Website Setup
         Route::get('website-setup/about', AdminRoot\WebsiteSetup\About::class)->name('website_setup.about');
-
+        Route::get('website-setup/privacy-policy', AdminRoot\WebsiteSetup\Privacy::class)->name('website_setup.privacy');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');

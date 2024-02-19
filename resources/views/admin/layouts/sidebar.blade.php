@@ -316,7 +316,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('admin.website_setup.privacy')}}" class="nav-link">
                             Privacy Policy
                         </a>
                     </li>

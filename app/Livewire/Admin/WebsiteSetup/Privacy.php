@@ -5,28 +5,28 @@ namespace App\Livewire\Admin\WebsiteSetup;
 use Livewire\Component;
 use App\Models\WebsiteSetup;
 
-class About extends Component
+class Privacy extends Component
 {
-    public $page_title = "About Us";
+    public $page_title = "Privacy Policy";
     public $value;
 
     public function render()
     {
-        $this->value = websiteSetupValue('about_us');
-        return view('admin.website_setup.about');
+        $this->value = websiteSetupValue('privacy_policy');
+        return view('admin.website_setup.privacy');
     }
 
     public function save()
     {
         WebsiteSetup::updateOrCreate(
-            ["key" => 'about_us'],
+            ["key" => 'privacy_policy'],
             [
-                "key"   => 'about_us',
+                "key"   => 'privacy_policy',
                 "value" => $this->value
             ],
         );
 
-        session()->flash('success', 'About us updated successfully !!');
+        session()->flash('success', 'Privacy policy updated successfully !!');
         return $this->redirectRoute('admin.website_setup.about', navigate: true);
     }
 }
