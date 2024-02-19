@@ -9,7 +9,7 @@ use Livewire\WithFileUploads;
 class Edit extends Component
 {
     use WithFileUploads;
-    public $hidden_id, $name, $unit;
+    public $hidden_id, $name, $short_name;
 
     public function render()
     {
@@ -21,33 +21,31 @@ class Edit extends Component
         $this->hidden_id = $id;
         $data = ProductUnit::find($id);
         $this->name= $data->name;
-        $this->unit = $data->unit;
+        $this->short_name = $data->short_name;
     }
 
     public function update()
     {
         $this->validate([
-            'name' => 'required',
-            'unit' => 'required',
+            'name'          => 'required',
+            'short_name'    => 'required',
         ]);
 
         try
         {
             $data = ProductUnit::find($this->hidden_id);
             $data->name = $this->name;
-            $data->unit = $this->unit;
+            $data->short_name = $this->short_name;
             $data->save();
 
             session()->flash('success', 'Product unit updated successfully !!');
             return $this->redirect('/admin/product-unit',navigate: true);
-        }
 
-        catch(\Exception $e)
-        {
-            $this->dispatchBrowserEvent('alert',[
-                'type' => 'error',
-                'message' => 'something went wrong',
-            ]);
+        } catch (\Throwable $th) {
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'something went wrong',
+            );
         }
     }
 }

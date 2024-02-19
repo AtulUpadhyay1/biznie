@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('type', ['customer', 'seller', 'transport'])->nullable()->default('customer');
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->text('business_interest')->nullable();
             $table->enum('status', ['active', 'in_active'])->nullable()->default('active');
             $table->rememberToken();
             $table->softDeletes();

@@ -36,7 +36,7 @@ class Edit extends Component
             'name'  => 'required',
             'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
             'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
-            'icon' => 'required',
+            // 'icon' => 'required',
         ]);
 
         try
@@ -59,7 +59,7 @@ class Edit extends Component
             $data->save();
 
             session()->flash('success', 'Brand updated successfully !!');
-            return $this->redirect('/admin/brand',navigate: true);
+            return $this->redirectRoute('admin.brand',navigate: true);
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[

@@ -6,7 +6,10 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>Product List</h4>
+                            <h4>
+                                {{ $page_title }}
+                                <span class="badge bg-secondary rounded-pill fs-6 ms-1">{{ $list->count() }}</span>
+                            </h4>
                         </div>
                         <div class="col-6">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
@@ -73,7 +76,6 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Thumbnail Image</th>
                                     <th>Product Name</th>
                                     <th>Business Name</th>
                                     <th>Number Of Sale</th>
@@ -86,36 +88,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td><img src="{{asset('admin_css/assets/images/avatar.png')}}" class="custom-table-img" alt=""></td>
-                                    <td>U.neek Men's Plain Regular Fit Cotton Tshirt</td>
-                                    <td><b class="text-primary">Shri Sai Textiles</b></td>
-                                    <td>234</td>
-                                    <td>18</td>
-                                    <td><b class="text-sucess">RS 600.00</b></td>
-                                    <td>3.6<i class="bi bi-star-fill text-warning ms-1"></i></td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input type="checkbox" class="form-check-input status_update" value="10" checked>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input type="checkbox" class="form-check-input featured_update" value="20" checked>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                            <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                            <a class="dropdown-item d-flex align-items-center" href="{{route('admin.edit-product')}}" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-copy icon-sm me-2"></i><span>Duplicate</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @forelse ($list as $key => $data)
+                                    <tr>
+                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>
+                                            <img src="{{imageUrl($data->thumbnail)}}" alt="image" >
+                                            {{ $data->name }}
+                                        </td>
+                                        <td><b class="text-primary"> {{ $data->getBusiness->name }} </b></td>
+                                        <td> 0 </td>
+                                        <td> {{ $data->current_stock }} </td>
+                                        <td><b class="text-sucess">RS {{ $data->unit_price }}</b></td>
+                                        <td>3.6<i class="bi bi-star-fill text-warning ms-1"></i></td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" {{ $data->status ? 'checked' : '' }}  wire:change="updateStatus({{ $data->id }})">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" {{ $data->featured_status ? 'checked' : '' }} wire:change="updateFeatureStatus({{ $data->id }})">
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
+                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.edit-product')}}" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-copy icon-sm me-2"></i><span>Duplicate</span></a>
+                                                <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <x-table-no-data />
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

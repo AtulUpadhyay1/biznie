@@ -24,31 +24,31 @@
                                     <h5 class="card-heading-h5">Business Category Details:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="name">Name</label>
-                                        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" id="name" wire:model.defer="name" placeholder="Enter name">
+                                        <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" id="name" wire:model="name" placeholder="Enter name">
                                         @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="icon">Icon</label>
                                         <div class="input-group">
                                             <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>'!!}</span>
-                                            <input type="text" id="icon" class="form-control @error('icon') is-invalid @enderror"  wire:model.defer="icon" placeholder="Enter fa icon">
+                                            <input type="text" id="icon" class="form-control @error('icon') is-invalid @enderror"  wire:model="icon" placeholder="Enter fa icon">
                                         </div>
                                         @error('icon') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <h5 class="card-heading-h5">SEO Section:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="title">Meta Title</label>
-                                        <input type='text' id="title" class="form-control @error('meta_title') is-invalid @enderror" wire:model.defer='meta_title' placeholder="Enter title">
+                                        <input type='text' id="title" class="form-control @error('meta_title') is-invalid @enderror" wire:model='meta_title' placeholder="Enter title">
                                         @error('meta_title') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="keyword">Meta Keywords</label>
-                                        <input type='text' id="keyword" class="form-control @error('meta_keywords') is-invalid @enderror" wire:model.defer='meta_keywords' placeholder="Enter keywords">
+                                        <input type='text' id="keyword" class="form-control @error('meta_keywords') is-invalid @enderror" wire:model='meta_keywords' placeholder="Enter keywords">
                                         @error('meta_keywords') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-12 mb-3">
                                         <label for="FormControlTextarea" class="form-label">Meta Description</label>
-                                        <textarea class="form-control @error('meta_description') is-invalid @enderror" id="FormControlTextarea" rows="5" wire:model.defer='meta_description' placeholder="Enter description"></textarea>
+                                        <textarea class="form-control @error('meta_description') is-invalid @enderror" id="FormControlTextarea" rows="5" wire:model='meta_description' placeholder="Enter description"></textarea>
                                         @error('meta_description') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                 </div>
@@ -58,12 +58,12 @@
                                     <h5 class="card-heading-h5">Images:</h5>
                                     <div class="col-md-12">
                                         <label class="form-label" for="business_category_thumbnail">Thumbnail Image</label>
-                                        <input type='file' id="business_category_thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" wire:model.defer="thumbnail">
+                                        <input type='file' id="business_category_thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" wire:model="thumbnail">
                                         <label for="business_category_thumbnail">
                                             @if($thumbnail)
                                                 <img src="{{$thumbnail->temporaryUrl()}}" class="label-thumbnail">
                                             @elseif ($showThumbnail)
-                                                <img src="{{asset('storage/'.$showThumbnail)}}" class="label-thumbnail">
+                                                <img src="{{$showThumbnail}}" class="label-thumbnail">
                                             @else
                                                 <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
                                             @endif
@@ -72,12 +72,12 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="business_category_banner">Banner Image</label>
-                                        <input type='file' id="business_category_banner" class="form-control @error('banner') is-invalid @enderror" wire:model.defer="banner">
+                                        <input type='file' id="business_category_banner" class="form-control @error('banner') is-invalid @enderror" wire:model="banner">
                                         <label for="business_category_banner">
                                             @if($banner)
                                                 <img src="{{$banner->temporaryUrl()}}" class="label-banner">
                                             @elseif ($showBanner)
-                                                <img src="{{asset('storage/'.$showBanner)}}" class="label-banner">
+                                                <img src="{{$showBanner}}" class="label-banner">
                                             @else
                                                 <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
                                             @endif

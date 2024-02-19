@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_units', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('unit');
+            $table->string('short_name');
             $table->tinyInteger('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

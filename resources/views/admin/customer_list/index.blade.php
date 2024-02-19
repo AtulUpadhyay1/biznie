@@ -83,35 +83,44 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Vishal Aaryan</td>
-                                    <td>
-                                        <i class="bi bi-telephone"></i><span class="ms-2">6390041900</span>
-                                        <br>
-                                        <i class="bi bi-envelope-at"></i><span class="ms-2">sudhanshukumar1234@gmail.com</span>
-                                    </td>
-                                    <td>03/10/2023</td>
-                                    <td>03/10/2023, <br>6.45 Am</td>
-                                    <td><span class="text-success fw-bolder">Active</span></td>
-                                    <td class="text-center">
-                                        <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                            <a class="dropdown-item d-flex align-items-center" href="{{route('admin.customer-profile')}}" wire:navigate><i
-                                                class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="#"><i
-                                                class="bi bi-person-slash icon-sm me-2"></i><span>Block</span></a>
-                                            <a href="javascript:;"
-                                                class="dropdown-item d-flex align-items-center"><i
-                                                    class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @forelse ($list as $key => $data)
+                                    <tr>
+                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $data->name }}</td>
+                                        <td>
+                                            <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>
+                                            <br>
+                                            <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $data->email }}</span>
+                                        </td>
+                                        <td>{{ dateFormat($data->created_at) }}</td>
+                                        <td>{{ lastActive($data->id) }}</td>
+                                        <td>
+                                            {!! $data->status == 'active' ? '<span class="text-success fw-bolder"> Active </span>' : '<span class="text-danger fw-bolder"> Inactive </span>' !!}
+                                        </td>
+                                        <td class="text-center">
+                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.customer-profile', $data->id)}}" wire:navigate><i
+                                                    class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="#"><i
+                                                    class="bi bi-person-slash icon-sm me-2"></i><span>Block</span></a>
+                                                <a href="javascript:;"
+                                                    class="dropdown-item d-flex align-items-center"><i
+                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <x-table-no-data />
+                                @endforelse
                             </tbody>
                         </table>
+                        <div class="mt-2">
+                            {{ $list->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

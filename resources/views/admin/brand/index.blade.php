@@ -6,7 +6,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6 card-title">
-                            <h4>Brands</h4>
+                            <h4>{{$page_title}}</h4>
                         </div>
                         <div class="col-6">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">

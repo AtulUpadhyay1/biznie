@@ -40,10 +40,15 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('create-business-type', AdminRoot\BusinessType\Create::class)->name('create-business-type');
         Route::get('edit-business-type/{id}', AdminRoot\BusinessType\Edit::class)->name('edit-business-type');
 
-         //Seller Type
-         Route::get('seller-type', AdminRoot\SellerType\Index::class)->name('seller-type');
-         Route::get('create-seller-type', AdminRoot\SellerType\Create::class)->name('create-seller-type');
-         Route::get('edit-seller-type/{id}', AdminRoot\SellerType\Edit::class)->name('edit-seller-type');
+        //Seller Type
+        Route::get('seller-type', AdminRoot\SellerType\Index::class)->name('seller-type');
+        Route::get('create-seller-type', AdminRoot\SellerType\Create::class)->name('create-seller-type');
+        Route::get('edit-seller-type/{id}', AdminRoot\SellerType\Edit::class)->name('edit-seller-type');
+
+        //Product Attributes
+        Route::get('attribute', AdminRoot\Attributes\Index::class)->name('attribute.index');
+        Route::get('attribute/create', AdminRoot\Attributes\Create::class)->name('attribute.create');
+        Route::get('attribute/edit/{id}', AdminRoot\Attributes\Edit::class)->name('attribute.edit');
 
         //Product Category
         Route::get('product-category', AdminRoot\ProductCategory\Index::class)->name('product-category');
@@ -87,6 +92,7 @@ Route::group(['as'=>'admin.'], function () {
 
         //Sellers List
         Route::get('seller-list', AdminRoot\Seller\Index::class)->name('seller-list');
+        Route::get('seller-kyc-detail/{id}', AdminRoot\Seller\KycDetail::class)->name('seller-kyc-detail');
         Route::get('edit-seller', AdminRoot\Seller\Edit::class)->name('edit-seller');
 
         //Business Listing
@@ -97,22 +103,59 @@ Route::group(['as'=>'admin.'], function () {
          Route::get('customer-list', AdminRoot\Customer\Index::class)->name('customer-list');
 
         //Cutomer Profile
-        Route::get('customer-profile', AdminRoot\Customer\Profile::class)->name('customer-profile');
+        Route::get('customer-profile/{id}', AdminRoot\Customer\Profile::class)->name('customer-profile');
 
         //Edit Customer Info
-        Route::get('edit-customer-info', AdminRoot\Customer\EditInfo::class)->name('edit-customer-info');
+        Route::get('edit-customer-info/{id}', AdminRoot\Customer\EditInfo::class)->name('edit-customer-info');
 
         //Cutomer Orders List
-        Route::get('customer-orders-list', AdminRoot\Customer\Orders::class)->name('customer-orders-list');
+        Route::get('customer-orders-list/{id}', AdminRoot\Customer\Orders::class)->name('customer-orders-list');
 
         //Cutomer Payment List
-        Route::get('customer-payment-list', AdminRoot\Customer\Payments::class)->name('customer-payment-list');
+        Route::get('customer-payment-list/{id}', AdminRoot\Customer\Payments::class)->name('customer-payment-list');
 
         //Product List
         Route::get('product-list', AdminRoot\Product\Index::class)->name('product-list');
 
         //Edit Product
         Route::get('edit-product', AdminRoot\Product\Edit::class)->name('edit-product');
+
+        // Commodity Product
+        Route::get('commodity-product', AdminRoot\CommodityProduct\Index::class)->name('commodity-product.index');
+        Route::get('commodity-product/create', AdminRoot\CommodityProduct\Create::class)->name('commodity-product.create');
+        Route::get('commodity-product/edit/{id}', AdminRoot\CommodityProduct\Edit::class)->name('commodity-product.edit');
+        Route::get('commodity-product/show/{id}', AdminRoot\CommodityProduct\Show::class)->name('commodity-product.show');
+
+        Route::get('commodity-product/price/{id}', AdminRoot\CommodityProduct\PriceForm::class)->name('commodity-product.price');
+        Route::get('commodity-product/variation/{id}', AdminRoot\CommodityProduct\VariationForm::class)->name('commodity-product.variation');
+
+        Route::get('commodity-product/variation-old/{id}', AdminRoot\CommodityProduct\VariationFormOld::class)->name('commodity-product.variationOld');
+        Route::get('commodity-product/quality/{id}', AdminRoot\CommodityProduct\QualityForm::class)->name('commodity-product.quality');
+
+        // Banner
+        Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
+        Route::get('banner/create', AdminRoot\Banner\Create::class)->name('banner.create');
+        Route::get('banner/edit/{id}', AdminRoot\Banner\Edit::class)->name('banner.edit');
+
+        // Packaging Type
+        Route::get('packaging-type', AdminRoot\PackagingType\Index::class)->name('packaging-type.index');
+        Route::get('packaging-type/create', AdminRoot\PackagingType\Create::class)->name('packaging-type.create');
+        Route::get('packaging-type/edit/{id}', AdminRoot\PackagingType\Edit::class)->name('packaging-type.edit');
+
+        // Market News
+        Route::get('market-news', AdminRoot\MarketNews\Index::class)->name('market-news.index');
+        Route::get('market-news/create', AdminRoot\MarketNews\Create::class)->name('market-news.create');
+        Route::get('market-news/edit/{id}', AdminRoot\MarketNews\Edit::class)->name('market-news.edit');
+
+        // Testimonial
+        Route::get('testimonial', AdminRoot\Testimonial\Index::class)->name('testimonial.index');
+        Route::get('testimonial/create', AdminRoot\Testimonial\Create::class)->name('testimonial.create');
+        Route::get('testimonial/edit/{id}', AdminRoot\Testimonial\Edit::class)->name('testimonial.edit');
+
+        // Address
+        Route::get('address', AdminRoot\Address\Index::class)->name('address.index');
+        Route::get('address/create', AdminRoot\Address\Create::class)->name('address.create');
+        Route::get('address/edit/{id}', AdminRoot\Address\Edit::class)->name('address.edit');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');

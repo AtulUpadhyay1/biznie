@@ -29,7 +29,7 @@ class Create extends Component
             $data->save();
 
             session()->flash('success', 'Identity type created successfully !!');
-            return $this->redirect('/admin/identity-type',navigate: true);
+            return $this->redirectRoute('admin.identity-type',navigate: true);
         }
         catch(\Exception $e)
         {

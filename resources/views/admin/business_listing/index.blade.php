@@ -84,101 +84,105 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><b>1</b></td>
-                                    <td>
-                                        <b>Business Name:</b>
-                                        <span class="text-primary">Shri Sai Murti Dairy Form</span>
-                                        <i class="bi bi-patch-check-fill text-danger"></i>
-                                        <br>
-                                        <b>Business Category:</b>
-                                        <span class="text-success">Textile</span>
-                                        <br>
-                                        <b>User Name:</b>
-                                        <span>Sudhanhsu Kumar</span>
-                                        <br>
-                                        <span class="pe-2 border-end" data-bs-toggle="tooltip"
-                                            title="Total orders"><i class="bi bi-bag-plus"></i> : <b>0</b></span>
-                                        <span class="pe-2 border-end" data-bs-toggle="tooltip"
-                                            title="Total users"><i class="bi bi-people"></i> : <b>273</b></span>
-                                        <br>
-                                        <span class="pe-2 border-end" data-bs-toggle="tooltip"
-                                            title="Total earnings"><i class="bi bi-wallet2"></i> : <i
-                                                class="bi bi-currency-rupee"></i><b>5L</b></span>
-                                        <span class="pe-2" data-bs-toggle="tooltip" title="Total messages"><i
-                                                class="bi bi-chat-square-dots"></i>: <b>0</b></span>
-                                    </td>
-                                    <td><img src="{{ asset('admin_css/assets/images/avatar.png') }}"
-                                            class="custom-table-img" alt="user" data-bs-toggle="tooltip"
-                                            title="Business Image"></td>
-                                    <td>
-                                        <i class="bi bi-telephone"></i><span class="ms-2">6390041900</span>
-                                        <br>
-                                        <i class="bi bi-envelope-at"></i><span class="ms-2">admin@gmail.com</span>
-                                    </td>
-                                    <td>
-                                        <b>Pincode:</b>
-                                        <span>221010</span>
-                                        <br>
-                                        <b>Area:</b>
-                                        <span>Bhelupur, Sai baba mandir, Kamachha, Vinayaka Hospital</span>
-                                        <br>
-                                        <b>City:</b>
-                                        <span>Varanasi</span>
-                                        <br>
-                                        <b>State:</b>
-                                        <span>Uttar Pradesh</span>
-                                        <br>
-                                        <b>Country</b>
-                                        <span>India</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="custom-dropdown">
-                                            <a class="custom-status-btn rounded text-white" href="javascript:;"
-                                                role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                                                title="Status" aria-haspopup="true" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <a class="dropdown-item" href="javascript:;">
-                                                    <div class="form-check form-switch">
-                                                        <input type="checkbox"
-                                                            class="form-check-input status_update">
-                                                    </div>
-                                                    <span>Featured</span>
+                                @forelse ($list as $key => $data )
+                                    <tr>
+                                        <th> {{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }} </th>
+                                        <td>
+                                            <b>Business Name:</b>
+                                            <span class="text-primary"> {{ $data->name }} </span>
+                                            <i class="bi bi-patch-check-fill text-danger"></i>
+                                            <br>
+                                            <b>Business Category:</b>
+                                            <span class="text-success">Textile</span>
+                                            <br>
+                                            <b>User Name:</b>
+                                            <span> {{ $data->getUser->name }} </span>
+                                            <br>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total orders"><i class="bi bi-bag-plus"></i> : <b>0</b></span>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total users"><i class="bi bi-people"></i> : <b>273</b></span>
+                                            <br>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Total earnings"><i class="bi bi-wallet2"></i> : <i
+                                                    class="bi bi-currency-rupee"></i><b>5L</b></span>
+                                            <span class="pe-2" data-bs-toggle="tooltip" title="Total messages"><i
+                                                    class="bi bi-chat-square-dots"></i>: <b>0</b></span>
+                                        </td>
+                                        <td><img src="{{ asset('admin_css/assets/images/avatar.png') }}"
+                                                class="custom-table-img" alt="user" data-bs-toggle="tooltip"
+                                                title="Business Image"></td>
+                                        <td>
+                                            <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->getUser->phone }}</span>
+                                            <br>
+                                            <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $data->getUser->email }}</span>
+                                        </td>
+                                        <td>
+                                            <b>Pincode:</b>
+                                            <span>{{ $data->getSellerKycDetail->postal_code }}</span>
+                                            <br>
+                                            <b>Area:</b>
+                                            <span>{{ $data->getSellerKycDetail->address }}</span>
+                                            <br>
+                                            <b>City:</b>
+                                            <span>{{ $data->getSellerKycDetail->city }}</span>
+                                            <br>
+                                            <b>State:</b>
+                                            <span>{{ $data->getSellerKycDetail->state }}</span>
+                                            <br>
+                                            <b>Country</b>
+                                            <span>{{ $data->getSellerKycDetail->country }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="custom-dropdown">
+                                                <a class="custom-status-btn rounded text-white" href="javascript:;"
+                                                    role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                                    title="Status" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical"></i>
                                                 </a>
-                                                <a class="dropdown-item" href="javascript:;">
-                                                    <div class="form-check form-switch">
-                                                        <input type="checkbox"
-                                                            class="form-check-input status_update">
-                                                    </div>
-                                                    <span>Verified</span>
-                                                </a>
-                                                <a class="dropdown-item" href="javascript:;">
-                                                    <div class="form-check form-switch">
-                                                        <input type="checkbox"
-                                                            class="form-check-input status_update">
-                                                    </div>
-                                                    <span>Top Sellers</span>
-                                                </a>
-                                                <a class="dropdown-item" href="javascript:;">
-                                                    <div class="form-check form-switch">
-                                                        <input type="checkbox"
-                                                            class="form-check-input status_update">
-                                                    </div>
-                                                    <span>Inactive</span>
-                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item" href="javascript:;">
+                                                        <div class="form-check form-switch">
+                                                            <input type="checkbox"
+                                                                class="form-check-input status_update">
+                                                        </div>
+                                                        <span>Featured</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="javascript:;">
+                                                        <div class="form-check form-switch">
+                                                            <input type="checkbox"
+                                                                class="form-check-input status_update">
+                                                        </div>
+                                                        <span>Verified</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="javascript:;">
+                                                        <div class="form-check form-switch">
+                                                            <input type="checkbox"
+                                                                class="form-check-input status_update">
+                                                        </div>
+                                                        <span>Top Sellers</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="javascript:;">
+                                                        <div class="form-check form-switch">
+                                                            <input type="checkbox"
+                                                                class="form-check-input status_update">
+                                                        </div>
+                                                        <span>Inactive</span>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="mt-3 fw-bolder text-success">Active</div>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="{{route('admin.edit-business')}}" class="custom-edit-btn rounded text-white"
-                                            title="edit" wire:navigate>
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                            <div class="mt-3 fw-bolder text-success">Active</div>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{{route('admin.edit-business')}}" class="custom-edit-btn rounded text-white"
+                                                title="edit" wire:navigate>
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <x-table-no-data />
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

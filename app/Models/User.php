@@ -42,5 +42,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'business_interest' => 'array',
     ];
+
+    public function getBusiness()
+    {
+        return $this->hasOne(Business::class);
+    }
+
+    public function getSellerKycDetail()
+    {
+        return $this->hasOne(SellerKycDetail::class);
+    }
+
+    public function getUserDetail()
+    {
+        return $this->hasOne(UserDetail::class);
+    }
 }

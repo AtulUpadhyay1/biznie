@@ -17,3 +17,87 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
+
+    // Registeration form info
+    Route::get('registration-form-info', 'InfoApiController@registrationFormInfo');
+
+    // Registration & login
+    Route::post('register', 'Auth\AuthApiController@register');
+    Route::post('email-login', 'Auth\AuthApiController@emailLogin');
+    Route::post('otp-login', 'Auth\AuthApiController@otpLogin');
+    Route::post('verify-otp', 'Auth\AuthApiController@verifyOtp');
+
+    // Category
+    Route::get('category', 'CategoryApiController@category');
+
+    // Address
+    Route::get('get-address/{pincode}', 'AddressApiController@getAddress');
+
+    // Home Api
+    Route::get('home', 'HomeApiController@home');
+    Route::get('view-market-news/{slug}', 'HomeApiController@viewMarketNews');
+
+    // Product List
+    Route::get('product-list', 'ProductApiController@index');
+    Route::get('commodity-product-list', 'ProductApiController@commodityProductList');
+
+    // Common api
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Image upload
+        Route::post('image-upload', 'ImageUploadController@imageUpload');
+
+        Route::post('business-interest', 'Auth\AuthApiController@businessInterest');
+    });
+});
+
+
+// Customer api routes
+Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'customer'], function () {
+
+    // Customer authenticated route
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Become Seller
+        Route::post('become-seller', 'Authenticated\BecomeSellerApiController@becomeSeller');
+        Route::post('updated-address', 'Authenticated\BecomeSellerApiController@updatedAddress');
+        Route::post('updated-bank-details', 'Authenticated\BecomeSellerApiController@updatedBankDetails');
+        Route::post('updated-kyc-details', 'Authenticated\BecomeSellerApiController@updatedKycDetails');
+
+        // Become Transporter
+        Route::post('become-transporter', 'Authenticated\BecomeTransporterApiController@becomeTransport');
+
+        // Profile
+        Route::get('profile', 'Authenticated\ProfileApiController@profile');
+        Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
+
+
+    });
+
+});
+
+// Seller api routes
+Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'seller'], function () {
+
+    // Seller authenticated route
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Profile
+        Route::get('profile', 'Authenticated\ProfileApiController@profile');
+        Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
+
+        // Product Catalogue Api
+        Route::get('commodity-product-list', 'Authenticated\CommodityProductApiController@index');
+        Route::get('my-commodity-product-list', 'Authenticated\CommodityProductApiController@myCommodityProductList');
+        Route::post('store-commodity-product', 'Authenticated\CommodityProductApiController@store');
+        Route::get('get-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@edit');
+        Route::post('update-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@update');
+        Route::get('get-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@getPrice');
+        Route::post('update-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@updatePrice');
+        Route::get('get-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@getVariation');
+        Route::post('update-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@updateVariation');
+    });
+
+});

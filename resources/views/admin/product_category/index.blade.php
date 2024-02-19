@@ -39,7 +39,7 @@
                             <tbody>
                                 @forelse ($list as $data)
                                     <tr>
-                                        <td><img src="{{ asset('storage/' . $data->thumbnail) }}" alt="image"></td>
+                                        <td><img src="{{ imageUrl($data->thumbnail) }}" alt="image"></td>
                                         <td>{{ $data->name }}</td>
                                         <td>
                                             <div class="form-check form-switch">
@@ -51,7 +51,7 @@
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input type="checkbox" class="form-check-input featured_update"
-                                                    wire:click="updateFeatured({{ $data->id }})" value="20"
+                                                    wire:click="updateFeatured({{ $data->id }})"
                                                     {{ $data->featured == 1 ? 'checked' : '' }}>
                                             </div>
                                         </td>

@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProductUnit extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public static function active()
+    {
+        return ProductUnit::where('status', '1');
+    }
 }

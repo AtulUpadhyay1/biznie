@@ -23,12 +23,12 @@
                             <h5 class="card-heading-h5">Tax Details:</h5>
                             <div class="col-md-6">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" id="name" class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror" wire:model.defer="name" placeholder="Enter tax name">
+                                <input type="text" id="name" class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror" wire:model="name" placeholder="Enter tax name">
                                 @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="value" class="form-label">Value (in percent)</label>
-                                <input type="number" id="value" class="form-control mb-4 mb-md-0 @error('value') is-invalid @enderror" wire:model.defer="value" placeholder="Enter value">
+                                <input type="number" id="value" class="form-control mb-4 mb-md-0 @error('value') is-invalid @enderror" wire:model="value" placeholder="Enter value">
                                 @error('value') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                         </div>

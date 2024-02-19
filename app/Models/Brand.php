@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Brand extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public static function active()
+    {
+        return Brand::where('status', '1');
+    }
 }

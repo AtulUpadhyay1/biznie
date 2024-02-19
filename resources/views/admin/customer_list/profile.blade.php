@@ -29,7 +29,7 @@
                                 </button>
                                 <a type="button"
                                     class="btn btn-warning btn-sm btn-icon-text float-end align-items-center"
-                                    title="Edit" href="{{ route('admin.edit-customer-info') }}" wire:navigate>
+                                    title="Edit" href="{{ route('admin.edit-customer-info', $data->id) }}" wire:navigate>
                                     <i class="bi bi-pencil-square btn-icon-prepend"></i>
                                     Edit
                                 </a>
@@ -44,7 +44,7 @@
                             <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
-                                        <td><b>Customer Name:</b><span class="ms-2">Sudhanshu Kumar</span></td>
+                                        <td><b>Customer Name:</b><span class="ms-2">{{ $data->name }}</span></td>
                                         <td><b>Mobile Number:</b><span class="ms-2">6390041900</span></td>
                                     </tr>
                                     <tr>

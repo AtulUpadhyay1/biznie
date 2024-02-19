@@ -37,17 +37,15 @@ class Create extends Component
             $data->meta_description = $this->meta_description;
             $data->meta_keywords = $this->meta_keywords;
             if($this->thumbnail){
-                $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
-                $data->thumbnail = $this->thumbnail->storeAs('business_type', $thumbnail_name, 'public');
+                $data->thumbnail = imageUpload($this->thumbnail, 'business_type');
             }
             if($this->banner){
-                $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
-                $data->banner = $this->banner->storeAs('business_type', $banner_name, 'public');
+                $data->banner = imageUpload($this->banner, 'business_type');
             }
             $data->save();
 
             session()->flash('success', 'Business type created successfully !!');
-            return $this->redirect('/admin/vendor-type',navigate: true);
+            return $this->redirect('/admin/business-type',navigate: true);
         }
         catch (\Exception $e) {
             $this->dispatchBrowserEvent('alert',[

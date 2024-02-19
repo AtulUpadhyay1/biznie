@@ -11,6 +11,6 @@ class Edit extends Component
 
     public function render()
     {
-        return view('admin.seller_list.form', ['page_title' => 'Edit Seller']);
+        return view('admin.seller.form', ['page_title' => 'Edit Seller']);
     }
 }

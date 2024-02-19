@@ -24,7 +24,7 @@ class Create extends Component
             'name' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
             'banner' => 'required|image|mimes:jpg,png,jpeg',
-            'icon' => 'required',
+            // 'icon' => 'required',
         ]);
 
         try
@@ -47,7 +47,7 @@ class Create extends Component
             $data->save();
 
             session()->flash('success', 'Brand created successfully !!');
-            return $this->redirect('/admin/brand',navigate: true);
+            return $this->redirectRoute('admin.brand',navigate: true);
 
         }
         catch (\Exception $e) {

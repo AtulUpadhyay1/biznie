@@ -5,6 +5,10 @@
 <script src="{{asset('admin_css/assets/js/dashboard-light.js')}}"></script>
 
 <script src="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.js')}}"></script>
+<script src="{{asset('admin_css/assets/vendors/select2/select2.min.js')}}"></script>
+<script src="{{asset('admin_css/assets/js/select2.js')}}"></script>
+<script src="{{asset('admin_css/assets/vendors/jquery-tags-input/jquery.tagsinput.min.js')}}"></script>
+<script src="{{asset('admin_css/assets/js/tags-input.js')}}"></script>
 <script>
     var Toast = Swal.mixin({
         toast: true,
