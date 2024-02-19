@@ -9,8 +9,8 @@ use App\Models\PackagingType;
 use Illuminate\Support\Facades\DB;
 
 if (!function_exists('websiteSetupValue')) {
-    function websiteSetupValue($name){
-        return WebsiteSetup::where('name', $name)->first() ? WebsiteSetup::where('name', $name)->first()->value : "";
+    function websiteSetupValue($key){
+        return WebsiteSetup::where('key', $key)->first() ? WebsiteSetup::where('key', $key)->first()->value : "";
     }
 }
 

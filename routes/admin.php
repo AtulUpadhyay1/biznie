@@ -162,6 +162,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('faq/create', AdminRoot\Faq\Create::class)->name('faq.create');
         Route::get('faq/edit/{id}', AdminRoot\Faq\Edit::class)->name('faq.edit');
 
+        Route::get('website-setup/about', AdminRoot\WebsiteSetup\About::class)->name('website_setup.about');
+
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

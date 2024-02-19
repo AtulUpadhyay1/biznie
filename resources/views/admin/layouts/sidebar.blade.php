@@ -296,7 +296,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('admin.website_setup.about')}}" class="nav-link">
                             About Us
                         </a>
                     </li>
