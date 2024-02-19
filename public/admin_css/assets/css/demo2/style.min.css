@@ -26072,7 +26072,7 @@ div.tox .btn-icon-text.btn-lg.tox-button .btn-icon-prepend {
 
 .table td,
 .table th {
-    white-space: nowrap
+    white-space: normal;
 }
 
 .table td img {
