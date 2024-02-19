@@ -27,6 +27,6 @@ class Privacy extends Component
         );
 
         session()->flash('success', 'Privacy policy updated successfully !!');
-        return $this->redirectRoute('admin.website_setup.about', navigate: true);
+        return $this->redirectRoute('admin.website_setup.privacy', navigate: true);
     }
 }

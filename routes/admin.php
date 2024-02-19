@@ -165,6 +165,7 @@ Route::group(['as'=>'admin.'], function () {
         //Website Setup
         Route::get('website-setup/about', AdminRoot\WebsiteSetup\About::class)->name('website_setup.about');
         Route::get('website-setup/privacy-policy', AdminRoot\WebsiteSetup\Privacy::class)->name('website_setup.privacy');
+        Route::get('website-setup/terms-condition', AdminRoot\WebsiteSetup\Termscondition::class)->name('website_setup.terms');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
