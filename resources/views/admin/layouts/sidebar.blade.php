@@ -280,19 +280,19 @@
             <!--End of messages-->
 
             <!--App Setup-->
-            <li class="nav-item">
+            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#app-setup" role="button"
                     aria-expanded="false" aria-controls="app-setup">
                     <i class="bi bi-gear"></i>
-                    <span class="link-title">App Setup</span>
+                    <span class="link-title">Web Setup</span>
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse" id="app-setup">
+            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'show' : ''}}" id="app-setup">
                 <ul class="nav sub-menu">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                           App Banner/Sliders</span>
+                    <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'active' : ''}}">
+                        <a href="{{route('admin.faq.index')}}" class="nav-link">
+                           FAQ</span>
                         </a>
                     </li>
                 </ul>

@@ -157,6 +157,11 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('address/create', AdminRoot\Address\Create::class)->name('address.create');
         Route::get('address/edit/{id}', AdminRoot\Address\Edit::class)->name('address.edit');
 
+        //Faq
+        Route::get('faq', AdminRoot\Faq\Index::class)->name('faq.index');
+        Route::get('faq/create', AdminRoot\Faq\Create::class)->name('faq.create');
+        Route::get('faq/edit/{id}', AdminRoot\Faq\Edit::class)->name('faq.edit');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });
