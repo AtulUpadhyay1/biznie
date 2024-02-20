@@ -10,9 +10,13 @@ class About extends Component
     public $page_title = "About Us";
     public $value;
 
-    public function render()
+    public function mount()
     {
         $this->value = websiteSetupValue('about_us');
+    }
+
+    public function render()
+    {
         return view('admin.website_setup.about');
     }
 

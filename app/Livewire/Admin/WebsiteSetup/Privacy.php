@@ -10,9 +10,13 @@ class Privacy extends Component
     public $page_title = "Privacy Policy";
     public $value;
 
-    public function render()
+    public function mount()
     {
         $this->value = websiteSetupValue('privacy_policy');
+    }
+
+    public function render()
+    {
         return view('admin.website_setup.privacy');
     }
 

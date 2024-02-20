@@ -15,8 +15,8 @@
                     <form wire:submit.prevent="save()">
                         <div class="row mb-3">
 
-                            <div class="col-md-12 mb-3">
-                                <textarea id="value" class="form-control @error('value') is-invalid @enderror" wire:model="value" rows="10" placeholder="Enter privacy policy"></textarea>
+                            <div class="col-md-12 mb-3" wire:ignore>
+                                <textarea id="value" class="form-control @error('value') is-invalid @enderror" wire:model="value" rows="10" placeholder="Enter About Us"></textarea>
                                 @error('value')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -33,4 +33,14 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function () {
+                const value = CKEDITOR.replace('value');
+                value.on('change', function(event){
+                    @this.set('value', event.editor.getData());
+                });
+            });
+        </script>
+    @endpush
 </div>
