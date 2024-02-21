@@ -6,8 +6,10 @@ use App\Models\HomeProduct;
 use Illuminate\Http\Request;
 use App\Models\CommodityProduct;
 use App\Http\Controllers\Controller;
+use App\Models\SellerCommodityProduct;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductDetailResource;
+use App\Http\Resources\AllSellerCommodityProductResource;
 
 class ProductApiController extends Controller
 {
@@ -73,5 +75,14 @@ class ProductApiController extends Controller
                 'error'     => $th->getMessage()
             ],500);
         }
+    }
+
+    public function allSellerCommodityProductList()
+    {
+        $list = SellerCommodityProduct::get();
+        return response([
+            'success'        => true,
+            'products_data'  => AllSellerCommodityProductResource::collection($list)
+        ],200);
     }
 }

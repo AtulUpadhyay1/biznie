@@ -43,6 +43,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     Route::get('product-list', 'ProductApiController@index');
     Route::get('commodity-product-list', 'ProductApiController@commodityProductList');
     Route::get('product-detail/{id}', 'ProductApiController@show');
+    Route::get('all-seller-commodity-product-list', 'ProductApiController@allSellerCommodityProductList');
 
     // Common api
     Route::group(['middleware' => ['auth:sanctum']], function () {
