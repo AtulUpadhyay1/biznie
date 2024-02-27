@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Http\Controllers\Controller;
 use App\Models\ProductEnquiryHistory;
+use App\Http\Resources\Customer\ProductEnquiryResource;
 
 class ProductEnquireApiController extends Controller
 {
     public function index()
     {
-        $list = ProductEnquiry::where('user_id', auth()->id())->paginate(getPaginate());
-        return $list;
+        $list = ProductEnquiry::where('user_id', auth()->id())->with('getBrand')->paginate(getPaginate());
+        return ProductEnquiryResource::collection($list);
     }
 
     public function save(Request $request)

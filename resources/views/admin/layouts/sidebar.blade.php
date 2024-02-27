@@ -90,7 +90,7 @@
             <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
             'admin.product-category', 'admin.create-product-category', 'admin.edit-product-category',
             'admin.product-sub-category', 'admin.create-product-sub-category', 'admin.create-product-sub-subcategory',
-            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show']) ? 'active' : '' }}">
+            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show', 'admin.commodity-product-enquiry.index']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#products" role="button"
                     aria-expanded="false" aria-controls="products">
                     <i class="bi bi-cart"></i>
@@ -101,7 +101,7 @@
             <div class="collapse {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
             'admin.product-category','admin.create-product-category', 'admin.edit-product-category',
             'admin.product-sub-category', 'admin.create-product-sub-category', 'admin.create-product-sub-subcategory',
-            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show']) ? 'show' : '' }}" id="products">
+            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show', 'admin.commodity-product-enquiry.index']) ? 'show' : '' }}" id="products">
                 <ul class="nav sub-menu">
                     {{-- <li class="nav-item">
                         <a href="#" class="nav-link">Add New Products</a>
@@ -133,6 +133,11 @@
                     <li class="nav-item {{ isActiveRoute(['admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show']) ? 'active' : '' }}">
                         <a href="{{route('admin.commodity-product.index')}}" class="nav-link" wire:navigate>
                             Commodity Product
+                        </a>
+                    </li>
+                    <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index']) ? 'active' : '' }}">
+                        <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate>
+                            Commodity Product Enquiry
                         </a>
                     </li>
 
