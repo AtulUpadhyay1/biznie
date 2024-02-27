@@ -54,9 +54,7 @@
                                             <b class="text-sucess">₹ {{ $data->price ? $data->price : '0.00' }}</b>
                                         </td>
                                         <td>
-                                            <div class="form-check form-switch">
-                                                <input type="checkbox" class="form-check-input" {{ $data->status == 'active' ? 'checked' : '' }}  wire:change="updateStatus({{ $data->id }})">
-                                            </div>
+                                            {{ ucfirst($data->status) }}
                                         </td>
                                         <td class="text-center">
                                             <a type="button" id="ActionBtn{{$data->id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-light btn-xs px-2">
