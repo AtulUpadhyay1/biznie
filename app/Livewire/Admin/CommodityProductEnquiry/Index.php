@@ -16,7 +16,7 @@ class Index extends Component
     public function render()
     {
         $total = ProductEnquiry::count();
-        $list = ProductEnquiry::latest()->with('getCategory')->paginate(getPaginate());
+        $list = ProductEnquiry::latest()->with('getBrand')->paginate(getPaginate());
         return view('admin.commodity_product_enquiry.index', compact('total', 'list'));
     }
 }
