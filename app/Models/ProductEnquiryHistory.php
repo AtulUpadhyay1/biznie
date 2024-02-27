@@ -15,5 +15,6 @@ class ProductEnquiryHistory extends Model
         'billing_address'   => 'array',
         'delivery_address'  => 'array',
         'consignee_detail'  => 'array',
+        'message'           => 'array',
     ];
 }

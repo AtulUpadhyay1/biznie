@@ -73,5 +73,50 @@ class ProductEnquireApiController extends Controller
             ],500);
 
         }
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+
+            $data = ProductEnquiry::findOrFail($id);
+            $data->price    = $request->price;
+            $data->message  = [[
+                'message'   => $request->message,
+                'date'      => date('Y-m-d H:i:s')
+            ]];
+            $data->save();
+
+            $data_history = new ProductEnquiryHistory;
+            $data_history->user_id              = auth()->id();
+            $data_history->commodity_product_id = $data->commodity_product_id;
+            $data_history->brand_id             = $data->brand_id;
+            $data_history->product_enquiry_id   = $data->id;
+            $data_history->unique_id            = $data->unique_id;
+            $data_history->origin_city          = $data->origin_city;
+            $data_history->variation            = $data->variation;
+            $data_history->billing_address      = $data->billing_address;
+            $data_history->delivery_address     = $data->delivery_address;
+            $data_history->consignee_detail     = $data->consignee_detail;
+            $data_history->purpose              = $data->purpose;
+            $data_history->description          = $data->description;
+            $data_history->price                = $data->price;
+            $data_history->message              = $data->message;
+            $data_history->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Product enquiry updated successfully.'
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
     }
 }

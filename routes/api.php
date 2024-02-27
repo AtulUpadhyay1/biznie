@@ -78,6 +78,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
         // Product enquire
         Route::get('product-enquire', 'Authenticated\ProductEnquireApiController@index');
         Route::post('product-enquire', 'Authenticated\ProductEnquireApiController@save');
+        Route::post('product-enquire-update/{id}', 'Authenticated\ProductEnquireApiController@update');
     });
 
 });

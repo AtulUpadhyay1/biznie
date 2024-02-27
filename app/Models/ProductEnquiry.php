@@ -15,6 +15,7 @@ class ProductEnquiry extends Model
         'billing_address'   => 'array',
         'delivery_address'  => 'array',
         'consignee_detail'  => 'array',
+        'message'           => 'array',
     ];
 
     public function getBrand()
