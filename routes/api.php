@@ -76,6 +76,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
         Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
 
         // Product enquire
+        Route::get('product-enquire', 'Authenticated\ProductEnquireApiController@index');
         Route::post('product-enquire', 'Authenticated\ProductEnquireApiController@save');
     });
 

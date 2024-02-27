@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_enquiries', function (Blueprint $table) {
+        Schema::create('product_enquiry_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->bigInteger('commodity_product_id')->unsigned()->nullable();
             $table->bigInteger('brand_id')->unsigned()->nullable();
+            $table->bigInteger('product_enquiry_id')->unsigned()->nullable();
             $table->string('unique_id')->nullable();
             $table->text('origin_city')->nullable();
             $table->text('variation')->nullable();
@@ -37,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_enquiries');
+        Schema::dropIfExists('product_enquiry_histories');
     }
 };

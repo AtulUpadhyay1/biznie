@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Api\Customer\Authenticated;
 use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Http\Controllers\Controller;
+use App\Models\ProductEnquiryHistory;
 
 class ProductEnquireApiController extends Controller
 {
     public function index()
     {
-
+        $list = ProductEnquiry::where('user_id', auth()->id())->paginate(getPaginate());
+        return $list;
     }
 
     public function save(Request $request)
@@ -30,6 +32,7 @@ class ProductEnquireApiController extends Controller
             $data->user_id              = auth()->id();
             $data->commodity_product_id = $request->commodity_product_id;
             $data->brand_id             = $request->brand_id;
+            $data->unique_id            = 'PE-'.time().'-'.rand(1111, 9999);
             $data->origin_city          = $request->origin_city;
             $data->variation            = $request->variation;
             $data->billing_address      = $request->billing_address;
@@ -37,7 +40,25 @@ class ProductEnquireApiController extends Controller
             $data->consignee_detail     = $request->consignee_detail;
             $data->purpose              = $request->purpose;
             $data->description          = $request->description;
+            $data->price                = $request->price;
             $data->save();
+
+            $data_history = new ProductEnquiryHistory;
+            $data_history->user_id      = auth()->id();
+            $data_history->commodity_product_id = $request->commodity_product_id;
+            $data_history->brand_id             = $request->brand_id;
+            $data_history->product_enquiry_id   = $data->id;
+            $data_history->unique_id            = $data->unique_id;
+            $data_history->origin_city          = $request->origin_city;
+            $data_history->variation            = $request->variation;
+            $data_history->billing_address      = $request->billing_address;
+            $data_history->delivery_address     = $request->delivery_address;
+            $data_history->consignee_detail     = $request->consignee_detail;
+            $data_history->purpose              = $request->purpose;
+            $data_history->description          = $request->description;
+            $data_history->price                = $request->price;
+            $data_history->save();
+
             return response([
                 'success'   => true,
                 'message'   => 'Product enquiry added successfully.'
