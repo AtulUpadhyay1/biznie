@@ -33,7 +33,7 @@
                                                 </select>
                                             </th>
                                         @endforeach
-                                        <th class="text-center">Price</th>
+                                        {{-- <th class="text-center">Price</th> --}}
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -46,10 +46,10 @@
                                                 @error('variation.'.getAttribute($attribute)->name.'.0') <small class="text-danger">{{ $message }}</small>@enderror
                                             </td>
                                         @endforeach
-                                        <td>
+                                        {{-- <td>
                                             <input type="number" class="form-control form-control-sm @error('variation.Price.0') is-invalid @enderror" placeholder="Enter Price" wire:model="variation.Price.0">
                                             @error('variation.Price.0') <small class="text-danger">{{ $message }}</small>@enderror
-                                        </td>
+                                        </td> --}}
                                         <td></td>
                                     </tr>
                                     @foreach ($variation_inputs as $variation_key => $variation_input)
@@ -61,10 +61,10 @@
                                                     @error('variation.'.getAttribute($attribute)->name.'.'.$variation_input) <small class="text-danger">{{ $message }}</small>@enderror
                                                 </td>
                                             @endforeach
-                                            <td>
+                                            {{-- <td>
                                                 <input type="number" class="form-control form-control-sm @error('variation.Price.'.$variation_input) is-invalid @enderror" placeholder="Enter Price" wire:model="variation.Price.{{$variation_input}}">
                                                 @error('variation.Price.'.$variation_input) <small class="text-danger">{{ $message }}</small>@enderror
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <div class="col-md-1">
                                                     <button type="button" class="btn btn-inverse-danger btn-sm btn-icon" wire:click="removeVariationField({{$variation_key}})" title="Remove Field"><i class="bi bi-x-circle"></i></button>
