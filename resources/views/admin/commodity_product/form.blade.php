@@ -90,7 +90,7 @@
                                 @error('sub_sub_category_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-4 mb-3">
+                            {{-- <div class="col-md-4 mb-3">
                                 <div wire:ignore>
                                     <label for="brand_id" class="form-label">Brand</label>
                                     <select class="form-select select2 @error('brand_id') is-invalid @enderror" id="brand_id" wire:model="brand_id" data-placeholder="Select brand" multiple>
@@ -100,7 +100,7 @@
                                     </select>
                                 </div>
                                 @error('brand_id') <small class="text-danger">{{ $message }}</small>@enderror
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
@@ -115,7 +115,7 @@
                                 @error('unit_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-8 mb-3">
                                 <div wire:ignore>
                                     <label for="packaging_type" class="form-label">Packaging Type</label>
                                     <select class="form-select select2 @error('packaging_type') is-invalid @enderror" id="packaging_type" wire:model="packaging_type" data-placeholder="Select packaging type" multiple>

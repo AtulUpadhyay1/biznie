@@ -101,7 +101,7 @@ class Create extends Component
             'name'              => 'required',
             'category_id'       => 'required',
             'sub_category_id'   => 'required',
-            'brand_id'          => 'required',
+            // 'brand_id'          => 'required',
             'unit_id'           => 'required',
             //'base_price'        => 'required',
             'packaging_type'    => 'required',
