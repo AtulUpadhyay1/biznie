@@ -644,3 +644,14 @@
     flex-direction: column;
 }
 /*End of gallery section */
+
+.select2-container--default .select2-selection--single{
+    height: 42px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 8px;
+}
+
+.select2.is-invalid {
+    border-color: #dc3545 !important; /* Set the border color to the invalid state color */
+}
