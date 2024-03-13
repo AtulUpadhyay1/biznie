@@ -7,10 +7,11 @@ use App\Models\Address;
 use Livewire\Component;
 use App\Models\ProductUnit;
 use App\Models\CommodityProduct;
+use App\Models\CommodityProductStatePrice;
 
 class StatePriceFrom extends Component
 {
-    public $page_title = "Update Wise State Price";
+    public $page_title = "Add State Wise Price";
 
     public $brand_id, $state_name, $city_name;
 
@@ -53,7 +54,47 @@ class StatePriceFrom extends Component
         $city_list  = Address::where('state', $this->state_name)->select('city')->groupBy('city')->orderBy('city', 'asc')->get();
         $unit_list  = ProductUnit::active()->orderBy('name', 'asc')->get();
         $data       = CommodityProduct::findOrFail($this->hidden_id);
+
+        $check_price = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
+        if($check_price){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Price already updated for selected data.',
+            );
+
+        }
+
         return view('admin.commodity_product.state_price_from', compact('brand_list', 'state_list', 'city_list', 'unit_list', 'data'));
     }
-    
+
+    public function save()
+    {
+        $this->validate([
+            'brand_id'      => 'required',
+            'state_name'    => 'required',
+            'city_name'     => 'required',
+        ],[
+            'brand_id.required'      => 'Please select a brand.',
+            'state_name.required'    => 'Please select a state.',
+            'city_name.required'     => 'Please select a city.',
+        ]);
+
+        $check_price = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
+        if($check_price){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Price already updated for selected data.',
+            );
+            return 1;
+        }
+        $data = new CommodityProductStatePrice;
+        $data->commodity_product_id = $this->hidden_id;
+        $data->brand_id             = $this->brand_id;
+        $data->state                = $this->state_name;
+        $data->city                 = $this->city_name;
+        $data->price                = $this->variation['Price'];
+        $data->save();
+        session()->flash('success', 'Product variation price updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product.index',navigate: true);
+    }
 }
