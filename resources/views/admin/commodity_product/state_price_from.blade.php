@@ -20,7 +20,7 @@
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
                                     <label for="brand_id" class="form-label">Brand</label>
-                                    <select class="form-select select2 @error('brand_id') is-invalid @enderror" id="brand_id" wire:model="brand_id">
+                                    <select class="form-select select2 @error('brand_id') is-invalid @enderror" id="brand_id" wire:model="brand_id" {{ $state_price_id ? 'disabled' : '' }}>
                                         <option>Select Brand</option>
                                         @foreach ($brand_list as $brand_data)
                                             <option value="{{ $brand_data->id }}">{{ $brand_data->name }}</option>
@@ -33,7 +33,7 @@
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
                                     <label for="state_name" class="form-label">State</label>
-                                    <select class="form-select select2 @error('state_name') is-invalid @enderror" id="state_name" wire:model="state_name">
+                                    <select class="form-select select2 @error('state_name') is-invalid @enderror" id="state_name" wire:model="state_name" {{ $state_price_id ? 'disabled' : '' }}>
                                         <option>Select State</option>
                                         @foreach ($state_list as $state_data)
                                             <option value="{{ $state_data->state }}">{{ $state_data->state }}</option>
@@ -46,7 +46,7 @@
                             <div class="col-md-4 mb-3">
                                 <div>
                                     <label for="city_name" class="form-label">City</label>
-                                    <select class="form-select select2 @error('city_name') is-invalid @enderror" id="city_name" wire:model="city_name">
+                                    <select class="form-select select2 @error('city_name') is-invalid @enderror" id="city_name" wire:model="city_name" {{ $state_price_id ? 'disabled' : '' }}>
                                         <option>Select City</option>
                                         @foreach ($city_list as $city_data)
                                             <option value="{{ $city_data->city }}">{{ $city_data->city }}</option>

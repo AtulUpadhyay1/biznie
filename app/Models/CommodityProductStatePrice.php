@@ -13,4 +13,9 @@ class CommodityProductStatePrice extends Model
     protected $casts = [
         'price'     => 'array',
     ];
+
+    public function getBrand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
 }
