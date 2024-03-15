@@ -74,7 +74,7 @@ class StatePriceFrom extends Component
             if($check_price){
                 $this->dispatch('alert',
                     type : 'error',
-                    message : 'Price already updated for selected data.',
+                    message : 'Price already updated for selected data !!',
                 );
 
             }
@@ -99,7 +99,7 @@ class StatePriceFrom extends Component
             if($check_price){
                 $this->dispatch('alert',
                     type : 'error',
-                    message : 'Price already updated for selected data.',
+                    message : 'Price already updated for selected data !!',
                 );
                 return 1;
             }
@@ -116,6 +116,9 @@ class StatePriceFrom extends Component
         $data->price                = array_values($this->variation['Price']);
         $data->save();
         session()->flash('success', 'Product variation price updated successfully !!');
+        if($this->state_price_id){
+            return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
+        }
         return $this->redirectRoute('admin.commodity-product.index',navigate: true);
     }
 }

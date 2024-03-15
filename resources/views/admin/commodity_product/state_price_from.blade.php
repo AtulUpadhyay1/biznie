@@ -10,7 +10,7 @@
                             <h4>{{ $page_title }}</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
+                            <a @if($state_price_id) href="{{route('admin.commodity-product.show', $hidden_id)}}" @else href="{{route('admin.commodity-product.index')}}" @endif class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                     </div>
                 </div>

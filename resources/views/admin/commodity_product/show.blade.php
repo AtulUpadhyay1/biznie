@@ -123,12 +123,15 @@
                                     <b>Brand : </b>{{$state_price->getBrand->name}} | <b>State : </b>{{ $state_price->state }} | <b>City : </b>{{ $state_price->city }}
                                 </div>
                                 <div class="col-md-2 text-end">
-                                    <button type="button" class="btn btn-outline-danger btn-icon btn-xs p-0" data-bs-toggle="modal" data-bs-toggle="tooltip" title="Copy" data-bs-target="#copyModal_{{$state_price->id}}">
+                                    <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0" data-bs-toggle="modal" data-bs-toggle="tooltip" title="Copy" data-bs-target="#copyModal_{{$state_price->id}}" form="copyFormModal_{{$state_price->id}}">
                                         <i class="bi bi-copy"></i>
                                     </button>
                                     <a href="{{route('admin.commodity-product.statePrice', $data->id)}}?state_price_id={{ $state_price->id }}" wire:navigate class="btn btn-primary btn-icon btn-xs" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
+                                    <button type="button" class="btn btn-danger btn-icon btn-xs p-0" title="Delete" wire:click="deleteStatePrice({{ $state_price->id }})">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -168,57 +171,59 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="copyModalLabel_{{$state_price->id}}">Copy Product Variation Price</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                                            <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close" form="copyFormModal_{{$state_price->id}}"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="fs-5">
                                                 <b>Brand : </b>{{$state_price->getBrand->name}} | <b>State : </b>{{ $state_price->state }} | <b>City : </b>{{ $state_price->city }}
                                             </div>
                                             <hr>
-                                            <div class="row">
-                                                <div class="col-md-4 mb-3">
-                                                    <div>
-                                                        <label for="brand_id_{{$state_price->id}}" class="form-label">Brand</label>
-                                                        <select class="form-select @error('brand_id') is-invalid @enderror" id="brand_id_{{$state_price->id}}" wire:model.live="brand_id" {{ $state_price_id ? 'disabled' : '' }}>
-                                                            <option>Select Brand</option>
-                                                            @foreach ($brand_list as $brand_data)
-                                                                <option value="{{ $brand_data->id }}">{{ $brand_data->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                            <form id="copyFormModal_{{$state_price->id}}" wire:submit="copyStatePrice({{$state_price->id}})">
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <div>
+                                                            <label for="brand_id_{{$state_price->id}}" class="form-label">Brand</label>
+                                                            <select class="form-select @error('brand_id') is-invalid @enderror" id="brand_id_{{$state_price->id}}" wire:model.live="brand_id">
+                                                                <option value="">Select Brand</option>
+                                                                @foreach ($brand_list as $brand_data)
+                                                                    <option value="{{ $brand_data->id }}">{{ $brand_data->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        @error('brand_id') <small class="text-danger">{{ $message }}</small>@enderror
                                                     </div>
-                                                    @error('brand_id') <small class="text-danger">{{ $message }}</small>@enderror
-                                                </div>
 
-                                                <div class="col-md-4 mb-3">
-                                                    <div>
-                                                        <label for="state_name_{{$state_price->id}}" class="form-label">State</label>
-                                                        <select class="form-select @error('state_name') is-invalid @enderror" id="state_name_{{$state_price->id}}" wire:model.live="state_name" {{ $state_price_id ? 'disabled' : '' }}>
-                                                            <option>Select State</option>
-                                                            @foreach ($state_list as $state_data)
-                                                                <option value="{{ $state_data->state }}">{{ $state_data->state }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div>
+                                                            <label for="state_name_{{$state_price->id}}" class="form-label">State</label>
+                                                            <select class="form-select @error('state_name') is-invalid @enderror" id="state_name_{{$state_price->id}}" wire:model.live="state_name">
+                                                                <option value="">Select State</option>
+                                                                @foreach ($state_list as $state_data)
+                                                                    <option value="{{ $state_data->state }}">{{ $state_data->state }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        @error('state_name') <small class="text-danger">{{ $message }}</small>@enderror
                                                     </div>
-                                                    @error('state_name') <small class="text-danger">{{ $message }}</small>@enderror
-                                                </div>
 
-                                                <div class="col-md-4 mb-3">
-                                                    <div>
-                                                        <label for="city_name_{{$state_price->id}}" class="form-label">City</label>
-                                                        <select class="form-select @error('city_name') is-invalid @enderror" id="city_name_{{$state_price->id}}" wire:model.live="city_name" {{ $state_price_id ? 'disabled' : '' }}>
-                                                            <option>Select City</option>
-                                                            @foreach ($city_list as $city_data)
-                                                                <option value="{{ $city_data->city }}">{{ $city_data->city }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div>
+                                                            <label for="city_name_{{$state_price->id}}" class="form-label">City</label>
+                                                            <select class="form-select @error('city_name') is-invalid @enderror" id="city_name_{{$state_price->id}}" wire:model.live="city_name">
+                                                                <option value="">Select City</option>
+                                                                @foreach ($city_list as $city_data)
+                                                                    <option value="{{ $city_data->city }}">{{ $city_data->city }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        @error('city_name') <small class="text-danger">{{ $message }}</small>@enderror
                                                     </div>
-                                                    @error('city_name') <small class="text-danger">{{ $message }}</small>@enderror
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Copy</button>
+                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" form="copyFormModal_{{$state_price->id}}">Close</button>
+                                            <button type="submit" class="btn btn-primary" form="copyFormModal_{{$state_price->id}}">Copy</button>
                                         </div>
                                     </div>
                                 </div>
