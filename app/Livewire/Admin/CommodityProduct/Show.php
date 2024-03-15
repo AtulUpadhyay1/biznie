@@ -5,14 +5,18 @@ namespace App\Livewire\Admin\CommodityProduct;
 use App\Models\Brand;
 use App\Models\Address;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Models\CommodityProduct;
 use App\Models\CommodityProductStatePrice;
 
 class Show extends Component
 {
+    use WithFileUploads;
+
     public $page_title = 'Commodity Product Show';
 
     public $hidden_id, $brand_id, $state_name, $city_name ;
+    public $chart;
 
     public function mount($id)
     {
@@ -65,6 +69,21 @@ class Show extends Component
         $data->price                = $get_state_price->price;
         $data->save();
         session()->flash('success', 'Product state price copy successfully !!');
+        return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
+    }
+
+    public function chartStatePrice($state_price_id)
+    {
+        $this->validate([
+            'chart' => 'required|image|mimes:jpg,png,jpeg',
+        ], [
+            'chart.required' => 'Please select a chart file.'
+        ]);
+        $data = CommodityProductStatePrice::findOrFail($state_price_id);
+        $data->chart = imageUpload($this->chart, 'chart', $data->chart);
+        $data->save();
+
+        session()->flash('success', 'State price chart update successfully !!');
         return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
     }
 

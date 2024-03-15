@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->longText('price')->nullable();
+            $table->string('chart')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

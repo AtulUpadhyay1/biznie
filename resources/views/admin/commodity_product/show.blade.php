@@ -123,7 +123,10 @@
                                     <b>Brand : </b>{{$state_price->getBrand->name}} | <b>State : </b>{{ $state_price->state }} | <b>City : </b>{{ $state_price->city }}
                                 </div>
                                 <div class="col-md-2 text-end">
-                                    <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0" data-bs-toggle="modal" data-bs-toggle="tooltip" title="Copy" data-bs-target="#copyModal_{{$state_price->id}}" form="copyFormModal_{{$state_price->id}}">
+                                    <button type="reset" class="btn btn-light btn-icon btn-xs p-0" data-bs-toggle="modal" title="Chart" data-bs-target="#chartModal_{{$state_price->id}}" form="copyFormModal_{{$state_price->id}}">
+                                        <i class="bi bi-clipboard-data"></i>
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0" data-bs-toggle="modal" title="Copy" data-bs-target="#copyModal_{{$state_price->id}}" form="copyFormModal_{{$state_price->id}}">
                                         <i class="bi bi-copy"></i>
                                     </button>
                                     <a href="{{route('admin.commodity-product.statePrice', $data->id)}}?state_price_id={{ $state_price->id }}" wire:navigate class="btn btn-primary btn-icon btn-xs" title="Edit">
@@ -166,7 +169,7 @@
                             </div>
                             <hr>
 
-                            <div class="modal fade" id="copyModal_{{$state_price->id}}" tabindex="-1" aria-labelledby="copyModalLabel_{{$state_price->id}}" aria-hidden="true" wire:ignore.self>
+                            <div class="modal fade" id="copyModal_{{$state_price->id}}" tabindex="-1" aria-labelledby="copyModalLabel_{{$state_price->id}}" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -227,7 +230,47 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
+
+                            <div class="modal fade" id="chartModal_{{$state_price->id}}" tabindex="-1" aria-labelledby="chartModalLabel_{{$state_price->id}}" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="chartModalLabel_{{$state_price->id}}">Chart Product Variation Price</h5>
+                                            <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close" form="chartFormModal_{{$state_price->id}}"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="fs-5">
+                                                <b>Brand : </b>{{$state_price->getBrand->name}} | <b>State : </b>{{ $state_price->state }} | <b>City : </b>{{ $state_price->city }}
+                                            </div>
+                                            <hr>
+                                            <form id="chartFormModal_{{$state_price->id}}" wire:submit="chartStatePrice({{$state_price->id}})">
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="chart_{{$state_price->id}}" class="form-label">Upload New Chart</label>
+                                                        <input type="file" class="form-control @error('chart') is-invalid @enderror" id="chart_{{$state_price->id}}" wire:model.live="chart">
+                                                        <label for="chart_{{$state_price->id}}">
+                                                            @if ($chart)
+                                                                <img src="{{ $chart->temporaryUrl() }}" class="img-thumbnail" alt="Upload File" class="mt-2">
+                                                            @elseif ($state_price->chart)
+                                                                <img src="{{ imageUrl($state_price->chart) }}" class="img-thumbnail" alt="Upload File" class="mt-2">
+                                                            @else
+                                                                <img src="{{ asset('common/images/upload.png') }}" class="img-thumbnail" alt="Upload File" class="mt-2">
+                                                            @endif
+                                                        </label>
+                                                    </div>
+                                                    @error('chart') <small class="text-danger">{{ $message }}</small>@enderror
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" form="chartFormModal_{{$state_price->id}}">Close</button>
+                                            <button type="submit" class="btn btn-primary" form="chartFormModal_{{$state_price->id}}">Upload</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                     @endif
                 </div>
