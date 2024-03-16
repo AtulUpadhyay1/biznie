@@ -26,6 +26,7 @@ class StatePriceFrom extends Component
         $this->hidden_id = $id;
 
         $data = CommodityProduct::findOrFail($this->hidden_id);
+        $this->page_title       = $data->name.' - Add State Wise Price';
         $this->selected_attributes = $data->attributes;
 
         $this->variation = $data->variation;

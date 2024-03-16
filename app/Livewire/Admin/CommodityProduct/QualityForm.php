@@ -17,6 +17,8 @@ class QualityForm extends Component
         $this->hidden_id = $id;
 
         $data = CommodityProduct::findOrFail($this->hidden_id);
+        $this->page_title          = $data->name.' - Product quality';
+
         $this->quality             = $data->quality;
         $this->quality_price       = $data->quality_price;
 

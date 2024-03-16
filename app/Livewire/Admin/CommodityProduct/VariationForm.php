@@ -17,6 +17,7 @@ class VariationForm extends Component
         $this->hidden_id = $id;
 
         $data = CommodityProduct::findOrFail($this->hidden_id);
+        $this->page_title       = $data->name.' - Product variation';
         $this->selected_attributes = $data->attributes;
 
         $this->variation = $data->variation;

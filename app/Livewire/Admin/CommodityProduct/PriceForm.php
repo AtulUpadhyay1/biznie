@@ -19,6 +19,7 @@ class PriceForm extends Component
         $this->hidden_id = $id;
 
         $data = CommodityProduct::findOrFail($this->hidden_id);
+        $this->page_title       = $data->name.' - Pricing & others';
         $this->base_price       = $data->base_price;
         $this->loading_charge   = $data->loading_charge;
         $this->insurance_charge = $data->insurance_charge;
