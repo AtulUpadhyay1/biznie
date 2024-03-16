@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Commodityproduct;
 use Livewire\Component;
 use App\Models\ProductUnit;
 use App\Models\CommodityProduct;
+use App\Models\CommodityProductVariation;
 
 class VariationForm extends Component
 {
@@ -20,7 +21,7 @@ class VariationForm extends Component
         $this->page_title       = $data->name.' - Product variation';
         $this->selected_attributes = $data->attributes;
 
-        $this->variation = $data->variation;
+        $this->variation = $data->variation ?? [];
 
         if($data->variation && count($data->variation) > 0){
             foreach($data->variation['Price'] as $key => $value){
@@ -100,10 +101,26 @@ class VariationForm extends Component
             }
         }
 
-        $data = CommodityProduct::find($this->hidden_id);
-        $data->unit = $this->unit;
-        $data->variation = $this->variation;
-        $data->save();
+
+        $variation_arr = [];
+        foreach ($this->selected_attributes as $key => $attribute) {
+            $variation_data['id']       = $attribute;
+            $variation_data['name']     = getAttribute($attribute)->name;
+            $variation_data['value']    = $this->variation[getAttribute($attribute)->name][0];
+            $variation_arr[]            = $variation_data;
+        }
+
+        // dd($variation_arr);
+
+        // $data = CommodityProduct::find($this->hidden_id);
+        // $data->unit = $this->unit;
+        // $data->variation = $this->variation;
+        // $data->save();
+
+        $product_variation = new CommodityProductVariation;
+        $product_variation->commodity_product_id = $this->hidden_id;
+        $product_variation->value = $variation_arr;
+        $product_variation->save();
 
         if($redirect == true){
             session()->flash('success', 'Product variation updated successfully !!');
