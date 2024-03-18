@@ -130,6 +130,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product/variation/{id}', AdminRoot\CommodityProduct\VariationForm::class)->name('commodity-product.variation');
 
         Route::get('commodity-product/variation-old/{id}', AdminRoot\CommodityProduct\VariationFormOld::class)->name('commodity-product.variationOld');
+        Route::get('commodity-product/variation-old/{id}', AdminRoot\CommodityProduct\VariationFormNewOld::class)->name('commodity-product.variationNewOld');
         Route::get('commodity-product/quality/{id}', AdminRoot\CommodityProduct\QualityForm::class)->name('commodity-product.quality');
 
         Route::get('commodity-product/state-price/{id}', AdminRoot\CommodityProduct\StatePriceFrom::class)->name('commodity-product.statePrice');
