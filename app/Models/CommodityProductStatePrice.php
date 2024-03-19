@@ -11,7 +11,7 @@ class CommodityProductStatePrice extends Model
     use HasFactory, SoftDeletes;
 
     protected $casts = [
-        'price'     => 'array',
+        'value'     => 'array',
     ];
 
     public function getBrand()

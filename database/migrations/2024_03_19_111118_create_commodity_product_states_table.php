@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commodity_product_state_prices', function (Blueprint $table) {
+        Schema::create('commodity_product_states', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('commodity_product_id')->unsigned()->nullable();
-            $table->bigInteger('commodity_product_variation_id')->unsigned()->nullable();
-            $table->bigInteger('commodity_product_state_id')->unsigned()->nullable();
             $table->bigInteger('brand_id')->unsigned()->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
-            $table->longText('value')->nullable();
-            $table->string('price')->nullable();
+            $table->string('chart')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commodity_product_state_prices');
+        Schema::dropIfExists('commodity_product_states');
     }
 };
