@@ -7,6 +7,7 @@ use App\Models\Address;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\CommodityProduct;
+use App\Models\CommodityProductState;
 use App\Models\CommodityProductStatePrice;
 
 class Show extends Component
@@ -25,13 +26,12 @@ class Show extends Component
 
     public function render()
     {
-        $data = CommodityProduct::with('getCategory', 'getSubCategory', 'getSubSubCategory', 'getUnit', 'getStatePrice', 'getStatePrice.getBrand')->findOrFail($this->hidden_id);
-
+        $data = CommodityProduct::with('getCategory', 'getSubCategory', 'getSubSubCategory', 'getUnit', 'getStateVariation.getBrand', 'getStateVariation', 'getStateVariation.getStateVariationPrice')->findOrFail($this->hidden_id);
         $brand_list = Brand::active()->orderBy('name', 'asc')->get();
         $state_list = Address::select('state')->groupBy('state')->orderBy('state', 'asc')->get();
         $city_list  = Address::where('state', $this->state_name)->select('city')->groupBy('city')->orderBy('city', 'asc')->get();
 
-        $check_price = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
+        $check_price = CommodityProductState::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
         if($check_price){
             $this->dispatch('alert',
                 type : 'error',
@@ -50,7 +50,7 @@ class Show extends Component
             'state_name'    => 'required',
             'city_name'     => 'required',
         ]);
-        $check_price = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
+        $check_price = CommodityProductState::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
         if($check_price){
             $this->dispatch('alert',
                 type : 'error',
@@ -59,15 +59,28 @@ class Show extends Component
             return 1;
         }
 
-        $get_state_price = CommodityProductStatePrice::findOrFail($state_price_id);
+        $get_state_price = CommodityProductStatePrice::where('commodity_product_state_id', $state_price_id)->get();
 
-        $data = new CommodityProductStatePrice;
-        $data->commodity_product_id = $this->hidden_id;
-        $data->brand_id             = $this->brand_id;
-        $data->state                = $this->state_name;
-        $data->city                 = $this->city_name;
-        $data->price                = $get_state_price->price;
-        $data->save();
+        $state_data = new CommodityProductState;
+        $state_data->commodity_product_id = $this->hidden_id;
+        $state_data->brand_id             = $this->brand_id;
+        $state_data->state                = $this->state_name;
+        $state_data->city                 = $this->city_name;
+        $state_data->save();
+
+        foreach ($get_state_price as $state_price) {
+            $data = new CommodityProductStatePrice;
+            $data->commodity_product_id             = $this->hidden_id;
+            $data->commodity_product_variation_id   = $state_price->commodity_product_variation_id;
+            $data->commodity_product_state_id       = $state_data->id;
+            $data->brand_id                         = $this->brand_id;
+            $data->state                            = $this->state_name;
+            $data->city                             = $this->city_name;
+            $data->value                            = $state_price->value;
+            $data->price                            = $state_price->price;
+            $data->save();
+        }
+
         session()->flash('success', 'Product state price copy successfully !!');
         return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
     }
@@ -79,7 +92,7 @@ class Show extends Component
         ], [
             'chart.required' => 'Please select a chart file.'
         ]);
-        $data = CommodityProductStatePrice::findOrFail($state_price_id);
+        $data = CommodityProductState::findOrFail($state_price_id);
         $data->chart = imageUpload($this->chart, 'chart', $data->chart);
         $data->save();
 
@@ -89,7 +102,7 @@ class Show extends Component
 
     public function deleteStatePrice($state_price_id)
     {
-        CommodityProductStatePrice::destroy($state_price_id);
+        CommodityProductState::destroy($state_price_id);
         $this->dispatch('alert',
             type : 'success',
             message : 'State price deleted successfully !!',

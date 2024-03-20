@@ -49,11 +49,21 @@ class StatePriceFrom extends Component
         }
 
         if($this->state_price_id){
-            $get_state_price = CommodityProductStatePrice::findOrFail($this->state_price_id);
-            $this->variation['Price'] = $get_state_price->price;
-            $this->brand_id = $get_state_price->brand_id;
-            $this->state_name = $get_state_price->state;
-            $this->city_name = $get_state_price->city;
+            $this->uploaded_variation = [];
+            $get_state_variation = CommodityProductState::with('getStateVariationPrice')->findOrFail($this->state_price_id);
+
+            foreach ($get_state_variation->getStateVariationPrice as $product_variation) {
+                foreach($product_variation->value as $variation_key => $variation_value){
+                    $uploaded_variation_data[$attribute_name_arr[$variation_key]] = $variation_value['value'];
+                    $uploaded_variation_data['Price'] = $product_variation->price;
+                    $this->uploaded_variation[$product_variation->commodity_product_variation_id] = $uploaded_variation_data;
+                }
+            }
+
+
+            $this->brand_id = $get_state_variation->brand_id;
+            $this->state_name = $get_state_variation->state;
+            $this->city_name = $get_state_variation->city;
         }
 
         foreach ($this->selected_attributes as $attribute) {
@@ -71,7 +81,7 @@ class StatePriceFrom extends Component
         $data       = CommodityProduct::findOrFail($this->hidden_id);
 
         if(!$this->state_price_id){
-            $check_price = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
+            $check_price = CommodityProductState::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
             if($check_price){
                 $this->dispatch('alert',
                     type : 'error',
@@ -96,7 +106,7 @@ class StatePriceFrom extends Component
             'city_name.required'     => 'Please select a city.',
         ]);
         if(!$this->state_price_id){
-            $check_price = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
+            $check_price = CommodityProductState::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
             if($check_price){
                 $this->dispatch('alert',
                     type : 'error',
@@ -113,21 +123,25 @@ class StatePriceFrom extends Component
             );
             return 1;
         }
-
-        $state_data = new CommodityProductState;
-        $state_data->commodity_product_id = $this->hidden_id;
-        $state_data->brand_id             = $this->brand_id;
-        $state_data->state                = $this->state_name;
-        $state_data->city                 = $this->city_name;
-        $state_data->save();
+        if(!$this->state_price_id){
+            $state_data = new CommodityProductState;
+            $state_data->commodity_product_id = $this->hidden_id;
+            $state_data->brand_id             = $this->brand_id;
+            $state_data->state                = $this->state_name;
+            $state_data->city                 = $this->city_name;
+            $state_data->save();
+        }
 
         foreach ($this->uploaded_variation as $uploaded_variation_id => $uploaded_variation) {
             $uploaded_product_variation = CommodityProductVariation::find($uploaded_variation_id);
             if($uploaded_product_variation){
                 $data = new CommodityProductStatePrice;
+                if($this->state_price_id){
+                    $data = CommodityProductStatePrice::where('commodity_product_state_id', $this->state_price_id)->first();
+                }
                 $data->commodity_product_id             = $this->hidden_id;
                 $data->commodity_product_variation_id   = $uploaded_product_variation->id;
-                $data->commodity_product_state_id       = $state_data->id;
+                $data->commodity_product_state_id       = !$this->state_price_id ? $state_data->id : $this->state_price_id;
                 $data->brand_id                         = $this->brand_id;
                 $data->state                            = $this->state_name;
                 $data->city                             = $this->city_name;
@@ -137,20 +151,10 @@ class StatePriceFrom extends Component
             }
         }
 
-        // $data = new CommodityProductStatePrice;
-        // if($this->state_price_id){
-        //     $data = CommodityProductStatePrice::findOrFail($this->state_price_id);
-        // }
-        // $data->commodity_product_id = $this->hidden_id;
-        // $data->brand_id             = $this->brand_id;
-        // $data->state                = $this->state_name;
-        // $data->city                 = $this->city_name;
-        // $data->price                = array_values($this->variation['Price']);
-        // $data->save();
         session()->flash('success', 'Product variation price updated successfully !!');
-        // if($this->state_price_id){
-        //     return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
-        // }
+        if($this->state_price_id){
+            return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
+        }
         return $this->redirectRoute('admin.commodity-product.index', navigate: true);
     }
 }

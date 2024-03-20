@@ -55,13 +55,13 @@ class CommodityProduct extends Model
         return $this->belongsTo(ProductUnit::class, 'unit_id');
     }
 
-    public function getStatePrice()
-    {
-        return $this->hasMany(CommodityProductStatePrice::class, 'commodity_product_id');
-    }
-
     public function getCommodityProductVariation()
     {
         return $this->hasMany(CommodityProductVariation::class, 'commodity_product_id');
+    }
+
+    public function getStateVariation()
+    {
+        return $this->hasMany(CommodityProductState::class, 'commodity_product_id');
     }
 }

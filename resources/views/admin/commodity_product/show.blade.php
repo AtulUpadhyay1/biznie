@@ -77,7 +77,7 @@
                         </div>
                     @endif
 
-                    @if ($data->variation)
+                    @if ($data->getCommodityProductVariation)
                         <hr>
                         <h4>Product Variation</h4>
                         <hr>
@@ -98,12 +98,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data->variation['Price'] as $key => $variation)
+                                    @foreach ($data->getCommodityProductVariation as $key => $product_variation)
                                         <tr>
                                             <td><span class="badge bg-danger">{{$loop->iteration}}</span></td>
-                                            @foreach ($data->attributes as $attributes_id)
-                                                <td>{{ $data->variation[getAttribute($attributes_id)->name][$key] }}</td>
-                                            @endforeach
+                                            @foreach ($product_variation->value as $variation_value)
+                                                    <td>{{ $variation_value['value'] }}</td>
+                                                @endforeach
                                             {{-- <td>{{$variation}}</td> --}}
                                         </tr>
                                     @endforeach
@@ -112,27 +112,27 @@
                         </div>
                     @endif
 
-                    @if ($data->getStatePrice->count() > 0)
+                    @if ($data->getStateVariation->count() > 0)
                         <hr>
                         <h4>State wise product variation price</h4>
                         <hr>
-                        @foreach ($data->getStatePrice as $state_price)
+                        @foreach ($data->getStateVariation as $state_variation)
 
                             <div class="row">
                                 <div class="fs-5 mb-1 col-md-10">
-                                    <b>Brand : </b>{{$state_price->getBrand->name}} | <b>State : </b>{{ $state_price->state }} | <b>City : </b>{{ $state_price->city }}
+                                    <b>Brand : </b>{{$state_variation->getBrand->name}} | <b>State : </b>{{ $state_variation->state }} | <b>City : </b>{{ $state_variation->city }}
                                 </div>
                                 <div class="col-md-2 text-end">
-                                    <button type="reset" class="btn btn-light btn-icon btn-xs p-0" data-bs-toggle="modal" title="Chart" data-bs-target="#chartModal_{{$state_price->id}}" form="copyFormModal_{{$state_price->id}}">
+                                    <button type="reset" class="btn btn-light btn-icon btn-xs p-0" data-bs-toggle="modal" title="Chart" data-bs-target="#chartModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
                                         <i class="bi bi-clipboard-data"></i>
                                     </button>
-                                    <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0" data-bs-toggle="modal" title="Copy" data-bs-target="#copyModal_{{$state_price->id}}" form="copyFormModal_{{$state_price->id}}">
+                                    <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0" data-bs-toggle="modal" title="Copy" data-bs-target="#copyModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
                                         <i class="bi bi-copy"></i>
                                     </button>
-                                    <a href="{{route('admin.commodity-product.statePrice', $data->id)}}?state_price_id={{ $state_price->id }}" wire:navigate class="btn btn-primary btn-icon btn-xs" title="Edit">
+                                    <a href="{{route('admin.commodity-product.statePrice', $data->id)}}?state_price_id={{ $state_variation->id }}" wire:navigate class="btn btn-primary btn-icon btn-xs" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <button type="button" class="btn btn-danger btn-icon btn-xs p-0" title="Delete" wire:click="deleteStatePrice({{ $state_price->id }})">
+                                    <button type="button" class="btn btn-danger btn-icon btn-xs p-0" title="Delete" wire:click="deleteStatePrice({{ $state_variation->id }})">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -155,13 +155,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($data->variation['Price'] as $key => $variation)
+                                        @foreach ($state_variation->getStateVariationPrice as $key => $variation)
                                             <tr>
                                                 <td><span class="badge bg-danger">{{$loop->iteration}}</span></td>
-                                                @foreach ($data->attributes as $attributes_id)
-                                                    <td>{{ $data->variation[getAttribute($attributes_id)->name][$key] }}</td>
+                                                @foreach ($variation->value as $variation_value)
+                                                    <td>{{ $variation_value['value'] }}</td>
                                                 @endforeach
-                                                <td>{{ $state_price->price[$loop->index] }}</td>
+                                                <td>{{  $variation->price }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -169,24 +169,24 @@
                             </div>
                             <hr>
 
-                            <div class="modal fade" id="copyModal_{{$state_price->id}}" tabindex="-1" aria-labelledby="copyModalLabel_{{$state_price->id}}" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+                            <div class="modal fade" id="copyModal_{{$state_variation->id}}" tabindex="-1" aria-labelledby="copyModalLabel_{{$state_variation->id}}" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="copyModalLabel_{{$state_price->id}}">Copy Product Variation Price</h5>
-                                            <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close" form="copyFormModal_{{$state_price->id}}"></button>
+                                            <h5 class="modal-title" id="copyModalLabel_{{$state_variation->id}}">Copy Product Variation Price</h5>
+                                            <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close" form="copyFormModal_{{$state_variation->id}}"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="fs-5">
-                                                <b>Brand : </b>{{$state_price->getBrand->name}} | <b>State : </b>{{ $state_price->state }} | <b>City : </b>{{ $state_price->city }}
+                                                <b>Brand : </b>{{$state_variation->getBrand->name}} | <b>State : </b>{{ $state_variation->state }} | <b>City : </b>{{ $state_variation->city }}
                                             </div>
                                             <hr>
-                                            <form id="copyFormModal_{{$state_price->id}}" wire:submit="copyStatePrice({{$state_price->id}})">
+                                            <form id="copyFormModal_{{$state_variation->id}}" wire:submit="copyStatePrice({{$state_variation->id}})">
                                                 <div class="row">
                                                     <div class="col-md-4 mb-3">
                                                         <div>
-                                                            <label for="brand_id_{{$state_price->id}}" class="form-label">Brand</label>
-                                                            <select class="form-select @error('brand_id') is-invalid @enderror" id="brand_id_{{$state_price->id}}" wire:model.live="brand_id">
+                                                            <label for="brand_id_{{$state_variation->id}}" class="form-label">Brand</label>
+                                                            <select class="form-select @error('brand_id') is-invalid @enderror" id="brand_id_{{$state_variation->id}}" wire:model.live="brand_id">
                                                                 <option value="">Select Brand</option>
                                                                 @foreach ($brand_list as $brand_data)
                                                                     <option value="{{ $brand_data->id }}">{{ $brand_data->name }}</option>
@@ -198,8 +198,8 @@
 
                                                     <div class="col-md-4 mb-3">
                                                         <div>
-                                                            <label for="state_name_{{$state_price->id}}" class="form-label">State</label>
-                                                            <select class="form-select @error('state_name') is-invalid @enderror" id="state_name_{{$state_price->id}}" wire:model.live="state_name">
+                                                            <label for="state_name_{{$state_variation->id}}" class="form-label">State</label>
+                                                            <select class="form-select @error('state_name') is-invalid @enderror" id="state_name_{{$state_variation->id}}" wire:model.live="state_name">
                                                                 <option value="">Select State</option>
                                                                 @foreach ($state_list as $state_data)
                                                                     <option value="{{ $state_data->state }}">{{ $state_data->state }}</option>
@@ -211,8 +211,8 @@
 
                                                     <div class="col-md-4 mb-3">
                                                         <div>
-                                                            <label for="city_name_{{$state_price->id}}" class="form-label">City</label>
-                                                            <select class="form-select @error('city_name') is-invalid @enderror" id="city_name_{{$state_price->id}}" wire:model.live="city_name">
+                                                            <label for="city_name_{{$state_variation->id}}" class="form-label">City</label>
+                                                            <select class="form-select @error('city_name') is-invalid @enderror" id="city_name_{{$state_variation->id}}" wire:model.live="city_name">
                                                                 <option value="">Select City</option>
                                                                 @foreach ($city_list as $city_data)
                                                                     <option value="{{ $city_data->city }}">{{ $city_data->city }}</option>
@@ -225,35 +225,35 @@
                                             </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" form="copyFormModal_{{$state_price->id}}">Close</button>
-                                            <button type="submit" class="btn btn-primary" form="copyFormModal_{{$state_price->id}}">Copy</button>
+                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" form="copyFormModal_{{$state_variation->id}}">Close</button>
+                                            <button type="submit" class="btn btn-primary" form="copyFormModal_{{$state_variation->id}}">Copy</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="modal fade" id="chartModal_{{$state_price->id}}" tabindex="-1" aria-labelledby="chartModalLabel_{{$state_price->id}}" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+                            <div class="modal fade" id="chartModal_{{$state_variation->id}}" tabindex="-1" aria-labelledby="chartModalLabel_{{$state_variation->id}}" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="chartModalLabel_{{$state_price->id}}">Chart Product Variation Price</h5>
-                                            <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close" form="chartFormModal_{{$state_price->id}}"></button>
+                                            <h5 class="modal-title" id="chartModalLabel_{{$state_variation->id}}">Chart Product Variation Price</h5>
+                                            <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close" form="chartFormModal_{{$state_variation->id}}"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="fs-5">
-                                                <b>Brand : </b>{{$state_price->getBrand->name}} | <b>State : </b>{{ $state_price->state }} | <b>City : </b>{{ $state_price->city }}
+                                                <b>Brand : </b>{{$state_variation->getBrand->name}} | <b>State : </b>{{ $state_variation->state }} | <b>City : </b>{{ $state_variation->city }}
                                             </div>
                                             <hr>
-                                            <form id="chartFormModal_{{$state_price->id}}" wire:submit="chartStatePrice({{$state_price->id}})">
+                                            <form id="chartFormModal_{{$state_variation->id}}" wire:submit="chartStatePrice({{$state_variation->id}})">
                                                 <div class="row">
                                                     <div class="col-md-12 mb-3">
-                                                        <label for="chart_{{$state_price->id}}" class="form-label">Upload New Chart</label>
-                                                        <input type="file" class="form-control @error('chart') is-invalid @enderror" id="chart_{{$state_price->id}}" wire:model.live="chart">
-                                                        <label for="chart_{{$state_price->id}}">
+                                                        <label for="chart_{{$state_variation->id}}" class="form-label">Upload New Chart</label>
+                                                        <input type="file" class="form-control @error('chart') is-invalid @enderror" id="chart_{{$state_variation->id}}" wire:model.live="chart">
+                                                        <label for="chart_{{$state_variation->id}}">
                                                             @if ($chart)
                                                                 <img src="{{ $chart->temporaryUrl() }}" class="img-thumbnail" alt="Upload File" class="mt-2">
-                                                            @elseif ($state_price->chart)
-                                                                <img src="{{ imageUrl($state_price->chart) }}" class="img-thumbnail" alt="Upload File" class="mt-2">
+                                                            @elseif ($state_variation->chart)
+                                                                <img src="{{ imageUrl($state_variation->chart) }}" class="img-thumbnail" alt="Upload File" class="mt-2">
                                                             @else
                                                                 <img src="{{ asset('common/images/upload.png') }}" class="img-thumbnail" alt="Upload File" class="mt-2">
                                                             @endif
@@ -265,8 +265,8 @@
                                             </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" form="chartFormModal_{{$state_price->id}}">Close</button>
-                                            <button type="submit" class="btn btn-primary" form="chartFormModal_{{$state_price->id}}">Upload</button>
+                                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" form="chartFormModal_{{$state_variation->id}}">Close</button>
+                                            <button type="submit" class="btn btn-primary" form="chartFormModal_{{$state_variation->id}}">Upload</button>
                                         </div>
                                     </div>
                                 </div>
