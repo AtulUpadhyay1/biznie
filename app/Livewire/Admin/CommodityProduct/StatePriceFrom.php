@@ -137,7 +137,7 @@ class StatePriceFrom extends Component
             if($uploaded_product_variation){
                 $data = new CommodityProductStatePrice;
                 if($this->state_price_id){
-                    $data = CommodityProductStatePrice::where('commodity_product_state_id', $this->state_price_id)->first();
+                    $data = CommodityProductStatePrice::where('commodity_product_state_id', $this->state_price_id)->where('commodity_product_variation_id', $uploaded_variation_id)->first();
                 }
                 $data->commodity_product_id             = $this->hidden_id;
                 $data->commodity_product_variation_id   = $uploaded_product_variation->id;

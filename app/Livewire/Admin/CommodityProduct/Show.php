@@ -103,6 +103,7 @@ class Show extends Component
     public function deleteStatePrice($state_price_id)
     {
         CommodityProductState::destroy($state_price_id);
+        CommodityProductStatePrice::where('commodity_product_state_id', $state_price_id)->delete();
         $this->dispatch('alert',
             type : 'success',
             message : 'State price deleted successfully !!',
