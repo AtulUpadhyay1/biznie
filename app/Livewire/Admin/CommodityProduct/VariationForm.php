@@ -67,7 +67,7 @@ class VariationForm extends Component
 
     public function removeVariation($id)
     {
-        // try {
+        try {
             CommodityProductVariation::destroy($id);
             CommodityProductStatePrice::where('commodity_product_variation_id', $id)->delete();
 
@@ -75,12 +75,12 @@ class VariationForm extends Component
                 type : 'success',
                 message : 'Product variation deleted successfully !!',
             );
-        // } catch (\Throwable $th) {
-        //     $this->dispatch('alert',
-        //         type : 'error',
-        //         message : 'Something went wrong !!',
-        //     );
-        // }
+        } catch (\Throwable $th) {
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Something went wrong !!',
+            );
+        }
 
     }
 
