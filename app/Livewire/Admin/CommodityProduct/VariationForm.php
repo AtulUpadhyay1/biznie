@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\ProductUnit;
 use App\Models\CommodityProduct;
 use App\Models\CommodityProductVariation;
+use App\Models\CommodityProductStatePrice;
 
 class VariationForm extends Component
 {
@@ -66,21 +67,20 @@ class VariationForm extends Component
 
     public function removeVariation($id)
     {
-        try {
+        // try {
             CommodityProductVariation::destroy($id);
-            CommodityProductVariationState::where('commodity_product_variation_id', $id)->delete();
-            CommodityProductVariationStatePrice::where('commodity_product_variation_id', $id)->delete();
+            CommodityProductStatePrice::where('commodity_product_variation_id', $id)->delete();
 
             $this->dispatch('alert',
                 type : 'success',
                 message : 'Product variation deleted successfully !!',
             );
-        } catch (\Throwable $th) {
-            $this->dispatch('alert',
-                type : 'error',
-                message : 'Something went wrong !!',
-            );
-        }
+        // } catch (\Throwable $th) {
+        //     $this->dispatch('alert',
+        //         type : 'error',
+        //         message : 'Something went wrong !!',
+        //     );
+        // }
 
     }
 
