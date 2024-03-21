@@ -68,6 +68,9 @@ class VariationForm extends Component
     {
         try {
             CommodityProductVariation::destroy($id);
+            CommodityProductVariationState::where('commodity_product_id', $id)->delete();
+            CommodityProductVariationStatePrice::where('commodity_product_id', $id)->delete();
+
             $this->dispatch('alert',
                 type : 'success',
                 message : 'Product variation deleted successfully !!',
