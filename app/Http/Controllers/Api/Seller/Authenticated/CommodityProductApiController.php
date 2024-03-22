@@ -21,8 +21,11 @@ class CommodityProductApiController extends Controller
         try {
 
             $list = CommodityProduct::active()->latest();
-            if(isset($request->category_id) && $request->category_id){
+            if($request->category_id){
                 $list = $list->where('category_id', $request->category_id);
+            }
+            if($request->sub_category_id){
+                $list = $list->where('sub_category_id', $request->sub_category_id);
             }
             $list = $list->with('getCategory', 'getSubCategory', 'getSubSubCategory', 'getUnit')->get();
 

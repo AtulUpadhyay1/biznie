@@ -57,7 +57,7 @@ class Edit extends Component
             // 'icon' => 'required',
             'business_category_id' => 'required',
             'product_category_id' => 'required',
-            'attribute' => 'required|array',
+            // 'attribute' => 'required|array',
         ]);
 
         try
@@ -66,7 +66,7 @@ class Edit extends Component
             $data->name = $this->name;
             $data->slug = Str::slug($this->name);
             $data->icon = $this->icon;
-            $data->attributes = $this->attribute;
+            // $data->attributes = $this->attribute;
             $data->meta_title = $this->meta_title;
             $data->meta_description = $this->meta_description;
             $data->meta_keywords = $this->meta_keywords;

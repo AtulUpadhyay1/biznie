@@ -20,7 +20,7 @@ class Create extends Component
     public $page_title = "Add Commodity Product";
     use WithFileUploads;
 
-    public $name, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id = [], $unit_id, $base_price, $loading_charge, $insurance_charge, $quality_charge, $gst, $tcs, $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes;
+    public $name, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id = [], $unit_id, $attribute=[], $base_price, $loading_charge, $insurance_charge, $quality_charge, $gst, $tcs, $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes;
 
     public $charge_name=[], $charge_price=[], $operator=[];
     public $charge = 0, $charge_inputs = [];
@@ -42,10 +42,11 @@ class Create extends Component
         $brand_list = Brand::active()->orderBy('name', 'asc')->get();
         $unit_list = ProductUnit::active()->orderBy('name', 'asc')->get();
         $packaging_type_list = PackagingType::active()->orderBy('name', 'asc')->get();
+        $attribute_list = Attribute::active()->get();
 
         $this->packaging_type_name = PackagingType::whereIn('id', $this->packaging_type)->pluck('name');
 
-        return view('admin.commodity_product.form', compact('category_list', 'brand_list', 'unit_list', 'packaging_type_list'));
+        return view('admin.commodity_product.form', compact('category_list', 'brand_list', 'unit_list', 'packaging_type_list', 'attribute_list'));
     }
 
     public function addOtherChargesField($charge)
@@ -115,6 +116,7 @@ class Create extends Component
             // 'quality.*'         => 'required',
             // 'quality_price.*'   => 'required',
             'thumbnail'         => 'required',
+            'attribute'         => 'required|array',
         ]);
 
         // $allInputData = request()->all();
@@ -141,7 +143,7 @@ class Create extends Component
         $data->charge_name      = $this->charge_name;
         $data->charge_price     = $this->charge_price;
         $data->operator         = $this->operator;
-        $data->attributes       = ProductSubCategory::find($this->sub_category_id)->attributes;
+        $data->attributes       = $this->attribute;
         $data->size             = $this->size;
         $data->size_price       = $this->size_price;
         $data->dimension        = $this->dimension;

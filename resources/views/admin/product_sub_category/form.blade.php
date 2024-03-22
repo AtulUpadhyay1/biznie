@@ -55,7 +55,7 @@
                                         </div>
                                         @error('icon') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
-                                    <div class="col-md-12 mb-3">
+                                    {{-- <div class="col-md-12 mb-3">
                                         <div wire:ignore>
                                             <label class="form-label" for="attribute">Attribute</label>
                                             <select class="form-select select2 @error('attribute') is-invalid @enderror" id="attribute" wire:model="attribute" data-placeholder="Select Attribute" multiple>
@@ -65,7 +65,7 @@
                                             </select>
                                         </div>
                                         @error('attribute') <small class="text-danger">{{ $message }}</small>@enderror
-                                    </div>
+                                    </div> --}}
                                     <h5 class="card-heading-h5">SEO Section:</h5>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="title">Meta Title</label>
