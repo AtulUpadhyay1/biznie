@@ -392,7 +392,7 @@ class CommodityProductApiController extends Controller
     public function getVariation($id)
     {
         try {
-            $data = SellerCommodityProduct::find($id);
+            $data = SellerCommodityProductStatePrice::where('seller_commodity_product_id', $id)->get();
             if(!$data){
                 return response([
                     'success'   => false,
@@ -402,7 +402,7 @@ class CommodityProductApiController extends Controller
 
             return response([
                 'success'   => true,
-                'data'      => new MyCommodityProductVariationResource($data)
+                'data'      => MyCommodityProductVariationResource::collection($data)
             ],200);
 
         } catch (\Throwable $th) {
@@ -418,28 +418,17 @@ class CommodityProductApiController extends Controller
     public function updateVariation(Request $request, $id)
     {
         $this->validate($request, [
-            'Price'     => 'required|array'
+            'id'            => 'required|array',
+            'price'         => 'required|array',
+            'is_selected'   => 'required|array',
         ]);
         try {
-            $data = SellerCommodityProduct::find($id);
-            if(!$data){
-                return response([
-                    'success'   => false,
-                    'message'   => 'Product not found.',
-                ],400);
+            foreach ($request->id as $key => $id) {
+                $data = SellerCommodityProductStatePrice::find($id);
+                $data->price        = $request->price[$key];
+                $data->is_selected  = $request->is_selected[$key];
+                $data->save();
             }
-
-            if(count($data->variation['Price']) != count($request->Price)){
-                return response([
-                    'success'   => false,
-                    'message'   => 'Price array mismatch.',
-                ],400);
-            }
-
-            $variation = $data->variation;
-            $variation['Price'] = $request->Price;
-            $data->variation = $variation;
-            $data->save();
 
             $data_history               = new SellerCommodityProductHistory;
             $data_history->user_id      = auth()->id();
