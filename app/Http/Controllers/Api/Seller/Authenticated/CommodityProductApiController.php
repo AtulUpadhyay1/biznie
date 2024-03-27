@@ -9,10 +9,12 @@ use Illuminate\Http\Request;
 use App\Models\CommodityProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BrandResource;
-use App\Models\SellerCommodityProduct;
 use App\Models\CommodityProductState;
+use App\Models\SellerCommodityProduct;
+use App\Models\CommodityProductStatePrice;
 use App\Models\SellerCommodityProductHistory;
 use App\Http\Resources\CommodityProductResource;
+use App\Models\SellerCommodityProductStatePrice;
 use App\Http\Resources\Seller\MyCommodityProductResource;
 use App\Http\Resources\Seller\MyCommodityProductPriceResource;
 use App\Http\Resources\Seller\MyCommodityProductVariationResource;
@@ -93,7 +95,7 @@ class CommodityProductApiController extends Controller
     {
         try {
 
-            $list = SellerCommodityProduct::where('user_id', auth()->id())->paginate(getPaginate());
+            $list = SellerCommodityProduct::where('user_id', auth()->id())->with('getBrand')->paginate(getPaginate());
             return MyCommodityProductResource::collection($list);
 
         } catch (\Throwable $th) {
@@ -111,6 +113,9 @@ class CommodityProductApiController extends Controller
     {
         $this->validate($request, [
             'product_id'    => 'required|numeric',
+            'brand_id'      => 'required|numeric',
+            'state'         => 'required',
+            'city'          => 'required',
         ]);
 
         try {
@@ -120,6 +125,14 @@ class CommodityProductApiController extends Controller
                 return response([
                     'success'   => false,
                     'message'   => 'Product not found.',
+                ],400);
+            }
+
+            $state_prices = CommodityProductStatePrice::where('commodity_product_id', $request->product_id)->where('brand_id', $request->brand_id)->where('state', $request->state)->where('city', $request->city)->get();
+            if(!$state_prices){
+                return response([
+                    'success'   => false,
+                    'message'   => 'State price not set for this product.',
                 ],400);
             }
 
@@ -166,6 +179,22 @@ class CommodityProductApiController extends Controller
             $data->meta_image           = $commodity_product->meta_image;
             $data->status               = $commodity_product->status;
             $data->save();
+
+            foreach ($state_prices as $state_price) {
+                $data_price                                     = new SellerCommodityProductStatePrice;
+                $data_price->user_id                            = auth()->id();
+                $data_price->commodity_product_id               = $state_price->commodity_product_id;
+                $data_price->commodity_product_variation_id     = $state_price->commodity_product_variation_id;
+                $data_price->commodity_product_state_id         = $state_price->commodity_product_state_id;
+                $data_price->brand_id                           = $state_price->brand_id;
+                $data_price->seller_commodity_product_id        = $data->id;
+                $data_price->state                              = $request->state;
+                $data_price->city                               = $request->city;
+                $data_price->value                              = $state_price->value;
+                $data_price->price                              = $state_price->price;
+                $data_price->is_selected                        = 1;
+                $data_price->save();
+            }
 
             $data_history               = new SellerCommodityProductHistory;
             $data_history->user_id      = auth()->id();

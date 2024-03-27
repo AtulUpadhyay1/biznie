@@ -49,4 +49,9 @@ class SellerCommodityProduct extends Model
     {
         return $this->belongsTo(ProductUnit::class, 'unit_id');
     }
+
+    public function getBrand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
 }

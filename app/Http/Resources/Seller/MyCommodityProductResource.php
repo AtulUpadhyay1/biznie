@@ -28,21 +28,18 @@ class MyCommodityProductResource extends JsonResource
             'sub_sub_category'  => $this->getSubSubCategory ? ['id' => $this->sub_sub_category_id,'name' => $this->getSubSubCategory->name] : '',
             'unit'              => $this->getUnit ? ['id' => $this->unit_id,'name' => $this->getUnit->name] : '',
             'loading_address'   => $this->loading_address,
-            'brands'            => [],
+            'brands'            => null,
             'packaging'         => [],
             'thumbnail'         => imageUrl($this->thumbnail),
             'images'            => [],
         ];
-        if($this->brand_id){
-            foreach ($this->brand_id as $brand_id) {
 
-                $brand = getBrand($brand_id);
-                $brand_data['id'] = $brand->id;
-                $brand_data['name'] = $brand->name;
-                $data['brands'][] = $brand_data;
+        if($this->getBrand){
 
-            }
+            $data['brands']['id']   = $this->getBrand->id;
+            $data['brands']['name'] = $this->getBrand->name;
         }
+
         if($this->packaging_type){
             foreach ($this->packaging_type as $key => $packaging_type_id) {
 
