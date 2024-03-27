@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Api\Seller\Authenticated;
 
+use App\Models\Brand;
 use App\Models\HomeProduct;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\CommodityProduct;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BrandResource;
 use App\Models\SellerCommodityProduct;
+use App\Models\CommodityProductState;
 use App\Models\SellerCommodityProductHistory;
 use App\Http\Resources\CommodityProductResource;
 use App\Http\Resources\Seller\MyCommodityProductResource;
@@ -43,6 +46,47 @@ class CommodityProductApiController extends Controller
 
         }
 
+    }
+
+    public function getBrand(Request $request)
+    {
+        $request->validate([
+            'commodity_product_id'  => 'required'
+        ]);
+        $brand_ids = CommodityProductState::where('commodity_product_id', $request->commodity_product_id)->pluck('brand_id')->unique()->toArray();
+        $brand_list = Brand::whereIn('id', $brand_ids)->where('status', '1')->get();
+        return response([
+            'success'           => true,
+            'brand_list'        => BrandResource::collection($brand_list)
+        ],200);
+    }
+
+    public function getState(Request $request)
+    {
+        $request->validate([
+            'commodity_product_id'  => 'required',
+            'brand_id'              => 'required',
+        ]);
+        $state_list = CommodityProductState::where('commodity_product_id', $request->commodity_product_id)->where('brand_id', $request->brand_id)->pluck('state')->unique()->toArray();
+        return response([
+            'success'           => true,
+            'state_list'        => array_values($state_list),
+        ],200);
+    }
+
+    public function getCity(Request $request)
+    {
+        $request->validate([
+            'commodity_product_id'  => 'required',
+            'brand_id'              => 'required',
+            'state'                 => 'required',
+        ]);
+
+        $city_list = CommodityProductState::where('commodity_product_id', $request->commodity_product_id)->where('brand_id', $request->brand_id)->where('state', $request->state)->pluck('city')->unique()->toArray();
+        return response([
+            'success'           => true,
+            'city_list'        => array_values($city_list),
+        ],200);
     }
 
     public function myCommodityProductList()
@@ -87,7 +131,7 @@ class CommodityProductApiController extends Controller
             $data->category_id          = $commodity_product->category_id;
             $data->sub_category_id      = $commodity_product->sub_category_id;
             $data->sub_sub_category_id  = $commodity_product->sub_sub_category_id;
-            $data->brand_id             = $request->brand_id ? [$request->brand_id] : [];
+            $data->brand_id             = $request->brand_id;
             $data->unit_id              = $commodity_product->unit_id;
             $data->description          = $commodity_product->description;
             $data->packaging_type       = $commodity_product->packaging_type;

@@ -50,11 +50,11 @@ class Edit extends Component
             $data->meta_keywords = $this->meta_keywords;
             if($this->thumbnail){
                 $thumbnail_name = time().'-'.rand(10, 99).'.'.$this->thumbnail->extension();
-                $data->thumbnail = $this->thumbnail->storeAs('vendors', $thumbnail_name, 'public');
+                $data->thumbnail = $this->thumbnail->storeAs('brand', $thumbnail_name, 'public');
             }
             if($this->banner){
                 $banner_name = time().'-'.rand(10, 99).'.'.$this->banner->extension();
-                $data->banner = $this->banner->storeAs('vendors', $banner_name, 'public');
+                $data->banner = $this->banner->storeAs('brand', $banner_name, 'public');
             }
             $data->save();
 

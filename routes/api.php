@@ -95,6 +95,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
 
         // Product Catalogue Api
         Route::get('commodity-product-list', 'Authenticated\CommodityProductApiController@index');
+        Route::get('get-brand', 'Authenticated\CommodityProductApiController@getBrand');
+        Route::get('get-state', 'Authenticated\CommodityProductApiController@getState');
+        Route::get('get-city', 'Authenticated\CommodityProductApiController@getCity');
+
         Route::get('my-commodity-product-list', 'Authenticated\CommodityProductApiController@myCommodityProductList');
         Route::post('store-commodity-product', 'Authenticated\CommodityProductApiController@store');
         Route::get('get-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@edit');
