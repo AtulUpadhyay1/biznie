@@ -7,6 +7,7 @@ use App\Models\ProductUnit;
 use App\Models\CommodityProduct;
 use App\Models\CommodityProductVariation;
 use App\Models\CommodityProductStatePrice;
+use App\Models\SellerCommodityProductStatePrice;
 
 class VariationForm extends Component
 {
@@ -70,6 +71,7 @@ class VariationForm extends Component
         try {
             CommodityProductVariation::destroy($id);
             CommodityProductStatePrice::where('commodity_product_variation_id', $id)->delete();
+            SellerCommodityProductStatePrice::where('commodity_product_variation_id', $id)->delete();
 
             $this->dispatch('alert',
                 type : 'success',
@@ -108,6 +110,41 @@ class VariationForm extends Component
         $product_variation->value = $variation_arr;
         $product_variation->save();
 
+        $state_variations = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->select('commodity_product_state_id', 'brand_id', 'state', 'city')->distinct()->get();
+        if($state_variations){
+            foreach ($state_variations as $state_variation) {
+                $new_state_variation = new CommodityProductStatePrice;
+                $new_state_variation->commodity_product_id = $this->hidden_id;
+                $new_state_variation->commodity_product_variation_id = $product_variation->id;
+                $new_state_variation->commodity_product_state_id = $state_variation->commodity_product_state_id;
+                $new_state_variation->brand_id = $state_variation->brand_id;
+                $new_state_variation->state = $state_variation->state;
+                $new_state_variation->city = $state_variation->city;
+                $new_state_variation->value = $variation_arr;
+                $new_state_variation->price = 0;
+                $new_state_variation->save();
+            }
+        }
+
+        $seller_state_variations = SellerCommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->select('user_id', 'commodity_product_state_id', 'brand_id', 'seller_commodity_product_id', 'state', 'city')->distinct()->get();
+        if($seller_state_variations){
+            foreach ($seller_state_variations as $seller_state_variation) {
+                $new_seller_state_variation = new SellerCommodityProductStatePrice;
+                $new_seller_state_variation->user_id = $seller_state_variation->user_id;
+                $new_seller_state_variation->commodity_product_id = $this->hidden_id;
+                $new_seller_state_variation->commodity_product_variation_id = $product_variation->id;
+                $new_seller_state_variation->commodity_product_state_id = $seller_state_variation->commodity_product_state_id;
+                $new_seller_state_variation->brand_id = $seller_state_variation->brand_id;
+                $new_seller_state_variation->seller_commodity_product_id = $seller_state_variation->seller_commodity_product_id;
+                $new_seller_state_variation->state = $seller_state_variation->state;
+                $new_seller_state_variation->city = $seller_state_variation->city;
+                $new_seller_state_variation->value = $variation_arr;
+                $new_seller_state_variation->price = 0;
+                $new_seller_state_variation->is_selected = 0;
+                $new_seller_state_variation->save();
+            }
+        }
+
         if($this->uploaded_variation && count($this->uploaded_variation) > 0) {
             foreach ($this->uploaded_variation as $uploaded_variation_id => $uploaded_variation) {
                 $uploaded_product_variation = CommodityProductVariation::find($uploaded_variation_id);
@@ -121,6 +158,22 @@ class VariationForm extends Component
                     }
                     $uploaded_product_variation->value = $variation_arr;
                     $uploaded_product_variation->save();
+
+                    $state_prices = CommodityProductStatePrice::where('commodity_product_variation_id', $uploaded_variation_id)->get();
+                    if($state_prices){
+                        foreach($state_prices as $state_price){
+                            $state_price->value = $variation_arr;
+                            $state_price->save();
+                        }
+                    }
+
+                    $seller_state_prices = SellerCommodityProductStatePrice::where('commodity_product_variation_id', $uploaded_variation_id)->get();
+                    if($seller_state_prices){
+                        foreach ($seller_state_prices as $seller_state_price) {
+                            $seller_state_price->value = $variation_arr;
+                            $seller_state_price->save();
+                        }
+                    }
                 }
             }
         }
