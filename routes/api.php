@@ -107,6 +107,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::post('update-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@updatePrice');
         Route::get('get-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@getVariation');
         Route::post('update-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@updateVariation');
+        Route::get('get-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@getVariationStock');
+        Route::post('update-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@updateVariationStock');
     });
 
 });

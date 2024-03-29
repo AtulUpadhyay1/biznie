@@ -18,6 +18,7 @@ use App\Models\SellerCommodityProductStatePrice;
 use App\Http\Resources\Seller\MyCommodityProductResource;
 use App\Http\Resources\Seller\MyCommodityProductPriceResource;
 use App\Http\Resources\Seller\MyCommodityProductVariationResource;
+use App\Http\Resources\Seller\MyCommodityProductVariationStockResource;
 
 class CommodityProductApiController extends Controller
 {
@@ -427,6 +428,68 @@ class CommodityProductApiController extends Controller
                 $data = SellerCommodityProductStatePrice::find($id);
                 $data->price        = $request->price[$key];
                 $data->is_selected  = $request->is_selected[$key];
+                $data->save();
+            }
+
+            $data_history               = new SellerCommodityProductHistory;
+            $data_history->user_id      = auth()->id();
+            $data_history->commodity_product_id = $data->commodity_product_id;
+            $data_history->seller_commodity_product_id = $data->id;
+            $data_history->seller_commodity_product_detail = $data;
+            $data_history->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Variation price updated successfully.',
+                'data'      => new MyCommodityProductVariationResource($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
+
+    public function getVariationStock($id)
+    {
+        try {
+            $data = SellerCommodityProductStatePrice::where('seller_commodity_product_id', $id)->get();
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+
+            return response([
+                'success'   => true,
+                'data'      => MyCommodityProductVariationStockResource::collection($data)
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
+
+    public function updateVariationStock(Request $request, $id)
+    {
+        $this->validate($request, [
+            'id'            => 'required|array',
+            'stock'         => 'required|array',
+        ]);
+        try {
+            foreach ($request->id as $key => $id) {
+                $data = SellerCommodityProductStatePrice::find($id);
+                $data->stock        = $request->stock[$key];
                 $data->save();
             }
 

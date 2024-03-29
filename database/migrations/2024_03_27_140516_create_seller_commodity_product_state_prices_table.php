@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->longText('value')->nullable();
             $table->string('price')->nullable();
+            $table->string('stock')->nullable();
             $table->tinyInteger('is_selected')->nullable()->default(1);
             $table->softDeletes();
             $table->timestamps();
