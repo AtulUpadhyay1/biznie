@@ -26,11 +26,12 @@ class Edit extends Component
 
     public $packaging_type = [], $packaging_type_name = [], $packaging_type_price = [];
 
+    public $variation_count = 0;
+
     public function mount($id)
     {
         $this->hidden_id = $id;
-        $data = CommodityProduct::find($this->hidden_id);
-
+        $data = CommodityProduct::with('getCommodityProductVariation')->find($this->hidden_id);
         $this->name                 = $data->name;
         $this->description          = $data->description;
         $this->specification_notes  = $data->specification_notes;
@@ -48,6 +49,7 @@ class Edit extends Component
         $this->meta_title           = $data->meta_title;
         $this->meta_description     = $data->meta_description;
         $this->show_meta_image      = imageUrl($data->meta_image);
+        $this->variation_count      = $data->getCommodityProductVariation->count();
 
         $this->setSubCategoryList();
         $this->setSubSubCategoryList();
