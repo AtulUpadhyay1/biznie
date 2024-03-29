@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Attributes;
 
 use Livewire\Component;
 use App\Models\Attribute;
+use App\Models\CommodityProduct;
 
 class Index extends Component
 {
@@ -37,6 +38,15 @@ class Index extends Component
     public function delete($id)
     {
         try{
+            $check = CommodityProduct::whereJsonContains('attributes', ''.$id)->first();
+            if($check){
+                $this->dispatch('alert',
+                    type: 'error',
+                    message: "Can't delete this attribute !!"
+                );
+                return true;
+            }
+
             Attribute::destroy($id);
             $this->dispatch('alert',
                 type: 'success',

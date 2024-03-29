@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Attributes;
 
 use Livewire\Component;
 use App\Models\Attribute;
+use App\Models\CommodityProduct;
 
 class Edit extends Component
 {
@@ -16,6 +17,12 @@ class Edit extends Component
         $this->hidden_id = $id;
         $data = Attribute::findOrFail($this->hidden_id);
         $this->name = $data->name;
+
+        $check = CommodityProduct::whereJsonContains('attributes', ''.$id)->first();
+        if($check){
+            session()->flash('error', "Can't edit this attribute !!");
+            return $this->redirectRoute('admin.attribute.index', navigate: true);
+        }
     }
 
     public function render()
@@ -32,6 +39,6 @@ class Edit extends Component
         $data->name = $this->name;
         $data->save();
         session()->flash('success', 'Attribute created successfully !!');
-        return $this->redirectRoute('admin.attribute.index',navigate: true);
+        return $this->redirectRoute('admin.attribute.index', navigate: true);
     }
 }
