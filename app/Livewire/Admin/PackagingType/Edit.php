@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\PackagingType;
 
 use Livewire\Component;
 use App\Models\PackagingType;
+use App\Models\CommodityProduct;
 
 class Edit extends Component
 {
@@ -16,6 +17,12 @@ class Edit extends Component
         $this->hidden_id = $id;
         $data = PackagingType::findOrFail($this->hidden_id);
         $this->name = $data->name;
+
+        $check = CommodityProduct::whereJsonContains('packaging_type', ''.$id)->first();
+        if($check){
+            session()->flash('error', "Can't edit this packaging type !!");
+            return $this->redirectRoute('admin.packaging-type.index', navigate: true);
+        }
     }
 
     public function render()

@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\PackagingType;
 
 use Livewire\Component;
 use App\Models\PackagingType;
+use App\Models\CommodityProduct;
 
 class Index extends Component
 {
@@ -37,6 +38,15 @@ class Index extends Component
     public function delete($id)
     {
         try{
+            $check = CommodityProduct::whereJsonContains('packaging_type', ''.$id)->first();
+            if($check){
+                $this->dispatch('alert',
+                    type: 'error',
+                    message: "Can't delete this packaging type !!"
+                );
+                return true;
+            }
+
             PackagingType::destroy($id);
             $this->dispatch('alert',
                 type: 'success',
