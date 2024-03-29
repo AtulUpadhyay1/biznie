@@ -28,4 +28,9 @@ class HomeProduct extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function getSellerStatePrice()
+    {
+        return $this->hasMany(SellerCommodityProductStatePrice::class, 'seller_commodity_product_id', 'seller_commodity_product_id');
+    }
 }

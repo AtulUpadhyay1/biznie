@@ -62,7 +62,7 @@ class ProductApiController extends Controller
     public function show($id)
     {
         try {
-            $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand')->findOrFail($id);
+            $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand', 'getSellerStatePrice')->findOrFail($id);
             return response([
                 'success'        => true,
                 'products_data'  => new ProductDetailResource($data)
