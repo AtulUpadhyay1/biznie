@@ -117,7 +117,7 @@
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
                                     <label class="form-label" for="attribute">Attribute</label>
-                                    <select class="form-select select2 @error('attribute') is-invalid @enderror" id="attribute" wire:model="attribute" data-placeholder="Select Attribute" multiple @if($variation_count > 0) disabled @endif>
+                                    <select class="form-select select2 @error('attribute') is-invalid @enderror" id="attribute" wire:model="attribute" data-placeholder="Select Attribute" multiple @if($variation > 0) disabled @endif>
                                         @foreach($attribute_list as $attribute_data)
                                             <option value="{{$attribute_data->id}}">{{$attribute_data->name}}</option>
                                         @endforeach
