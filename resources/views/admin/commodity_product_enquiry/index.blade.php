@@ -61,10 +61,10 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-dark"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn{{$data->id}}">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.edit', $data->id)}}" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                {{-- <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.edit', $data->id)}}" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.price', $data->id)}}" wire:navigate><i class="bi bi-currency-rupee icon-sm me-2"></i><span>Pricing & others</span></a>
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.variation', $data->id)}}" wire:navigate><i class="bi bi-cart-plus icon-sm me-2"></i><span>Variation</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.variation', $data->id)}}" wire:navigate><i class="bi bi-cart-plus icon-sm me-2"></i><span>Variation</span></a> --}}
                                                 {{-- <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product.quality', $data->id)}}" wire:navigate><i class="bi bi-tags icon-sm me-2"></i><span>Quality</span></a> --}}
                                                 {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-copy icon-sm me-2"></i><span>Duplicate</span></a>
                                                 <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
