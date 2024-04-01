@@ -54,4 +54,14 @@ class SellerCommodityProduct extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getStatePrice()
+    {
+        return $this->hasMany(SellerCommodityProductStatePrice::class, 'seller_commodity_product_id');
+    }
 }

@@ -125,15 +125,13 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product/create', AdminRoot\CommodityProduct\Create::class)->name('commodity-product.create');
         Route::get('commodity-product/edit/{id}', AdminRoot\CommodityProduct\Edit::class)->name('commodity-product.edit');
         Route::get('commodity-product/show/{id}', AdminRoot\CommodityProduct\Show::class)->name('commodity-product.show');
-
         Route::get('commodity-product/price/{id}', AdminRoot\CommodityProduct\PriceForm::class)->name('commodity-product.price');
         Route::get('commodity-product/variation/{id}', AdminRoot\CommodityProduct\VariationForm::class)->name('commodity-product.variation');
-
         Route::get('commodity-product/variation-old/{id}', AdminRoot\CommodityProduct\VariationFormOld::class)->name('commodity-product.variationOld');
         Route::get('commodity-product/variation-old/{id}', AdminRoot\CommodityProduct\VariationFormNewOld::class)->name('commodity-product.variationNewOld');
         Route::get('commodity-product/quality/{id}', AdminRoot\CommodityProduct\QualityForm::class)->name('commodity-product.quality');
-
         Route::get('commodity-product/state-price/{id}', AdminRoot\CommodityProduct\StatePriceFrom::class)->name('commodity-product.statePrice');
+        Route::get('commodity-product/seller-price/{id}', AdminRoot\CommodityProduct\SellerPrice::class)->name('commodity-product.sellerPrice');
 
         // Commodity Product Enquiry
         Route::get('commodity-product-enquiry', AdminRoot\CommodityProductEnquiry\Index::class)->name('commodity-product-enquiry.index');
