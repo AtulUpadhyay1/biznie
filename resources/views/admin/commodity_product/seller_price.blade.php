@@ -20,11 +20,12 @@
                             @foreach ($list as $data)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="heading_{{ $data->id }}">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $data->id }}" aria-expanded="{{ $loop->index == 0 ? true : false}}" aria-controls="collapse_{{ $data->id }}">
+
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $data->id }}" aria-expanded="false" aria-controls="collapse_{{ $data->id }}">
                                         <b>{{ $data->getUser->name}}</b>, &nbsp;<b>Brand</b> : {{ $data->getBrand->name }}, &nbsp;<b>State</b> : {{ $data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $data->getStatePrice[0]->city }}
                                         </button>
                                     </h2>
-                                    <div id="collapse_{{ $data->id }}" class="accordion-collapse collapse {{ $loop->index == 0 ? 'show' : ''}}" aria-labelledby="heading_{{ $data->id }}" data-bs-parent="#accordionExample">
+                                    <div id="collapse_{{ $data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $data->id }}" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="table-responsive">
                                                 <table class="custom-table">
