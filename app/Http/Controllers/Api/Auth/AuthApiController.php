@@ -237,6 +237,10 @@ class AuthApiController extends Controller
 
     public function updateFcmToken(Request $request)
     {
+        $this->validate($request, [
+            'fcm_token'     => 'required',
+            'device_type'   => 'required',
+        ]);
         $user = auth()->user();
         $user->fcm_token    = $request->fcm_token;
         $user->device_type  = $request->device_type;
