@@ -52,6 +52,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::post('image-upload', 'ImageUploadController@imageUpload');
 
         Route::post('business-interest', 'Auth\AuthApiController@businessInterest');
+
+        // Update fcm token
+        Route::post('update-fcm-token', 'Auth\AuthApiController@updateFcmToken');
+        Route::get('check', 'Auth\AuthApiController@checkNotification');
     });
 });
 

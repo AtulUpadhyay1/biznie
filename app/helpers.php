@@ -6,6 +6,7 @@ use App\Models\ImageUpload;
 use App\Models\ProductUnit;
 use App\Models\WebsiteSetup;
 use App\Models\PackagingType;
+use App\Firebase\FireBaseManager;
 use Illuminate\Support\Facades\DB;
 
 if (!function_exists('websiteSetupValue')) {
@@ -111,6 +112,34 @@ if(! function_exists('getBrand')){
 if(! function_exists('getProductUnit')){
     function getProductUnit($id){
         return ProductUnit::find($id);
+    }
+}
+
+if(! function_exists('sendNotification')){
+    function sendNotification($user, $title, $body, $type="notification", $data = [], $save=false,)
+    {
+        $notificationArr = [
+            'title'             => $title,
+            'body'              => $body,
+        ];
+        $in_app_module = [
+            "title"          => $title,
+            "body"           => $body,
+            "type"           => $type,
+        ];
+        if($user->fcm_token){
+            FireBaseManager::sendMessage($notificationArr, $in_app_module, $user->fcm_token);
+        }
+        if($save){
+            $data = new Notification;
+            $data->user_id = $user->id;
+            $data->title = $title;
+            $data->body = $body;
+            $data->type = $type;
+            $data->data = $data;
+            $data->is_read = 0;
+            $data->save();
+        }
     }
 }
 
