@@ -60,6 +60,14 @@ class ProductEnquireApiController extends Controller
             $data_history->price                = $request->price;
             $data_history->save();
 
+            $title = 'Product Enquiry';
+            $body = 'Dear '.auth()->user()->name.', Your product enquiry has been successfully submitted.';
+            $type = 'product_enquiry';
+            $data_info = [
+                'unique_id'     => $data->unique_id,
+            ];
+            sendNotification(auth()->user(), $title, $body, $type, $data_info, true);
+
             return response([
                 'success'   => true,
                 'message'   => 'Product enquiry added successfully.'
