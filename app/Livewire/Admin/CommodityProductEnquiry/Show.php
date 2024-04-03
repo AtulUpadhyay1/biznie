@@ -4,6 +4,8 @@ namespace App\Livewire\Admin\CommodityProductEnquiry;
 
 use Livewire\Component;
 use App\Models\ProductEnquiry;
+use App\Models\SellerCommodityProduct;
+use App\Models\SellerCommodityProductStatePrice;
 
 class Show extends Component
 {
@@ -18,6 +20,18 @@ class Show extends Component
     public function render()
     {
         $data = ProductEnquiry::with('getBrand', 'getCommodityProduct')->findOrFail($this->hidden_id);
-        return view('admin.commodity_product_enquiry.show', compact('data'));
+        $variation_arr = [];
+        foreach($data->variation as $variations_value){
+            $variation_arr[] = $variations_value['value'];
+        }
+
+        $seller_ids = SellerCommodityProductStatePrice::where('is_selected', '1')->where(function($query) use ($variation_arr){
+            foreach ($variation_arr as $variation) {
+                $query->orWhereJsonContains('value', $variation);
+            }
+        })->pluck('user_id')->unique()->toArray();
+
+        $seller_list = SellerCommodityProduct::whereIn('user_id', $seller_ids)->with('getStatePrice', 'getBrand', 'getUser')->get();
+        return view('admin.commodity_product_enquiry.show', compact('data', 'seller_list'));
     }
 }
