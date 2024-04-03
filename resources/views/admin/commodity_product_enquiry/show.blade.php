@@ -71,17 +71,31 @@
                             </table>
                         </div>
 
-                        <h5 class="my-3">Available seller for selected variation</h5>
+                        <div class="col-8">
+                            <h5 class="my-3">Available seller for selected variation</h5>
+                        </div>
+
+                        <div class="col-4 text-end">
+                            @if (count($this->user_id))
+                                <button class="btn btn-primary btn-xs my-2" title="Send enquiry to seller" wire:click="sendEnquiry()">Send Enquiry</button>
+                            @endif
+                        </div>
 
                         <div class="accordion" id="state_price">
                             @foreach ($seller_list as $seller_data)
                                 <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading_{{ $seller_data->id }}">
-
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $seller_data->id }}">
-                                        <b>{{ $seller_data->getUser->name}}</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}
-                                        </button>
-                                    </h2>
+                                    <div class="row">
+                                        <div class="col-1 text-center mt-3">
+                                            <input type="checkbox" id="seller_{{ $seller_data->user_id }}" class="form-check-input" value="{{ $seller_data->user_id }}" wire:model.live="user_id">
+                                        </div>
+                                        <div class="col-11">
+                                            <h2 class="accordion-header" id="heading_{{ $seller_data->id }}">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $seller_data->id }}">
+                                                <b>{{ $seller_data->getUser->name}}</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}
+                                                </button>
+                                            </h2>
+                                        </div>
+                                    </div>
                                     <div id="collapse_{{ $seller_data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $seller_data->id }}" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="table-responsive">
