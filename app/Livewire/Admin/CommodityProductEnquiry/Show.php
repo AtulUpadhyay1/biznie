@@ -17,7 +17,7 @@ class Show extends Component
 
     public function render()
     {
-        $data = ProductEnquiry::findOrFail($this->hidden_id);
+        $data = ProductEnquiry::with('getBrand', 'getCommodityProduct')->findOrFail($this->hidden_id);
         return view('admin.commodity_product_enquiry.show', compact('data'));
     }
 }

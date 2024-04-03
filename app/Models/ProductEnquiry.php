@@ -27,4 +27,9 @@ class ProductEnquiry extends Model
     {
         return $this->belongsTo(CommodityProduct::class, 'commodity_product_id');
     }
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

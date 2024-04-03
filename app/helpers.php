@@ -4,6 +4,7 @@ use App\Models\Brand;
 use App\Models\Attribute;
 use App\Models\ImageUpload;
 use App\Models\ProductUnit;
+use App\Models\Notification;
 use App\Models\WebsiteSetup;
 use App\Models\PackagingType;
 use App\Firebase\FireBaseManager;

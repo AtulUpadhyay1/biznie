@@ -12,6 +12,15 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <p>
+                                <b>Product: </b> {{ $data->getCommodityProduct->name}} <br>
+                                <b>Brand: </b> {{ $data->getBrand->name}} <br>
+                            </p>
+                        </div>
+                        <div class="col-6"></div>
+                    </div>
 
                 </div>
             </div>
