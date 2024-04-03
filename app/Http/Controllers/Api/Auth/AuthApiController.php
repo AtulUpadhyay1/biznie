@@ -234,28 +234,4 @@ class AuthApiController extends Controller
             'message'   => 'Interest business category updated successfully.',
         ],200);
     }
-
-    public function updateFcmToken(Request $request)
-    {
-        $this->validate($request, [
-            'fcm_token'     => 'required',
-            'device_type'   => 'required',
-        ]);
-        $user = auth()->user();
-        $user->fcm_token    = $request->fcm_token;
-        $user->device_type  = $request->device_type;
-        $user->save();
-        return response([
-            'success'   => true,
-            'message'   => 'Token updated successfully.',
-        ],200);
-
-    }
-
-    public function checkNotification()
-    {
-        return auth()->user();
-        sendNotification(auth()->user(), 'Notification Check', 'Test Notification', 'notification', [],false);
-        return 'done';
-    }
 }

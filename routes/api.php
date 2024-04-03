@@ -53,9 +53,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         Route::post('business-interest', 'Auth\AuthApiController@businessInterest');
 
-        // Update fcm token
-        Route::post('update-fcm-token', 'Auth\AuthApiController@updateFcmToken');
-        Route::get('check', 'Auth\AuthApiController@checkNotification');
+        // Notification
+        Route::get('notification', 'NotificationApiController@index');
+        Route::put('notification/{id}', 'NotificationApiController@update');
+        Route::delete('notification', 'NotificationApiController@destroy');
+        Route::post('update-fcm-token', 'NotificationApiController@updateToken');
     });
 });
 
