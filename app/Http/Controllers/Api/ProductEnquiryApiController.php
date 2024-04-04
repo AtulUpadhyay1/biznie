@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductEnquiryHistory;
 use App\Http\Resources\Customer\ProductEnquiryResource;
 
-class ProductEnquireApiController extends Controller
+class ProductEnquiryApiController extends Controller
 {
     public function index()
     {

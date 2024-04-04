@@ -117,7 +117,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::get('get-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@getVariationStock');
         Route::post('update-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@updateVariationStock');
 
-        //
+        // Product enquiry
+        
     });
 
 });
