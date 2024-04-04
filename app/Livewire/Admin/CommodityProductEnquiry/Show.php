@@ -95,6 +95,7 @@ class Show extends Component
             $data->message              = $enquiry_data->message;
             $data->price                = $price_arr;
             $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
+            $data->loading_address      = $product_state_prices[0]->getSellerCommodityProduct->loading_address;
             $data->status               = $enquiry_data->status;
             $data->save();
 

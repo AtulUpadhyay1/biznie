@@ -32,7 +32,7 @@
                             <p>
                                 <b>User: </b> {{ $data->getUser->name }} <br>
                                 <b>Origin City: </b> {{ $data->origin_city	}} <br>
-                                <b>Price: </b> ₹ {{ $data->price }} <br>
+                                <b>Phone: </b> {{ $data->getUser->phone }} <br>
                             </p><br>
                             <p>
                                 <b>Delivery Address</b> <br>

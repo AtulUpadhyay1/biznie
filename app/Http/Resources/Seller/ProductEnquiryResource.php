@@ -47,7 +47,7 @@ class ProductEnquiryResource extends JsonResource
             'message'           => $this->message,
             'price'             => $this->price,
             'base_price'        => $this->base_price,
-            'loading_address'   => $this->getSellerCommodityProduct->loading_address,
+            'loading_address'   => $this->loading_address,
             'status'            => $this->status,
         ];
 

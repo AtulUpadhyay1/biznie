@@ -39,7 +39,8 @@
                                     <th>#</th>
                                     <th>Unique Id</th>
                                     <th>Brand</th>
-                                    <th>Base Price</th>
+                                    <th>Product</th>
+                                    <th>Customer</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -48,11 +49,10 @@
                                 @forelse ($list as $key => $data)
                                     <tr>
                                         <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
-                                        <td> {{ $data->unique_id }} </td>
+                                        <td>{{ $data->unique_id }}</td>
                                         <td>{{ $data->getBrand->name }}</td>
-                                        <td>
-                                            <b class="text-sucess">₹ {{ $data->price ? $data->price : '0.00' }}</b>
-                                        </td>
+                                        <td>{{ $data->getCommodityProduct->name}}</td>
+                                        <td>{{ $data->getUser->name}}</td>
                                         <td>
                                             {{ ucfirst($data->status) }}
                                         </td>

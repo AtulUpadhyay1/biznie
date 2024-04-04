@@ -29,6 +29,8 @@ return new class extends Migration
             $table->longText('message')->nullable();
             $table->string('price')->nullable();
             $table->string('base_price')->nullable();
+            $table->text('loading_address')->nullable();
+            $table->text('delivery_by')->nullable();
             $table->string('status')->nullable()->default('pending');
             $table->softDeletes();
             $table->timestamps();
