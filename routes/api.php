@@ -58,6 +58,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::put('notification/{id}', 'NotificationApiController@update');
         Route::delete('notification', 'NotificationApiController@destroy');
         Route::post('update-fcm-token', 'NotificationApiController@updateToken');
+
+        // Product enquire
+        Route::get('product-enquire', 'ProductEnquireApiController@index');
+        Route::post('product-enquire', 'ProductEnquireApiController@save');
+        Route::post('product-enquire-update/{id}', 'ProductEnquireApiController@update');
     });
 });
 
@@ -81,10 +86,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
         Route::get('profile', 'Authenticated\ProfileApiController@profile');
         Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
 
-        // Product enquire
-        Route::get('product-enquire', 'Authenticated\ProductEnquireApiController@index');
-        Route::post('product-enquire', 'Authenticated\ProductEnquireApiController@save');
-        Route::post('product-enquire-update/{id}', 'Authenticated\ProductEnquireApiController@update');
     });
 
 });
