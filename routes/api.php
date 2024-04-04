@@ -59,10 +59,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::delete('notification', 'NotificationApiController@destroy');
         Route::post('update-fcm-token', 'NotificationApiController@updateToken');
 
-        // Product enquire
-        Route::get('product-enquire', 'ProductEnquireApiController@index');
-        Route::post('product-enquire', 'ProductEnquireApiController@save');
-        Route::post('product-enquire-update/{id}', 'ProductEnquireApiController@update');
+        // Product enquiry
+        Route::get('product-enquiry', 'ProductEnquiryApiController@index');
+        Route::post('product-enquiry', 'ProductEnquiryApiController@save');
+        Route::post('product-enquiry-update/{id}', 'ProductEnquiryApiController@update');
     });
 });
 
@@ -116,6 +116,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::post('update-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@updateVariation');
         Route::get('get-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@getVariationStock');
         Route::post('update-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@updateVariationStock');
+
+        //
     });
 
 });
