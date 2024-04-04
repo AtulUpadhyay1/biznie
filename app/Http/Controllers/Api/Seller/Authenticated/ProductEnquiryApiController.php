@@ -14,4 +14,23 @@ class ProductEnquiryApiController extends Controller
         $list = SellerProductEnquiry::where('user_id', auth()->id())->latest()->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getSellerCommodityProduct')->paginate(getPaginate());
         return ProductEnquiryResource::collection($list);
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'variation' => 'required|array',
+            'price'     => 'required|array',
+        ]);
+
+        $data               = SellerProductEnquiry::find($id);
+        $data->value        = $request->variation;
+        $data->price        = $request->price;
+        $data->delivery_by  = 'seller';
+        $data->save();
+
+        return response([
+            'success'   => true,
+            'message'   => 'Product enquiry updated successfully.'
+        ],200);
+    }
 }
