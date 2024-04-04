@@ -53,11 +53,26 @@ class Show extends Component
         }
 
         foreach ($this->user_id as $user_id) {
-            $state_price = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('is_selected', '1')->where(function($query) use ($variation_arr){
+            $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('is_selected', '1')->where(function($query) use ($variation_arr){
                 foreach ($variation_arr as $variation) {
                     $query->orWhereJsonContains('value', $variation);
                 }
-            })->with('getSellerCommodityProduct')->first();
+            })->with('getSellerCommodityProduct')->get();
+
+            $price_arr = [];
+            foreach ($product_state_prices as $key => $product_state_price) {
+                $price_arr[] = $product_state_price->price;
+            }
+
+            $new_variation_arr = [];
+            foreach($enquiry_data->variation as $key => $enquiry_variations){
+                $enquiry_variations = $enquiry_variations;
+                $enquiry_variations['price'] = $price_arr[$key] ?? 0;
+                if($enquiry_variations['price'] == 0){
+                    $enquiry_variations['is_selected'] = "0";
+                }
+                $new_variation_arr[] = $enquiry_variations;
+            }
 
             $data = SellerProductEnquiry::where('user_id', $user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
             if(!$data){
@@ -70,7 +85,7 @@ class Show extends Component
             $data->brand_id             = $enquiry_data->brand_id;
             $data->unique_id            = $enquiry_data->unique_id;
             $data->origin_city          = $enquiry_data->origin_city;
-            $data->value                = $state_price->value;
+            $data->value                = $new_variation_arr;
             $data->billing_address      = $enquiry_data->billing_address;
             $data->delivery_address     = $enquiry_data->delivery_address;
             $data->consignee_detail     = $enquiry_data->consignee_detail;
@@ -78,8 +93,8 @@ class Show extends Component
             $data->purpose              = $enquiry_data->purpose;
             $data->description          = $enquiry_data->description;
             $data->message              = $enquiry_data->message;
-            $data->price                = $state_price->price;
-            $data->base_price           = $state_price->getSellerCommodityProduct->base_price;
+            $data->price                = $price_arr;
+            $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
             $data->status               = $enquiry_data->status;
             $data->save();
 

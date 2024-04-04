@@ -14,5 +14,6 @@ class SellerProductEnquiry extends Model
         'value'                 => 'array',
         'billing_address'       => 'array',
         'delivery_address'      => 'array',
+        'price'                 => 'array',
     ];
 }

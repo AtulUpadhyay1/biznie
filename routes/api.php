@@ -118,7 +118,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::post('update-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@updateVariationStock');
 
         // Product enquiry
-        
+        Route::get('product-enquiry', 'Authenticated\ProductEnquiryApiController@index');
+
     });
 
 });
