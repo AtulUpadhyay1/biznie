@@ -11,6 +11,8 @@ class SellerProductEnquiry extends Model
     use HasFactory, SoftDeletes;
 
     protected $casts = [
-        'value'     => 'array',
+        'value'                 => 'array',
+        'billing_address'       => 'array',
+        'delivery_address'      => 'array',
     ];
 }

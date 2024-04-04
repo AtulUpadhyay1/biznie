@@ -9,4 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Notification extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $casts = [
+        'data'      => 'array',
+    ];
 }

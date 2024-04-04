@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Admin\CommodityProductEnquiry;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
+use App\Models\SellerProductEnquiry;
 use App\Models\SellerCommodityProduct;
 use App\Models\SellerCommodityProductStatePrice;
 
@@ -55,9 +57,48 @@ class Show extends Component
                 foreach ($variation_arr as $variation) {
                     $query->orWhereJsonContains('value', $variation);
                 }
-            })->first();
+            })->with('getSellerCommodityProduct')->first();
+
+            $data = SellerProductEnquiry::where('user_id', $user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
+            if(!$data){
+                $data                   = new SellerProductEnquiry;
+            }
+            $data->user_id              = $user_id;
+            $data->product_enquiries_id = $enquiry_data->id;
+            $data->customer_user_id     = $enquiry_data->user_id;
+            $data->commodity_product_id = $enquiry_data->commodity_product_id;
+            $data->brand_id             = $enquiry_data->brand_id;
+            $data->unique_id            = $enquiry_data->unique_id;
+            $data->origin_city          = $enquiry_data->origin_city;
+            $data->value                = $state_price->value;
+            $data->billing_address      = $enquiry_data->billing_address;
+            $data->delivery_address     = $enquiry_data->delivery_address;
+            $data->consignee_detail     = $enquiry_data->consignee_detail;
+            $data->consignee_detail     = $enquiry_data->consignee_detail;
+            $data->purpose              = $enquiry_data->purpose;
+            $data->description          = $enquiry_data->description;
+            $data->message              = $enquiry_data->message;
+            $data->price                = $state_price->price;
+            $data->base_price           = $state_price->getSellerCommodityProduct->base_price;
+            $data->status               = $enquiry_data->status;
+            $data->save();
+
+            $user = User::find($user_id);
+
+            $title = 'New Product Enquiry';
+            $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
+            $type = 'product_enquiry';
+            $data_info = [
+                'unique_id'     => $data->unique_id,
+            ];
+            sendNotification($user, $title, $body, $type, $data_info, true);
+
+            $this->dispatch('alert',
+                type : 'success',
+                message : 'Enquiry send successfully.',
+            );
+
         }
 
-        dd($state_price);
     }
 }
