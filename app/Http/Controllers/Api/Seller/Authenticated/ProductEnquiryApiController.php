@@ -20,11 +20,15 @@ class ProductEnquiryApiController extends Controller
         $request->validate([
             'variation' => 'required|array',
             'price'     => 'required|array',
+            'base_price'=> 'required',
+            'loading_address' => 'required|array',
         ]);
 
         $data               = SellerProductEnquiry::find($id);
         $data->value        = $request->variation;
         $data->price        = $request->price;
+        $data->base_price   = $request->base_price;
+        $data->loading_address = $request->loading_address;
         $data->delivery_by  = 'seller';
         $data->save();
 
