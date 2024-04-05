@@ -35,6 +35,8 @@ class Create extends Component
     public $sub_sub_category_list = [];
 
     public $packaging_type = [], $packaging_type_name = [], $packaging_type_price = [];
+    
+    public $variation_count = 0;
 
     public function render()
     {
