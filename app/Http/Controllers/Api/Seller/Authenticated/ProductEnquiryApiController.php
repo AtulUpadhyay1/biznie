@@ -30,6 +30,8 @@ class ProductEnquiryApiController extends Controller
         $data->base_price   = $request->base_price;
         $data->loading_address = $request->loading_address;
         $data->delivery_by  = 'seller';
+        $data->status       = 'replied';
+        $data->message      = $request->message;
         $data->save();
 
         return response([
