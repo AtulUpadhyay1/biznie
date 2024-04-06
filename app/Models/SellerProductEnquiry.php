@@ -10,6 +10,10 @@ class SellerProductEnquiry extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'is_mark'
+    ];
+
     protected $casts = [
         'value'                 => 'array',
         'billing_address'       => 'array',
@@ -31,5 +35,15 @@ class SellerProductEnquiry extends Model
     public function getSellerCommodityProduct()
     {
         return $this->belongsTo(SellerCommodityProduct::class, 'commodity_product_id');
+    }
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getCustomer()
+    {
+        return $this->belongsTo(User::class, 'customer_user_id');
     }
 }

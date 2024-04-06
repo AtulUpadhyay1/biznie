@@ -32,6 +32,7 @@ return new class extends Migration
             $table->text('loading_address')->nullable();
             $table->string('delivery_by')->nullable();
             $table->string('status')->nullable()->default('pending');
+            $table->tinyInteger('is_mark')->nullable()->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
