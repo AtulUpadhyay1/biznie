@@ -88,60 +88,62 @@ class VariationForm extends Component
 
     function save($redirect=true)
     {
-        foreach ($this->selected_attributes as $attribute) {
-            $this->validate([
-                'variation.'.getAttribute($attribute)->name    => 'required',
-            ],[
-                'variation.'.getAttribute($attribute)->name    => 'Enter '.getAttribute($attribute)->name.'.',
-            ]);
-        }
-
-        // dd($this->variation);
-
-        $variation_arr = [];
-        foreach ($this->selected_attributes as $key => $attribute) {
-            $variation_data['id']       = $attribute;
-            $variation_data['name']     = getAttribute($attribute)->name;
-            $variation_data['value']    = $this->variation[getAttribute($attribute)->name];
-            $variation_arr[]            = $variation_data;
-        }
-        $product_variation = new CommodityProductVariation;
-        $product_variation->commodity_product_id = $this->hidden_id;
-        $product_variation->value = $variation_arr;
-        $product_variation->save();
-
-        $state_variations = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->select('commodity_product_state_id', 'brand_id', 'state', 'city')->distinct()->get();
-        if($state_variations){
-            foreach ($state_variations as $state_variation) {
-                $new_state_variation = new CommodityProductStatePrice;
-                $new_state_variation->commodity_product_id = $this->hidden_id;
-                $new_state_variation->commodity_product_variation_id = $product_variation->id;
-                $new_state_variation->commodity_product_state_id = $state_variation->commodity_product_state_id;
-                $new_state_variation->brand_id = $state_variation->brand_id;
-                $new_state_variation->state = $state_variation->state;
-                $new_state_variation->city = $state_variation->city;
-                $new_state_variation->value = $variation_arr;
-                $new_state_variation->price = 0;
-                $new_state_variation->save();
+        if($this->variation){
+            foreach ($this->selected_attributes as $attribute) {
+                $this->validate([
+                    'variation.'.getAttribute($attribute)->name    => 'required',
+                ],[
+                    'variation.'.getAttribute($attribute)->name    => 'Enter '.getAttribute($attribute)->name.'.',
+                ]);
             }
-        }
 
-        $seller_state_variations = SellerCommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->select('user_id', 'commodity_product_state_id', 'brand_id', 'seller_commodity_product_id', 'state', 'city')->distinct()->get();
-        if($seller_state_variations){
-            foreach ($seller_state_variations as $seller_state_variation) {
-                $new_seller_state_variation = new SellerCommodityProductStatePrice;
-                $new_seller_state_variation->user_id = $seller_state_variation->user_id;
-                $new_seller_state_variation->commodity_product_id = $this->hidden_id;
-                $new_seller_state_variation->commodity_product_variation_id = $product_variation->id;
-                $new_seller_state_variation->commodity_product_state_id = $seller_state_variation->commodity_product_state_id;
-                $new_seller_state_variation->brand_id = $seller_state_variation->brand_id;
-                $new_seller_state_variation->seller_commodity_product_id = $seller_state_variation->seller_commodity_product_id;
-                $new_seller_state_variation->state = $seller_state_variation->state;
-                $new_seller_state_variation->city = $seller_state_variation->city;
-                $new_seller_state_variation->value = $variation_arr;
-                $new_seller_state_variation->price = 0;
-                $new_seller_state_variation->is_selected = 0;
-                $new_seller_state_variation->save();
+            // dd($this->variation);
+
+            $variation_arr = [];
+            foreach ($this->selected_attributes as $key => $attribute) {
+                $variation_data['id']       = $attribute;
+                $variation_data['name']     = getAttribute($attribute)->name;
+                $variation_data['value']    = $this->variation[getAttribute($attribute)->name];
+                $variation_arr[]            = $variation_data;
+            }
+            $product_variation = new CommodityProductVariation;
+            $product_variation->commodity_product_id = $this->hidden_id;
+            $product_variation->value = $variation_arr;
+            $product_variation->save();
+
+            $state_variations = CommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->select('commodity_product_state_id', 'brand_id', 'state', 'city')->distinct()->get();
+            if($state_variations){
+                foreach ($state_variations as $state_variation) {
+                    $new_state_variation = new CommodityProductStatePrice;
+                    $new_state_variation->commodity_product_id = $this->hidden_id;
+                    $new_state_variation->commodity_product_variation_id = $product_variation->id;
+                    $new_state_variation->commodity_product_state_id = $state_variation->commodity_product_state_id;
+                    $new_state_variation->brand_id = $state_variation->brand_id;
+                    $new_state_variation->state = $state_variation->state;
+                    $new_state_variation->city = $state_variation->city;
+                    $new_state_variation->value = $variation_arr;
+                    $new_state_variation->price = 0;
+                    $new_state_variation->save();
+                }
+            }
+
+            $seller_state_variations = SellerCommodityProductStatePrice::where('commodity_product_id', $this->hidden_id)->select('user_id', 'commodity_product_state_id', 'brand_id', 'seller_commodity_product_id', 'state', 'city')->distinct()->get();
+            if($seller_state_variations){
+                foreach ($seller_state_variations as $seller_state_variation) {
+                    $new_seller_state_variation = new SellerCommodityProductStatePrice;
+                    $new_seller_state_variation->user_id = $seller_state_variation->user_id;
+                    $new_seller_state_variation->commodity_product_id = $this->hidden_id;
+                    $new_seller_state_variation->commodity_product_variation_id = $product_variation->id;
+                    $new_seller_state_variation->commodity_product_state_id = $seller_state_variation->commodity_product_state_id;
+                    $new_seller_state_variation->brand_id = $seller_state_variation->brand_id;
+                    $new_seller_state_variation->seller_commodity_product_id = $seller_state_variation->seller_commodity_product_id;
+                    $new_seller_state_variation->state = $seller_state_variation->state;
+                    $new_seller_state_variation->city = $seller_state_variation->city;
+                    $new_seller_state_variation->value = $variation_arr;
+                    $new_seller_state_variation->price = 0;
+                    $new_seller_state_variation->is_selected = 0;
+                    $new_seller_state_variation->save();
+                }
             }
         }
 
@@ -181,6 +183,24 @@ class VariationForm extends Component
         if($redirect == true){
             session()->flash('success', 'Product variation updated successfully !!');
             return $this->redirectRoute('admin.commodity-product.index', navigate: true);
+        }
+    }
+
+    public function updateUnit()
+    {
+        try {
+            $data = CommodityProduct::find($this->hidden_id);
+            $data->unit = $this->unit;
+            $data->save();
+            $this->dispatch('alert',
+                type : 'success',
+                message : 'Unit updated successfully !!',
+            );
+        } catch (\Throwable $th) {
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Something went wrong !!',
+            );
         }
     }
 }
