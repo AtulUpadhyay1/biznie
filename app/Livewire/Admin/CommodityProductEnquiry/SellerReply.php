@@ -8,21 +8,22 @@ use App\Models\SellerProductEnquiry;
 class SellerReply extends Component
 {
     public $page_title = 'View Seller Reply';
-    public $hidden_id, $selected_enquiry_id;
+    public $hidden_id, $selected_enquiry_id, $list, $data;
 
     public function mount($id)
     {
         $this->hidden_id = $id;
+
+        $this->list = SellerProductEnquiry::where('commodity_product_id', $this->hidden_id)->where('status', 'replied')->with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->get();
+        foreach ($this->list as $data) {
+            $this->selected_enquiry_id = $data->is_mark == 1 ? $data->id : '';
+        }
+        $this->data = $this->list[0];
     }
 
     public function render()
     {
-        $list = SellerProductEnquiry::where('commodity_product_id', $this->hidden_id)->where('status', 'replied')->with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->get();
-        foreach ($list as $data) {
-            $this->selected_enquiry_id = $data->is_mark == 1 ? $data->id : '';
-        }
-        $data = $list[0];
-        return view('admin.commodity_product_enquiry.seller_reply', compact('list', 'data'));
+        return view('admin.commodity_product_enquiry.seller_reply');
     }
 
     public function markSeller()
