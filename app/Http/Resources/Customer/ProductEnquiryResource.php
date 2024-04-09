@@ -46,8 +46,22 @@ class ProductEnquiryResource extends JsonResource
             'description'       => $this->description,
             'message'           => $this->message,
             'price'             => $this->price,
+            'base_price'        => 0,
+            'transport_price'   => 0,
+            'commission'        => 0,
+            'is_mark'           => false,
             'status'            => $this->status,
         ];
+
+        if($this->getMarkedSellerProductEnquiry){
+
+            $data['variation']  = $this->getMarkedSellerProductEnquiry->value;
+            $data['base_price'] = $this->getMarkedSellerProductEnquiry->base_price;
+            $data['transport_price'] = $this->getMarkedSellerProductEnquiry->transport_price;
+            $data['commission'] = $this->getMarkedSellerProductEnquiry->commission;
+            $data['is_mark']    = $this->getMarkedSellerProductEnquiry->is_mark ? true : false;
+            $data['status']     = $this->getMarkedSellerProductEnquiry->status;
+        }
 
         return $data;
     }

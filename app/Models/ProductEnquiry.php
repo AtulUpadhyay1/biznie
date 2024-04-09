@@ -32,4 +32,9 @@ class ProductEnquiry extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function getMarkedSellerProductEnquiry()
+    {
+        return $this->hasOne(SellerProductEnquiry::class, 'product_enquiries_id')->where('is_mark', 1);
+    }
 }
