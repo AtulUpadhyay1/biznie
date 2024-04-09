@@ -24,6 +24,8 @@ class ProductResource extends JsonResource
             'brand'         => $this->getBrand->name,
             'address'       => $this->city,
             'base_price'    => $this->base_price,
+            'transport_price'   => $this->transport_price,
+            'commission'        => $this->commission,
             'thumbnail'     => $this->thumbnail ? imageUrl($this->thumbnail) : asset('common/images/no-photo.png'),
             'updated_at'    => dateTimeFormat($this->updated_at),
         ];
