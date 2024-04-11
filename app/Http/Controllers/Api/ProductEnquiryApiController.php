@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Http\Controllers\Controller;
+use App\Models\CommodityProductOrder;
 use App\Models\ProductEnquiryHistory;
 use App\Http\Resources\Customer\ProductEnquiryResource;
 
