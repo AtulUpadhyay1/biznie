@@ -115,6 +115,7 @@
                             <div class="modal fade bd-example-modal-lg" id="updatePrice" tabindex="-1" aria-labelledby="updatePriceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
+                                        <x-loader />
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="updatePriceLabel">
                                                 <b>{{ $set_enquiry_data->getUser->name}}</b>,
