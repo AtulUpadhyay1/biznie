@@ -89,7 +89,7 @@ class SellerReply extends Component
             sendNotification($customer, $title, $body, $type, $data_info, true);
 
             session()->flash('success', 'Enquiry mark to seller successfully.');
-            return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
+            return $this->redirectRoute('admin.commodity-product-enquiry.sellerReply', $this->hidden_id, navigate: true);
 
         } catch (\Throwable $th) {
             $this->dispatch('alert',
