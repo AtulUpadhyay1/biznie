@@ -63,6 +63,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::get('product-enquiry', 'ProductEnquiryApiController@index');
         Route::post('product-enquiry', 'ProductEnquiryApiController@save');
         Route::post('product-enquiry-update/{id}', 'ProductEnquiryApiController@update');
+        Route::post('product-enquiry-to-order/{id}', 'ProductEnquiryApiController@enquiryToOrder');
     });
 });
 

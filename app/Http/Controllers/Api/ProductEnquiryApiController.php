@@ -127,4 +127,47 @@ class ProductEnquiryApiController extends Controller
 
         }
     }
+
+    public function enquiryToOrder(Request $request, $id)
+    {
+        $request->validate([
+            'token_amount'  => 'required|numeric|min:1'
+        ]);
+
+        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry')->find($id);
+        $enquiry_data->status = 'ordered';
+        $enquiry_data->save();
+
+        $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
+
+        $order                              = new CommodityProductOrder;
+        $order->seller_user_id              = $mark_seller->user_id;
+        $order->customer_user_id            = $mark_seller->customer_user_id;
+        $order->product_enquiries_id        = $mark_seller->product_enquiries_id;
+        $order->seller_product_enquiries_id = $mark_seller->id;
+        $order->commodity_product_id        = $mark_seller->commodity_product_id;
+        $order->brand_id                    = $mark_seller->brand_id;
+        $order->unique_id                   = $mark_seller->unique_id;
+        $order->origin_city                 = $mark_seller->origin_city;
+        $order->value                       = $mark_seller->value;
+        $order->billing_address             = $mark_seller->billing_address;
+        $order->delivery_address            = $mark_seller->delivery_address;
+        $order->purpose                     = $mark_seller->purpose;
+        $order->description                 = $mark_seller->description;
+        $order->message                     = $mark_seller->message;
+        $order->price                       = $mark_seller->price;
+        $order->base_price                  = $mark_seller->base_price;
+        $order->token_amount                = $request->token_amount;
+        $order->transport_price             = $mark_seller->transport_price;
+        $order->commission                  = $mark_seller->commission;
+        $order->loading_address             = $mark_seller->loading_address;
+        $order->delivery_by                 = $mark_seller->delivery_by;
+        $order->status                      = 'pending';
+        $order->save();
+
+        return response([
+            'success'   => true,
+            'message'   => 'Product ordered successfully.'
+        ],200);
+    }
 }
