@@ -18,4 +18,14 @@ class CommodityProductOrder extends Model
         'message'           => 'array',
         'price'             => 'array',
     ];
+
+    public function getBrand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
+    public function getCommodityProduct()
+    {
+        return $this->belongsTo(CommodityProduct::class, 'commodity_product_id');
+    }
 }
