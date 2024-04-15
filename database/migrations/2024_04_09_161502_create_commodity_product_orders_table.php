@@ -37,6 +37,17 @@ return new class extends Migration
             $table->text('loading_address')->nullable();
             $table->string('delivery_by')->nullable();
             $table->string('status')->nullable()->default('pending');
+            $table->text('quality_check_image')->nullable();
+            $table->string('quality_check_image_status')->nullable();
+            $table->string('quality_check_image_status_updated_by')->nullable();
+            $table->string('invoice')->nullable();
+            $table->string('final_invoice')->nullable();
+            $table->string('e_bill')->nullable();
+            $table->string('quality_check_certificate')->nullable();
+            $table->string('insurance_certificate')->nullable();
+            $table->string('other')->nullable();
+            $table->string('final_quantity_by_seller')->nullable();
+            $table->string('final_quantity_by_customer')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
