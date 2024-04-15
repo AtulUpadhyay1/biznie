@@ -19,6 +19,7 @@ class OrderResource extends JsonResource
         $data = [
             'id'                => $this->id,
             'unique_id'         => $this->unique_id,
+            'order_id'          => $this->order_id,
             'brand'             => $this->getBrand ? [
                     'id'        => $this->getBrand->id,
                     'name'      => $this->getBrand->name
@@ -46,11 +47,13 @@ class OrderResource extends JsonResource
             'description'       => $this->description,
             'message'           => $this->message,
             'price'             => $this->price,
-            'base_price'        => 0,
-            'transport_price'   => 0,
-            'commission'        => 0,
-            'is_mark'           => false,
+            'base_price'        => $this->base_price,
+            'token_amount'      => $this->token_amount,
+            'transport_price'   => $this->transport_price,
+            'commission'        => $this->commission,
+            'loading_address'   => $this->loading_address,
             'status'            => $this->status,
+            'updated_at'        => dateTimeFormat($this->updated_at),
         ];
 
         return $data;
