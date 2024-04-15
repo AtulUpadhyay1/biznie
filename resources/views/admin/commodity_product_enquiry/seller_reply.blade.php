@@ -66,7 +66,7 @@
                                         <div class="col-11">
                                             <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $list_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $list_data->id }}">
-                                                    <b>{{ $list_data->getUser->name}}</b>, &nbsp;
+                                                    <b>{{ $list_data->getUser->name}} ({{ getSellerType($list_data->user_id) }})</b>, &nbsp;
                                                     <b>Brand</b> : {{ $list_data->getBrand->name }}, &nbsp;
                                                     <b>State</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }}, &nbsp;
                                                     <b>City</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }}, &nbsp;
@@ -118,7 +118,7 @@
                                         <x-loader />
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="updatePriceLabel">
-                                                <b>{{ $set_enquiry_data->getUser->name}}</b>,
+                                                <b>{{ $set_enquiry_data->getUser->name}} ({{ getSellerType($set_enquiry_data->user_id) }})</b>,
                                                 <b>Brand</b> : {{ $set_enquiry_data->getBrand->name }},
                                                 <b>State</b> : {{ $set_enquiry_data->getSellerCommodityProduct->getStatePrice[0]->state }},
                                                 <b>City</b> : {{ $set_enquiry_data->getSellerCommodityProduct->getStatePrice[0]->city }}

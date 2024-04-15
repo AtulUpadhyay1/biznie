@@ -2,6 +2,8 @@
 
 use App\Models\Brand;
 use App\Models\Attribute;
+use App\Models\SellerType;
+use App\Models\UserDetail;
 use App\Models\ImageUpload;
 use App\Models\ProductUnit;
 use App\Models\Notification;
@@ -141,6 +143,21 @@ if(! function_exists('sendNotification')){
             $data->is_read = 0;
             $data->save();
         }
+    }
+}
+
+if(!function_exists('getSellerType')){
+    function getSellerType($user_id){
+        $type = 'Seller';
+        $user_detail = UserDetail::where('user_id', $user_id)->first();
+        if($user_detail){
+            $seller_type = SellerType::whereIn('id', $user_detail->type)->first();
+            if($seller_type){
+                $type = $seller_type->name;
+            }
+        }
+
+        return $type;
     }
 }
 
