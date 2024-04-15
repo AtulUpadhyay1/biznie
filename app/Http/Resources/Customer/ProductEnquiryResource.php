@@ -60,7 +60,7 @@ class ProductEnquiryResource extends JsonResource
             $data['transport_price'] = $this->getMarkedSellerProductEnquiry->transport_price;
             $data['commission'] = $this->getMarkedSellerProductEnquiry->commission;
             $data['is_mark']    = $this->getMarkedSellerProductEnquiry->is_mark ? true : false;
-            $data['status']     = $this->getMarkedSellerProductEnquiry->status;
+            // $data['status']     = $this->getMarkedSellerProductEnquiry->status;
         }
 
         return $data;
