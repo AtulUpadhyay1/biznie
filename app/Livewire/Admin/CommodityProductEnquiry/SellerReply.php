@@ -18,6 +18,10 @@ class SellerReply extends Component
         foreach ($this->list as $data) {
             $this->selected_enquiry_id = $data->is_mark == 1 ? $data->id : '';
         }
+        if($this->list->count() == 0){
+            session()->flash('error', 'No sellers have responded yet.');
+            return $this->redirectRoute('admin.commodity-product-enquiry.index', navigate: true);
+        }
         $this->data = $this->list[0];
     }
 
