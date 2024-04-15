@@ -7,6 +7,7 @@ use App\Models\ProductEnquiry;
 use App\Http\Controllers\Controller;
 use App\Models\CommodityProductOrder;
 use App\Models\ProductEnquiryHistory;
+use App\Models\CommodityProductOrderLedger;
 use App\Http\Resources\Customer\ProductEnquiryResource;
 
 class ProductEnquiryApiController extends Controller
@@ -166,6 +167,20 @@ class ProductEnquiryApiController extends Controller
         $order->delivery_by                 = $mark_seller->delivery_by;
         $order->status                      = 'pending';
         $order->save();
+
+        $debit_ledger                       = new CommodityProductOrderLedger;
+        $debit_ledger->order_id             = $order->id;
+        $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $debit_ledger->type                 = 'debit';
+        $debit_ledger->amount                = $order->base_price;
+        $debit_ledger->save();
+
+        $debit_ledger                       = new CommodityProductOrderLedger;
+        $debit_ledger->order_id             = $order->id;
+        $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $debit_ledger->type                 = 'credit';
+        $debit_ledger->amount                = $order->token_amount;
+        $debit_ledger->save();
 
         return response([
             'success'   => true,

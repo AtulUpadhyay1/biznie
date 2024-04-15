@@ -89,6 +89,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
 
         // Order
         Route::get('order', 'Authenticated\OrderApiController@index');
+        Route::get('order-ledger/{order_id}', 'Authenticated\OrderApiController@ledger');
 
     });
 
