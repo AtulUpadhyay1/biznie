@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CommodityProductOrder;
 use App\Models\CommodityProductOrderLedger;
 use App\Http\Resources\Customer\OrderResource;
+use App\Http\Resources\Customer\OrderDetailResource;
 
 class OrderApiController extends Controller
 {
@@ -22,6 +23,21 @@ class OrderApiController extends Controller
         return response([
             'success'   => true,
             'data'      => $list
+        ],200);
+    }
+
+    public function show($id)
+    {
+        $data = CommodityProductOrder::find($id);
+        if(!$data){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid given id.',
+            ],200);
+        }
+        return response([
+            'success'   => true,
+            'data'      => new OrderDetailResource($data)
         ],200);
     }
 }
