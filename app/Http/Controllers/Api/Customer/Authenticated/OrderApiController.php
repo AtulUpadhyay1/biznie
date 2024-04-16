@@ -40,4 +40,27 @@ class OrderApiController extends Controller
             'data'      => new OrderDetailResource($data)
         ],200);
     }
+
+    public function qualityCheckStatus(Request $request)
+    {
+        $request->validate([
+            'order_id'                      => 'required',
+            'quality_check_image_status'    => 'required',
+        ]);
+        $data = CommodityProductOrder::find($request->order_id);
+        if(!$data){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid given id.',
+            ],200);
+        }
+        $data->quality_check_image_status   = $request->quality_check_image_status;
+        $data->quality_check_image_status_updated_by   = 'customer';
+        $data->save();
+
+        return response([
+            'success'   => true,
+            'message'   => 'Quality check status updated successfully.',
+        ],200);
+    }
 }
