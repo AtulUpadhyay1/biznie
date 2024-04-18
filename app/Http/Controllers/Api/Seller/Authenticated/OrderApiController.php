@@ -45,13 +45,37 @@ class OrderApiController extends Controller
             ],200);
         }
 
-        $data->quality_check_image  = $request->image;
+        $data->quality_check_image = $request->image;
         $data->quality_check_image_status = 'pending';
         $data->save();
 
         return response([
             'success'   => true,
             'message'   => 'Quality check image updated successfully.',
+        ],200);
+    }
+
+    public function updateInvoice(Request $request)
+    {
+        $request->validate([
+            'order_id'      => 'required',
+            'purpose'       => 'required',
+            'purpose_file'  => 'required',
+        ]);
+        $data = CommodityProductOrder::find($request->order_id);
+        if(!$data){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid given id.',
+            ],200);
+        }
+        $purpose            = $request->purpose;
+        $data[$purpose]     = $request->purpose_file;
+        $data->save();
+
+        return response([
+            'success'   => true,
+            'message'   => ucfirst(str_replace("_"," ",$purpose)).' updated successfully.',
         ],200);
     }
 }

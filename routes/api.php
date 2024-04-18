@@ -131,6 +131,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::get('order', 'Authenticated\OrderApiController@index');
         Route::get('order-detail/{id}', 'Authenticated\OrderApiController@show');
         Route::post('update-quality-check', 'Authenticated\OrderApiController@qualityCheck');
+        Route::post('update-invoice', 'Authenticated\OrderApiController@updateInvoice');
     });
 
 });

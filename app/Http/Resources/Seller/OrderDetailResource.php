@@ -65,6 +65,12 @@ class OrderDetailResource extends JsonResource
             'other'             => $this->other,
             'final_quantity_by_seller'  => $this->final_quantity_by_seller,
             'final_quantity_by_customer'=> $this->final_quantity_by_customer,
+            'invoice'                   => $this->invoice ? imageUrl($this->invoice) : null,
+            'final_invoice'             => $this->final_invoice ? imageUrl($this->final_invoice) : null,
+            'e_bill'                    => $this->e_bill ? imageUrl($this->e_bill) : null,
+            'quality_check_certificate' => $this->quality_check_certificate ? imageUrl($this->quality_check_certificate) : null,
+            'insurance_certificate'     => $this->insurance_certificate ? imageUrl($this->insurance_certificate) : null,
+            'other'                     => $this->other ? imageUrl($this->other) : null,
         ];
 
         $quality_check_image_arr = [];
