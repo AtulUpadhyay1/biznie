@@ -92,6 +92,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
         Route::get('order-ledger/{order_id}', 'Authenticated\OrderApiController@ledger');
         Route::get('order-detail/{id}', 'Authenticated\OrderApiController@show');
         Route::post('update-quality-check-status', 'Authenticated\OrderApiController@qualityCheckStatus');
+        Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity');
+
     });
 
 });

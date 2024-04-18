@@ -63,4 +63,26 @@ class OrderApiController extends Controller
             'message'   => 'Quality check status updated successfully.',
         ],200);
     }
+
+    public function updateFinalQuantity(Request $request)
+    {
+        $request->validate([
+            'order_id'          => 'required',
+            'final_quantity'    => 'required'
+        ]);
+        $data = CommodityProductOrder::find($request->order_id);
+        if(!$data){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid given id.',
+            ],200);
+        }
+        $data->final_quantity_by_customer = $request->final_quantity;
+        $data->save();
+
+        return response([
+            'success'   => true,
+            'message'   => 'Final quantity updated successfully.',
+        ],200);
+    }
 }
