@@ -4,6 +4,7 @@ namespace App\Http\Resources\Seller;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\CommodityProductOrderDriverResource;
 
 class OrderDetailResource extends JsonResource
 {
@@ -65,6 +66,7 @@ class OrderDetailResource extends JsonResource
             'quality_check_certificate' => $this->quality_check_certificate ? imageUrl($this->quality_check_certificate) : null,
             'insurance_certificate'     => $this->insurance_certificate ? imageUrl($this->insurance_certificate) : null,
             'other'                     => $this->other ? imageUrl($this->other) : null,
+            'driver_list'               => $this->getDrivers ? CommodityProductOrderDriverResource::collection($this->getDrivers) : [],
         ];
 
         $quality_check_image_arr = [];

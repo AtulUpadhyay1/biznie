@@ -29,4 +29,9 @@ class CommodityProductOrder extends Model
     {
         return $this->belongsTo(CommodityProduct::class, 'commodity_product_id');
     }
+
+    public function getDrivers()
+    {
+        return $this->hasMany(CommodityProductOrderDriver::class, 'order_id');
+    }
 }

@@ -136,6 +136,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::post('update-invoice', 'Authenticated\OrderApiController@updateInvoice');
         Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity');
 
+        Route::post('driver', 'Authenticated\DriverApiController@store');
+        Route::put('driver/{id}', 'Authenticated\DriverApiController@update');
+        Route::delete('driver/{id}', 'Authenticated\DriverApiController@destroy');
+
     });
 
 });
