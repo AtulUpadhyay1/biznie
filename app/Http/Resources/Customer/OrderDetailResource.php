@@ -40,7 +40,7 @@ class OrderDetailResource extends JsonResource
                 ] : [],
 
             'origin_city'       => $this->origin_city,
-            'variation'         => $this->variation,
+            'variation'         => $this->value,
             'billing_address'   => $this->billing_address,
             'delivery_address'  => $this->delivery_address,
             'consignee_detail'  => $this->consignee_detail,
