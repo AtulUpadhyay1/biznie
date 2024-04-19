@@ -86,7 +86,8 @@
                                                                 <th>{{ $variation_heading['name'] }}</th>
                                                             @endforeach
                                                             <th>Quantity</th>
-                                                            <th>Price</th>
+                                                            <th>Gauge Diff.</th>
+                                                            <th>Final Price</th>                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -99,6 +100,7 @@
                                                                     @endforeach
                                                                     <td>{{ $variation['quantity'] }}</td>
                                                                     <td>{{ $variation['price'] }}</td>
+                                                                    <td>{{ $variation['price'] + $list_data->base_price }}</td>
                                                                 </tr>
                                                             {{-- @endif --}}
                                                         @endforeach
@@ -161,7 +163,7 @@
                                                                 <td>
                                                                     <label for="base_price" class="form-label">Base Price</label>
                                                                 </td>
-                                                                <td>
+                                                                <td colspan="2">
                                                                     <input type="number" class="form-control" id="base_price" placeholder="Enter Base Price" wire:model="set_enquiry_data_base_price">
                                                                     @error('set_enquiry_data_base_price') <small class="text-danger">{{ $message }}</small>@enderror
                                                                 </td>
@@ -172,7 +174,7 @@
                                                                 <td>
                                                                     <label for="transport_price" class="form-label">Transport Price</label>
                                                                 </td>
-                                                                <td>
+                                                                <td colspan="2">
                                                                     <input type="number" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model="transport_price">
                                                                     @error('transport_price') <small class="text-danger">{{ $message }}</small>@enderror
 
@@ -184,7 +186,7 @@
                                                                 <td>
                                                                     <label for="commission" class="form-label">Commission</label>
                                                                 </td>
-                                                                <td>
+                                                                <td colspan="2">
                                                                     <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model="commission">
                                                                     @error('commission') <small class="text-danger">{{ $message }}</small>@enderror
 
