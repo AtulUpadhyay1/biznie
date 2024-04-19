@@ -19,7 +19,7 @@ class OrderApiController extends Controller
 
     public function ledger($order_id)
     {
-        $list = CommodityProductOrderLedger::where('order_id', $order_id)->get(['transaction_id', 'type', 'amount']);
+        $list = CommodityProductOrderLedger::where('order_id', $order_id)->get(['transaction_id', 'type', 'amount', 'description', 'created_at']);
         return response([
             'success'   => true,
             'data'      => $list
