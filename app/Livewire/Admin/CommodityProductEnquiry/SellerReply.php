@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\CommodityProductEnquiry;
 
 use Livewire\Component;
+use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
 
 class SellerReply extends Component
@@ -54,6 +55,18 @@ class SellerReply extends Component
             'set_enquiry_data_price'        => 'required',
         ]);
         try {
+
+            $enquiry_data = ProductEnquiry::findOrFail($this->hidden_id);
+
+            if($enquiry_data && $enquiry_data->status == 'ordered'){
+                $this->dispatch('alert',
+                    type : 'error',
+                    message : 'This enquiry has been converted to an order.',
+                );
+                return false;
+            }
+
+
             SellerProductEnquiry::where('commodity_product_id', $this->hidden_id)->update(['is_mark' => 0]);
 
             $enquiry_data = SellerProductEnquiry::with('getUser', 'getCustomer')->find($this->selected_enquiry_id);

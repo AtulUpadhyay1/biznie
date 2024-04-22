@@ -39,79 +39,100 @@ class Show extends Component
 
     public function sendEnquiry()
     {
-        if(count($this->user_id) == 0){
+        try {
+
+            if(count($this->user_id) == 0){
+                $this->dispatch('alert',
+                    type : 'error',
+                    message : 'There are no seller selected.',
+                );
+                return false;
+            }
+
+            $enquiry_data = ProductEnquiry::findOrFail($this->hidden_id);
+
+            if($enquiry_data && $enquiry_data->status == 'ordered'){
+                $this->dispatch('alert',
+                    type : 'error',
+                    message : 'This enquiry has been converted to an order.',
+                );
+                return false;
+            }
+
+            $variation_arr = [];
+            foreach($enquiry_data->variation as $variations_value){
+                $variation_arr[] = $variations_value['value'];
+            }
+
+            foreach ($this->user_id as $user_id) {
+                $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('is_selected', '1')->where(function($query) use ($variation_arr){
+                    foreach ($variation_arr as $variation) {
+                        $query->orWhereJsonContains('value', $variation);
+                    }
+                })->with('getSellerCommodityProduct')->get();
+
+                $price_arr = [];
+                foreach ($product_state_prices as $key => $product_state_price) {
+                    $price_arr[] = $product_state_price->price;
+                }
+
+                $new_variation_arr = [];
+                foreach($enquiry_data->variation as $key => $enquiry_variations){
+                    $enquiry_variations = $enquiry_variations;
+                    $enquiry_variations['price'] = $price_arr[$key] ?? 0;
+                    if($enquiry_variations['price'] == 0){
+                        $enquiry_variations['is_selected'] = "0";
+                    }
+                    $new_variation_arr[] = $enquiry_variations;
+                }
+
+                $data = SellerProductEnquiry::where('user_id', $user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
+                if(!$data){
+                    $data                   = new SellerProductEnquiry;
+                }
+                $data->user_id              = $user_id;
+                $data->product_enquiries_id = $enquiry_data->id;
+                $data->customer_user_id     = $enquiry_data->user_id;
+                $data->commodity_product_id = $enquiry_data->commodity_product_id;
+                $data->brand_id             = $enquiry_data->brand_id;
+                $data->unique_id            = $enquiry_data->unique_id;
+                $data->origin_city          = $enquiry_data->origin_city;
+                $data->value                = $new_variation_arr;
+                $data->billing_address      = $enquiry_data->billing_address;
+                $data->delivery_address     = $enquiry_data->delivery_address;
+                $data->consignee_detail     = $enquiry_data->consignee_detail;
+                $data->consignee_detail     = $enquiry_data->consignee_detail;
+                $data->purpose              = $enquiry_data->purpose;
+                $data->description          = $enquiry_data->description;
+                $data->message              = $enquiry_data->message;
+                $data->price                = $price_arr;
+                $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
+                $data->loading_address      = $product_state_prices[0]->getSellerCommodityProduct->loading_address;
+                $data->status               = $data->status ?? 'pending';
+                $data->save();
+
+                $user = User::find($user_id);
+
+                $title = 'New Product Enquiry';
+                $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
+                $type = 'product_enquiry';
+                $data_info = [
+                    'unique_id'     => $data->unique_id,
+                ];
+                sendNotification($user, $title, $body, $type, $data_info, true);
+
+                $this->dispatch('alert',
+                    type : 'success',
+                    message : 'Enquiry send successfully.',
+                );
+
+            }
+
+        } catch (\Throwable $th) {
+
             $this->dispatch('alert',
                 type : 'error',
-                message : 'There are no seller selected !!',
-            );
-            return false;
-        }
-        $enquiry_data = ProductEnquiry::findOrFail($this->hidden_id);
-        $variation_arr = [];
-        foreach($enquiry_data->variation as $variations_value){
-            $variation_arr[] = $variations_value['value'];
-        }
-
-        foreach ($this->user_id as $user_id) {
-            $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('is_selected', '1')->where(function($query) use ($variation_arr){
-                foreach ($variation_arr as $variation) {
-                    $query->orWhereJsonContains('value', $variation);
-                }
-            })->with('getSellerCommodityProduct')->get();
-
-            $price_arr = [];
-            foreach ($product_state_prices as $key => $product_state_price) {
-                $price_arr[] = $product_state_price->price;
-            }
-
-            $new_variation_arr = [];
-            foreach($enquiry_data->variation as $key => $enquiry_variations){
-                $enquiry_variations = $enquiry_variations;
-                $enquiry_variations['price'] = $price_arr[$key] ?? 0;
-                if($enquiry_variations['price'] == 0){
-                    $enquiry_variations['is_selected'] = "0";
-                }
-                $new_variation_arr[] = $enquiry_variations;
-            }
-
-            $data = SellerProductEnquiry::where('user_id', $user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
-            if(!$data){
-                $data                   = new SellerProductEnquiry;
-            }
-            $data->user_id              = $user_id;
-            $data->product_enquiries_id = $enquiry_data->id;
-            $data->customer_user_id     = $enquiry_data->user_id;
-            $data->commodity_product_id = $enquiry_data->commodity_product_id;
-            $data->brand_id             = $enquiry_data->brand_id;
-            $data->unique_id            = $enquiry_data->unique_id;
-            $data->origin_city          = $enquiry_data->origin_city;
-            $data->value                = $new_variation_arr;
-            $data->billing_address      = $enquiry_data->billing_address;
-            $data->delivery_address     = $enquiry_data->delivery_address;
-            $data->consignee_detail     = $enquiry_data->consignee_detail;
-            $data->consignee_detail     = $enquiry_data->consignee_detail;
-            $data->purpose              = $enquiry_data->purpose;
-            $data->description          = $enquiry_data->description;
-            $data->message              = $enquiry_data->message;
-            $data->price                = $price_arr;
-            $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
-            $data->loading_address      = $product_state_prices[0]->getSellerCommodityProduct->loading_address;
-            $data->status               = $data->status ?? 'pending';
-            $data->save();
-
-            $user = User::find($user_id);
-
-            $title = 'New Product Enquiry';
-            $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
-            $type = 'product_enquiry';
-            $data_info = [
-                'unique_id'     => $data->unique_id,
-            ];
-            sendNotification($user, $title, $body, $type, $data_info, true);
-
-            $this->dispatch('alert',
-                type : 'success',
-                message : 'Enquiry send successfully.',
+                message : 'Something went wrong.',
             );
 
         }
