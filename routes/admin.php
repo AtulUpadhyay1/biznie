@@ -138,6 +138,10 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product-enquiry/show/{id}', AdminRoot\CommodityProductEnquiry\Show::class)->name('commodity-product-enquiry.show');
         Route::get('commodity-product-enquiry/seller-reply/{id}', AdminRoot\CommodityProductEnquiry\SellerReply::class)->name('commodity-product-enquiry.sellerReply');
 
+        // Commodity Product Order
+        Route::get('commodity-product-order', AdminRoot\CommodityProductOrder\Index::class)->name('commodity-product-order.index');
+        Route::get('commodity-product-order/show/{id}', AdminRoot\CommodityProductOrder\Show::class)->name('commodity-product-order.show');
+
         // Banner
         Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
         Route::get('banner/create', AdminRoot\Banner\Create::class)->name('banner.create');

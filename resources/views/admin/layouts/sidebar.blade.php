@@ -145,6 +145,13 @@
             </div>
             <!--End of product -->
 
+            <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show']) ? 'active' : ''}}">
+                <a href="{{route('admin.commodity-product-order.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-bootstrap"></i>
+                    <span class="link-title">Orders</span>
+                </a>
+            </li>
+
             <li class="nav-item nav-category">Promotion Management</li>
             <li class="nav-item {{ isActiveRoute(['admin.banner.index', 'admin.banner.create', 'admin.banner.edit']) ? 'active' : '' }}">
                 <a href="{{route('admin.banner.index')}}" class="nav-link" wire:navigate>

@@ -37,7 +37,7 @@ return new class extends Migration
             $table->text('loading_address')->nullable();
             $table->string('delivery_by')->nullable();
             $table->string('status')->nullable()->default('pending');
-            $table->text('quality_check_image')->nullable();
+            $table->string('quality_check_image')->nullable();
             $table->string('quality_check_image_status')->nullable();
             $table->string('quality_check_image_status_updated_by')->nullable();
             $table->string('invoice')->nullable();
