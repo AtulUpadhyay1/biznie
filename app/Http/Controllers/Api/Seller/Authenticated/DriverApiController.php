@@ -15,10 +15,10 @@ class DriverApiController extends Controller
             'order_id'      => 'required',
             'name'          => 'required',
             'phone'         => 'required',
-            'photo'         => 'required',
-            'unloaded_vehicle_photo' => 'required',
-            'loaded_vehicle_photo'   => 'required',
-            'driver_with_vehicle_photo'   => 'required',
+            // 'photo'         => 'required',
+            // 'unloaded_vehicle_photo' => 'required',
+            // 'loaded_vehicle_photo'   => 'required',
+            // 'driver_with_vehicle_photo'   => 'required',
         ]);
 
         $data = CommodityProductOrder::find($request->order_id);
@@ -50,10 +50,10 @@ class DriverApiController extends Controller
         $request->validate([
             'name'          => 'required',
             'phone'         => 'required',
-            'photo'         => 'required',
-            'unloaded_vehicle_photo' => 'required',
-            'loaded_vehicle_photo'   => 'required',
-            'driver_with_vehicle_photo'   => 'required',
+            // 'photo'         => 'required',
+            // 'unloaded_vehicle_photo' => 'required',
+            // 'loaded_vehicle_photo'   => 'required',
+            // 'driver_with_vehicle_photo'   => 'required',
         ]);
 
         $driver = CommodityProductOrderDriver::find($id);
@@ -66,12 +66,12 @@ class DriverApiController extends Controller
         }
 
         $driver->order_id   = $request->order_id;
-        $driver->name       = $request->name;
-        $driver->phone      = $request->phone;
-        $driver->photo      = $request->photo;
-        $driver->unloaded_vehicle_photo         = $request->unloaded_vehicle_photo;
-        $driver->loaded_vehicle_photo           = $request->loaded_vehicle_photo;
-        $driver->driver_with_vehicle_photo      = $request->driver_with_vehicle_photo;
+        $driver->name       = $request->name ?? $driver->name;
+        $driver->phone      = $request->phone ?? $driver->phone;
+        $driver->photo      = $request->photo ?? $driver->photo;
+        $driver->unloaded_vehicle_photo         = $request->unloaded_vehicle_photo ?? $driver->unloaded_vehicle_photo;
+        $driver->loaded_vehicle_photo           = $request->loaded_vehicle_photo ?? $driver->loaded_vehicle_photo;
+        $driver->driver_with_vehicle_photo      = $request->driver_with_vehicle_photo ?? $driver->driver_with_vehicle_photo;
         $driver->save();
 
         return response([
