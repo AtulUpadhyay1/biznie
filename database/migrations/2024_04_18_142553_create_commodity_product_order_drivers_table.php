@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('unloaded_vehicle_photo')->nullable();
             $table->string('loaded_vehicle_photo')->nullable();
             $table->string('driver_with_vehicle_photo')->nullable();
+            $table->string('vehicle_number')->nullable();
+            $table->string('tranking_number')->nullable();
             $table->string('status')->nullable();
             $table->softDeletes();
             $table->timestamps();
