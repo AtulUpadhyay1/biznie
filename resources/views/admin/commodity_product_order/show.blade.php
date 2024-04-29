@@ -9,7 +9,7 @@
                             <h4>{{ $page_title }}</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
+                            <a href="{{route('admin.commodity-product-order.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                     </div>
                 </div>
@@ -23,13 +23,13 @@
                                 <b>Purpose: </b> {{ $data->purpose }} <br>
                             </p>
                         </div>
-                        <div class="col-4">
+                        <div class="col-4 text-center">
                             <p>
                                 <b>Customer: </b> {{ $data->getCustomer->name }} <br>
                                 <b>Phone: </b> {{ $data->getCustomer->phone }} <br>
                             </p>
                         </div>
-                        <div class="col-4">
+                        <div class="col-4 text-end">
                             <p>
                                 <b>Seller: </b> {{ $data->getSeller->name }} <br>
                                 <b>Phone: </b> {{ $data->getSeller->phone }} <br>
@@ -270,6 +270,10 @@
                         </div>
                     @endif
 
+                </div>
+
+                <div class="card-footer">
+                    
                 </div>
             </div>
         </div>
