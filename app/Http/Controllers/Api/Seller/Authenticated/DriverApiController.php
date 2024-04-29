@@ -37,7 +37,7 @@ class DriverApiController extends Controller
         $driver->unloaded_vehicle_photo         = $request->unloaded_vehicle_photo;
         $driver->loaded_vehicle_photo           = $request->loaded_vehicle_photo;
         $driver->driver_with_vehicle_photo      = $request->driver_with_vehicle_photo;
-        $driver->tranking_number                = $request->tranking_number;
+        $driver->tracking_number                = $request->tracking_number;
         $driver->vehicle_number                 = $request->vehicle_number;
         $driver->save();
 
@@ -74,7 +74,7 @@ class DriverApiController extends Controller
         $driver->unloaded_vehicle_photo         = $request->unloaded_vehicle_photo ?? $driver->unloaded_vehicle_photo;
         $driver->loaded_vehicle_photo           = $request->loaded_vehicle_photo ?? $driver->loaded_vehicle_photo;
         $driver->driver_with_vehicle_photo      = $request->driver_with_vehicle_photo ?? $driver->driver_with_vehicle_photo;
-        $driver->tranking_number                = $request->tranking_number ?? $driver->tranking_number;
+        $driver->tracking_number                = $request->tracking_number ?? $driver->tracking_number;
         $driver->vehicle_number                 = $request->vehicle_number ?? $driver->vehicle_number;
         $driver->save();
 

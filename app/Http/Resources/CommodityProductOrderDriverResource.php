@@ -25,7 +25,7 @@ class CommodityProductOrderDriverResource extends JsonResource
             'loaded_vehicle_photo'          => imageUrl($this->loaded_vehicle_photo),
             'driver_with_vehicle_photo'     => imageUrl($this->driver_with_vehicle_photo),
             'vehicle_number'                => $this->vehicle_number,
-            'tranking_number'               => $this->tranking_number,
+            'tracking_number'               => $this->tracking_number,
         ];
 
         return $data;
