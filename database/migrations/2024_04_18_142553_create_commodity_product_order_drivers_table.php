@@ -22,6 +22,13 @@ return new class extends Migration
             $table->string('driver_with_vehicle_photo')->nullable();
             $table->string('vehicle_number')->nullable();
             $table->string('tracking_number')->nullable();
+            $table->string('invoice')->nullable();
+            $table->string('ebill')->nullable();
+            $table->string('transport_receipt')->nullable();
+            $table->string('alternate_phone_number')->nullable();
+            $table->string('transporter_name')->nullable();
+            $table->string('transporter_phone_number')->nullable();
+            $table->string('advance_ammount')->nullable();
             $table->string('status')->nullable();
             $table->softDeletes();
             $table->timestamps();
