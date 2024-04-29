@@ -125,11 +125,15 @@
                         <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0 d-flex">
-                                    @foreach ($data->quality_check_image as $check_image)
-                                        <a href="{{ imageUrl($check_image) }}" target="_blank">
-                                            <img src="{{ imageUrl($check_image) }}" class="img-thumbnail mr-1" alt="Quality Check Image" title="Quality Check Image">
-                                        </a>
-                                    @endforeach
+                                    @if (count($data->quality_check_image) > 0)
+                                        @foreach ($data->quality_check_image as $check_image)
+                                            <a href="{{ imageUrl($check_image) }}" target="_blank">
+                                                <img src="{{ imageUrl($check_image) }}" class="img-thumbnail mr-1" alt="Quality Check Image" title="Quality Check Image">
+                                            </a>
+                                        @endforeach
+                                    @else
+                                        <button class="btn btn-inverse-primary btn-xs">Upload</button>
+                                    @endif
                                 </div>
                                 <div class="card-footer">
                                     Quality Check
@@ -144,77 +148,18 @@
                         <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0">
-                                    <a href="{{ imageUrl($data->invoice) }}" target="_blank">
-                                        <img src="{{ imageUrl($data->invoice) }}" class="img-thumbnail" alt="Invoice" title="Invoice">
-                                    </a>
-                                </div>
-                                <div class="card-footer">
-                                    Invoice
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mb-2">
-                            <div class="card">
-                                <div class="card-body p-0">
-                                    <a href="{{ imageUrl($data->final_invoice) }}" target="_blank">
-                                        <img src="{{ imageUrl($data->final_invoice) }}" class="img-thumbnail" alt="Final Invoice" title="Final Invoice">
-                                    </a>
-                                </div>
-                                <div class="card-footer">
-                                    Final Invoice
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mb-2">
-                            <div class="card">
-                                <div class="card-body p-0">
-                                    <a href="{{ imageUrl($data->e_bill) }}" target="_blank">
-                                        <img src="{{ imageUrl($data->e_bill) }}" class="img-thumbnail" alt="eBill" title="eBill">
-                                    </a>
-                                </div>
-                                <div class="card-footer">
-                                    eBill
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mb-2">
-                            <div class="card">
-                                <div class="card-body p-0">
-                                    <a href="{{ imageUrl($data->quality_check_certificate) }}" target="_blank">
-                                        <img src="{{ imageUrl($data->quality_check_certificate) }}" class="img-thumbnail" alt="Quality Check Certificate" title="Quality Check Certificate">
-                                    </a>
+                                    @if ($data->quality_check_certificate)
+                                        <a href="{{ imageUrl($data->quality_check_certificate) }}" target="_blank">
+                                            <img src="{{ imageUrl($data->quality_check_certificate) }}" class="img-thumbnail" alt="Quality Check Certificate" title="Quality Check Certificate">
+                                        </a>
+                                    @else
+                                        <div class="text-center p-4">
+                                            <button class="btn btn-inverse-primary btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload</button>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="card-footer">
                                     Quality Check Certificate
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mb-2">
-                            <div class="card">
-                                <div class="card-body p-0">
-                                    <a href="{{ imageUrl($data->insurance_certificate) }}" target="_blank">
-                                        <img src="{{ imageUrl($data->insurance_certificate) }}" class="img-thumbnail" alt="Insurance Certificate" title="Insurance Certificate">
-                                    </a>
-                                </div>
-                                <div class="card-footer">
-                                    Insurance Certificate
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mb-2">
-                            <div class="card">
-                                <div class="card-body p-0">
-                                    <a href="{{ imageUrl($data->other) }}" target="_blank">
-                                        <img src="{{ imageUrl($data->other) }}" class="img-thumbnail" alt="Other" title="Other">
-                                    </a>
-                                </div>
-                                <div class="card-footer">
-                                    Other
                                 </div>
                             </div>
                         </div>
@@ -276,6 +221,24 @@
 
                 <div class="card-footer">
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="file" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-xs">Save</button>
                 </div>
             </div>
         </div>
