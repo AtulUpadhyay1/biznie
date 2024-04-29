@@ -122,12 +122,14 @@
                     </div>
 
                     <div class="row mt-3">
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-2">
                             <div class="card">
-                                <div class="card-body p-0">
-                                    <a href="{{ imageUrl($data->quality_check_image) }}" target="_blank">
-                                        <img src="{{ imageUrl($data->quality_check_image) }}" class="img-thumbnail" alt="Quality Check Image" title="Quality Check Image">
-                                    </a>
+                                <div class="card-body p-0 d-flex">
+                                    @foreach ($data->quality_check_image as $check_image)
+                                        <a href="{{ imageUrl($check_image) }}" target="_blank">
+                                            <img src="{{ imageUrl($check_image) }}" class="img-thumbnail mr-1" alt="Quality Check Image" title="Quality Check Image">
+                                        </a>
+                                    @endforeach
                                 </div>
                                 <div class="card-footer">
                                     Quality Check
@@ -139,7 +141,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0">
                                     <a href="{{ imageUrl($data->invoice) }}" target="_blank">
@@ -152,7 +154,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0">
                                     <a href="{{ imageUrl($data->final_invoice) }}" target="_blank">
@@ -165,7 +167,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0">
                                     <a href="{{ imageUrl($data->e_bill) }}" target="_blank">
@@ -178,7 +180,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0">
                                     <a href="{{ imageUrl($data->quality_check_certificate) }}" target="_blank">
@@ -191,7 +193,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0">
                                     <a href="{{ imageUrl($data->insurance_certificate) }}" target="_blank">
@@ -204,7 +206,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0">
                                     <a href="{{ imageUrl($data->other) }}" target="_blank">
@@ -273,7 +275,7 @@
                 </div>
 
                 <div class="card-footer">
-                    
+
                 </div>
             </div>
         </div>
