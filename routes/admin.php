@@ -141,6 +141,7 @@ Route::group(['as'=>'admin.'], function () {
         // Commodity Product Order
         Route::get('commodity-product-order', AdminRoot\CommodityProductOrder\Index::class)->name('commodity-product-order.index');
         Route::get('commodity-product-order/show/{id}', AdminRoot\CommodityProductOrder\Show::class)->name('commodity-product-order.show');
+        Route::get('commodity-product-order/print-invoice/{id}', AdminRoot\CommodityProductOrder\PrintInvoice::class)->name('commodity-product-order.printInvoice');
 
         // Banner
         Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
