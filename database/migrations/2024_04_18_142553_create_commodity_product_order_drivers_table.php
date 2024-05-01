@@ -28,7 +28,9 @@ return new class extends Migration
             $table->string('alternate_phone_number')->nullable();
             $table->string('transporter_name')->nullable();
             $table->string('transporter_phone_number')->nullable();
-            $table->string('advance_ammount')->nullable();
+            $table->string('advance_amount')->nullable();
+            $table->longText('final_quantity_by_seller')->nullable();
+            $table->longText('final_quantity_by_customer')->nullable();
             $table->string('status')->nullable();
             $table->softDeletes();
             $table->timestamps();

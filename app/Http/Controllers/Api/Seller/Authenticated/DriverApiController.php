@@ -86,7 +86,7 @@ class DriverApiController extends Controller
         $driver->alternate_phone_number         = $request->alternate_phone_number ?? $driver->alternate_phone_number;
         $driver->transporter_name               = $request->transporter_name ?? $driver->transporter_name;
         $driver->transporter_phone_number       = $request->transporter_phone_number ?? $driver->transporter_phone_number;
-        $driver->advance_ammount                = $request->advance_ammount ?? $driver->advance_ammount;
+        $driver->advance_amount                 = $request->advance_amount ?? $driver->advance_amount;
         $driver->save();
 
         return response([

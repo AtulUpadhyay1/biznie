@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Customer\Authenticated;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductOrderDriver;
 use App\Models\CommodityProductOrderLedger;
 use App\Http\Resources\Customer\OrderResource;
 use App\Http\Resources\Customer\OrderDetailResource;
@@ -67,10 +68,11 @@ class OrderApiController extends Controller
     public function updateFinalQuantity(Request $request)
     {
         $request->validate([
+            'driver_id'         => 'required',
             'order_id'          => 'required',
             'final_quantity'    => 'required'
         ]);
-        $data = CommodityProductOrder::find($request->order_id);
+        $data = CommodityProductOrderDriver::where('id', $request->driver_id)->where('order_id', $request->order_id)->first();
         if(!$data){
             return response([
                 'success'   => false,
