@@ -355,9 +355,10 @@ class CommodityProductApiController extends Controller
             $data_history->save();
 
             foreach($data->loading_address as $loading_address){
-                $home_product = HomeProduct::where('commodity_product_id', $data->commodity_product_id)->where('brand_id', $data->brand_id[0])->where('city', $loading_address['city'])->first();
+                $home_product = HomeProduct::where('commodity_product_id', $data->commodity_product_id)->where('brand_id', $data->brand_id)->where('city', $loading_address['city'])->first();
                 if($home_product){
-                    if($home_product->base_price > 0 && $home_product->base_price > $data->base_price){
+                    $base_price = $home_product->base_price ?? 0;
+                    if($base_price > 0 && $base_price > $data->base_price){
                         $home_product->user_id      = auth()->id();
                         $home_product->seller_commodity_product_id = $data->id;
                         $home_product->base_price   = $data->base_price ?? 0;

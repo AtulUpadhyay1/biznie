@@ -46,7 +46,7 @@ class CommodityProductResource extends JsonResource
                 $packaging_type = getPackagingType($packaging_type_id);
                 $packaging_type_data['id'] = $packaging_type->id;
                 $packaging_type_data['name'] = $packaging_type->name;
-                $packaging_type_data['price'] = (int)$this->packaging_type_price[$key+1];
+                $packaging_type_data['price'] = (int)isset($this->packaging_type_price[$key+1]) ?? '0';
                 $data['packaging'][] = $packaging_type_data;
 
             }
