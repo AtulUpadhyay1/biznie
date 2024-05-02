@@ -23,6 +23,7 @@ class ProductDetailResource extends JsonResource
             'name'                          => $this->getSellerCommodityProduct->name,
             'description'                   => $this->getSellerCommodityProduct->description,
             'brand'                         => ['id' => $this->getBrand->id, 'name' => $this->getBrand->name],
+            'unit'                          => ['id' => $this->getSellerCommodityProduct->getUnit->id, 'name' => $this->getSellerCommodityProduct->getUnit->name],
             'address'                       => $this->city,
             'base_price'                    => $this->base_price,
             'thumbnail'                     => $this->thumbnail ? imageUrl($this->thumbnail) : asset('common/images/no-photo.png'),

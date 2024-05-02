@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Seller;
 
 use Illuminate\Http\Request;
+use App\Models\CommodityProduct;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MyCommodityProductVariationResource extends JsonResource
@@ -18,10 +19,24 @@ class MyCommodityProductVariationResource extends JsonResource
 
         $data = [
             'id'            => $this->id,
-            'value'         => $this->value,
+            'value'         => [],
             'price'         => $this->price,
             'is_selected'   => $this->is_selected,
         ];
+
+        foreach($this->value as $value){
+            $value['unit']  = null;
+
+            if($this->getSellerCommodityProduct && $this->getSellerCommodityProduct->commodity_product_id){
+                $commodity = CommodityProduct::find($this->getSellerCommodityProduct->commodity_product_id);
+                if($commodity){
+                    $value['unit']['name'] = getProductUnit($commodity->unit[$value['name']])->name;
+                    $value['unit']['short_name'] = getProductUnit($commodity->unit[$value['name']])->short_name;
+                }
+            }
+
+            $data['value'][] = $value;
+        }
 
         return $data;
 
