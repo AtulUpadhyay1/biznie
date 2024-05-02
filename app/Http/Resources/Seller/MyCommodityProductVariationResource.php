@@ -29,9 +29,9 @@ class MyCommodityProductVariationResource extends JsonResource
 
             if($this->getSellerCommodityProduct && $this->getSellerCommodityProduct->commodity_product_id){
                 $commodity = CommodityProduct::find($this->getSellerCommodityProduct->commodity_product_id);
-                if($commodity){
-                    $value['unit']['name'] = getProductUnit($commodity->unit[$value['name']])->name;
-                    $value['unit']['short_name'] = getProductUnit($commodity->unit[$value['name']])->short_name;
+                if($commodity && $commodity->unit){
+                    $value['unit']['name'] = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->name : '';
+                    $value['unit']['short_name'] = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->short_name : '';
                 }
             }
 
