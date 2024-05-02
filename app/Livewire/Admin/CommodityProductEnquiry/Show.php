@@ -65,7 +65,7 @@ class Show extends Component
             }
 
             foreach ($this->user_id as $user_id) {
-                $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('is_selected', '1')->where(function($query) use ($variation_arr){
+                $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where(function($query) use ($variation_arr){
                     foreach ($variation_arr as $variation) {
                         $query->orWhereJsonContains('value', $variation);
                     }
