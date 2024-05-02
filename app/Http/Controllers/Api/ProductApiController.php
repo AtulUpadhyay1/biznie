@@ -19,13 +19,13 @@ class ProductApiController extends Controller
 
             $commodity = CommodityProduct::first();
             $id = 0;
-            if($commodity){
-                $id = $commodity->id;
-            }
-            if($request->commodity_product_id){
-                $id = $request->commodity_product_id;
-            }
-            $list = HomeProduct::where('commodity_product_id', $id)->with('getUser', 'getCommodityProduct', 'getSellerCommodityProduct', 'getBrand')->paginate(getPaginate());
+            $list = HomeProduct::with('getUser', 'getCommodityProduct', 'getSellerCommodityProduct', 'getBrand')->paginate(getPaginate());
+            // if($commodity){
+            //     $id = $commodity->id;
+            // }
+            // if($request->commodity_product_id){
+            //     $id = $request->commodity_product_id;
+            // }
             return ProductResource::collection($list);
 
         } catch (\Throwable $th) {
