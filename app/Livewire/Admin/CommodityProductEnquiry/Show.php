@@ -24,7 +24,12 @@ class Show extends Component
         $data = ProductEnquiry::with('getBrand', 'getCommodityProduct')->findOrFail($this->hidden_id);
         $variation_arr = [];
         foreach($data->variation as $variations_value){
-            $variation_arr[] = $variations_value['value'];
+            foreach($variations_value['value'] as $variation){
+                $variation_data['id']      = $variation['id'];
+                $variation_data['name']    = $variation['name'];
+                $variation_data['value']   = $variation['value'];
+                $variation_arr[] = $variation_data;
+            }
         }
 
         $seller_ids = SellerCommodityProductStatePrice::where('is_selected', '1')->where(function($query) use ($variation_arr){
@@ -61,7 +66,12 @@ class Show extends Component
 
             $variation_arr = [];
             foreach($enquiry_data->variation as $variations_value){
-                $variation_arr[] = $variations_value['value'];
+                foreach($variations_value['value'] as $variation){
+                    $variation_data['id']      = $variation['id'];
+                    $variation_data['name']    = $variation['name'];
+                    $variation_data['value']   = $variation['value'];
+                    $variation_arr[] = $variation_data;
+                }
             }
 
             foreach ($this->user_id as $user_id) {
