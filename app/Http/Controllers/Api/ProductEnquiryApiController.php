@@ -9,6 +9,7 @@ use App\Models\CommodityProductOrder;
 use App\Models\ProductEnquiryHistory;
 use App\Models\CommodityProductOrderLedger;
 use App\Http\Resources\Customer\ProductEnquiryResource;
+use App\Http\Resources\Customer\ProductEnquiryDetailResource;
 
 class ProductEnquiryApiController extends Controller
 {
@@ -16,6 +17,15 @@ class ProductEnquiryApiController extends Controller
     {
         $list = ProductEnquiry::where('user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->paginate(getPaginate());
         return ProductEnquiryResource::collection($list);
+    }
+
+    public function show($id)
+    {
+        $data = ProductEnquiry::with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->findOrFail($id);
+        return response([
+            'success'   => true,
+            'data'      => new ProductEnquiryDetailResource($data)
+        ],200);
     }
 
     public function save(Request $request)
