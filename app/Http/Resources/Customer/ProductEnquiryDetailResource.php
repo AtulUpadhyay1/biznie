@@ -24,7 +24,10 @@ class ProductEnquiryDetailResource extends JsonResource
                     'id'        => $this->getBrand->id,
                     'name'      => $this->getBrand->name
                 ] : [],
-
+            'unit'              => $this->getCommodityProduct->getUnit ? [
+                    'id'        => $this->getCommodityProduct->getUnit->id,
+                    'name'      => $this->getCommodityProduct->getUnit->name
+                ] : [],
             'commodity_product' => $this->getCommodityProduct ? [
                     'id'        => $this->getCommodityProduct->id,
                     'name'      => $this->getCommodityProduct->name,
@@ -62,6 +65,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'ex_price'          => 0,
             'transport_price'   => 0,
             'for_price'         => 0,
+            'required_booking_amount' => 0,
             'is_mark'           => false,
             'status'            => $this->status,
         ];
@@ -92,6 +96,7 @@ class ProductEnquiryDetailResource extends JsonResource
 
             $data['ex_price']           = $data['final_variation_price'] + $data['gst_amount'] + $data['tcs_amount'] + $data['total_charges'];
             $data['for_price']          = $data['ex_price'] + $data['transport_price'];
+            $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
             // $data['status']     = $this->getMarkedSellerProductEnquiry->status;
         }else{
             $data['variation']   = $this->variation;

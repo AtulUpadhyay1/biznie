@@ -23,7 +23,10 @@ class ProductEnquiryResource extends JsonResource
                     'id'        => $this->getBrand->id,
                     'name'      => $this->getBrand->name
                 ] : [],
-
+            'unit'              => $this->getCommodityProduct->getUnit ? [
+                    'id'        => $this->getCommodityProduct->getUnit->id,
+                    'name'      => $this->getCommodityProduct->getUnit->name
+            ] : [],
             'commodity_product' => $this->getCommodityProduct ? [
                     'id'        => $this->getCommodityProduct->id,
                     'name'      => $this->getCommodityProduct->name,
