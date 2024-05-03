@@ -93,6 +93,8 @@ class ProductEnquiryDetailResource extends JsonResource
             $data['ex_price']           = $data['final_variation_price'] + $data['gst_amount'] + $data['tcs_amount'] + $data['total_charges'];
             $data['for_price']          = $data['ex_price'] + $data['transport_price'];
             // $data['status']     = $this->getMarkedSellerProductEnquiry->status;
+        }else{
+            $data['variation']   = $this->variation;
         }
 
         return $data;
