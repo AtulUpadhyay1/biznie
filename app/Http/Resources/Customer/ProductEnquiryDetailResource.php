@@ -50,6 +50,9 @@ class ProductEnquiryDetailResource extends JsonResource
             'description'       => $this->description,
             'message'           => $this->message,
             // 'price'             => $this->price,
+            'packaging_charge'  => [],
+            'other_charge'      => [],
+            'other_quantity_charge'    => [],
             'total_quantity'    => 0,
             'base_price'        => 0,
             'loading_charge'    => 0,
@@ -94,7 +97,46 @@ class ProductEnquiryDetailResource extends JsonResource
             $data['gst_amount']         = $data['final_variation_price']*$data['gst']/100;
             $data['tcs_amount']         = ($data['final_variation_price'] + $data['gst_amount'])*$data['tcs_amount']/100;
 
+            $packaging_arr = [];
+            foreach ($seller_commodity_product->packaging_type as $packaging_charge) {
+                $packaging_arr['name'] = getPackagingType($packaging_charge)->name;
+                $packaging_arr['price'] = $seller_commodity_product->packaging_type_price[$packaging_charge];
+                $data['total_charges'] += $packaging_arr['price'];
+                $data['packaging_charge'][] = $packaging_arr;
+            }
+
             $data['ex_price']           = $data['final_variation_price'] + $data['gst_amount'] + $data['tcs_amount'] + $data['total_charges'];
+
+            $other_charges_arr = [];
+            foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
+                $other_charges_arr['name'] = $charge_name;
+                $other_charges_arr['price'] = $seller_commodity_product->charge_price[$charge_key];
+                $other_charges_arr['operator'] = $seller_commodity_product->operator[$charge_key];
+
+                if($other_charges_arr['operator'] == "+"){
+                    $data['total_charges'] += $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "-"){
+                    $data['total_charges'] -= $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "*"){
+                    $data['total_charges'] += $data['ex_price'] * $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "/"){
+                    $data['total_charges'] += $data['ex_price'] / $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "%"){
+                    $data['total_charges'] += $data['ex_price'] * ($other_charges_arr['price'] / 100);
+                }
+                $data['other_charge'][] = $other_charges_arr;
+            }
+
+            if($seller_commodity_product->is_quality){
+                $other_quantity_charge_arr = [];
+                foreach ($seller_commodity_product->quality as $quality_key => $quality) {
+                    $other_quantity_charge_arr['name']          = $quality;
+                    $other_quantity_charge_arr['quality_price'] = $seller_commodity_product->quality_price[$quality_key];
+                    $data['total_charges'] += $other_quantity_charge_arr['quality_price'];
+                    $data['other_quantity_charge'][] = $other_quantity_charge_arr;
+                }
+            }
+
             $data['for_price']          = $data['ex_price'] + $data['transport_price'];
             $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
             // $data['status']     = $this->getMarkedSellerProductEnquiry->status;
