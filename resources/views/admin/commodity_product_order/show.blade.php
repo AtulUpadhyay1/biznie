@@ -126,7 +126,7 @@
                         <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0 d-flex">
-                                    @if (count($data->quality_check_image) > 0)
+                                    @if ($data->quality_check_image && count($data->quality_check_image) > 0)
                                         @foreach ($data->quality_check_image as $check_image)
                                             <a href="{{ imageUrl($check_image) }}" target="_blank">
                                                 <img src="{{ imageUrl($check_image) }}" class="img-thumbnail mr-1" alt="Quality Check Image" title="Quality Check Image">
