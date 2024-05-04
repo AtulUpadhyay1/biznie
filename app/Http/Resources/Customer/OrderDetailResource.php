@@ -25,7 +25,10 @@ class OrderDetailResource extends JsonResource
                     'id'        => $this->getBrand->id,
                     'name'      => $this->getBrand->name
                 ] : [],
-
+            'unit'              => $this->getCommodityProduct->getUnit ? [
+                    'id'        => $this->getCommodityProduct->getUnit->id,
+                    'name'      => $this->getCommodityProduct->getUnit->name
+            ] : [],
             'commodity_product' => $this->getCommodityProduct ? [
                     'id'        => $this->getCommodityProduct->id,
                     'name'      => $this->getCommodityProduct->name,
@@ -47,7 +50,7 @@ class OrderDetailResource extends JsonResource
             'purpose'           => $this->purpose,
             'description'       => $this->description,
             'message'           => $this->message,
-            'price'             => $this->price,
+            // 'price'             => $this->price,
             'base_price'        => $this->base_price,
             'token_amount'      => $this->token_amount,
             'transport_price'   => $this->transport_price,
