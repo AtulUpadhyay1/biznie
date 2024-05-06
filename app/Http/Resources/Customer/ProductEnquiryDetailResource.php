@@ -81,21 +81,7 @@ class ProductEnquiryDetailResource extends JsonResource
             $data['commission'] = $markedSeller->commission;
             $data['is_mark']    = $markedSeller->is_mark ? true : false;
 
-            foreach($markedSeller->value as $variation){
-                $variation['final_price'] = ($variation['price'] + $data['base_price']) * $variation['quantity'];
-                $data['variation'][]  = $variation;
-                $data['total_quantity'] += $variation['quantity'];
-                $data['final_variation_price'] += $variation['final_price'];
-            }
-
             $seller_commodity_product   = SellerCommodityProduct::where('user_id', $markedSeller->user_id)->where('commodity_product_id', $markedSeller->commodity_product_id)->where('brand_id', $markedSeller->brand_id)->first();
-            $data['loading_charge']     = $seller_commodity_product->loading_charge;
-            $data['insurance_charge']   = $seller_commodity_product->insurance_charge;
-            $data['quality_charge']     = $seller_commodity_product->quality_charge ?? 0;
-            $data['gst']                = $seller_commodity_product->gst;
-            $data['tcs']                = $seller_commodity_product->tcs;
-            $data['gst_amount']         = $data['final_variation_price']*$data['gst']/100;
-            $data['tcs_amount']         = ($data['final_variation_price'] + $data['gst_amount'])*$data['tcs_amount']/100;
 
             $packaging_arr = [];
             foreach ($seller_commodity_product->packaging_type as $packaging_charge) {
@@ -104,8 +90,6 @@ class ProductEnquiryDetailResource extends JsonResource
                 $data['total_charges'] += $packaging_arr['price'];
                 $data['packaging_charge'][] = $packaging_arr;
             }
-
-            $data['ex_price']           = $data['final_variation_price'] + $data['gst_amount'] + $data['tcs_amount'] + $data['total_charges'];
 
             $other_charges_arr = [];
             foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
@@ -136,6 +120,26 @@ class ProductEnquiryDetailResource extends JsonResource
                     $data['other_quantity_charge'][] = $other_quantity_charge_arr;
                 }
             }
+
+            foreach($markedSeller->value as $variation){
+                $variation['tax']               = ($variation['price'] + $data['base_price']) * $seller_commodity_product->gst / 100;
+                $variation['per_unit_price']    = ($variation['price'] + $data['base_price']) + $variation['tax'] + $data['total_charges'];
+                $variation['final_price']       = $variation['per_unit_price'] * $variation['quantity'];
+                $data['variation'][]            = $variation;
+                $data['total_quantity']         += $variation['quantity'];
+                $data['final_variation_price']  += $variation['final_price'];
+                $data['gst_amount']             += $variation['tax'];
+            }
+
+            $data['loading_charge']     = $seller_commodity_product->loading_charge;
+            $data['insurance_charge']   = $seller_commodity_product->insurance_charge;
+            $data['quality_charge']     = $seller_commodity_product->quality_charge ?? 0;
+            $data['gst']                = $seller_commodity_product->gst;
+            $data['tcs']                = $seller_commodity_product->tcs;
+
+            $data['tcs_amount']         = $data['final_variation_price']*$data['tcs_amount']/100;
+
+            $data['ex_price']           = $data['final_variation_price'] + $data['tcs_amount'];
 
             $data['for_price']          = $data['ex_price'] + $data['transport_price'];
             $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
