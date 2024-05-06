@@ -145,7 +145,7 @@
             </div>
             <!--End of product -->
 
-            <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show', 'admin.commodity-product-order-driver.create', 'admin.commodity-product-order-driver.edit']) ? 'active' : ''}}">
                 <a href="{{route('admin.commodity-product-order.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-bootstrap"></i>
                     <span class="link-title">Orders</span>

@@ -125,7 +125,7 @@
                     <div class="row mt-3">
                         <div class="col-md-3 mb-2">
                             <div class="card">
-                                <div class="card-body p-0 d-flex">
+                                <div class="card-body p-0">
                                     @if ($data->quality_check_image && count($data->quality_check_image) > 0)
                                         @foreach ($data->quality_check_image as $check_image)
                                             <a href="{{ imageUrl($check_image) }}" target="_blank">
@@ -133,7 +133,9 @@
                                             </a>
                                         @endforeach
                                     @else
-                                        <button class="btn btn-inverse-primary btn-xs">Upload</button>
+                                        <div class="text-center p-4">
+                                            <button class="btn btn-inverse-primary btn-xs">Upload</button>
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="card-footer">
@@ -166,62 +168,72 @@
                         </div>
 
                     </div>
-
-                    @if ($data->getDrivers->count() > 0)
-
-                        <h5 class="my-3">Driver List</h5>
-
-                        <div class="table-responsive">
-                            <table class="custom-table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Photo</th>
-                                        <th>Unloaded Vehicle Photo</th>
-                                        <th>Loaded Vehicle Photo</th>
-                                        <th>Driver With Vehicle Photo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data->getDrivers as $driver)
-                                        <tr>
-                                            <td>{{$loop->iteration}}</td>
-                                            <td>{{ $driver->name }}</td>
-                                            <td>{{ $driver->phone }}</td>
-                                            <td>
-                                                <a href="{{ imageUrl($driver->photo) }}" target="_blank">
-                                                    <img src="{{ imageUrl($driver->photo) }}" class="img-thumbnail" alt="Driver Photo" title="Driver Photo">
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="{{ imageUrl($driver->unloaded_vehicle_photo) }}" target="_blank">
-                                                    <img src="{{ imageUrl($driver->unloaded_vehicle_photo) }}" class="img-thumbnail" alt="Unloaded Vehicle Photo" title="Unloaded Vehicle Photo">
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="{{ imageUrl($driver->loaded_vehicle_photo) }}" target="_blank">
-                                                    <img src="{{ imageUrl($driver->loaded_vehicle_photo) }}" class="img-thumbnail" alt="Loaded Vehicle Photo" title="Loaded Vehicle Photo">
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="{{ imageUrl($driver->driver_with_vehicle_photo) }}" target="_blank">
-                                                    <img src="{{ imageUrl($driver->driver_with_vehicle_photo) }}" class="img-thumbnail" alt="Driver With Vehicle Photo" title="Driver With Vehicle Photo">
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
+                    <div class="card mt-2">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="card-title">
+                                        <h5>Driver List</h5>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <a href="{{route('admin.commodity-product-order-driver.create', $data->id)}}" class="btn btn-secondary btn-xs btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-plus btn-icon-prepend"></i>Add</a>
+                                </div>
+                            </div>
                         </div>
-                    @endif
-
-                </div>
-
-                <div class="card-footer">
-
+                        <div class="card-body">
+                            <div class="row profile-body">
+                                @foreach ($data->getDrivers as $driver)
+                                    <div class="d-none d-md-block col-md-3 left-wrapper">
+                                        <div class="card rounded">
+                                            <div class="card-body p-3">
+                                                <div class="text-center mb-1">
+                                                    <img class="wd-70 rounded-circle" src="{{ imageUrl($driver->photo) }}" onerror="this.onerror=null; this.src='{{ asset('admin_css/assets/images/avatar.png') }}'" alt="profile">
+                                                </div>
+                                                <div class="text-center mb-2">
+                                                    <h6 class="card-title mb-0">{{$driver->name}}</h6>
+                                                </div>
+                                                <p><i class="bi bi-phone"></i> {{$driver->phone}} </p>
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Vehicle Number:</label>
+                                                    <p class="text-muted">{{$driver->vehicle_number}}</p>
+                                                </div>
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Tracking Number:</label>
+                                                    <p class="text-muted">{{$driver->tracking_number ?? '--'}}</p>
+                                                </div>
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Transporter Name:</label>
+                                                    <p class="text-muted">{{$driver->transporter_name ?? '--'}}</p>
+                                                </div>
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Transporter Phone Number:</label>
+                                                    <p class="text-muted">{{$driver->transporter_phone_number ?? '--'}}</p>
+                                                </div>
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Advance Amount:</label>
+                                                    <p class="text-muted">{{$driver->advance_amount ?? '--'}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="d-flex">
+                                                    <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-light" title="View">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-info" title="Edit">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                    <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-danger" title="Remove">
+                                                        <i class="bi bi-trash3"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
