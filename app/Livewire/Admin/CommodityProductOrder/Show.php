@@ -4,14 +4,17 @@ namespace App\Livewire\Admin\CommodityProductOrder;
 
 use PDF;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Models\CommodityProductOrder;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CommodityProductOrderDriver;
 
 class Show extends Component
 {
+    use WithFileUploads;
     public $page_title = 'View Order';
-    public $hidden_id = '';
+    public $hidden_id, $upload_type, $uploaded_file;
+
     public function mount($id)
     {
         $this->hidden_id = $id;
@@ -52,6 +55,41 @@ class Show extends Component
 
         // $pdfContent = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->save(public_path() . '/'.$order_detail->order_id.'_invoice.pdf');
         // return redirect($order_detail->order_id.'_invoice.pdf');
+    }
+
+    public function setUploadType($type)
+    {
+        $this->upload_type = $type;
+    }
+
+    public function uploadFile()
+    {
+        $this->validate([
+            'uploaded_file'     => 'required'
+        ]);
+
+        if(!$this->upload_type){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Upload type not set. Please try again.',
+            );
+            return false;
+        }
+
+        $data = CommodityProductOrder::findOrFail($this->hidden_id);
+
+        if($this->upload_type == 'quality_check_image'){
+            $data->quality_check_image = [imageUpload($this->uploaded_file, 'quality_check')];
+        }
+
+        if($this->upload_type == 'quality_check_certificate'){
+            $data->quality_check_certificate = $data->quality_check_certificate ? imageUpload($this->uploaded_file, 'quality_check', $data->quality_check_certificate) : imageUpload($this->uploaded_file, 'quality_check');
+        }
+
+        $data->save();
+
+        session()->flash('success', 'File updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
 
     public function driverDelete($id)

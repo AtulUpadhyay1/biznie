@@ -134,7 +134,7 @@
                                         @endforeach
                                     @else
                                         <div class="text-center p-4">
-                                            <button class="btn btn-inverse-primary btn-xs">Upload</button>
+                                            <button class="btn btn-inverse-primary btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" wire:click="setUploadType('quality_check_image')">Upload</button>
                                         </div>
                                     @endif
                                 </div>
@@ -157,7 +157,7 @@
                                         </a>
                                     @else
                                         <div class="text-center p-4">
-                                            <button class="btn btn-inverse-primary btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload</button>
+                                            <button class="btn btn-inverse-primary btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" wire:click="setUploadType('quality_check_certificate')">Upload</button>
                                         </div>
                                     @endif
                                 </div>
@@ -239,20 +239,25 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Upload </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="file" class="form-control">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btn-xs">Save</button>
-                </div>
+                <form wire:submit.prevent="uploadFile()">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload </h5>
+                        {{-- <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button> --}}
+                    </div>
+                    <div class="modal-body">
+                        <input type="file" class="form-control @error('uploaded_file') is-invalid @enderror" wire:model="uploaded_file">
+                        @error('uploaded_file')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
