@@ -146,6 +146,7 @@ Route::group(['as'=>'admin.'], function () {
         // Commodity Product Order Driver
         Route::get('commodity-product-order/driver/{order_id}', AdminRoot\CommodityProductOrderDriver\Index::class)->name('commodity-product-order-driver.index');
         Route::get('commodity-product-order/driver/create/{order_id}', AdminRoot\CommodityProductOrderDriver\Create::class)->name('commodity-product-order-driver.create');
+        Route::get('commodity-product-order/driver/show/{order_id}/{id}', AdminRoot\CommodityProductOrderDriver\Show::class)->name('commodity-product-order-driver.show');
 
         // Banner
         Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
