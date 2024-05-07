@@ -6,6 +6,7 @@ use PDF;
 use Livewire\Component;
 use App\Models\CommodityProductOrder;
 use Illuminate\Support\Facades\Storage;
+use App\Models\CommodityProductOrderDriver;
 
 class Show extends Component
 {
@@ -51,5 +52,14 @@ class Show extends Component
 
         // $pdfContent = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->save(public_path() . '/'.$order_detail->order_id.'_invoice.pdf');
         // return redirect($order_detail->order_id.'_invoice.pdf');
+    }
+
+    public function driverDelete($id)
+    {
+        CommodityProductOrderDriver::destroy($id);
+        $this->dispatch('alert',
+            type : 'success',
+            message : 'Driver remove successfully !!',
+        );
     }
 }

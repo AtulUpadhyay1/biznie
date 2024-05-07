@@ -74,7 +74,7 @@ class Edit extends Component
         $data->advance_amount  = $this->advance_amount;
         $data->save();
 
-        session()->flash('success', 'Driver added successfully !!');
+        session()->flash('success', 'Driver updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->order_id ,navigate: true);
     }
 }

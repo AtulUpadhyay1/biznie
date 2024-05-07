@@ -223,7 +223,7 @@
                                                     <a href="{{route('admin.commodity-product-order-driver.edit', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs me-2 btn-info" title="Edit">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
-                                                    <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-danger" title="Remove">
+                                                    <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-danger" title="Remove" wire:click="driverDelete({{$driver->id}})">
                                                         <i class="bi bi-trash3"></i>
                                                     </a>
                                                 </div>
