@@ -9,7 +9,7 @@
                             <h4>{{ $page_title }}</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a>
+                            {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
                             <a href="{{route('admin.commodity-product-order.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                                         @endforeach
                                     @else
                                         <div class="text-center p-4">
-                                            <button class="btn btn-inverse-primary btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" wire:click="setUploadType('quality_check_image')">Upload</button>
+                                            <button class="btn btn-inverse-primary btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#fileUploadModal" wire:click="setUploadType('quality_check_image')">Upload</button>
                                         </div>
                                     @endif
                                 </div>
@@ -157,7 +157,7 @@
                                         </a>
                                     @else
                                         <div class="text-center p-4">
-                                            <button class="btn btn-inverse-primary btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" wire:click="setUploadType('quality_check_certificate')">Upload</button>
+                                            <button class="btn btn-inverse-primary btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#fileUploadModal" wire:click="setUploadType('quality_check_certificate')">Upload</button>
                                         </div>
                                     @endif
                                 </div>
@@ -226,7 +226,54 @@
                                                     <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-danger" title="Remove" wire:click="driverDelete({{$driver->id}})">
                                                         <i class="bi bi-trash3"></i>
                                                     </a>
+                                                    <div class="ms-auto">
+                                                        @if ($driver->generate_invoice)
+                                                            <button type="button" class="btn btn-icon border btn-xs me-2 btn-success" title="Print Invoice" wire:click="generateInvoice({{$driver->id}})">
+                                                                <i class="bi bi-printer"></i>
+                                                            </button>
+                                                        @else
+                                                            <button type="button" class="btn btn-icon border btn-xs me-2 btn-primary" title="Generate Invoice" type="button" data-bs-toggle="modal" data-bs-target="#invoiceGenrateModal">
+                                                                <i class="bi bi-gear-wide-connected"></i>
+                                                            </button>
+                                                        @endif
+                                                    </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="invoiceGenrateModal" tabindex="-1" aria-labelledby="invoiceGenrateModalLabel" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form wire:submit.prevent="generateInvoice({{$driver->id}})">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="invoiceGenrateModalLabel">Generate Invoice</h5>
+                                                        {{-- <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button> --}}
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input" name="generate_invoice" id="seller" value="seller" wire:model="generate_invoice">
+                                                                <label class="form-check-label" for="seller">
+                                                                    By Seller
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input" name="generate_invoice" id="biznie" value="biznie" wire:model="generate_invoice">
+                                                                <label class="form-check-label" for="biznie">
+                                                                    By Biznie
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        @error('generate_invoice')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="reset" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -239,12 +286,12 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+    <div class="modal fade" id="fileUploadModal" tabindex="-1" aria-labelledby="fileUploadModalLabel" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form wire:submit.prevent="uploadFile()">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Upload </h5>
+                        <h5 class="modal-title" id="fileUploadModalLabel">Upload </h5>
                         {{-- <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button> --}}
                     </div>
                     <div class="modal-body">
@@ -261,4 +308,5 @@
             </div>
         </div>
     </div>
+
 </div>

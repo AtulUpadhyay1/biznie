@@ -13,7 +13,7 @@ class Show extends Component
 {
     use WithFileUploads;
     public $page_title = 'View Order';
-    public $hidden_id, $upload_type, $uploaded_file;
+    public $hidden_id, $upload_type, $uploaded_file, $generate_invoice;
 
     public function mount($id)
     {
@@ -90,6 +90,44 @@ class Show extends Component
 
         session()->flash('success', 'File updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
+    }
+
+    public function generateInvoice($driver_id)
+    {
+        $data = CommodityProductOrderDriver::find($driver_id);
+        if(!$data){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Invalide id given. Please try again.',
+            );
+            return false;
+        }
+        if(!$data->generate_invoice){
+            $this->validate([
+                'generate_invoice'     => 'required'
+            ]);
+            $data->generate_invoice = $this->generate_invoice;
+            $data->save();
+        }
+
+        $order_detail = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer')->findOrFail($this->hidden_id);
+        $data = [
+            'order_detail' => $order_detail
+        ];
+
+        // Generate PDF content
+        $pdfContent = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->output();
+
+        // Save PDF to storage
+        $filePath = 'public/order_invoce/'.$order_detail->order_id . '_invoice.pdf';
+        Storage::put($filePath, $pdfContent);
+
+        // Get public URL
+        $publicUrl = Storage::url($filePath);
+
+        // Redirect to the public URL
+        return redirect($publicUrl);
+
     }
 
     public function driverDelete($id)

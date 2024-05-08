@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('transporter_name')->nullable();
             $table->string('transporter_phone_number')->nullable();
             $table->string('advance_amount')->nullable();
+            $table->string('generate_invoice')->nullable();
             $table->longText('final_quantity_by_seller')->nullable();
             $table->longText('final_quantity_by_customer')->nullable();
             $table->string('status')->nullable();
