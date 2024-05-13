@@ -26,6 +26,15 @@ class CommodityProductOrderDriverResource extends JsonResource
             'driver_with_vehicle_photo'     => imageUrl($this->driver_with_vehicle_photo),
             'vehicle_number'                => $this->vehicle_number,
             'tracking_number'               => $this->tracking_number,
+            'invoice'                       => imageUrl($this->invoice),
+            'ebill'                         => imageUrl($this->ebill),
+            'transport_receipt'             => imageUrl($this->transport_receipt),
+            'alternate_phone_number'        => $this->alternate_phone_number,
+            'transporter_name'              => $this->transporter_name,
+            'transporter_phone_number'      => $this->transporter_phone_number,
+            'advance_amount'                => $this->advance_amount,
+            'final_quantity_by_seller'      => $this->final_quantity_by_seller,
+            'final_quantity_by_customer'    => $this->final_quantity_by_customer,
         ];
 
         return $data;
