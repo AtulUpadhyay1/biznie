@@ -56,6 +56,7 @@ class OrderApiController extends Controller
             ],200);
         }
         $data->quality_check_image_status   = $request->quality_check_image_status;
+        $data->admin_quality_check_message  = $request->message;
         $data->quality_check_image_status_updated_by   = 'customer';
         $data->save();
 

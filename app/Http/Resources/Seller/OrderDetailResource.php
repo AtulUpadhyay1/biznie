@@ -78,6 +78,7 @@ class OrderDetailResource extends JsonResource
             'quality_check_image'           => $this->quality_check_image ?? [],
             'quality_check_image_status'    => $this->quality_check_image_status,
             'quality_check_image_status_updated_by' => $this->quality_check_image_status_updated_by,
+            'quality_check_message' => $this->seller_quality_check_message,
             'final_quantity_by_seller'      => $this->final_quantity_by_seller,
             'final_quantity_by_customer'    => $this->final_quantity_by_customer,
             'invoice'                       => $this->invoice ? imageUrl($this->invoice) : null,

@@ -41,6 +41,7 @@
                                     <th>Brand</th>
                                     <th>Product</th>
                                     <th>Customer</th>
+                                    <th>Created At</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -53,6 +54,7 @@
                                         <td>{{ $data->getBrand->name }}</td>
                                         <td>{{ $data->getCommodityProduct->name}}</td>
                                         <td>{{ $data->getUser->name}}</td>
+                                        <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td>
                                             {{ ucfirst($data->status) }}
                                         </td>

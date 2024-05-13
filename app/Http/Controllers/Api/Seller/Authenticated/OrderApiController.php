@@ -47,6 +47,7 @@ class OrderApiController extends Controller
         }
 
         $data->quality_check_image = $request->image;
+        $data->seller_quality_check_message = $request->message;
         $data->quality_check_image_status = 'pending';
         $data->save();
 

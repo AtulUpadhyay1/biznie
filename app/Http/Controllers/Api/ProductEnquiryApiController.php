@@ -15,7 +15,7 @@ class ProductEnquiryApiController extends Controller
 {
     public function index()
     {
-        $list = ProductEnquiry::where('user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->paginate(getPaginate());
+        $list = ProductEnquiry::where('user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->latest()->paginate(getPaginate());
         return ProductEnquiryResource::collection($list);
     }
 

@@ -51,6 +51,7 @@ class ProductEnquiryResource extends JsonResource
             'commission'        => $this->commission,
             'loading_address'   => $this->loading_address,
             'status'            => $this->status,
+            'created_at'        => dateTimeFormat($this->created_at),
         ];
 
         return $data;
