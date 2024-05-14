@@ -28,7 +28,7 @@ return new class extends Migration
             $table->dropColumn('admin_quality_check_message');
             $table->dropColumn('seller_quality_check_message');
             $table->dropColumn('customer_quality_check_message');
-            // $table->dropColumn('customer_quality_check_visibility');
+            $table->dropColumn('customer_quality_check_visibility');
         });
     }
 };
