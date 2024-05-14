@@ -111,7 +111,6 @@ class Show extends Component
                 $data->billing_address      = $enquiry_data->billing_address;
                 $data->delivery_address     = $enquiry_data->delivery_address;
                 $data->consignee_detail     = $enquiry_data->consignee_detail;
-                $data->consignee_detail     = $enquiry_data->consignee_detail;
                 $data->purpose              = $enquiry_data->purpose;
                 $data->description          = $enquiry_data->description;
                 $data->message              = $enquiry_data->message;
@@ -133,7 +132,7 @@ class Show extends Component
 
                 $this->dispatch('alert',
                     type : 'success',
-                    message : 'Enquiry send successfully.',
+                    message : 'Enquiry sent successfully.',
                 );
 
             }

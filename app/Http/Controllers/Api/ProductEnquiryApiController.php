@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Http\Controllers\Controller;
@@ -54,6 +55,7 @@ class ProductEnquiryApiController extends Controller
             $data->purpose              = $request->purpose;
             $data->description          = $request->description;
             $data->price                = $request->price;
+            $data->history              = ['status' => 'pending', 'created_at' => Carbon::now()];
             $data->save();
 
             $data_history = new ProductEnquiryHistory;

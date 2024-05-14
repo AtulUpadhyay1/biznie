@@ -20,6 +20,7 @@ class SellerProductEnquiry extends Model
         'delivery_address'      => 'array',
         'price'                 => 'array',
         'loading_address'       => 'array',
+        'consignee_detail'      => 'array',
     ];
 
     public function getBrand()
