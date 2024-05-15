@@ -45,6 +45,10 @@ class User extends Authenticatable
         'business_interest' => 'array',
     ];
 
+    public function scopeSearch($query, $value){
+        $query->where("name", "like", "%{$value}%");
+    }
+
     public function getBusiness()
     {
         return $this->hasOne(Business::class);

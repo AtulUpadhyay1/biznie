@@ -9,4 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class IdentityType extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public function scopeSearch($query, $value){
+        $query->where("name", "like", "%{$value}%");
+    }
 }

@@ -11,7 +11,7 @@
                         </div>
                         <div class="col-6 text-end">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
+                                {{-- <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
                                     <span class="input-group-text input-group-addon bg-transparent border-danger"
                                         data-toggle><i data-feather="calendar" class="text-danger"></i></span>
                                     <input type="text" class="form-control bg-transparent border-danger"
@@ -20,7 +20,7 @@
                                 <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download-cloud btn-icon-prepend"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg>
                                     Download Report
-                                </button>
+                                </button> --}}
                             </div>
                         </div>
                     </div>
@@ -30,8 +30,8 @@
                         <li class="list-group-item border-0">
                             <form class="custom-search-bar">
                                 <div class="input-group">
-                                    <span class="input-group-text"> <i data-feather="search"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search here...">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
                                 </div>
                             </form>
                         </li>
@@ -168,6 +168,7 @@
                             </tbody>
                         </table>
                     </div>
+                    {{$list->links()}}
                 </div>
             </div>
         </div>

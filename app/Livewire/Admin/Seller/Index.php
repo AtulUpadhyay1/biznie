@@ -11,9 +11,11 @@ class Index extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
+    public $search;
+
     public function render()
     {
-        $list = User::where('type', 'seller')->with('getBusiness', 'getSellerKycDetail')->latest()->paginate(getPaginate());
+        $list = User::search($this->search)->where('type', 'seller')->with('getBusiness', 'getSellerKycDetail')->latest()->simplePaginate(getPaginate());
         return view('admin.seller.index', compact('list'), ['page_title' => 'Seller List']);
     }
 

@@ -4,13 +4,16 @@ namespace App\Livewire\Admin\IdentityType;
 
 use Livewire\Component;
 use App\Models\IdentityType;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+    public $search;
     public function render()
     {
-        $list = IdentityType::latest()->get();
-        return view('admin.identity_type.index', compact('list'), ['page_title' => 'identity-type']);
+        $list = IdentityType::search($this->search)->latest()->paginate(getPaginate());
+        return view('admin.identity_type.index', compact('list'), ['page_title' => 'Identity Type']);
     }
 
     public function updateStatus($id)
