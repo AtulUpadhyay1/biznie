@@ -54,8 +54,8 @@ class DriverApiController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'          => 'required',
-            'phone'         => 'required',
+            // 'name'          => 'required',
+            // 'phone'         => 'required',
             // 'photo'         => 'required',
             // 'unloaded_vehicle_photo' => 'required',
             // 'loaded_vehicle_photo'   => 'required',
@@ -71,7 +71,6 @@ class DriverApiController extends Controller
             ],200);
         }
 
-        $driver->order_id   = $request->order_id;
         $driver->name       = $request->name ?? $driver->name;
         $driver->phone      = $request->phone ?? $driver->phone;
         $driver->photo      = $request->photo ?? $driver->photo;

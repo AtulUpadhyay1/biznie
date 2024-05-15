@@ -128,6 +128,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
 
         // Product enquiry
         Route::get('product-enquiry', 'Authenticated\ProductEnquiryApiController@index');
+        Route::get('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@show');
         Route::post('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@update');
 
         // Order

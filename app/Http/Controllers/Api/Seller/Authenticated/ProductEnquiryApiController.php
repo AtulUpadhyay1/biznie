@@ -15,6 +15,15 @@ class ProductEnquiryApiController extends Controller
         return ProductEnquiryResource::collection($list);
     }
 
+    public function show($id)
+    {
+        return $data = SellerProductEnquiry::findOrFail($id);
+        return response([
+            'success'   => true,
+            'data'      => new ProductEnquiryDetailResource($data)
+        ],200);
+    }
+
     public function update(Request $request, $id)
     {
         $request->validate([
