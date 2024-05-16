@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\SellerProductEnquiry;
 use App\Http\Resources\Seller\ProductEnquiryResource;
+use App\Http\Resources\Seller\ProductEnquiryDetailResource;
 
 class ProductEnquiryApiController extends Controller
 {
@@ -17,7 +18,7 @@ class ProductEnquiryApiController extends Controller
 
     public function show($id)
     {
-        return $data = SellerProductEnquiry::findOrFail($id);
+        $data = SellerProductEnquiry::with('getBrand', 'getSellerCommodityProduct')->findOrFail($id);
         return response([
             'success'   => true,
             'data'      => new ProductEnquiryDetailResource($data)
