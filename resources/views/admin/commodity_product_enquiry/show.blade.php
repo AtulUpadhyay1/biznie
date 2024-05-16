@@ -25,7 +25,12 @@
                             <p>
                                 <b>Billing Address</b> <br>
                                 <b>Pincode: </b> {{ $data->billing_address['pin_code'] }} <br>
-                                <b>Address: </b> {{ $data->billing_address['address'] }} <br>
+                                @isset($data->billing_address['address'])
+                                    <b>Address: </b> {{ $data->billing_address['address'] }} <br>
+                                @else
+                                    <b>Address 1: </b> {{ $data->billing_address['address_line_one'] }} <br>
+                                    <b>Address 2: </b> {{ $data->billing_address['address_line_two'] }} <br>
+                                @endisset
                                 <b>City: </b> {{ $data->billing_address['city'] }} <br>
                                 <b>State: </b> {{ $data->billing_address['state'] }} <br>
                             </p>
@@ -39,7 +44,12 @@
                             <p>
                                 <b>Delivery Address</b> <br>
                                 <b>Pincode: </b> {{ $data->delivery_address['pin_code'] }} <br>
-                                <b>Address: </b> {{ $data->delivery_address['address'] }} <br>
+                                @isset($data->delivery_address['address'])
+                                    <b>Address: </b> {{ $data->delivery_address['address'] }} <br>
+                                @else
+                                    <b>Address 1: </b> {{ $data->delivery_address['address_line_one'] }} <br>
+                                    <b>Address 2: </b> {{ $data->delivery_address['address_line_two'] }} <br>
+                                @endisset
                                 <b>City: </b> {{ $data->delivery_address['city'] }} <br>
                                 <b>State: </b> {{ $data->delivery_address['state'] }} <br>
                             </p>
@@ -55,7 +65,7 @@
                                         @foreach ($data->variation[0]['value'] as $variation_heading)
                                             <th>{{ $variation_heading['name'] }}</th>
                                         @endforeach
-                                        <th>Price</th>
+                                        {{-- <th>Price</th> --}}
                                         <th>Quantity</th>
                                     </tr>
                                 </thead>
@@ -66,7 +76,7 @@
                                             @foreach ($variation['value'] as $value)
                                                 <td>{{ $value['value'] }}</td>
                                             @endforeach
-                                            <td>{{ $variation['price'] }}</td>
+                                            {{-- <td>{{ $variation['price'] }}</td> --}}
                                             <td>{{ $variation['quantity'] }}</td>
                                         </tr>
                                     @endforeach
@@ -121,19 +131,21 @@
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($seller_data->getStatePrice as $state_price)
-                                                            <tr>
-                                                                <th>
-                                                                    {{ $loop->iteration }}
-                                                                    @if($state_price->is_selected)
-                                                                        <i class="bi bi-check2-circle text-success fs-5"></i>
-                                                                    @endif
-                                                                </th>
-                                                                @foreach ($state_price->value as $price_value)
-                                                                    <td> {{ $price_value['value'] }} </td>
-                                                                @endforeach
-                                                                <td> {{ $state_price->price }} </td>
-                                                                <td> {{ $state_price->stock ?? 0 }} </td>
-                                                            </tr>
+                                                            {{-- @if (array_search(serialize($state_price->value), array_map('serialize', $variation_arr)) !== false) --}}
+                                                                <tr>
+                                                                    <th>
+                                                                        {{ $loop->iteration }}
+                                                                        @if($state_price->is_selected)
+                                                                            <i class="bi bi-check2-circle text-success fs-5"></i>
+                                                                        @endif
+                                                                    </th>
+                                                                    @foreach ($state_price->value as $price_value)
+                                                                        <td>{{ array_search(serialize($state_price->value), array_map('serialize', $variation_arr)) }} @json($variation_arr) @json($state_price->value) {{ $price_value['value'] }} </td>
+                                                                    @endforeach
+                                                                    <td> {{ $state_price->price }} </td>
+                                                                    <td> {{ $state_price->stock ?? 0 }} </td>
+                                                                </tr>
+                                                            {{--  @endif --}}
                                                         @endforeach
                                                     </tbody>
                                                 </table>

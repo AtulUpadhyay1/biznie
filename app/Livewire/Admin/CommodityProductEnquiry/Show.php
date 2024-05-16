@@ -32,14 +32,18 @@ class Show extends Component
             }
         }
 
-        $seller_ids = SellerCommodityProductStatePrice::where('is_selected', '1')->where(function($query) use ($variation_arr){
+        $seller_ids = SellerCommodityProductStatePrice::where(function($query) use ($variation_arr){
             foreach ($variation_arr as $variation) {
-                $query->orWhereJsonContains('value', $variation);
+                $query->orWhereJsonContains('value', $variation)->where('is_selected', '1');
             }
-        })->pluck('user_id')->unique()->toArray();
+        })->pluck('user_id')->toArray();
+        $seller_ids_with_count = array_count_values($seller_ids);
+        $seller_ids = array_keys(array_filter($seller_ids_with_count, function($count) use ($variation_arr){
+            return $count === count($variation_arr);
+        }));
 
         $seller_list = SellerCommodityProduct::whereIn('user_id', $seller_ids)->with('getStatePrice', 'getBrand', 'getUser')->get();
-        return view('admin.commodity_product_enquiry.show', compact('data', 'seller_list'));
+        return view('admin.commodity_product_enquiry.show', compact('data', 'seller_list', 'variation_arr'));
     }
 
     public function sendEnquiry()
