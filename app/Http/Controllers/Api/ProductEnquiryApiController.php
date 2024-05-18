@@ -55,7 +55,7 @@ class ProductEnquiryApiController extends Controller
             $data->purpose              = $request->purpose;
             $data->description          = $request->description;
             $data->price                = $request->price;
-            $data->history              = ['status' => 'pending', 'created_at' => Carbon::now()];
+            $data->history              = [['status' => 'pending', 'created_at' => Carbon::now()]];
             $data->save();
 
             $data_history = new ProductEnquiryHistory;

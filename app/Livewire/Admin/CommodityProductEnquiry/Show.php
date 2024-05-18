@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\CommodityProductEnquiry;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
@@ -134,12 +135,18 @@ class Show extends Component
                 ];
                 sendNotification($user, $title, $body, $type, $data_info, true);
 
-                $this->dispatch('alert',
-                    type : 'success',
-                    message : 'Enquiry sent successfully.',
-                );
-
             }
+
+            $enquiry_data->status = 'Enquiry Send To Seller';
+            $history = $enquiry_data->history;
+            $history[] = ['status' => 'Enquiry Send To Seller', 'created_at' => Carbon::now()];
+            $enquiry_data->history = $history;
+            $enquiry_data->save();
+
+            $this->dispatch('alert',
+                type : 'success',
+                message : 'Enquiry sent successfully.',
+            );
 
         } catch (\Throwable $th) {
 
