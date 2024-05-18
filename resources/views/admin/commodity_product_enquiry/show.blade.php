@@ -104,7 +104,7 @@
                                         <div class="col-11">
                                             <h2 class="accordion-header" id="heading_{{ $seller_data->id }}">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $seller_data->id }}">
-                                                <b>{{ $seller_data->getUser->name}} ({{ getSellerType($seller_data->user_id) }})</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}
+                                                <b>{{ $seller_data->getUser->name}} ({{ getSellerType($seller_data->user_id) }})</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}, &nbsp; <b>Base Price</b> : {{ $seller_data->base_price }}
                                                 </button>
                                             </h2>
                                         </div>
@@ -125,27 +125,73 @@
                                                                 </th>
                                                             @endforeach
                                                             <th>Gauge Difference</th>
+                                                            <th>Final Price</th>
                                                             <th>Stock</th>
-
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        @php
+                                                            $total_charges = 0;
+                                                            $ex_price = 0;
+
+                                                            foreach ($seller_data->packaging_type as $packaging_charge) {
+                                                                $packaging_price = $seller_data->packaging_type_price[$packaging_charge];
+                                                                $total_charges += $packaging_price;
+                                                            }
+
+                                                            foreach ($seller_data->charge_name as $charge_key => $charge_name) {
+
+                                                                $other_charges_price = $seller_data->charge_price[$charge_key];
+                                                                $other_charges_operator = $seller_data->operator[$charge_key];
+
+                                                                if($other_charges_operator == "+"){
+                                                                    $total_charges += $other_charges_price;
+                                                                }elseif($other_charges_operator == "-"){
+                                                                    $total_charges -= $other_charges_price;
+                                                                }elseif($other_charges_operator == "*"){
+                                                                    $total_charges += $ex_price * $other_charges_price;
+                                                                }elseif($other_charges_operator == "/"){
+                                                                    $total_charges += $ex_price / $other_charges_price;
+                                                                }elseif($other_charges_operator == "%"){
+                                                                    $total_charges += $ex_price * ($other_charges_price / 100);
+                                                                }
+
+                                                                if($seller_data->is_quality){
+
+                                                                    foreach ($seller_data->quality as $quality_key => $quality) {
+                                                                        $other_quantity_charge_arr['name']          = $quality;
+                                                                        $other_quantity_price = $seller_data->quality_price[$quality_key];
+                                                                        $total_charges += $other_quantity_price;
+                                                                    }
+                                                                }
+                                                            }
+                                                        @endphp
+
                                                         @foreach ($seller_data->getStatePrice as $state_price)
-                                                            {{-- @if (array_search(serialize($state_price->value), array_map('serialize', $variation_arr)) !== false) --}}
-                                                                <tr>
-                                                                    <th>
-                                                                        {{ $loop->iteration }}
-                                                                        @if($state_price->is_selected)
-                                                                            <i class="bi bi-check2-circle text-success fs-5"></i>
-                                                                        @endif
-                                                                    </th>
-                                                                    @foreach ($state_price->value as $price_value)
-                                                                        <td>{{ array_search(serialize($state_price->value), array_map('serialize', $variation_arr)) }} @json($variation_arr) @json($state_price->value) {{ $price_value['value'] }} </td>
-                                                                    @endforeach
-                                                                    <td> {{ $state_price->price }} </td>
-                                                                    <td> {{ $state_price->stock ?? 0 }} </td>
-                                                                </tr>
-                                                            {{--  @endif --}}
+                                                            <tr>
+                                                                <th>
+                                                                    {{ $loop->iteration }}
+                                                                    @if($state_price->is_selected)
+                                                                        <i class="bi bi-check2-circle text-success fs-5"></i>
+                                                                    @endif
+                                                                </th>
+                                                                @foreach ($state_price->value as $price_value)
+                                                                    <td>{{ $price_value['value'] }} </td>
+                                                                @endforeach
+                                                                <td> {{ $state_price->price }} </td>
+                                                                <td>
+                                                                    @php
+                                                                        $final_variation_price = 0;
+                                                                        $tax = ($state_price->price + $seller_data->base_price) * $state_price->gst / 100;
+                                                                        $per_unit_price = ($state_price->price + $seller_data->base_price) + $tax + $total_charges;
+                                                                        $final_price    = $per_unit_price;
+                                                                        $final_variation_price += $final_price;
+                                                                        // $gst_amount += $tax
+                                                                    @endphp
+                                                                    {{ $final_variation_price }}
+                                                                </td>
+                                                                <td> {{ $state_price->stock ?? 0 }} </td>
+                                                            </tr>
                                                         @endforeach
                                                     </tbody>
                                                 </table>
