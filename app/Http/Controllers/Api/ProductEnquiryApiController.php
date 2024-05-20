@@ -150,9 +150,17 @@ class ProductEnquiryApiController extends Controller
 
         $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry')->find($id);
         $enquiry_data->status = 'ordered';
+        $history = $enquiry_data->history;
+        $history[] = ['status' => 'Ordered', 'created_at' => Carbon::now()];
+        $enquiry_data->history = $history;
         $enquiry_data->save();
 
         $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
+        $mark_seller->status = 'ordered';
+        $history = $mark_seller->history;
+        $history[] = ['status' => 'Ordered', 'created_at' => Carbon::now()];
+        $mark_seller->history = $history;
+        $mark_seller->save();
 
         $order                              = new CommodityProductOrder;
         $order->seller_user_id              = $mark_seller->user_id;
@@ -178,6 +186,7 @@ class ProductEnquiryApiController extends Controller
         $order->loading_address             = $mark_seller->loading_address;
         $order->delivery_by                 = $mark_seller->delivery_by;
         $order->status                      = 'pending';
+        $order->history                     = ['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()];
         $order->save();
 
         $debit_ledger                       = new CommodityProductOrderLedger;

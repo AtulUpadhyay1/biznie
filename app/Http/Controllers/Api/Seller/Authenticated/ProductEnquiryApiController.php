@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\Seller\Authenticated;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\ProductEnquiry;
 use App\Http\Controllers\Controller;
 use App\Models\SellerProductEnquiry;
 use App\Http\Resources\Seller\ProductEnquiryResource;
@@ -41,8 +43,24 @@ class ProductEnquiryApiController extends Controller
         $data->loading_address = $request->loading_address;
         $data->delivery_by  = 'seller';
         $data->status       = 'replied';
+
+        $history = $data->history;
+        $history[] = ['status' => 'Replied', 'created_at' => Carbon::now()];
+        $data->history = $history;
+
         $data->message      = $request->message;
         $data->save();
+
+        $enquiry = ProductEnquiry::findOrFail($data->product_enquiries_id);
+        if($enquiry){
+            if($enquiry->status != 'Seller Replied'){
+                $enquiry->status = 'Seller Replied';
+                $history = $enquiry->history;
+                $history[] = ['status' => 'Seller Replied', 'created_at' => Carbon::now()];
+                $enquiry->history = $history;
+                $enquiry->save();
+            }
+        }
 
         return response([
             'success'   => true,

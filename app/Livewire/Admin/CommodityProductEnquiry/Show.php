@@ -18,6 +18,8 @@ class Show extends Component
     public function mount($id)
     {
         $this->hidden_id = $id;
+        $selected_user_id = SellerProductEnquiry::where('product_enquiries_id', $id)->pluck('user_id')->toArray();
+        $this->user_id = $selected_user_id;
     }
 
     public function render()
@@ -123,6 +125,9 @@ class Show extends Component
                 $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
                 $data->loading_address      = $product_state_prices[0]->getSellerCommodityProduct->loading_address;
                 $data->status               = $data->status ?? 'pending';
+                if(!$data->history){
+                    $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
+                }
                 $data->save();
 
                 $user = User::find($user_id);

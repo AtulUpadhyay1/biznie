@@ -18,6 +18,7 @@ class CommodityProductOrder extends Model
         'message'           => 'array',
         'price'             => 'array',
         'quality_check_image'   => 'array',
+        'history'           => 'array',
     ];
 
     public function getBrand()

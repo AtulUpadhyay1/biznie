@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\CommodityProductEnquiry;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
@@ -56,9 +57,9 @@ class SellerReply extends Component
         ]);
         try {
 
-            $enquiry_data = ProductEnquiry::findOrFail($this->hidden_id);
+            $enquiry = ProductEnquiry::findOrFail($this->hidden_id);
 
-            if($enquiry_data && $enquiry_data->status == 'ordered'){
+            if($enquiry && $enquiry->status == 'ordered'){
                 $this->dispatch('alert',
                     type : 'error',
                     message : 'This enquiry has been converted to an order.',
@@ -66,6 +67,13 @@ class SellerReply extends Component
                 return false;
             }
 
+            if($enquiry->history != "Seller Marked"){
+                $enquiry->status = 'Seller Marked';
+                $history = $enquiry->history;
+                $history[] = ['status' => 'Seller Marked', 'created_at' => Carbon::now()];
+                $enquiry->history = $history;
+                $enquiry->save();
+            }
 
             SellerProductEnquiry::where('commodity_product_id', $this->hidden_id)->update(['is_mark' => 0]);
 
@@ -83,6 +91,12 @@ class SellerReply extends Component
             $enquiry_data->commission = $this->commission;
             $enquiry_data->price = $this->set_enquiry_data_price;
             $enquiry_data->is_mark = 1;
+            if($enquiry_data->history != "Mark For Sell"){
+                $enquiry_data->status = 'Mark For Sell';
+                $history = $enquiry_data->history;
+                $history[] = ['status' => 'Mark For Sell', 'created_at' => Carbon::now()];
+                $enquiry_data->history = $history;
+            }
             $enquiry_data->save();
 
             // Seller Notification
