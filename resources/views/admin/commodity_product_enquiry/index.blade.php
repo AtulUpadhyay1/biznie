@@ -64,7 +64,8 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn{{$data->id}}">
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.sellerReply', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>Seller Relpy</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.sellerReply', $data->id)}}" wire:navigate><i class="bi bi-reply-all icon-sm me-2"></i><span>Seller Relpy</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.history', $data->id)}}" wire:navigate><i class="bi bi-clock-history icon-sm me-2"></i><span>History</span></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -73,6 +74,9 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        <div class="float-end">
+                            {{ $list->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

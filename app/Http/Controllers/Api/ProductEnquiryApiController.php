@@ -193,15 +193,15 @@ class ProductEnquiryApiController extends Controller
         $debit_ledger->order_id             = $order->id;
         $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
         $debit_ledger->type                 = 'debit';
-        $debit_ledger->amount                = $order->base_price;
+        $debit_ledger->amount               = $order->token_amount;
         $debit_ledger->save();
 
-        $debit_ledger                       = new CommodityProductOrderLedger;
-        $debit_ledger->order_id             = $order->id;
-        $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $debit_ledger->type                 = 'credit';
-        $debit_ledger->amount                = $order->token_amount;
-        $debit_ledger->save();
+        $credit_ledger                       = new CommodityProductOrderLedger;
+        $credit_ledger->order_id             = $order->id;
+        $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $credit_ledger->type                 = 'credit';
+        $credit_ledger->amount               = $order->base_price;
+        $credit_ledger->save();
 
         return response([
             'success'   => true,

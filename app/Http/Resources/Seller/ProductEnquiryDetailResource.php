@@ -76,7 +76,7 @@ class ProductEnquiryDetailResource extends JsonResource
         if($seller_commodity_product){
 
             // $data['variation']  = $seller_commodity_product->value;
-            $data['base_price'] = $seller_commodity_product->base_price;
+            $data['base_price'] = $this->base_price;
             $data['transport_price'] = $seller_commodity_product->transport_price;
             $data['commission'] = $seller_commodity_product->commission;
             $data['is_mark']    = $seller_commodity_product->is_mark ? true : false;

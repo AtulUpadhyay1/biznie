@@ -42,16 +42,15 @@
                                 <b>Phone: </b> {{ $data->getUser->phone }} <br>
                             </p><br>
                             <p>
-                                <b>Delivery Address</b> <br>
-                                <b>Pincode: </b> {{ $data->delivery_address['pin_code'] }} <br>
-                                @isset($data->delivery_address['address'])
-                                    <b>Address: </b> {{ $data->delivery_address['address'] }} <br>
-                                @else
-                                    <b>Address 1: </b> {{ $data->delivery_address['address_line_one'] }} <br>
-                                    <b>Address 2: </b> {{ $data->delivery_address['address_line_two'] }} <br>
-                                @endisset
-                                <b>City: </b> {{ $data->delivery_address['city'] }} <br>
-                                <b>State: </b> {{ $data->delivery_address['state'] }} <br>
+                                <b>Consignee Detail</b> <br>
+                                <b>Name: </b> {{ $data->consignee_detail['name'] }} <br>
+                                <b>Pincode: </b> {{ $data->consignee_detail['address']['pin_code'] }} <br>
+                                <b>Address 1: </b> {{ $data->consignee_detail['address']['address_line_one'] }} <br>
+                                <b>Address 2: </b> {{ $data->consignee_detail['address']['address_line_two'] }} <br>
+                                <b>City: </b> {{ $data->consignee_detail['address']['city'] }} <br>
+                                <b>State: </b> {{ $data->consignee_detail['address']['state'] }} <br>
+                                <b>Gst Number: </b> {{ $data->consignee_detail['gst_number'] }} <br>
+                                <b>Company: </b> {{ $data->consignee_detail['consignee_company'] }} <br>
                             </p>
                         </div>
 

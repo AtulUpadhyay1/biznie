@@ -136,6 +136,7 @@ Route::group(['as'=>'admin.'], function () {
         // Commodity Product Enquiry
         Route::get('commodity-product-enquiry', AdminRoot\CommodityProductEnquiry\Index::class)->name('commodity-product-enquiry.index');
         Route::get('commodity-product-enquiry/show/{id}', AdminRoot\CommodityProductEnquiry\Show::class)->name('commodity-product-enquiry.show');
+        Route::get('commodity-product-enquiry/history/{id}', AdminRoot\CommodityProductEnquiry\History::class)->name('commodity-product-enquiry.history');
         Route::get('commodity-product-enquiry/seller-reply/{id}', AdminRoot\CommodityProductEnquiry\SellerReply::class)->name('commodity-product-enquiry.sellerReply');
 
         // Commodity Product Order
