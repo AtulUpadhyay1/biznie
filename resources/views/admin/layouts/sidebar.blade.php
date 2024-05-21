@@ -292,7 +292,7 @@
             <!--End of messages-->
 
             <!--App Setup-->
-            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#app-setup" role="button"
                     aria-expanded="false" aria-controls="app-setup">
                     <i class="bi bi-gear"></i>
@@ -300,7 +300,7 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'show' : ''}}" id="app-setup">
+            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting']) ? 'show' : ''}}" id="app-setup">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'active' : ''}}">
                         <a href="{{route('admin.faq.index')}}" class="nav-link">
@@ -318,11 +318,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            Logistics
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="{{route('admin.website_setup.terms')}}" class="nav-link">
                             Terms & Condition
                         </a>
@@ -333,26 +328,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            Credit Facilities
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            Contact Us
+                        <a href="{{route('admin.website_setup.setting')}}" class="nav-link {{ isActiveRoute(['admin.website_setup.setting']) ? 'active' : ''}}">
+                            Setting
                         </a>
                     </li>
                 </ul>
             </div>
-            <!-- End of app setup -->
-
-            <!--Others-->
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="bi bi-question-circle"></i>
-                    <span class="link-title">Help Center</span>
-                </a>
-            </li>
         </ul>
     </div>
 </nav>

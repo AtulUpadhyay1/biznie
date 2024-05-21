@@ -100,7 +100,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('edit-business', AdminRoot\BusinessListing\Edit::class)->name('edit-business');
 
         //All Customers List
-         Route::get('customer-list', AdminRoot\Customer\Index::class)->name('customer-list');
+        Route::get('customer-list', AdminRoot\Customer\Index::class)->name('customer-list');
 
         //Cutomer Profile
         Route::get('customer-profile/{id}', AdminRoot\Customer\Profile::class)->name('customer-profile');
@@ -185,7 +185,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('website-setup/privacy-policy', AdminRoot\WebsiteSetup\Privacy::class)->name('website_setup.privacy');
         Route::get('website-setup/terms-condition', AdminRoot\WebsiteSetup\Termscondition::class)->name('website_setup.terms');
         Route::get('website-setup/returns-policy', AdminRoot\WebsiteSetup\Returns::class)->name('website_setup.returns');
-
+        Route::get('website-setup/setting', AdminRoot\WebsiteSetup\Setting::class)->name('website_setup.setting');
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });
