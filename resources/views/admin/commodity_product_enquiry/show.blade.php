@@ -124,7 +124,7 @@
                                                                 </th>
                                                             @endforeach
                                                             <th>Gauge Difference</th>
-                                                            <th>Final Price</th>
+                                                            <th>EX Price</th>
                                                             <th>Stock</th>
                                                         </tr>
                                                     </thead>
@@ -154,14 +154,14 @@
                                                                 }elseif($other_charges_operator == "%"){
                                                                     $total_charges += $ex_price * ($other_charges_price / 100);
                                                                 }
+                                                            }
 
-                                                                if($seller_data->is_quality){
+                                                            if($seller_data->is_quality){
 
-                                                                    foreach ($seller_data->quality as $quality_key => $quality) {
-                                                                        $other_quantity_charge_arr['name']          = $quality;
-                                                                        $other_quantity_price = $seller_data->quality_price[$quality_key];
-                                                                        $total_charges += $other_quantity_price;
-                                                                    }
+                                                                foreach ($seller_data->quality as $quality_key => $quality) {
+                                                                    $other_quantity_charge_arr['name']          = $quality;
+                                                                    $other_quantity_price = $seller_data->quality_price[$quality_key];
+                                                                    $total_charges += $other_quantity_price;
                                                                 }
                                                             }
                                                         @endphp
@@ -181,7 +181,7 @@
                                                                 <td>
                                                                     @php
                                                                         $final_variation_price = 0;
-                                                                        $tax = ($state_price->price + $seller_data->base_price) * $state_price->gst / 100;
+                                                                        $tax = ($state_price->price + $seller_data->base_price) * $seller_data->gst / 100;
                                                                         $per_unit_price = ($state_price->price + $seller_data->base_price) + $tax + $total_charges;
                                                                         $final_price    = $per_unit_price;
                                                                         $final_variation_price += $final_price;

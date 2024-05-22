@@ -101,18 +101,67 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        @php
+                                                            $total_charges = 0;
+                                                            $ex_price = 0;
+                                                            $seller_commodity_product = $list_data->getSellerCommodityProduct;
+                                                            $base_price = $list_data->base_price;
+                                                            $transport_price = $list_data->transport_price;
+                                                            $commission =  $seller_commodity_product->commission;
+
+                                                            foreach ($seller_commodity_product->packaging_type as $packaging_charge) {
+                                                                $packaging_price = $seller_commodity_product->packaging_type_price[$packaging_charge];
+                                                                $total_charges += $packaging_price;
+                                                            }
+
+                                                            foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
+                                                                $other_charges_price = $seller_commodity_product->charge_price[$charge_key];
+                                                                $other_charges_operator = $seller_commodity_product->operator[$charge_key];
+
+                                                                if($other_charges_operator == "+"){
+                                                                    $total_charges += $other_charges_price;
+                                                                }elseif($other_charges_operator == "-"){
+                                                                    $total_charges -= $other_charges_price;
+                                                                }elseif($other_charges_operator == "*"){
+                                                                    $total_charges += $ex_price * $other_charges_price;
+                                                                }elseif($other_charges_operator == "/"){
+                                                                    $total_charges += $ex_price / $other_charges_price;
+                                                                }elseif($other_charges_operator == "%"){
+                                                                    $total_charges += $ex_price * ($other_charges_price / 100);
+                                                                }
+                                                            }
+
+                                                            if($seller_commodity_product->is_quality){
+
+                                                                foreach ($seller_commodity_product->quality as $quality_key => $quality) {
+                                                                    $other_quantity_charge_arr['name']          = $quality;
+                                                                    $other_quantity_price = $seller_commodity_product->quality_price[$quality_key];
+                                                                    $total_charges += $other_quantity_price;
+                                                                }
+                                                            }
+                                                        @endphp
+
                                                         @foreach ($list_data->value as $variation)
-                                                            {{-- @if ($variation['is_selected'] == '1') --}}
-                                                                <tr>
-                                                                    <td>{{$loop->iteration}}</td>
-                                                                    @foreach ($variation['value'] as $value)
-                                                                        <td>{{ $value['value'] }}</td>
-                                                                    @endforeach
-                                                                    <td>{{ $variation['quantity'] }}</td>
-                                                                    <td>{{ $variation['price'] }}</td>
-                                                                    <td>{{ $variation['price'] + $list_data->base_price }}</td>
-                                                                </tr>
-                                                            {{-- @endif --}}
+
+                                                            @php
+                                                                $final_variation_price = 0;
+                                                                $tax               = ($variation['price'] + $list_data->base_price) * $seller_commodity_product->gst / 100;
+                                                                $per_unit_price    = ($variation['price'] + $list_data->base_price) + $tax + $total_charges;
+                                                                $final_price       = $per_unit_price * $variation['quantity'];
+                                                                $final_variation_price  += $final_price;
+                                                                // $gst_amount         += $tax;
+                                                            @endphp
+
+                                                            <tr>
+                                                                <td>{{$loop->iteration}}</td>
+                                                                @foreach ($variation['value'] as $value)
+                                                                    <td>{{ $value['value'] }}</td>
+                                                                @endforeach
+                                                                <td>{{ $variation['quantity'] }}</td>
+                                                                <td>{{ $variation['price'] }}</td>
+                                                                <td>{{ $final_variation_price }}</td>
+                                                            </tr>
+
                                                         @endforeach
                                                     </tbody>
                                                 </table>
