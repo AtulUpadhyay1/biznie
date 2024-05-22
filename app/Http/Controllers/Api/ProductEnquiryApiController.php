@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Http\Controllers\Controller;
+use App\Models\SellerProductEnquiry;
 use App\Models\CommodityProductOrder;
 use App\Models\ProductEnquiryHistory;
 use App\Models\CommodityProductOrderLedger;
+use App\Models\SellerCommodityProductStatePrice;
 use App\Http\Resources\Customer\ProductEnquiryResource;
 use App\Http\Resources\Customer\ProductEnquiryDetailResource;
 
@@ -81,6 +84,97 @@ class ProductEnquiryApiController extends Controller
                 'unique_id'     => $data->unique_id,
             ];
             sendNotification(auth()->user(), $title, $body, $type, $data_info, true);
+
+            // Enquiry Send to Seller
+            if(websiteSetupValue('enquiry_send_to_seller') && websiteSetupValue('enquiry_send_to_seller') == 1){
+                $enquiry_data = ProductEnquiry::with('getBrand', 'getCommodityProduct')->findOrFail($data->id);
+                $variation_arr = [];
+                foreach($enquiry_data->variation as $variations_value){
+                    foreach($variations_value['value'] as $variation){
+                        $variation_data['id']      = $variation['id'];
+                        $variation_data['name']    = $variation['name'];
+                        $variation_data['value']   = $variation['value'];
+                        $variation_arr[] = $variation_data;
+                    }
+                }
+
+                $seller_ids = SellerCommodityProductStatePrice::where(function($query) use ($variation_arr){
+                    foreach ($variation_arr as $variation) {
+                        $query->orWhereJsonContains('value', $variation)->where('is_selected', '1');
+                    }
+                })->pluck('user_id')->toArray();
+                $seller_ids_with_count = array_count_values($seller_ids);
+                $seller_ids = array_keys(array_filter($seller_ids_with_count, function($count) use ($variation_arr){
+                    return $count === count($variation_arr);
+                }));
+
+                foreach ($seller_ids as $user_id) {
+                    $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where(function($query) use ($variation_arr){
+                        foreach ($variation_arr as $variation) {
+                            $query->orWhereJsonContains('value', $variation);
+                        }
+                    })->with('getSellerCommodityProduct')->get();
+
+                    $price_arr = [];
+                    foreach ($product_state_prices as $key => $product_state_price) {
+                        $price_arr[] = $product_state_price->price;
+                    }
+
+                    $new_variation_arr = [];
+                    foreach($enquiry_data->variation as $key => $enquiry_variations){
+                        $enquiry_variations = $enquiry_variations;
+                        $enquiry_variations['price'] = $price_arr[$key] ?? 0;
+                        if($enquiry_variations['price'] == 0){
+                            $enquiry_variations['is_selected'] = "0";
+                        }
+                        $new_variation_arr[] = $enquiry_variations;
+                    }
+
+                    $data = SellerProductEnquiry::where('user_id', $user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
+                    if(!$data){
+                        $data                   = new SellerProductEnquiry;
+                    }
+                    $data->user_id              = $user_id;
+                    $data->product_enquiries_id = $enquiry_data->id;
+                    $data->customer_user_id     = $enquiry_data->user_id;
+                    $data->commodity_product_id = $enquiry_data->commodity_product_id;
+                    $data->brand_id             = $enquiry_data->brand_id;
+                    $data->unique_id            = $enquiry_data->unique_id;
+                    $data->origin_city          = $enquiry_data->origin_city;
+                    $data->value                = $new_variation_arr;
+                    $data->billing_address      = $enquiry_data->billing_address;
+                    $data->delivery_address     = $enquiry_data->delivery_address;
+                    $data->consignee_detail     = $enquiry_data->consignee_detail;
+                    $data->purpose              = $enquiry_data->purpose;
+                    $data->description          = $enquiry_data->description;
+                    $data->message              = $enquiry_data->message;
+                    $data->price                = $price_arr;
+                    $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
+                    $data->loading_address      = $product_state_prices[0]->getSellerCommodityProduct->loading_address;
+                    $data->status               = $data->status ?? 'pending';
+                    if(!$data->history){
+                        $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
+                    }
+                    $data->save();
+
+                    $user = User::find($user_id);
+
+                    $title = 'New Product Enquiry';
+                    $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
+                    $type = 'product_enquiry';
+                    $data_info = [
+                        'unique_id'     => $data->unique_id,
+                    ];
+                    sendNotification($user, $title, $body, $type, $data_info, true);
+
+                }
+
+                $enquiry_data->status = 'Enquiry Send To Seller';
+                $history = $enquiry_data->history;
+                $history[] = ['status' => 'Enquiry Send To Seller', 'created_at' => Carbon::now()];
+                $enquiry_data->history = $history;
+                $enquiry_data->save();
+            }
 
             return response([
                 'success'   => true,

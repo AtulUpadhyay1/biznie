@@ -169,38 +169,34 @@
                                                             </tr>
                                                         @endforeach
                                                         <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;">
-                                                                <td>
-                                                                    <label for="base_price" class="form-label">Base Price</label>
-                                                                </td>
-                                                                <td colspan="2">
-                                                                    <input type="number" class="form-control" id="base_price" placeholder="Enter Base Price" wire:model="set_enquiry_data_base_price">
-                                                                    @error('set_enquiry_data_base_price') <small class="text-danger">{{ $message }}</small>@enderror
-                                                                </td>
+                                                            <td style="border-right: hidden;">
+                                                                <label for="transport_price" class="form-label">Transport Price</label>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;">
-                                                                <td>
-                                                                    <label for="transport_price" class="form-label">Transport Price</label>
-                                                                </td>
-                                                                <td colspan="2">
-                                                                    <input type="number" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model="transport_price">
-                                                                    @error('transport_price') <small class="text-danger">{{ $message }}</small>@enderror
+                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
+                                                                <input type="number" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model="transport_price">
+                                                                @error('transport_price') <small class="text-danger">{{ $message }}</small>@enderror
 
-                                                                </td>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;">
-                                                                <td>
-                                                                    <label for="commission" class="form-label">Commission</label>
-                                                                </td>
-                                                                <td colspan="2">
-                                                                    <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model="commission">
-                                                                    @error('commission') <small class="text-danger">{{ $message }}</small>@enderror
 
-                                                                </td>
+                                                            <td style="border-right: hidden;">
+                                                                <label for="base_price" class="form-label">Base Price</label>
+                                                            </td>
+                                                            <td colspan="2">
+                                                                <input type="number" class="form-control" id="base_price" placeholder="Enter Base Price" wire:model="set_enquiry_data_base_price">
+                                                                @error('set_enquiry_data_base_price') <small class="text-danger">{{ $message }}</small>@enderror
+                                                            </td>
+
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
+                                                            <td style="border-right: hidden;">
+                                                                <label for="commission" class="form-label">Commission</label>
+                                                            </td>
+                                                            <td colspan="2">
+                                                                <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model="commission">
+                                                                @error('commission') <small class="text-danger">{{ $message }}</small>@enderror
+
                                                             </td>
                                                         </tr>
                                                     </tbody>

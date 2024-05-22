@@ -21,8 +21,8 @@
                                         <i class="bi bi-info-circle"></i>
                                     </span>
                                 </span>
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" wire:model="enquiry_send_to_seller">
+                                <div class="form-check form-switch" wire:change="updateSetting('enquiry_send_to_seller')">
+                                    <input type="checkbox" class="form-check-input" {{ $enquiry_send_to_seller == 1 ? 'checked' : '' }}>
                                 </div>
                             </div>
                         </div>
