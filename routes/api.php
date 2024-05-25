@@ -134,6 +134,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         // Order
         Route::get('order', 'Authenticated\OrderApiController@index');
         Route::get('order-detail/{id}', 'Authenticated\OrderApiController@show');
+        Route::post('order-status-update', 'Authenticated\OrderApiController@statusUpdate');
         Route::post('update-quality-check', 'Authenticated\OrderApiController@qualityCheck');
         Route::post('update-invoice', 'Authenticated\OrderApiController@updateInvoice');
         Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity');

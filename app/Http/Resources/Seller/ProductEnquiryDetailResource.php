@@ -48,6 +48,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'purpose'           => $this->purpose,
             'description'       => $this->description,
             'message'           => $this->message,
+            'delivery_by'       => $this->delivery_by,
             // 'price'             => $this->price,
             'packaging_charge'  => [],
             'other_charge'      => [],

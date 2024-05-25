@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Seller\Authenticated;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CommodityProductOrder;
@@ -101,6 +102,31 @@ class OrderApiController extends Controller
         return response([
             'success'   => true,
             'message'   => 'Final quantity updated successfully.',
+        ],200);
+    }
+
+    public function statusUpdate(Request $request)
+    {
+        $request->validate([
+            'order_id'  => 'required',
+            'status'    => 'required'
+        ]);
+        $data = CommodityProductOrder::find($request->order_id);
+        if(!$data){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid given id.',
+            ],200);
+        }
+        $data->status = $request->status;
+        $history = $data->history;
+        $history[] = ['status' => 'Order ' .ucfirst($request->status). ' By Seller', 'created_at' => Carbon::now()];
+        $data->history = $history;
+        $data->save();
+
+        return response([
+            'success'   => true,
+            'message'   => 'Order status updated successfully.',
         ],200);
     }
 }

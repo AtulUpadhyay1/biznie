@@ -42,7 +42,7 @@
                             <p>
                                 <b>Billing Address</b> <br>
                                 <b>Pincode: </b> {{ $data->billing_address['pin_code'] }} <br>
-                                <b>Address: </b> {{ $data->billing_address['address'] }} <br>
+                                <b>Address: </b> {{ $data->billing_address['address_line_one']??'' }} <br>
                                 <b>City: </b> {{ $data->billing_address['city'] }} <br>
                                 <b>State: </b> {{ $data->billing_address['state'] }} <br>
                             </p>
@@ -51,7 +51,7 @@
                             <p>
                                 <b>Delivery Address</b> <br>
                                 <b>Pincode: </b> {{ $data->delivery_address['pin_code'] }} <br>
-                                <b>Address: </b> {{ $data->delivery_address['address'] }} <br>
+                                <b>Address: </b> {{ $data->delivery_address['address_line_one']??'' }} <br>
                                 <b>City: </b> {{ $data->delivery_address['city'] }} <br>
                                 <b>State: </b> {{ $data->delivery_address['state'] }} <br>
                             </p>

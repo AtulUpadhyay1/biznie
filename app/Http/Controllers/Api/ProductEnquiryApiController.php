@@ -280,7 +280,7 @@ class ProductEnquiryApiController extends Controller
         $order->loading_address             = $mark_seller->loading_address;
         $order->delivery_by                 = $mark_seller->delivery_by;
         $order->status                      = 'pending';
-        $order->history                     = ['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()];
+        $order->history                     = [['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()]];
         $order->save();
 
         $debit_ledger                       = new CommodityProductOrderLedger;
