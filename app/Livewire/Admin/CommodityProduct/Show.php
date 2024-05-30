@@ -93,11 +93,41 @@ class Show extends Component
             'chart.required' => 'Please select a chart file.'
         ]);
         $data = CommodityProductState::findOrFail($state_price_id);
-        $data->chart = imageUpload($this->chart, 'chart', $data->chart);
+        if(count($data->chart) == 3){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'You can upload only 3 chart files !!',
+            );
+            $this->chart = null;
+            return false;
+        }
+        $chart_image_arr = $data->chart ?? [];
+        $chart_image_arr[] = imageUpload($this->chart, 'chart');
+        $data->chart = $chart_image_arr;
         $data->save();
 
-        session()->flash('success', 'State price chart update successfully !!');
-        return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
+        $this->dispatch('alert',
+            type : 'success',
+            message : 'State price chart update successfully !!',
+        );
+
+        $this->chart = null;
+
+        // session()->flash('success', 'State price chart update successfully !!');
+        // return $this->redirectRoute('admin.commodity-product.show', $this->hidden_id, navigate: true);
+    }
+
+    public function removeChart($state_price_id, $chart_image)
+    {
+        $data = CommodityProductState::findOrFail($state_price_id);
+        $chart_image_arr = array_diff($data->chart, [$chart_image]);
+        $data->chart = array_values($chart_image_arr);
+        $data->save();
+
+        $this->dispatch('alert',
+            type :'success',
+            message : 'State price chart deleted successfully!!',
+        );
     }
 
     public function deleteStatePrice($state_price_id)

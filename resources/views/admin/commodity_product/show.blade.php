@@ -252,8 +252,9 @@
                                                         <label for="chart_{{$state_variation->id}}">
                                                             @if ($chart)
                                                                 <img src="{{ $chart->temporaryUrl() }}" class="img-thumbnail" alt="Upload File" class="mt-2">
-                                                            @elseif ($state_variation->chart)
-                                                                <img src="{{ imageUrl($state_variation->chart) }}" class="img-thumbnail" alt="Upload File" class="mt-2">
+                                                                @if ($chart->temporaryUrl())
+                                                                    {{$this->chartStatePrice($state_variation->id)}}
+                                                                @endif
                                                             @else
                                                                 <img src="{{ asset('common/images/upload.png') }}" class="img-thumbnail" alt="Upload File" class="mt-2">
                                                             @endif
@@ -261,12 +262,20 @@
                                                     </div>
                                                     @error('chart') <small class="text-danger">{{ $message }}</small>@enderror
 
+                                                    <div class="col-md-12 mb-3">
+                                                        @if ($state_variation->chart)
+                                                            @foreach ($state_variation->chart ?? [] as $chart_image)
+                                                                <img src="{{ imageUrl($chart_image) }}" class="img-thumbnail" alt="Upload File" class="mt-2" height="150" width="150">
+                                                                <button class="btn" type="button" wire:click="removeChart({{$state_variation->id}}, {{$chart_image}})"><i class="bi bi-x-circle"></i></button>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" form="chartFormModal_{{$state_variation->id}}">Close</button>
-                                            <button type="submit" class="btn btn-primary" form="chartFormModal_{{$state_variation->id}}">Upload</button>
+                                            {{-- <button type="submit" class="btn btn-primary" form="chartFormModal_{{$state_variation->id}}">Upload</button> --}}
                                         </div>
                                     </div>
                                 </div>

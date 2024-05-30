@@ -10,6 +10,10 @@ class CommodityProductState extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $casts = [
+        'chart'     => 'array',
+    ];
+
     public function getStateVariationPrice()
     {
         return $this->hasMany(CommodityProductStatePrice::class, 'commodity_product_state_id');

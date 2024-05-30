@@ -14,9 +14,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Ngrok css loader
-        if (env(key: 'APP_ENV') == 'local') {
-            URL::forceScheme(scheme:'https');
-        }
+        // if (env(key: 'APP_ENV') == 'local') {
+        //     URL::forceScheme(scheme:'https');
+        // }
     }
 
     /**
