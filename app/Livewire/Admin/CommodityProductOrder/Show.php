@@ -8,6 +8,7 @@ use Livewire\WithFileUploads;
 use App\Models\CommodityProductOrder;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CommodityProductOrderDriver;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Show extends Component
 {
@@ -95,35 +96,48 @@ class Show extends Component
     public function generateInvoice($driver_id)
     {
         $data = CommodityProductOrderDriver::find($driver_id);
-        if(!$data){
-            $this->dispatch('alert',
-                type : 'error',
-                message : 'Invalide id given. Please try again.',
-            );
+        if (!$data) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Invalid id given. Please try again.'
+            ]);
             return false;
         }
-        if(!$data->generate_invoice){
+        if (!$data->generate_invoice) {
             $this->validate([
-                'generate_invoice'     => 'required'
+                'generate_invoice' => 'required'
             ]);
             $data->generate_invoice = $this->generate_invoice;
             $data->save();
         }
-
+        $driver_detail = $data;
         $order_detail = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer')->findOrFail($this->hidden_id);
+
+        // Create the initial data array
         $data = [
-            'order_detail' => $order_detail
+            'order_detail' => $order_detail,
+            'driver_detail' => $driver_detail,
         ];
 
-        // Generate PDF content
+        // Generate PDF content without QR code
         $pdfContent = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->output();
 
         // Save PDF to storage
-        $filePath = 'public/order_invoce/'.$order_detail->order_id . '_invoice.pdf';
+        $filePath = 'public/order_invoice/' . $order_detail->order_id . '_invoice.pdf';
         Storage::put($filePath, $pdfContent);
 
         // Get public URL
         $publicUrl = Storage::url($filePath);
+
+        // Generate QR Code for the public URL
+        $qrCode = QrCode::size(100)->generate($publicUrl);
+        $data['qrCode'] = $qrCode;
+
+        // Generate PDF content again including the QR code
+        $pdfContentWithQrCode = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->output();
+
+        // Save PDF to storage again
+        Storage::put($filePath, $pdfContentWithQrCode);
 
         // Redirect to the public URL
         return redirect($publicUrl);
