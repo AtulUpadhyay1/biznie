@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Models\CommodityProductState;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Seller\MyCommodityProductVariationResource;
 
@@ -34,10 +35,17 @@ class ProductDetailResource extends JsonResource
             'quality_charge'                => $this->quality_charge,
             'gst'                           => $this->gst,
             'tcs'                           => $this->tcs,
+            'charts'                        => [],
             'charges'                       => [],
             'variation'                     => MyCommodityProductVariationResource::collection($this->getSellerStatePrice)
         ];
 
+        $product_state = CommodityProductState::where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->where('city', $this->city)->first();
+        if ($product_state && $product_state->chart) {
+            foreach ($product_state->chart ?? [] as $chart) {
+                $data['charts'][] = imageUrl($chart);
+            }
+        }
         return $data;
 
         // $product = $this->getSellerCommodityProduct;

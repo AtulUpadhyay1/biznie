@@ -226,28 +226,29 @@
                                                     <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-danger" title="Remove" wire:click="driverDelete({{$driver->id}})">
                                                         <i class="bi bi-trash3"></i>
                                                     </a>
-                                                    <div class="ms-auto">
-                                                        @if ($driver->generate_invoice)
-                                                            <button type="button" class="btn btn-icon border btn-xs me-2 btn-success" title="Print Invoice" wire:click="generateInvoice({{$driver->id}})">
-                                                                <i class="bi bi-printer"></i>
-                                                            </button>
-                                                        @else
-                                                            <button type="button" class="btn btn-icon border btn-xs me-2 btn-primary" title="Generate Invoice" type="button" data-bs-toggle="modal" data-bs-target="#invoiceGenrateModal">
-                                                                <i class="bi bi-gear-wide-connected"></i>
-                                                            </button>
-                                                        @endif
-                                                    </div>
+                                                    @if ($driver->generate_invoice)
+                                                        <button type="button" class="btn btn-icon border btn-xs me-2 btn-success" title="Print Invoice" wire:click="generateInvoice({{$driver->id}})">
+                                                            <i class="bi bi-printer"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" class="btn btn-icon border btn-xs me-2 btn-primary" title="Generate Invoice" type="button" data-bs-toggle="modal" data-bs-target="#invoiceGenrateModal_{{$driver->id}}">
+                                                            <i class="bi bi-gear-wide-connected"></i>
+                                                        </button>
+                                                    @endif
+                                                    <button type="button" class="btn btn-icon border btn-xs me-2 btn-primary" title="eBill" type="button" data-bs-toggle="modal" data-bs-target="#eBillModal_{{$driver->id}}">
+                                                        <i class="bi bi-receipt"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="invoiceGenrateModal" tabindex="-1" aria-labelledby="invoiceGenrateModalLabel" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+                                    <div class="modal fade" id="invoiceGenrateModal_{{$driver->id}}" tabindex="-1" aria-labelledby="invoiceGenrateModalLabel_{{$driver->id}}" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <form wire:submit.prevent="generateInvoice({{$driver->id}})">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="invoiceGenrateModalLabel">Generate Invoice</h5>
+                                                        <h5 class="modal-title" id="invoiceGenrateModalLabel_{{$driver->id}}">Generate Invoice</h5>
                                                         {{-- <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button> --}}
                                                     </div>
                                                     <div class="modal-body">
@@ -266,6 +267,38 @@
                                                             </div>
                                                         </div>
                                                         @error('generate_invoice')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="reset" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="eBillModal_{{$driver->id}}" tabindex="-1" aria-labelledby="eBillModalLabel_{{$driver->id}}" aria-hidden="true" data-bs-backdrop="static" wire:ignore.self>
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form wire:submit.prevent="updateeBill({{$driver->id}})">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="eBillModalLabel_{{$driver->id}}">eBill Upload</h5>
+                                                        {{-- <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button> --}}
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="file" id="eBill_file" class="form-control @error('eBill_file') is-invalid @enderror" wire:model="eBill_file">
+                                                        <label for="eBill_file">
+                                                            @if ($eBill_file)
+                                                                <img src="{{ $eBill_file->temporaryUrl() }}" class="label-banner">
+                                                            @elseif ($driver->ebill)
+                                                                <img src="{{ imageUrl($driver->ebill) }}" class="label-banner">
+                                                            @else
+                                                                <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                                            @endif
+                                                        </label>
+                                                        @error('eBill_file')
                                                             <small class="text-danger">{{ $message }}</small>
                                                         @enderror
                                                     </div>

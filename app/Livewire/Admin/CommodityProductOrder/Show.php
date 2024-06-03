@@ -13,7 +13,7 @@ class Show extends Component
 {
     use WithFileUploads;
     public $page_title = 'View Order';
-    public $hidden_id, $upload_type, $uploaded_file, $generate_invoice;
+    public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file;
 
     public function mount($id)
     {
@@ -128,6 +128,19 @@ class Show extends Component
         // Redirect to the public URL
         return redirect($publicUrl);
 
+    }
+
+    public function updateeBill($driver_id)
+    {
+        $this->validate([
+            'eBill_file'     => 'required',
+        ]);
+        $data = CommodityProductOrderDriver::find($driver_id);
+        $data->ebill = $data->ebill ? imageUpload($this->eBill_file, 'ebill', $data->ebill) : imageUpload($this->eBill_file, 'ebill');
+        $data->save();
+
+        session()->flash('success', 'eBill File updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
 
     public function driverDelete($id)
