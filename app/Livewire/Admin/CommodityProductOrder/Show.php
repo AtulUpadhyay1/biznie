@@ -93,6 +93,23 @@ class Show extends Component
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
 
+    public function qualityCheckImageStatus($status)
+    {
+        $data = CommodityProductOrder::find($this->hidden_id);
+        if (!$data) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Invalid id given. Please try again.'
+            ]);
+            return false;
+        }
+        $data->quality_check_image_status = $status;
+        $data->quality_check_image_status_updated_by = 'admin';
+        $data->save();
+        session()->flash('success', 'Quality check image status updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
+    }
+
     public function generateInvoice($driver_id)
     {
         $data = CommodityProductOrderDriver::find($driver_id);

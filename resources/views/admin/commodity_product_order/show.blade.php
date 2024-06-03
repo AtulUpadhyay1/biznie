@@ -145,6 +145,10 @@
                                         <span class="badge {{ $data->quality_check_image_status == 'approved' ? 'bg-success' : 'bg-danger' }}"> {{ ucfirst($data->quality_check_image_status) }} </span>
                                         By {{ ucfirst($data->quality_check_image_status_updated_by) }}
                                     @endif
+                                    @if (!$data->quality_check_image_status)
+                                        <button class="btn p-0 float-end ms-1" title="Rejected" wire:click="qualityCheckImageStatus('rejected')"><i class="bi bi-x-square-fill text-danger"></i></button>
+                                        <button class="btn p-0 float-end" title="Approved" wire:click="qualityCheckImageStatus('approved')"><i class="bi bi-check-square-fill text-success"></i></button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
