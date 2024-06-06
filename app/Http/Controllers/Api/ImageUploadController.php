@@ -10,7 +10,7 @@ class ImageUploadController extends Controller
     public function imageUpload(Request $request)
     {
         $this->validate($request,[
-            'image'     => 'required|image|mimes:jpeg,jpg,png,gif,webp',
+            'image'     => 'required|file|mimes:jpeg,jpg,png,gif,webp,pdf',
             'purpose'   => 'required'
         ]);
 
@@ -20,7 +20,7 @@ class ImageUploadController extends Controller
             return response([
                 'success'   => true,
                 'id'        => $id,
-                'message'   => 'Image Upload Successfully.'
+                'message'   => 'Flie Upload Successfully.'
             ],200);
 
         } catch (\Throwable $th) {
