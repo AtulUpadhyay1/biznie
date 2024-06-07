@@ -161,4 +161,13 @@ if(!function_exists('getSellerType')){
     }
 }
 
+if(!function_exists('getPriority')){
+    function getPriority(){
+        $data = [
+            ''
+        ];
+        return $data;
+    }
+}
+
 ?>

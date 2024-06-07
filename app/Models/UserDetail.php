@@ -12,5 +12,6 @@ class UserDetail extends Model
 
     protected $casts = [
         'type'      => 'array',
+        'tag'       => 'array',
     ];
 }

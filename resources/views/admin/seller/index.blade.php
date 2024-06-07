@@ -156,6 +156,9 @@
                                                 <a href="{{route('admin.edit-seller')}}" wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
                                                         class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                <a href="{{route('admin.tag-priority', $data->id)}}" wire:navigate
+                                                    class="dropdown-item d-flex align-items-center"><i
+                                                        class="bi bi-bookmarks icon-sm me-2"></i><span>Tag & Priority</span></a>
                                                 <a href="javascript:;"
                                                     class="dropdown-item d-flex align-items-center"><i
                                                         class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
