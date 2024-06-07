@@ -186,6 +186,12 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('website-setup/terms-condition', AdminRoot\WebsiteSetup\Termscondition::class)->name('website_setup.terms');
         Route::get('website-setup/returns-policy', AdminRoot\WebsiteSetup\Returns::class)->name('website_setup.returns');
         Route::get('website-setup/setting', AdminRoot\WebsiteSetup\Setting::class)->name('website_setup.setting');
+
+        // Seller Tag
+        Route::get('seller-tag', AdminRoot\SellerTag\Index::class)->name('seller-tag.index');
+        Route::get('seller-tag/create', AdminRoot\SellerTag\Create::class)->name('seller-tag.create');
+        Route::get('seller-tag/edit/{id}', AdminRoot\SellerTag\Edit::class)->name('seller-tag.edit');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

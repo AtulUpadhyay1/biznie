@@ -227,6 +227,11 @@
                             Address Management
                         </a>
                     </li>
+                    <li class="nav-item {{ isActiveRoute(['admin.seller-tag.index', 'admin.seller-tag.create', 'admin.seller-tag.edit']) ? 'active' : ''}}">
+                        <a href="{{route('admin.seller-tag.index')}}" class="nav-link" wire:navigate>
+                            Seller Tag
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- End of biznie set up -->
