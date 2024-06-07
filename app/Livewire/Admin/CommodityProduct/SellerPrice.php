@@ -19,7 +19,7 @@ class SellerPrice extends Component
 
     public function render()
     {
-        $list = SellerCommodityProduct::where('commodity_product_id', $this->hidden_id)->with('getStatePrice', 'getBrand', 'getUser')->get();
+        $list = SellerCommodityProduct::where('commodity_product_id', $this->hidden_id)->with('getStatePrice', 'getBrand', 'getUser', 'getUser.getBusiness')->get();
         return view('admin.commodity_product.seller_price', compact('list'));
     }
 }

@@ -22,7 +22,7 @@
                                     <h2 class="accordion-header" id="heading_{{ $data->id }}">
 
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $data->id }}" aria-expanded="false" aria-controls="collapse_{{ $data->id }}">
-                                        <b>{{ $data->getUser->name}}</b>, &nbsp;<b>Brand</b> : {{ $data->getBrand->name }}, &nbsp;<b>State</b> : {{ $data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $data->getStatePrice[0]->city }}, &nbsp;<b>Base Price</b> : {{ $data->base_price ?? 0 }}
+                                        <b>{{ $data->getUser->getBusiness->name}} <small>({{$data->getUser->name}} - {{$data->getUser->phone}})</small></b>, &nbsp;<b>Brand</b> : {{ $data->getBrand->name }}, &nbsp;<b>State</b> : {{ $data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $data->getStatePrice[0]->city }}, &nbsp;<b>Base Price</b> : {{ $data->base_price ?? 0 }}
                                         </button>
                                     </h2>
                                     <div id="collapse_{{ $data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $data->id }}" data-bs-parent="#accordionExample">
