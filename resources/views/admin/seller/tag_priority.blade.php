@@ -10,7 +10,7 @@
                         </div>
                         <div class="col-6 text-end">
                             <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
-                                href="{{ route('admin.seller-list') }}" wire:navigate>
+                                href="{{ route('admin.seller.index') }}" wire:navigate>
                                 <i class="bi bi-x-lg btn-icon-prepend"></i>Cancel
                             </a>
                         </div>

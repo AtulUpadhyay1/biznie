@@ -91,7 +91,8 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('edit-identity-type/{id}', AdminRoot\IdentityType\Edit::class)->name('edit-identity-type');
 
         //Sellers List
-        Route::get('seller-list', AdminRoot\Seller\Index::class)->name('seller-list');
+        Route::get('seller', AdminRoot\Seller\Index::class)->name('seller.index');
+        Route::get('seller/create', AdminRoot\Seller\Create::class)->name('seller.create');
         Route::get('seller-kyc-detail/{id}', AdminRoot\Seller\KycDetail::class)->name('seller-kyc-detail');
         Route::get('edit-seller', AdminRoot\Seller\Edit::class)->name('edit-seller');
         Route::get('tag-priority/{id}', AdminRoot\Seller\TagPriority::class)->name('tag-priority');
