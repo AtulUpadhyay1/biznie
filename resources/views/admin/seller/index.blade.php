@@ -153,15 +153,16 @@
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn">
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.seller-kyc-detail', $data->id)}}" wire:navigate><i
                                                         class="bi bi-eye icon-sm me-2"></i><span>Kyc Detail</span></a>
-                                                <a href="{{route('admin.edit-seller')}}" wire:navigate
+                                                {{-- <a href="{{route('admin.edit-seller')}}" wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a> --}}
                                                 <a href="{{route('admin.tag-priority', $data->id)}}" wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
                                                         class="bi bi-bookmarks icon-sm me-2"></i><span>Tag & Priority</span></a>
-                                                <a href="javascript:;"
+                                                {{-- <a href="javascript:;"
                                                     class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
+                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
+                                                <a href="{{route('admin.seller-product.index', $data->id)}}" class="dropdown-item d-flex align-items-center"><i class="bi bi-box icon-sm me-2"></i><span>Product Section</span></a>
                                             </div>
                                         </td>
                                     </tr>
