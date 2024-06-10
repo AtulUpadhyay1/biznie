@@ -98,7 +98,8 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('tag-priority/{id}', AdminRoot\Seller\TagPriority::class)->name('tag-priority');
 
         // Seller Product Section
-        Route::get('seller-product/{id}', AdminRoot\SellerProduct\Index::class)->name('seller-product.index');
+        Route::get('seller-product/{user_id}', AdminRoot\SellerProduct\Index::class)->name('seller-product.index');
+        Route::get('seller-product/{user_id}/edit/{product_id}', AdminRoot\SellerProduct\Edit::class)->name('seller-product.edit');
 
 
         //Business Listing
