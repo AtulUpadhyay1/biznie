@@ -45,7 +45,7 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn_{{$data->id}}">
                                                 <a href="{{route('admin.seller-product.edit', [$data->user_id, $data->id])}}" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                                <a href="#" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-card-checklist icon-sm me-2"></i><span>Variant</span></a>
+                                                <a href="{{route('admin.seller-product.variation', [$data->user_id, $data->id])}}" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-card-checklist icon-sm me-2"></i><span>Variant</span></a>
                                                 <a href="#" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-currency-rupee icon-sm me-2"></i><span>Update Price</span></a>
                                                 <a href="#" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-database icon-sm me-2"></i><span>Update Stock</span></a>
 
