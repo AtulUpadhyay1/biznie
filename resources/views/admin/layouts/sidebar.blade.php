@@ -18,7 +18,7 @@
             </li>
 
             <!--Sellers-->
-            <li class="nav-item {{ isActiveRoute(['admin.seller.index', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.tag-priority', 'admin.seller.create', 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation']) ? 'active' : '' }}">
+            <li class="nav-item {{ isActiveRoute(['admin.seller.index', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.tag-priority', 'admin.seller.create', 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation', 'admin.seller-product.price', 'admin.seller-product.stock']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#sellers" role="button"
                     aria-expanded="false" aria-controls="sellers">
                     <i class="bi bi-person-plus"></i>
@@ -26,9 +26,9 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.seller.index', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.tag-priority', 'admin.seller.create', 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation']) ? 'show' : '' }}" id="sellers">
+            <div class="collapse {{ isActiveRoute(['admin.seller.index', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.tag-priority', 'admin.seller.create', 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation', 'admin.seller-product.price', 'admin.seller-product.stock']) ? 'show' : '' }}" id="sellers">
                 <ul class="nav sub-menu">
-                    <li class="nav-item {{ isActiveRoute(['admin.seller.index', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.tag-priority', 'admin.seller.create', 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation']) ? 'active' : '' }}">
+                    <li class="nav-item {{ isActiveRoute(['admin.seller.index', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.tag-priority', 'admin.seller.create', 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation', 'admin.seller-product.price', 'admin.seller-product.stock']) ? 'active' : '' }}">
                         <a href="{{route('admin.seller.index')}}" class="nav-link" wire:navigate>
                            All Sellers
                         </a>
