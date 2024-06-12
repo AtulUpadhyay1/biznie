@@ -10,7 +10,10 @@
                         </div>
                         <div class="col-6 text-end">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-
+                                <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="add" href="{{route('admin.seller-product.add', $user_id)}}" wire:navigate>
+                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
+                                    Add
+                                </a>
                             </div>
                         </div>
                     </div>
