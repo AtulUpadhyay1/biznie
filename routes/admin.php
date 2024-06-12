@@ -101,6 +101,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('seller-product/{user_id}', AdminRoot\SellerProduct\Index::class)->name('seller-product.index');
         Route::get('seller-product/{user_id}/edit/{product_id}', AdminRoot\SellerProduct\Edit::class)->name('seller-product.edit');
         Route::get('seller-product/{user_id}/variation/{product_id}', AdminRoot\SellerProduct\Variation::class)->name('seller-product.variation');
+        Route::get('seller-product/{user_id}/price/{product_id}', AdminRoot\SellerProduct\Price::class)->name('seller-product.price');
 
 
         //Business Listing
