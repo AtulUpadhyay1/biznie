@@ -22,7 +22,7 @@
                             <table class="custom-table">
                                 <thead>
                                     <tr>
-                                        <th>#
+                                        <th>
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" id="selectAll" wire:click="allSelect({{$selectAll}})" @if($is_select_all) checked @endif>
                                                 <label class="form-check-label" for="selectAll">

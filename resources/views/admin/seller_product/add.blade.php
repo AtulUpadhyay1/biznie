@@ -55,6 +55,72 @@
                                 </div>
                                 @error('brand_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+                            <div class="col-md-4 mb-3">
+                                <div>
+                                    <label for="state" class="form-label">State</label>
+                                    <select class="form-select select2 @error('state') is-invalid @enderror" id="state" wire:model="state">
+                                        <option value="">Select State</option>
+                                        @foreach ($state_list as $state_data)
+                                            <option value="{{ $state_data }}">{{ $state_data }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('state') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <div>
+                                    <label for="city" class="form-label">City</label>
+                                    <select class="form-select select2 @error('city') is-invalid @enderror" id="city" wire:model="city">
+                                        <option value="">Select City</option>
+                                        @foreach ($city_list as $city_data)
+                                            <option value="{{ $city_data }}">{{ $city_data }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('city') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <h5>My Package Type</h5>
+                            <hr>
+                            @foreach ($packaging_type_name as $packaging_types)
+                                <div class="col-md-4 mb-3">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">{{$packaging_types}}</span>
+                                        <input type="number" class="form-control " placeholder="Enter {{$packaging_types}} Price" wire:model="packaging_type_price.{{$loop->iteration}}">
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <p class="h5">Add Loading Address <button class="btn btn-primary btn-xs float-end mb-1" type="button">Add</button></p>
+                            <hr>
+                            <div class="col-md-4 mb-3">
+                                <label for="pin_code" class="form-label">Pincode</label>
+                                <input type="number" class="form-control @error('pin_code') is-invalid @enderror" id="pin_code" placeholder="Enter product pin code" wire:model="loading_address.pin_code">
+                                @error('pin_code') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="address_line_one" class="form-label">Address Line 1 (Plot No/House No/Street)</label>
+                                <input type="text" class="form-control @error('address_line_one') is-invalid @enderror" id="address_line_one" placeholder="Enter product pin code" wire:model="loading_address.address_line_one">
+                                @error('address_line_one') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="address_line_two" class="form-label">Address Line 2 (Area)</label>
+                                <input type="text" class="form-control @error('address_line_two') is-invalid @enderror" id="address_line_two" placeholder="Enter product pin code" wire:model="loading_address.address_line_two">
+                                @error('address_line_two') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="loading_position" class="form-label">Loading Position (In Days)</label>
+                                <input type="number" class="form-control @error('loading_position') is-invalid @enderror" id="loading_position" placeholder="Enter product pin code" wire:model="loading_address.loading_position">
+                                @error('loading_position') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-12 text-end">
+                                    <x-submit-btn text="Save" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,6 +146,14 @@
 
                 $('#product_id').on('change', function (e) {
                     @this.setBrandList();
+                });
+
+                $('#brand_id').on('change', function (e) {
+                    @this.setStateList();
+                });
+
+                $('#state').on('change', function (e) {
+                    @this.setCityList();
                 });
             });
         </script>
