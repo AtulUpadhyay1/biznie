@@ -16,7 +16,7 @@ class SellerReply extends Component
     {
         $this->hidden_id = $id;
         $status = ['Mark For Sell', 'replied', 'ordered'];
-        $this->list = SellerProductEnquiry::where('product_enquiries_id', $this->hidden_id)->whereIn('status', $status)->with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->get();
+        $this->list = SellerProductEnquiry::where('product_enquiries_id', $this->hidden_id)->with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->get();
         foreach ($this->list as $data) {
             $this->selected_enquiry_id = $data->is_mark == 1 ? $data->id : '';
         }
