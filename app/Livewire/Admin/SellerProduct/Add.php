@@ -91,6 +91,16 @@ class Add extends Component
                 return true;
             }
 
+            $checkData = SellerCommodityProductStatePrice::where('user_id', $this->user_id)->where('commodity_product_id', $commodity_product->id)->where('brand_id', $this->brand_id)->where('state', $this->state)->where('city', $this->city)->exists();
+
+            if($checkData){
+                $this->dispatch('alert',
+                    type : 'error',
+                    message : 'This product combination already taken by this seller.',
+                );
+                return true;
+            }
+            
             $data = new SellerCommodityProduct;
             $data->user_id              = $this->user_id;
             $data->commodity_product_id = $commodity_product->id;

@@ -137,6 +137,15 @@ class CommodityProductApiController extends Controller
                 ],400);
             }
 
+            $checkData = SellerCommodityProductStatePrice::where('user_id', auth()->id())->where('commodity_product_id', $commodity_product->id)->where('brand_id', $request->brand_id)->where('state', $request->state)->where('city', $request->city)->exists();
+
+            if($checkData){
+                return response([
+                    'success'   => false,
+                    'message'   => 'This product combination already taken by you.',
+                ],400);
+            }
+
             $data = new SellerCommodityProduct;
             $data->user_id              = auth()->id();
             $data->commodity_product_id = $commodity_product->id;
