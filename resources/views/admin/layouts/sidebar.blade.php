@@ -33,11 +33,7 @@
                            All Sellers
                         </a>
                     </li>
-                    {{-- , 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation'<li class="nav-item {{ isActiveRoute(['admin.seller.create', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.tag-priority']) ? 'active' : '' }}">
-                        <a href="{{route('admin.seller.create')}}" class="nav-link" wire:navigate>
-                           Add Sellers
-                        </a>
-                    </li>
+                    {{--
                     <li class="nav-item {{ isActiveRoute(['admin.business-listing', 'admin.edit-business']) ? 'active' : '' }}">
                         <a href="{{route('admin.business-listing')}}" class="nav-link" wire:navigate>
                            Business Listings
