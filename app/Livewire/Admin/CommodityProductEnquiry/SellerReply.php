@@ -12,6 +12,8 @@ class SellerReply extends Component
     public $page_title = 'View Seller Reply';
     public $hidden_id, $selected_enquiry_id, $list, $data, $set_enquiry_data, $set_enquiry_data_price = [], $set_enquiry_data_base_price, $transport_price = 0, $commission = 200;
 
+    public $product_enquiry_data, $base_price;
+
     public function mount($id)
     {
         $this->hidden_id = $id;
@@ -45,6 +47,25 @@ class SellerReply extends Component
             $this->transport_price = $this->set_enquiry_data->transport_price ?? 0;
             $this->commission = $this->set_enquiry_data->commission ?? 0;
         }
+    }
+
+    public function setBasePrice($id)
+    {
+        $this->product_enquiry_data = SellerProductEnquiry::with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->find($id);
+        $this->base_price = $this->product_enquiry_data->base_price ?? 0;
+    }
+
+    public function updateBasePrice()
+    {
+        $this->validate([
+            'base_price'    => 'required|min:1'
+        ]);
+        $data = $this->product_enquiry_data;
+        $data->base_price = $this->base_price;
+        $data->save();
+
+        session()->flash('success', 'Base price updated successfully.');
+        return $this->redirectRoute('admin.commodity-product-enquiry.sellerReply', $this->hidden_id, navigate: true);
     }
 
     public function markSeller()

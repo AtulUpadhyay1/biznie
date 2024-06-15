@@ -72,6 +72,7 @@
                                     <div class="row">
                                         <div class="col-1 text-center mt-3">
                                             <input type="radio" id="seller_{{ $list_data->id }}" class="form-check-input" value="{{ $list_data->id }}" wire:model.live="selected_enquiry_id">
+                                            <button class="btn btn-info btn-sm p-0 ms-2" title="Update Price" data-bs-toggle="modal" data-bs-target="#updateBasePrice_{{ $list_data->id }}" wire:click="setBasePrice({{ $list_data->id }})"><i class="bi bi-pencil-square"></i></button>
                                         </div>
                                         <div class="col-11">
                                             <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
@@ -167,6 +168,26 @@
                                                         @endforeach
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade " id="updateBasePrice_{{ $list_data->id }}" tabindex="-1" aria-labelledby="updateBasePriceLable_{{ $list_data->id }}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="updateBasePriceLable_{{ $list_data->id }}">Update Base Price</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <label for="base_price_{{ $list_data->id }}" class="form-label">Base Price</label>
+                                                <input type="number" class="form-control" id="base_price_{{ $list_data->id }}" placeholder="Enter Base Price" wire:model="base_price">
+                                                @error('base_price') <small class="text-danger">{{ $message }}</small>@enderror
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" wire:click="updateBasePrice()">Update</button>
                                             </div>
                                         </div>
                                     </div>
