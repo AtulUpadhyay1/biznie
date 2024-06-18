@@ -155,6 +155,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product-order/show/{id}', AdminRoot\CommodityProductOrder\Show::class)->name('commodity-product-order.show');
         Route::get('commodity-product-order/status/{id}', AdminRoot\CommodityProductOrder\Status::class)->name('commodity-product-order.status');
         Route::get('commodity-product-order/print-invoice/{id}', AdminRoot\CommodityProductOrder\PrintInvoice::class)->name('commodity-product-order.printInvoice');
+        Route::get('commodity-product-order/history/{id}', AdminRoot\CommodityProductOrder\History::class)->name('commodity-product-order.history');
 
         // Commodity Product Order Driver
         Route::get('commodity-product-order/driver/{order_id}', AdminRoot\CommodityProductOrderDriver\Index::class)->name('commodity-product-order-driver.index');
