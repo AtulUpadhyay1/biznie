@@ -120,7 +120,7 @@ class OrderApiController extends Controller
         }
         $data->status = $request->status;
         $history = $data->history;
-        $history[] = ['status' => 'Order ' .ucfirst($request->status). ' By Seller', 'created_at' => Carbon::now()];
+        $history[] = ['status' => 'Order ' .ucwords($request->status). ' By Seller', 'created_at' => Carbon::now()];
         $data->history = $history;
         $data->save();
 

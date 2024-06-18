@@ -64,6 +64,7 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn{{$data->id}}">
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-order.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-order.status', $data->id)}}" wire:navigate><i class="bi bi-device-ssd icon-sm me-2"></i><span>Update Status</span></a>
                                             </div>
                                         </td>
                                     </tr>
