@@ -161,12 +161,25 @@ if(!function_exists('getSellerType')){
     }
 }
 
-if(!function_exists('getPriority')){
-    function getPriority(){
-        $data = [
-            ''
-        ];
-        return $data;
+if(!function_exists('formatIndianNumber')){
+    function formatIndianNumber($number) {
+        $numberParts = explode('.', $number);
+        $whole = $numberParts[0];
+        $decimal = isset($numberParts[1]) ? '.' . $numberParts[1] : '';
+
+        // Get the length of the whole part of the number
+        $length = strlen($whole);
+
+        // If the length is more than 3, we need to format it
+        if ($length > 3) {
+            $lastThree = substr($whole, -3);
+            $restUnits = substr($whole, 0, $length - 3);
+            $restUnits = preg_replace("/\B(?=(\d{2})+(?!\d))/", ",", $restUnits);
+            $whole = $restUnits . ',' . $lastThree;
+        }
+
+        // Return the formatted number
+        return $whole . $decimal;
     }
 }
 

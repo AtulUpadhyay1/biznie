@@ -205,6 +205,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('seller-tag/create', AdminRoot\SellerTag\Create::class)->name('seller-tag.create');
         Route::get('seller-tag/edit/{id}', AdminRoot\SellerTag\Edit::class)->name('seller-tag.edit');
 
+        // Case Wallet
+        Route::get('cash-wallet', AdminRoot\CashWallet\Index::class)->name('cash-wallet.index');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

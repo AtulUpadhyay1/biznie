@@ -175,6 +175,15 @@
                 </a>
             </li>
 
+            <li class="nav-item nav-category">Wallet Management</li>
+
+            <li class="nav-item {{ isActiveRoute(['admin.cash-wallet.index']) ? 'active' : ''}}">
+                <a href="{{route('admin.cash-wallet.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-cash-stack"></i>
+                    <span class="link-title">Cash Wallet</span>
+                </a>
+            </li>
+
             <li class="nav-item nav-category">Setup</li>
 
             <!--Biznie Set up-->
