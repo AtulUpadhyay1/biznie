@@ -208,6 +208,10 @@ Route::group(['as'=>'admin.'], function () {
         // Case Wallet
         Route::get('cash-wallet', AdminRoot\CashWallet\Index::class)->name('cash-wallet.index');
 
+        // Credit Wallet Request
+        Route::get('credit-wallet-request', AdminRoot\CreditWalletRequest\Index::class)->name('credit-wallet-request.index');
+        Route::get('credit-wallet-request/create', AdminRoot\CreditWalletRequest\Create::class)->name('credit-wallet-request.create');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

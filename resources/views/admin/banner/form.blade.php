@@ -22,7 +22,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="banner_type" class="form-label">Banner Type</label>
-                                    <select id="banner_type" class="form-select @error('name') is-invalid @enderror" wire:model="banner_type" >
+                                    <select id="banner_type" class="form-select @error('banner_type') is-invalid @enderror" wire:model="banner_type" >
                                         <option value="Main Banner">Main Banner</option>
                                         <option value="Popup Banner">Popup Banner</option>
                                         <option value="Footer Banner">Footer Banner</option>
