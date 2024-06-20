@@ -107,17 +107,17 @@
                                         <p><b>Name : </b> {{ $user_detail->name }} ({{ $user_detail->type }})</p>
                                         <p><b>Phone : </b> {{ $user_detail->phone }}</p>
                                         <div class="d-flex mt-2">
-                                            <div class="me-4">
+                                            <div class="me-1">
                                                 <span class="badge border border-success text-success p-3">
                                                     <h6>Cash Balance</h6>
-                                                    <h3> ₹ {{ formatIndianNumber($user_detail->cash_wallet) }} </h3>
+                                                    <h3> ₹ {{ formatIndianNumber($user_detail->cash_balance) }} </h3>
                                                 </span>
                                             </div>
 
-                                            <div class="ms-4">
+                                            <div class="ms-1">
                                                 <span class="badge border border-primary text-primary p-3">
                                                     <h6>Credit Balance</h6>
-                                                    <h3> ₹ {{ formatIndianNumber($user_detail->credit_wallet) }} </h3>
+                                                    <h3> ₹ {{ formatIndianNumber($user_detail->credit_balance) }} </h3>
                                                 </span>
                                             </div>
                                         </div>

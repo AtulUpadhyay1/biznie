@@ -38,7 +38,7 @@ class Index extends Component
         try {
 
             $user = User::find($this->user_id);
-            $user->cash_wallet = $user->cash_wallet + $this->amount;
+            $user->cash_balance = $user->cash_balance + $this->amount;
             $user->save();
 
             $history = new CashWalletTransaction;
