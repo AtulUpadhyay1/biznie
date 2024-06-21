@@ -211,6 +211,7 @@ Route::group(['as'=>'admin.'], function () {
         // Credit Wallet Request
         Route::get('credit-wallet-request', AdminRoot\CreditWalletRequest\Index::class)->name('credit-wallet-request.index');
         Route::get('credit-wallet-request/create', AdminRoot\CreditWalletRequest\Create::class)->name('credit-wallet-request.create');
+        Route::get('credit-wallet-request/show/{id}', AdminRoot\CreditWalletRequest\Show::class)->name('credit-wallet-request.show');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');

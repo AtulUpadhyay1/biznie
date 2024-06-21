@@ -184,7 +184,7 @@
                 </a>
             </li>
 
-            <li class="nav-item {{ isActiveRoute(['admin.credit-wallet-request.index', 'admin.credit-wallet-request.create']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.credit-wallet-request.index', 'admin.credit-wallet-request.create', 'admin.credit-wallet-request.show']) ? 'active' : ''}}">
                 <a href="{{route('admin.credit-wallet-request.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-credit-card-2-front"></i>
                     <span class="link-title">Credit Wallet Request</span>
