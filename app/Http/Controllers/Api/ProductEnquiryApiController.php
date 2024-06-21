@@ -45,6 +45,16 @@ class ProductEnquiryApiController extends Controller
 
         try {
 
+            $minimum_balance = websiteSetupValue('minimum_balance_for_enquiry') ? websiteSetupValue('minimum_balance_for_enquiry') : 0;
+            $user_total_balance = auth()->user()->cash_balance + auth()->user()->credit_balance;
+
+            if($minimum_balance > $user_total_balance){
+                return response([
+                   'success'   => false,
+                   'message'   => 'Your balance is not sufficient to place an enquiry.'
+                ], 400);
+            }
+
             $data = new ProductEnquiry;
             $data->user_id              = auth()->id();
             $data->commodity_product_id = $request->commodity_product_id;
