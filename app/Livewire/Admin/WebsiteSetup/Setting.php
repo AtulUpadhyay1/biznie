@@ -8,29 +8,35 @@ use App\Models\WebsiteSetup;
 class Setting extends Component
 {
     public $page_title = 'Setting';
-    public $enquiry_send_to_seller;
+    public $value = [];
 
     public function render()
     {
-        $this->enquiry_send_to_seller = websiteSetupValue('enquiry_send_to_seller');
+        $this->value['enquiry_send_to_seller'] = websiteSetupValue('enquiry_send_to_seller');
+        $this->value['minimum_balance_for_enquiry'] = websiteSetupValue('minimum_balance_for_enquiry');
+        $this->value['order_token_amount'] = websiteSetupValue('order_token_amount');
         return view('admin.website_setup.setting');
     }
 
-    public function updateSetting($key)
+    public function updateSetting()
     {
+        // dd($this->value);
         try {
-            WebsiteSetup::updateOrCreate(
-                ["key"      => 'enquiry_send_to_seller'],
-                [
-                    "key"   => 'enquiry_send_to_seller',
-                    "value" => $this->enquiry_send_to_seller ? 0 : 1,
-                ],
-            );
+            foreach ($this->value as $key => $value) {
+                WebsiteSetup::updateOrCreate(
+                    ["key"      => $key],
+                    [
+                        "key"   => $key,
+                        "value" => $this->value[$key],
+                    ],
+                );
+            }
 
             $this->dispatch('alert',
                 type: 'success',
                 message: 'Setting has been updated successfully.'
             );
+
         } catch (\Throwable $th) {
             $this->dispatch('alert',
                 type: 'error',
