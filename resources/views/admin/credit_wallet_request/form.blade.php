@@ -17,7 +17,7 @@
                 <form wire:submit.prevent="{{ isset($hidden_id) ? 'update()' : 'save()' }}">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <div wire:ignore>
                                     <label for="user_id" class="form-label">User</label>
                                     <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
@@ -30,9 +30,25 @@
                                 @error('user_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label" for="document">Document</label>
-                                <input type="file" id="document" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="document_1">Document 1</label>
+                                <input type="file" id="document_1" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
+                                @error('document')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="document_2">Document 2</label>
+                                <input type="file" id="document_2" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
+                                @error('document')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="document_3">Document 3</label>
+                                <input type="file" id="document_3" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
                                 @error('document')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

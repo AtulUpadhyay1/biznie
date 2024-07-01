@@ -14,7 +14,7 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $user_id, $document, $reference_number, $status = 'Pending', $notes, $description, $amount = 0;
+    public $user_id, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0;
 
     public function render()
     {
@@ -26,7 +26,6 @@ class Create extends Component
     {
         $this->validate([
             'user_id'               => 'required',
-            'document'              => 'required|file',
             'reference_number'      => 'required',
             'amount'                => 'nullable|min:1'
         ]);
@@ -41,7 +40,11 @@ class Create extends Component
         }
         $credit_wallet_request = new CreditWalletRequest;
         $credit_wallet_request->user_id = $this->user_id;
-        $credit_wallet_request->document = imageUpload($this->document, 'credit_wallet_request');
+        $documents = [];
+        foreach($this->document as $file){
+            $documents[] = imageUpload($file, 'credit_wallet_request');
+        }
+        $credit_wallet_request->document = $documents;
         $credit_wallet_request->reference_number = $this->reference_number;
         $credit_wallet_request->status = $this->status;
         $credit_wallet_request->notes = $this->notes;

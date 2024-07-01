@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('credit_wallet_requests', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->string('document')->nullable();
+            $table->text('document')->nullable();
             $table->string('reference_number')->nullable();
             $table->string('status')->nullable();
             $table->text('notes')->nullable();

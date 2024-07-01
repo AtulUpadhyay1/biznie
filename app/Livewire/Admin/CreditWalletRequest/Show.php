@@ -14,7 +14,7 @@ class Show extends Component
 
     use WithFileUploads;
 
-    public $hidden_id, $data, $user_id, $document, $reference_number, $status = 'Pending', $notes, $description, $amount = 0;
+    public $hidden_id, $data, $user_id, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0;
 
     public function mount($id)
     {
@@ -52,7 +52,13 @@ class Show extends Component
 
         $credit_wallet_request = $this->data;
         $credit_wallet_request->user_id = $this->user_id;
-        $credit_wallet_request->document = $this->document ? imageUpload($this->document, 'credit_wallet_request') : $credit_wallet_request->document;
+
+        $documents = [];
+        foreach($this->document as $file){
+            $documents[] = imageUpload($file, 'credit_wallet_request');
+        }
+
+        $credit_wallet_request->document = $this->document ? $documents : $credit_wallet_request->document;
         $credit_wallet_request->reference_number = $this->reference_number;
         $credit_wallet_request->status = $this->status;
         $credit_wallet_request->notes = $this->notes;

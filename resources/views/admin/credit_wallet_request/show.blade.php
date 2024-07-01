@@ -25,11 +25,39 @@
                                     <div class="card-body">
                                         <div class="mb-3">
                                             <div class="row">
-                                                <div class="col-10"><label class="form-label" for="document">Document</label></div>
-                                                <div class="col-2 text-end"><a href="{{asset(imageUrl($data->document))}}" target="_blank">View</a></div>
+                                                <div class="col-10"><label class="form-label" for="document_1">Document 1</label></div>
+                                                @isset($data->document[0])
+                                                    <div class="col-2 text-end"><a href="{{asset(imageUrl($data->document[0]))}}" target="_blank">View</a></div>
+                                                @endisset
                                             </div>
-                                            <input type="file" id="document" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
-                                            @error('document')
+                                            <input type="file" id="document_1" class="form-control @error('document') is-invalid @enderror" wire:model="document">
+                                            @error('document_1')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="row">
+                                                <div class="col-10"><label class="form-label" for="document_2">Document 2</label></div>
+                                                @isset($data->document[1])
+                                                    <div class="col-2 text-end"><a href="{{asset(imageUrl($data->document[1]))}}" target="_blank">View</a></div>
+                                                @endisset
+                                            </div>
+                                            <input type="file" id="document_2" class="form-control @error('document') is-invalid @enderror" wire:model="document">
+                                            @error('document_2')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="row">
+                                                <div class="col-10"><label class="form-label" for="document_3">Document 3</label></div>
+                                                @isset($data->document[2])
+                                                    <div class="col-2 text-end"><a href="{{asset(imageUrl($data->document[2]))}}" target="_blank">View</a></div>
+                                                @endisset
+                                            </div>
+                                            <input type="file" id="document_3" class="form-control @error('document') is-invalid @enderror" wire:model="document">
+                                            @error('document_3')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>

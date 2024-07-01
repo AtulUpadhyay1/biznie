@@ -18,5 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('login', function () {
-    return redirect()->route('seller.phone.login');
+    return redirect()->route('admin.login');
 })->name('login');

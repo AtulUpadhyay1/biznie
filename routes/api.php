@@ -65,6 +65,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::post('product-enquiry', 'ProductEnquiryApiController@save');
         Route::post('product-enquiry-update/{id}', 'ProductEnquiryApiController@update');
         Route::post('product-enquiry-to-order/{id}', 'ProductEnquiryApiController@enquiryToOrder');
+
+        // Credit Wallet Requests
+        Route::get('credit-wallet-requet', 'CreditWalletApiController@creditWalletRequest');
+
     });
 });
 
