@@ -53,7 +53,7 @@ class OrderApiController extends Controller
             return response([
                 'success'   => false,
                 'message'   => 'Invalid given id.',
-            ],200);
+            ],400);
         }
         $data->quality_check_image_status   = $request->quality_check_image_status;
         $data->admin_quality_check_message  = $request->message;
