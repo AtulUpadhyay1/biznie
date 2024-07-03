@@ -5,9 +5,21 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\CreditWalletRequest;
 use App\Http\Controllers\Controller;
+use App\Models\CreditWalletTransaction;
 
 class CreditWalletApiController extends Controller
 {
+    public function creditWallet()
+    {
+        $transaction = CreditWalletTransaction::where('user_id', auth()->id())->get(['transaction_id', 'amount', 'description', 'notes', 'status', 'transaction_status']);
+        return response([
+            'success'               => true,
+            'credit_balance'        => auth()->user()->credit_balance,
+            'assign_credit_balance' => auth()->user()->assign_credit_balance,
+            'transaction'           => $transaction
+        ],200);
+    }
+
     public function creditWalletRequest(Request $request)
     {
         $request->validate([
