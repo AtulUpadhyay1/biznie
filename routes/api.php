@@ -71,7 +71,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::post('credit-wallet-request', 'CreditWalletApiController@creditWalletRequest');
 
         // Wallet Recharge
-        Route::post('wallet-recharge', 'CreditWalletApiController@walletRecharge');
+        Route::get('cash-wallet', 'CashWalletApiController@cashWallet');
 
     });
 });
