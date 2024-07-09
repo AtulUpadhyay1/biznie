@@ -17,7 +17,7 @@
                 <form wire:submit.prevent="{{ isset($hidden_id) ? 'update()' : 'save()' }}">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div wire:ignore>
                                     <label for="user_id" class="form-label">User</label>
                                     <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
@@ -30,28 +30,30 @@
                                 @error('user_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label" for="document_1">Document 1</label>
-                                <input type="file" id="document_1" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
-                                @error('document')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+                            <div class="col-md-6 mb-3">
+                                <div wire:ignore>
+                                    <label for="document_type_id" class="form-label">Credit Wallet Document Type</label>
+                                    <select class="form-select select2 @error('document_type_id') is-invalid @enderror" id="document_type_id" wire:model="document_type_id">
+                                        <option value="">Select User</option>
+                                        @foreach ($type_list as $type_data)
+                                            <option value="{{ $type_data->id }}">{{ $type_data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('document_type_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
-
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label" for="document_2">Document 2</label>
-                                <input type="file" id="document_2" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
-                                @error('document')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label" for="document_3">Document 3</label>
-                                <input type="file" id="document_3" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
-                                @error('document')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+                            <div class="row">
+                                @if ($document_type)
+                                    @foreach ($document_type->title as $key => $title)
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label" for="document_{{$key}}">{{ $title }}</label>
+                                            <input type="file" id="document_{{$key}}" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
+                                            @error('document')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -113,6 +115,10 @@
                     let elementName = $(this).attr('id');
                     var data = $(this).select2("val");
                     @this.set(elementName, data);
+
+                    if(elementName == 'document_type_id'){
+                        @this.getDocumentType();
+                    }
                 });
                 window.addEventListener('render-select2', event => {
                     $('.select2').select2();

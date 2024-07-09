@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CreditWalletRequest extends Model
+class CreditWalletDocumentType extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $casts = [
-        'document'      => 'array',
-        'document_type' => 'array',
+        'title'         => 'array',
+        'description'   => 'array',
     ];
 
-    public function getUser()
+    public function scopeActive($query)
     {
-        return $this->belongsTo(User::class, 'user_id');
+        $query->where("status", 1);
     }
 }

@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\CreditWalletRequest;
 use App\Models\CreditWalletTransaction;
+use App\Models\CreditWalletDocumentType;
 
 class Create extends Component
 {
@@ -14,12 +15,18 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $user_id, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0;
+    public $user_id, $document_type_id, $document_type, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0;
 
     public function render()
     {
         $user_list = User::where('status', 'active')->orderBy('name', 'asc')->get();
-        return view('admin.credit_wallet_request.form', compact('user_list'));
+        $type_list = CreditWalletDocumentType::active()->latest()->get();
+        return view('admin.credit_wallet_request.form', compact('user_list', 'type_list'));
+    }
+
+    public function getDocumentType()
+    {
+        $this->document_type = CreditWalletDocumentType::find($this->document_type_id);
     }
 
     public function save()
@@ -49,6 +56,8 @@ class Create extends Component
         $credit_wallet_request->status = $this->status;
         $credit_wallet_request->notes = $this->notes;
         $credit_wallet_request->description = $this->description;
+        $credit_wallet_request->credit_wallet_document_type_id = $this->document_type_id;
+        $credit_wallet_request->document_type = $this->document_type->title;
         $credit_wallet_request->save();
 
         if($this->status == 'Approved'){

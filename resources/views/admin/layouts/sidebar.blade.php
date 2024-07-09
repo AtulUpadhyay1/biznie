@@ -194,7 +194,7 @@
             <li class="nav-item nav-category">Setup</li>
 
             <!--Biznie Set up-->
-            <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type', 'admin.seller-tag.index', 'admin.seller-tag.create', 'admin.seller-tag.edit']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type', 'admin.seller-tag.index', 'admin.seller-tag.create', 'admin.seller-tag.edit', 'admin.credit-wallet-document-type.index', 'admin.credit-wallet-document-type.create', 'admin.credit-wallet-document-type.edit']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#master-setting" role="button"
                     aria-expanded="false" aria-controls="master-setting">
                     <i class="bi bi-building-gear"></i>
@@ -202,7 +202,7 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.vendor-type', 'admin.seller-type', 'admin.brand', 'admin.gst-type', 'admin.product-unit', 'admin.tax-type', 'admin.identity-type', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type', 'admin.seller-tag.index', 'admin.seller-tag.create', 'admin.seller-tag.edit']) ? 'show' : ''}}" id="master-setting">
+            <div class="collapse {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.vendor-type', 'admin.seller-type', 'admin.brand', 'admin.gst-type', 'admin.product-unit', 'admin.tax-type', 'admin.identity-type', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type', 'admin.seller-tag.index', 'admin.seller-tag.create', 'admin.seller-tag.edit', 'admin.credit-wallet-document-type.index', 'admin.credit-wallet-document-type.create', 'admin.credit-wallet-document-type.edit']) ? 'show' : ''}}" id="master-setting">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category']) ? 'active' : ''}}">
                         <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
@@ -247,6 +247,11 @@
                     <li class="nav-item {{ isActiveRoute(['admin.seller-tag.index', 'admin.seller-tag.create', 'admin.seller-tag.edit']) ? 'active' : ''}}">
                         <a href="{{route('admin.seller-tag.index')}}" class="nav-link" wire:navigate>
                             Seller Tag
+                        </a>
+                    </li>
+                    <li class="nav-item {{ isActiveRoute(['admin.credit-wallet-document-type.index', 'admin.credit-wallet-document-type.create', 'admin.credit-wallet-document-type.edit']) ? 'active' : ''}}">
+                        <a href="{{route('admin.credit-wallet-document-type.index')}}" class="nav-link" wire:navigate>
+                            Credit Wallet Document Type
                         </a>
                     </li>
                 </ul>

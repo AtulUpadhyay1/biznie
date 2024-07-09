@@ -208,6 +208,11 @@ Route::group(['as'=>'admin.'], function () {
         // Case Wallet
         Route::get('cash-wallet', AdminRoot\CashWallet\Index::class)->name('cash-wallet.index');
 
+        // Credit Wallet Document Type
+        Route::get('credit-wallet-document-type', AdminRoot\CreditWalletDocumentType\Index::class)->name('credit-wallet-document-type.index');
+        Route::get('credit-wallet-document-type/create', AdminRoot\CreditWalletDocumentType\Credit::class)->name('credit-wallet-document-type.create');
+        Route::get('credit-wallet-document-type/edit/{id}', AdminRoot\CreditWalletDocumentType\Edit::class)->name('credit-wallet-document-type.edit');
+
         // Credit Wallet Request
         Route::get('credit-wallet-request', AdminRoot\CreditWalletRequest\Index::class)->name('credit-wallet-request.index');
         Route::get('credit-wallet-request/create', AdminRoot\CreditWalletRequest\Create::class)->name('credit-wallet-request.create');
