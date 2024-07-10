@@ -11,7 +11,7 @@ class CreditWalletApiController extends Controller
 {
     public function creditWallet()
     {
-        $transaction = CreditWalletTransaction::where('user_id', auth()->id())->get(['transaction_id', 'amount', 'description', 'notes', 'status', 'transaction_status']);
+        $transaction = CreditWalletTransaction::where('user_id', auth()->id())->select(['transaction_id', 'amount', 'description', 'notes', 'status', 'transaction_status'])->simplePaginate(getPaginate());
         return response([
             'success'               => true,
             'credit_balance'        => auth()->user()->credit_balance,
