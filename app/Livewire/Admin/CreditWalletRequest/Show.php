@@ -36,7 +36,7 @@ class Show extends Component
     public function save()
     {
         $this->validate([
-            'document'              => 'nullable|file',
+            'document'              => 'nullable',
             'reference_number'      => 'required',
             'amount'                => 'nullable|min:1'
         ]);

@@ -249,7 +249,8 @@ class ProductEnquiryApiController extends Controller
     public function enquiryToOrder(Request $request, $id)
     {
         $request->validate([
-            'token_amount'  => 'required|numeric|min:1'
+            'token_amount'  => 'required|numeric|min:1',
+            'total_amount'  => 'required|numeric|min:1'
         ]);
 
         $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry')->find($id);
@@ -297,14 +298,16 @@ class ProductEnquiryApiController extends Controller
         $debit_ledger->order_id             = $order->id;
         $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
         $debit_ledger->type                 = 'debit';
-        $debit_ledger->amount               = $order->token_amount;
+        $debit_ledger->amount               = $request->total_amount;
+        $debit_ledger->remaining_balance    = $request->total_amount;
         $debit_ledger->save();
 
         $credit_ledger                       = new CommodityProductOrderLedger;
         $credit_ledger->order_id             = $order->id;
         $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
         $credit_ledger->type                 = 'credit';
-        $credit_ledger->amount               = $order->base_price;
+        $credit_ledger->amount               = $request->token_amount;
+        $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $request->token_amount;
         $credit_ledger->save();
 
         return response([

@@ -34,7 +34,7 @@
                                             <b>Name: </b>{{ $data->getUser->name }} <br>
                                             <b>Phone: </b>{{ $data->getUser->phone }} <br>
                                         </td>
-                                        <td>{{ $data->reference_number }}</td>
+                                        <td>{{ $data->reference_number ?? 'NA' }}</td>
                                         <td>
                                             @if ($data->status == 'Approved')
                                                 <span class="badge rounded-pill border border-success text-success">{{ $data->status }}</span>
