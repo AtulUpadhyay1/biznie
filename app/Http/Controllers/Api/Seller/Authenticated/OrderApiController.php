@@ -14,7 +14,7 @@ class OrderApiController extends Controller
 {
     public function index()
     {
-        $list = CommodityProductOrder::where('seller_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit')->paginate(getPaginate());
+        $list = CommodityProductOrder::where('seller_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit')->latest()->paginate(getPaginate());
         return OrderResource::collection($list);
     }
 

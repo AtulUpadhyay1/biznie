@@ -14,13 +14,13 @@ class OrderApiController extends Controller
 {
     public function index()
     {
-        $list = CommodityProductOrder::where('customer_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit')->paginate(getPaginate());
+        $list = CommodityProductOrder::where('customer_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit')->latest()->paginate(getPaginate());
         return OrderResource::collection($list);
     }
 
     public function ledger($order_id)
     {
-        $list = CommodityProductOrderLedger::where('order_id', $order_id)->get(['transaction_id', 'type', 'amount', 'description', 'created_at']);
+        $list = CommodityProductOrderLedger::where('order_id', $order_id)->get(['transaction_id', 'type', 'amount', 'remaining_balance', 'description', 'created_at']);
         return response([
             'success'   => true,
             'data'      => $list

@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Http\Controllers\Controller;
 use App\Models\SellerProductEnquiry;
+use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
 use App\Models\ProductEnquiryHistory;
+use App\Models\CreditWalletTransaction;
 use App\Models\CommodityProductOrderLedger;
 use App\Models\SellerCommodityProductStatePrice;
 use App\Http\Resources\Customer\ProductEnquiryResource;
@@ -254,13 +256,25 @@ class ProductEnquiryApiController extends Controller
         ]);
 
         $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry')->find($id);
+        $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
+
+        $customer = User::find($mark_seller->customer_user_id);
+        $user_total_balance = $customer->cash_balance + $customer->credit_balance;
+
+        if($request->token_amount > $user_total_balance){
+            return response([
+                'success'   => false,
+                'message'   => 'Your balance is not sufficient to convert this enquiry to order.'
+            ], 400);
+        }
+
         $enquiry_data->status = 'ordered';
         $history = $enquiry_data->history;
         $history[] = ['status' => 'Ordered', 'created_at' => Carbon::now()];
         $enquiry_data->history = $history;
         $enquiry_data->save();
 
-        $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
+
         $mark_seller->status = 'ordered';
         $history = $mark_seller->history;
         $history[] = ['status' => 'Ordered', 'created_at' => Carbon::now()];
@@ -300,6 +314,7 @@ class ProductEnquiryApiController extends Controller
         $debit_ledger->type                 = 'debit';
         $debit_ledger->amount               = $request->total_amount;
         $debit_ledger->remaining_balance    = $request->total_amount;
+        $debit_ledger->description          = 'Amount debited for Order Id: '.$order->order_id;
         $debit_ledger->save();
 
         $credit_ledger                       = new CommodityProductOrderLedger;
@@ -308,7 +323,63 @@ class ProductEnquiryApiController extends Controller
         $credit_ledger->type                 = 'credit';
         $credit_ledger->amount               = $request->token_amount;
         $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $request->token_amount;
+        $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
         $credit_ledger->save();
+
+        if($customer->cash_balance > $request->token_amount){
+
+            // Cash balance
+            $customer->cash_balance = $customer->cash_balance - $request->token_amount;
+            $customer->save();
+
+            $cash_history = new CashWalletTransaction;
+            $cash_history->user_id           = $customer->id;
+            $cash_history->amount            = $request->token_amount;
+            $cash_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $cash_history->mode              = 'online';
+            $cash_history->status            = 'debit';
+            $cash_history->transaction_status= 'Amount debited';
+            $cash_history->save();
+
+            $cash_history->transaction_id    = 'TX-'.date('Ymd').$cash_history->id.$customer->id.rand(111, 999);
+            $cash_history->save();
+
+        }else{
+
+            $remaining_amount = $request->token_amount - $customer->cash_balance;
+
+            // Cash balance
+            $cash_history = new CashWalletTransaction;
+            $cash_history->user_id           = $customer->id;
+            $cash_history->amount            = $customer->cash_balance;
+            $cash_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $cash_history->mode              = 'online';
+            $cash_history->status            = 'debit';
+            $cash_history->transaction_status= 'Amount debited';
+            $cash_history->save();
+
+            $cash_history->transaction_id    = 'TX-'.date('Ymd').$cash_history->id.$customer->id.rand(111, 999);
+            $cash_history->save();
+
+            $customer->cash_balance = 0;
+            $customer->save();
+
+            // Credit Balance
+            $remaining_amount = $customer->credit_balance - $remaining_amount;
+            $customer->credit_balance = $remaining_amount;
+            $customer->save();
+
+            $credit_history = new CreditWalletTransaction;
+            $credit_history->user_id           = $customer->id;
+            $credit_history->amount            = $remaining_amount;
+            $credit_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $credit_history->status            = 'debit';
+            $credit_history->transaction_status= 'Amount debited';
+            $credit_history->save();
+
+            $credit_history->transaction_id    = 'TX-'.date('Ymd').$credit_history->id.$customer->id.rand(111, 999);
+            $credit_history->save();
+        }
 
         return response([
             'success'   => true,
