@@ -302,6 +302,9 @@ class ProductEnquiryApiController extends Controller
         $order->token_amount                = $request->token_amount;
         $order->transport_price             = $mark_seller->transport_price;
         $order->commission                  = $mark_seller->commission;
+        $order->total_amount                = $request->total_amount;
+        $order->paid_amount                 = $request->token_amount;
+        $order->due_amount                  = $request->total_amount - $request->token_amount;
         $order->loading_address             = $mark_seller->loading_address;
         $order->delivery_by                 = $mark_seller->delivery_by;
         $order->status                      = 'pending';
