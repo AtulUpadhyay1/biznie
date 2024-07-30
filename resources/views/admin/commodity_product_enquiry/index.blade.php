@@ -20,7 +20,10 @@
                                         <input type="text" class="form-control" placeholder="Search here...">
                                     </div>
                                 </form>
-
+                                <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="add" href="{{route('admin.commodity-product-enquiry.create')}}" wire:navigate>
+                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
+                                    Add
+                                </a>
                             </div>
                         </div>
                     </div>

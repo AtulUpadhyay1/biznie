@@ -181,9 +181,9 @@ class ProductEnquiryApiController extends Controller
 
                 }
 
-                $enquiry_data->status = count($seller_ids)!=0 ? 'Enquiry Send To Seller' : 'No Seller Available';
+                $enquiry_data->status = count($seller_ids)!=0 ? 'Enquiry Sent To Seller' : 'No Seller Available';
                 $history = $enquiry_data->history;
-                $history[] = ['status' => 'Enquiry Send To Seller', 'created_at' => Carbon::now()];
+                $history[] = ['status' => 'Enquiry Sent To Seller', 'created_at' => Carbon::now()];
                 $enquiry_data->history = $history;
                 $enquiry_data->save();
             }
