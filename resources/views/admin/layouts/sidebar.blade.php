@@ -91,7 +91,7 @@
             <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
             'admin.product-category', 'admin.create-product-category', 'admin.edit-product-category',
             'admin.product-sub-category', 'admin.create-product-sub-category', 'admin.create-product-sub-subcategory',
-            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show', 'admin.commodity-product.statePrice', 'admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.show', 'admin.commodity-product.sellerPrice', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history']) ? 'active' : '' }}">
+            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show', 'admin.commodity-product.statePrice']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#products" role="button"
                     aria-expanded="false" aria-controls="products">
                     <i class="bi bi-cart"></i>
@@ -102,7 +102,7 @@
             <div class="collapse {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
             'admin.product-category','admin.create-product-category', 'admin.edit-product-category',
             'admin.product-sub-category', 'admin.create-product-sub-category', 'admin.create-product-sub-subcategory',
-            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show', 'admin.commodity-product.statePrice', 'admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.show', 'admin.commodity-product.sellerPrice', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history']) ? 'show' : '' }}" id="products">
+            'admin.edit-product-sub-category', 'admin.product-sub-subcategory', 'admin.edit-product-sub-subcategory', 'admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show', 'admin.commodity-product.statePrice']) ? 'show' : '' }}" id="products">
                 <ul class="nav sub-menu">
                     {{-- <li class="nav-item">
                         <a href="#" class="nav-link">Add New Products</a>
@@ -136,14 +136,15 @@
                             Commodity Product
                         </a>
                     </li>
-                    <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history']) ? 'active' : '' }}">
-                        <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate>
-                            Commodity Product Enquiry
-                        </a>
-                    </li>
-
                 </ul>
             </div>
+
+            <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history']) ? 'active' : '' }}">
+                <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-journal-check"></i>
+                    <span class="link-title">Product Enquiry</span>
+                </a>
+            </li>
             <!--End of product -->
 
             <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show', 'admin.commodity-product-order-driver.create', 'admin.commodity-product-order-driver.show', 'admin.commodity-product-order-driver.edit', 'admin.commodity-product-order.status', 'admin.commodity-product-order.history']) ? 'active' : ''}}">
