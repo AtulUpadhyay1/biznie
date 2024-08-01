@@ -55,6 +55,7 @@ class Variation extends Component
     {
         $user_list = User::where('status', 'active')->orderBy('name', 'asc')->get();
         $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand', 'getSellerStatePrice')->findOrFail($this->hidden_id);
+        $this->price = $data->base_price;
         $variations = SellerCommodityProductStatePrice::with('getSellerCommodityProduct')->where('seller_commodity_product_id', $data->seller_commodity_product_id)->get();
         return view('admin.commodity_product_enquiry.variation', compact('data', 'variations', 'user_list'));
     }
@@ -107,7 +108,7 @@ class Variation extends Component
         $data->consignee_detail     = $this->consignee_detail;
         $data->purpose              = $this->purpose;
         $data->description          = $this->description;
-        $data->price                = $this->price ?? 35000;
+        $data->price                = $this->price;
         $data->history              = [['status' => 'pending', 'created_at' => Carbon::now()]];
         $data->save();
 

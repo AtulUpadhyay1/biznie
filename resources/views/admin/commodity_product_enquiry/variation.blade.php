@@ -14,7 +14,6 @@
                         </div>
                     </div>
                 </div>
-
                 <form wire:submit.prevent="save()">
                     <div class="card-body">
                         <div class="row">

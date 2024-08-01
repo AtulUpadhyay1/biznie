@@ -69,6 +69,9 @@
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.sellerReply', $data->id)}}" wire:navigate><i class="bi bi-reply-all icon-sm me-2"></i><span>Seller Relpy</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.history', $data->id)}}" wire:navigate><i class="bi bi-clock-history icon-sm me-2"></i><span>History</span></a>
+                                                @if ($data->status == 'Seller Marked')
+                                                    <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.convertToOrder', $data->id)}}" wire:navigate><i class="bi bi-cart-check icon-sm me-2"></i><span>Convert To Order</span></a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
