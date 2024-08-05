@@ -52,7 +52,7 @@
                 </div>
                 <div class="card-body">
                     <p>
-                        Name : {{ $enquiry_data->consignee_detail['name'] }} <br>
+                        Phone : {{ $enquiry_data->consignee_detail['consignee_phone'] }} <br>
                         GST Number : {{ $enquiry_data->consignee_detail['gst_number'] }} <br>
                         Company : {{ $enquiry_data->consignee_detail['consignee_company'] }} <br>
                         Address : {{ $enquiry_data->consignee_detail['address']['address_line_one'] }}
