@@ -73,7 +73,7 @@ class ConvertToOrder extends Component
         $order->commodity_product_id        = $mark_seller->commodity_product_id;
         $order->brand_id                    = $mark_seller->brand_id;
         $order->unique_id                   = $mark_seller->unique_id;
-        $order->order_id                    = 'OID-'.time().'-'.rand(1111, 9999);
+        $order->order_id                    = 'OID-'.date('Ymd').'-'.rand(1111, 9999);
         $order->origin_city                 = $mark_seller->origin_city;
         $order->value                       = $mark_seller->value;
         $order->billing_address             = $mark_seller->billing_address;

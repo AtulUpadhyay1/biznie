@@ -150,8 +150,13 @@
                                     <h6>Consignee Detail Address</h6>
 
                                     <div class="mb-2">
-                                        <label for="consignee_detail_pincode">Name</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_pincode" wire:model="consignee_detail.name" placeholder="Enter Name">
+                                        <label for="consignee_company">Company</label>
+                                        <input type="text" class="form-control form-control-sm" id="consignee_company" wire:model="consignee_detail.consignee_company" placeholder="Enter Consignee Company">
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label for="consignee_phone">Phone</label>
+                                        <input type="text" class="form-control form-control-sm" id="consignee_phone" wire:model="consignee_detail.consignee_phone" placeholder="Enter Consignee Phone">
                                     </div>
 
                                     <div class="mb-2">

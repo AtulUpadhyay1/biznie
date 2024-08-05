@@ -34,7 +34,7 @@ class Variation extends Component
     ];
 
     public $consignee_detail = [
-        'name'              => '',
+        'consignee_company' => '',
         'address'           => [
             'pin_code'          => '',
             'address_line_one'  => '',
@@ -43,7 +43,7 @@ class Variation extends Component
             'state'             => '',
         ],
         'gst_number'        => '',
-        'consignee_company' => ''
+        'consignee_phone'   => ''
     ];
 
     public function mount($id)
@@ -100,7 +100,7 @@ class Variation extends Component
         $data->user_id              = $this->user_id;
         $data->commodity_product_id = $variation->commodity_product_id;
         $data->brand_id             = $variation->brand_id;
-        $data->unique_id            = 'PE-'.time().'-'.rand(1111, 9999);
+        $data->unique_id            = 'PE-'.date('Ymd').'-'.rand(1111, 9999);
         $data->origin_city          = $this->origin_city;
         $data->variation            = $variation_arr;
         $data->billing_address      = $this->billing_address;

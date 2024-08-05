@@ -61,7 +61,7 @@ class ProductEnquiryApiController extends Controller
             $data->user_id              = auth()->id();
             $data->commodity_product_id = $request->commodity_product_id;
             $data->brand_id             = $request->brand_id;
-            $data->unique_id            = 'PE-'.time().'-'.rand(1111, 9999);
+            $data->unique_id            = 'PE-'.date('Ymd').'-'.rand(1111, 9999);
             $data->origin_city          = $request->origin_city;
             $data->variation            = $request->variation;
             $data->billing_address      = $request->billing_address;
@@ -289,7 +289,7 @@ class ProductEnquiryApiController extends Controller
         $order->commodity_product_id        = $mark_seller->commodity_product_id;
         $order->brand_id                    = $mark_seller->brand_id;
         $order->unique_id                   = $mark_seller->unique_id;
-        $order->order_id                    = 'OID-'.time().'-'.rand(1111, 9999);
+        $order->order_id                    = 'OID-'.date('Ymd').'-'.rand(1111, 9999);
         $order->origin_city                 = $mark_seller->origin_city;
         $order->value                       = $mark_seller->value;
         $order->billing_address             = $mark_seller->billing_address;
