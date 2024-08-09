@@ -629,7 +629,9 @@ progress {
     border: 1px solid var(--bs-border-color);
     border-radius: .25rem;
     max-width: 100%;
-    height: auto
+    height: 100px;
+    width: 100%;
+    object-fit: contain;
 }
 
 .figure {
@@ -15321,7 +15323,13 @@ div.tox .tox-button .badge {
 .mn-wd-65p-f {
     min-width: 65% !important
 }
-
+.profile-img{
+    height:70px;
+    border: 1.5px solid #cc0000;
+    padding: 2px;
+    object-fit: contain;
+    background: aliceblue;
+}
 .wd-70 {
     width: 70px
 }
@@ -23182,7 +23190,28 @@ code {
 .grid-margin {
     margin-bottom: 1.5rem
 }
+.grid-margin .nav {
+    display:flex;
+}
+.grid-margin .nav .nav-item{
+    margin-right:20px;
+}
 
+.grid-margin .nav-pills .nav-link.active{
+    background-color: #8a0707 !important;
+    color: #fff;
+    padding: 5px 8px;
+
+}
+.grid-margin .nav-pills .nav-link:hover.active{
+    color:#fff !important;
+}
+.grid-margin .nav-link{
+    color:#010103;
+}
+.grid-margin .nav-link:hover{
+    color:#8a0707 !important;
+}
 @media (min-width:576px) {
     .grid-margin-sm-0 {
         margin-bottom: 0
