@@ -222,10 +222,10 @@
                                             </div>
                                             <div class="card-footer">
                                                 <div class="d-flex">
-                                                    <a href="{{route('admin.commodity-product-order-driver.show', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs me-2 btn-light" title="View">
+                                                    <a href="{{route('admin.commodity-product-order-driver.show', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs me-2 btn-light" title="View" wire:navigate>
                                                         <i class="bi bi-eye"></i>
                                                     </a>
-                                                    <a href="{{route('admin.commodity-product-order-driver.edit', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs me-2 btn-info" title="Edit">
+                                                    <a href="{{route('admin.commodity-product-order-driver.edit', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs me-2 btn-info" title="Edit" wire:navigate>
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
                                                     <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-danger" title="Remove" wire:click="driverDelete({{$driver->id}})">
