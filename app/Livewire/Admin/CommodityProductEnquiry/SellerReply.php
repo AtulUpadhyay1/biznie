@@ -43,9 +43,9 @@ class SellerReply extends Component
             foreach ($this->set_enquiry_data->value as $variation) {
                 $this->set_enquiry_data_price[] = $variation['price'];
             }
-            $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ?? 0;
-            $this->transport_price = $this->set_enquiry_data->transport_price ?? 0;
-            $this->commission = $this->set_enquiry_data->commission ?? 0;
+            $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? formatIndianNumber($this->set_enquiry_data->base_price) : 0;
+            $this->transport_price = $this->set_enquiry_data->transport_price ? formatIndianNumber($this->set_enquiry_data->transport_price) : 0;
+            $this->commission = $this->set_enquiry_data->commission ? formatIndianNumber($this->set_enquiry_data->commission) : 0;
         }
     }
 
@@ -70,6 +70,10 @@ class SellerReply extends Component
 
     public function markSeller()
     {
+        $this->set_enquiry_data_base_price = str_replace(',', '', $this->set_enquiry_data_base_price);
+        $this->commission = str_replace(',', '', $this->commission);
+        $this->transport_price = str_replace(',', '', $this->transport_price);
+
         $this->validate([
             'set_enquiry_data_base_price'   => 'required|min:0',
             'transport_price'               => 'required|min:0',

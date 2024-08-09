@@ -236,7 +236,7 @@
                                                                     <input type="number" class="form-control" wire:model="set_enquiry_data_price.{{$loop->index}}">
                                                                 </td>
                                                                 <td>
-                                                                    {{ $variation['price'] + $set_enquiry_data_base_price }}
+                                                                    {{ formatIndianNumber($variation['price'] + str_replace(',', '', $set_enquiry_data_base_price)) }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -245,7 +245,7 @@
                                                                 <label for="transport_price" class="form-label">Transport Price</label>
                                                             </td>
                                                             <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
-                                                                <input type="number" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model="transport_price">
+                                                                <input type="text" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model="transport_price" oninput="formatIndianCurrency(this)">
                                                                 @error('transport_price') <small class="text-danger">{{ $message }}</small>@enderror
 
                                                             </td>
@@ -254,7 +254,7 @@
                                                                 <label for="base_price" class="form-label">Base Price</label>
                                                             </td>
                                                             <td colspan="2">
-                                                                <input type="number" class="form-control" id="base_price" placeholder="Enter Base Price" wire:model="set_enquiry_data_base_price">
+                                                                <input type="text" class="form-control" id="base_price" placeholder="Enter Base Price" wire:model="set_enquiry_data_base_price" oninput="formatIndianCurrency(this)">
                                                                 @error('set_enquiry_data_base_price') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
 
@@ -266,7 +266,7 @@
                                                                 <label for="commission" class="form-label">Commission</label>
                                                             </td>
                                                             <td colspan="2">
-                                                                <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model="commission">
+                                                                <input type="text" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model="commission" oninput="formatIndianCurrency(this)">
                                                                 @error('commission') <small class="text-danger">{{ $message }}</small>@enderror
 
                                                             </td>
@@ -289,4 +289,24 @@
             </div>
         </div>
     </div>
+    <script>
+        function formatIndianCurrency(input) {
+            let value = input.value.replace(/[^0-9.]/g, '');
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+
+            let x = value.split('.');
+            let x1 = x[0];
+            let x2 = x.length > 1 ? '.' + x[1] : '';
+            let lastThree = x1.substring(x1.length - 3);
+            let otherNumbers = x1.substring(0, x1.length - 3);
+            if (otherNumbers != '') {
+                lastThree = ',' + lastThree;
+            }
+            let result = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + x2;
+            input.value = result;
+        }
+    </script>
 </div>
