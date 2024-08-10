@@ -187,6 +187,14 @@
                             </div>
 
                             <div class="col-md-3 mb-3">
+                                <label class="form-label" for="ebill_expiry_date">eBill Expiry Date</label>
+                                <input type='date' id="ebill_expiry_date" class="form-control @error('ebill_expiry_date') is-invalid @enderror" wire:model="ebill_expiry_date">
+                                @error('ebill_expiry_date')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label" for="transport_receipt">Transport Receipt</label>
                                 <input type='file' id="transport_receipt" class="form-control @error('transport_receipt') is-invalid @enderror" wire:model="transport_receipt">
                                 <label for="transport_receipt">

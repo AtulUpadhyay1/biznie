@@ -11,7 +11,7 @@ class Edit extends Component
     use WithFileUploads;
     public $page_title = 'Edit Driver';
 
-    public $hidden_id, $order_id, $name, $phone, $alternate_phone_number, $vehicle_number, $tracking_number, $transporter_name, $transporter_phone_number, $advance_amount, $driver_photo, $unloaded_vehicle_photo, $loaded_vehicle_photo, $driver_with_vehicle_photo, $invoice, $ebill, $transport_receipt;
+    public $hidden_id, $order_id, $name, $phone, $alternate_phone_number, $vehicle_number, $tracking_number, $transporter_name, $transporter_phone_number, $advance_amount, $driver_photo, $unloaded_vehicle_photo, $loaded_vehicle_photo, $driver_with_vehicle_photo, $invoice, $ebill, $ebill_expiry_date, $transport_receipt;
     public $show_driver_photo, $show_unloaded_vehicle_photo, $show_loaded_vehicle_photo, $show_driver_with_vehicle_photo, $show_invoice, $show_ebill, $show_transport_receipt;
 
     public function mount($order_id, $id)
@@ -28,6 +28,7 @@ class Edit extends Component
         $this->transporter_name             = $data->transporter_name;
         $this->transporter_phone_number     = $data->transporter_phone_number;
         $this->advance_amount               = $data->advance_amount;
+        $this->ebill_expiry_date            = $data->ebill_expiry_date;
         $this->show_driver_photo            = imageUrl($data->photo);
         $this->show_unloaded_vehicle_photo  = imageUrl($data->unloaded_vehicle_photo);
         $this->show_loaded_vehicle_photo    = imageUrl($data->loaded_vehicle_photo);
@@ -67,6 +68,7 @@ class Edit extends Component
         $data->tracking_number  = $this->tracking_number;
         $data->invoice          = $this->invoice ? imageUpload($this->invoice, 'driver_detail', $data->invoice) : $data->invoice;
         $data->ebill            = $this->ebill ? imageUpload($this->ebill, 'driver_detail', $data->ebill) : $data->ebill;
+        $data->ebill_expiry_date= $this->ebill_expiry_date;
         $data->transport_receipt= $this->transport_receipt ? imageUpload($this->transport_receipt, 'driver_detail', $data->transport_receipt) : $data->transport_receipt;
         $data->alternate_phone_number  = $this->alternate_phone_number;
         $data->transporter_name  = $this->transporter_name;
