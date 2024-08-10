@@ -52,6 +52,24 @@
 
                             </div>
                         </div>
+                        <hr>
+                        <div class="row mb-4">
+                            <div class="col-xl-4 col-sm-6">
+                                <div class="form-group">
+                                    <div class="d-flex justify-content-between align-items-center gap-10 form-control">
+                                        <span class="fs-5">
+                                            Customer Quality Check Visibility
+                                            <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="It enable product order quality check visible to customer.">
+                                                <i class="bi bi-info-circle"></i>
+                                            </span>
+                                        </span>
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox" class="form-check-input" wire:model="value.customer_quality_check_visibility" {{$value['customer_quality_check_visibility'] == true ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <div class="col-md-6">

@@ -182,4 +182,23 @@ class Show extends Component
             message : 'Driver remove successfully !!',
         );
     }
+
+    public function customerQualityCheck()
+    {
+        $data = CommodityProductOrder::find($this->hidden_id);
+        if (!$data) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Invalid id given. Please try again.'
+            ]);
+            return false;
+        }
+
+        $data->customer_quality_check_visibility = $data->customer_quality_check_visibility ? 0 : 1;
+        $data->save();
+        $this->dispatch('alert',
+            type : 'success',
+            message : 'Customer quality check status updated successfully !!',
+        );
+    }
 }

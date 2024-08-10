@@ -93,6 +93,7 @@ class ConvertToOrder extends Component
         $order->delivery_by                 = $mark_seller->delivery_by;
         $order->status                      = 'pending';
         $order->history                     = [['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()]];
+        $order->customer_quality_check_visibility = websiteSetupValue('customer_quality_check_visibility') ?? 0;
         $order->save();
 
         $debit_ledger                       = new CommodityProductOrderLedger;

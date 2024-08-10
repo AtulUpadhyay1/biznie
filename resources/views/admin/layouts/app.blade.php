@@ -37,6 +37,7 @@
     <!-- core:js -->
     <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
     <!-- endinject -->
+
     <script src="https://cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
 
     @livewireStyles
