@@ -1,5 +1,6 @@
 <div>
     @section('title', config('app.name') . ' | ' . $page_title)
+    <x-loader />
     <div class="row">
         <div class="col-md-12 grid-margin">
             <div class="card">
@@ -167,7 +168,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            
+
                             <div class="col-md-3 mb-3">
                                 <label class="form-label" for="ebill">eBill</label>
                                 <input type='file' id="ebill" class="form-control @error('ebill') is-invalid @enderror" wire:model="ebill">
@@ -202,7 +203,7 @@
                                 @enderror
                             </div>
                         </div>
-                            
+
                         <div class="row">
                             <div class="col-md-6">
                                 <x-submit-btn text="{{ $hidden_id ? 'Update' : 'Save' }}" />

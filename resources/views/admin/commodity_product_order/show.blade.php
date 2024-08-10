@@ -1,7 +1,7 @@
 <div>
     @section('title', config('app.name') . ' | '.$page_title)
+    <x-loader />
     <div class="row">
-        <x-loader />
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -208,7 +208,7 @@
                                         <div class="card rounded">
                                             <div class="card-body p-3">
                                                 <div class="text-center mb-1">
-                                                    <img class="wd-70 rounded-circle" src="{{ imageUrl($driver->photo) }}" onerror="this.onerror=null; this.src='{{ asset('admin_css/assets/images/avatar.png') }}'" alt="profile">
+                                                    <img class="wd-70 rounded-circle profile-img" src="{{ imageUrl($driver->photo) }}" onerror="this.onerror=null; this.src='{{ asset('admin_css/assets/images/avatar.png') }}'" alt="profile">
                                                 </div>
                                                 <div class="text-center mb-2">
                                                     <h6 class="card-title mb-0">{{$driver->name}}</h6>
