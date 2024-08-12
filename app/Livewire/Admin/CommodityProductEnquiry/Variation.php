@@ -104,7 +104,7 @@ class Variation extends Component
         $data->origin_city          = $this->origin_city;
         $data->variation            = $variation_arr;
         $data->billing_address      = $this->billing_address;
-        $data->delivery_address     = $this->delivery_address;
+        $data->delivery_address     = $this->billing_address;
         $data->consignee_detail     = $this->consignee_detail;
         $data->purpose              = $this->purpose;
         $data->description          = $this->description;

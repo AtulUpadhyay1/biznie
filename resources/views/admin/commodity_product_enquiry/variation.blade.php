@@ -125,7 +125,7 @@
                                     </div>
                                 </div>
 
-                                <div class="card card-body p-2 mb-2">
+                                {{-- <div class="card card-body p-2 mb-2">
                                     <h6>Delivery Address</h6>
                                     <div class="mb-2">
                                         <label for="delivery_address_pincode">Pincode</label>
@@ -151,7 +151,7 @@
                                         <label for="delivery_address_state">State</label>
                                         <input type="text" class="form-control form-control-sm" id="delivery_address_state" wire:model="delivery_address.state" placeholder="Enter State">
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="card card-body p-2 mb-2">
                                     <h6>Consignee Detail Address</h6>
