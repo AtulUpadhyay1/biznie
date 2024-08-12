@@ -112,6 +112,7 @@ Route::group(['as'=>'admin.'], function () {
 
         //All Customers List
         Route::get('customer-list', AdminRoot\Customer\Index::class)->name('customer-list');
+        Route::get('customer/create', AdminRoot\Customer\Create::class)->name('customer.create');
 
         //Cutomer Profile
         Route::get('customer-profile/{id}', AdminRoot\Customer\Profile::class)->name('customer-profile');

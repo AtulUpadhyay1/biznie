@@ -10,7 +10,7 @@
                         </div>
                         <div class="col-6 text-end">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
+                                {{-- <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
                                     <span class="input-group-text input-group-addon bg-transparent border-danger"
                                         data-toggle><i data-feather="calendar" class="text-danger"></i></span>
                                     <input type="text" class="form-control bg-transparent border-danger"
@@ -19,7 +19,11 @@
                                 <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
                                     <i class="btn-icon-prepend" data-feather="download-cloud"></i>
                                     Download Report
-                                </button>
+                                </button> --}}
+                                <a href="{{ route('admin.customer.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
+                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
+                                    Add
+                                </a>
                             </div>
                         </div>
                     </div>

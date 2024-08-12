@@ -79,7 +79,14 @@
                             <div class="col-md-4">
                                 <div class="mb-2">
                                     <div wire:ignore>
-                                        <label for="user_id" class="form-label">User</label>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label for="user_id" class="form-label">User</label>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <a href="#" class="btn btn-xs btn-light mb-1">Add</a>
+                                            </div>
+                                        </div>
                                         <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
                                             <option value="">Select User</option>
                                             @foreach ($user_list as $user_data)
