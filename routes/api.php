@@ -75,6 +75,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         // Wallet Recharge
         Route::get('cash-wallet', 'CashWalletApiController@cashWallet');
 
+        // Address Management
+        Route::apiResource('address', 'UserAddressApiController');
     });
 });
 
