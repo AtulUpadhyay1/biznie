@@ -98,7 +98,7 @@
                                 </div>
 
                                 <div class="card card-body p-2 mb-2">
-                                    <h6>Billing Address</h6>
+                                    <h6>Buyer Address</h6>
                                     <div class="mb-2">
                                         <label for="billing_address_pincode">Pincode</label>
                                         <input type="number" class="form-control form-control-sm" id="billing_address_pincode" wire:model="billing_address.pin_code" placeholder="Enter Pincode">
@@ -154,8 +154,13 @@
                                 </div> --}}
 
                                 <div class="card card-body p-2 mb-2">
-                                    <h6>Consignee Detail Address</h6>
-
+                                    <h6>Consignee Detail Address <br></h6>
+                                    <div class="text-end h6">
+                                        <input type="checkbox" class="form-check-input" id="same_buyer_address" wire:model.live="same_buyer_address" wire:change="consigneeAddress()">
+                                        <label class="form-check-label" for="same_buyer_address">
+                                            <span class="badge bg-light text-black">Same Buyer Address</span>
+                                        </label>
+                                    </div>
                                     <div class="mb-2">
                                         <label for="consignee_company">Company</label>
                                         <input type="text" class="form-control form-control-sm" id="consignee_company" wire:model="consignee_detail.consignee_company" placeholder="Enter Consignee Company">

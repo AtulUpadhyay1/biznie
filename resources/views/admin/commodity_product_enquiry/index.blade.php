@@ -71,6 +71,7 @@
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.history', $data->id)}}" wire:navigate><i class="bi bi-clock-history icon-sm me-2"></i><span>History</span></a>
                                                 @if ($data->status == 'Seller Marked')
                                                     <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.convertToOrder', $data->id)}}" wire:navigate><i class="bi bi-cart-check icon-sm me-2"></i><span>Convert To Order</span></a>
+                                                    <button class="dropdown-item d-flex align-items-center" wire:click="processOverPhone({{$data->id}})"><i class="bi bi-cloud-haze2 icon-sm me-2"></i><span>Process Over Phone</span></button>
                                                 @endif
                                             </div>
                                         </td>

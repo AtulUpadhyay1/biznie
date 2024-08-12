@@ -17,6 +17,7 @@ class Variation extends Component
     public $page_title = 'Add Enquiry';
 
     public $hidden_id, $user_id, $variation_id = [], $variation_quantity = [], $origin_city, $purpose, $description, $price;
+    public $same_buyer_address = false;
     public $billing_address = [
         'pin_code'          => '',
         'address_line_one'  => '',
@@ -58,6 +59,34 @@ class Variation extends Component
         $this->price = $data->base_price;
         $variations = SellerCommodityProductStatePrice::with('getSellerCommodityProduct')->where('seller_commodity_product_id', $data->seller_commodity_product_id)->get();
         return view('admin.commodity_product_enquiry.variation', compact('data', 'variations', 'user_list'));
+    }
+
+    public function consigneeAddress()
+    {
+        if($this->same_buyer_address){
+            $this->consignee_detail = [
+                'address'           => [
+                    'pin_code'          => $this->billing_address['pin_code'],
+                    'address_line_one'  => $this->billing_address['address_line_one'],
+                    'address_line_two'  => $this->billing_address['address_line_two'],
+                    'city'              => $this->billing_address['city'],
+                    'state'             => $this->billing_address['state'],
+                ]
+            ];
+
+        }else{
+
+            $this->consignee_detail = [
+                'address'           => [
+                    'pin_code'          => '',
+                    'address_line_one'  => '',
+                    'address_line_two'  => '',
+                    'city'              => '',
+                    'state'             => '',
+                ]
+            ];
+
+        }
     }
 
     public function save()
