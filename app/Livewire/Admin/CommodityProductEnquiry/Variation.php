@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\CommodityProductEnquiry;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Address;
 use Livewire\Component;
 use App\Models\HomeProduct;
 use App\Models\ProductEnquiry;
@@ -59,6 +60,24 @@ class Variation extends Component
         $this->price = $data->base_price;
         $variations = SellerCommodityProductStatePrice::with('getSellerCommodityProduct')->where('seller_commodity_product_id', $data->seller_commodity_product_id)->get();
         return view('admin.commodity_product_enquiry.variation', compact('data', 'variations', 'user_list'));
+    }
+
+    public function getStateCityByPincode($type)
+    {
+        $pincode = $this->consignee_detail['address']['pin_code'];
+        if($type == 'billing_address'){
+            $pincode = $this->billing_address['pin_code'];
+        }
+        $data = Address::where('pincode', $pincode)->first();
+        if($data){
+            if($type == 'billing_address'){
+                $this->billing_address['city']  = $data->city;
+                $this->billing_address['state'] = $data->state;
+            }else{
+                $this->consignee_detail['address']['city'] = $data->city;
+                $this->consignee_detail['address']['state'] = $data->state;
+            }
+        }
     }
 
     public function consigneeAddress()

@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\CommodityProductOrder;
 
 use PDF;
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\CommodityProductOrder;
@@ -130,6 +131,14 @@ class Show extends Component
         $driver_detail = $data;
         $order_detail = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer')->findOrFail($this->hidden_id);
 
+        $driver_count = CommodityProductOrderDriver::where('order_id', $this->hidden_id)->whereNotNull('generate_invoice')->count();
+        if($driver_count == 1){
+            $order_detail->status = "bills generated";
+            $history = $order_detail->history;
+            $history[] = ['status' => 'Order ' .ucwords($order_detail->status). ' By Admin', 'created_at' => Carbon::now()];
+            $order_detail->history = $history;
+            $order_detail->save();
+        }
         // Create the initial data array
         $data = [
             'order_detail' => $order_detail,

@@ -103,7 +103,7 @@
                                         <div class="col-11">
                                             <h2 class="accordion-header" id="heading_{{ $seller_data->id }}">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $seller_data->id }}">
-                                                <b>{{ $seller_data->getUser->name}} ({{ getSellerType($seller_data->user_id) }})</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}, &nbsp; <b>Base Price</b> : {{ $seller_data->base_price }}
+                                                <b>{{ $seller_data->getUser->getBusiness->name}} ({{$seller_data->getUser->phone}}) {{ $seller_data->getUser->name}} ({{ getSellerType($seller_data->user_id) }})</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}, &nbsp; <b>Base Price</b> : {{ $seller_data->base_price }}
                                                 </button>
                                             </h2>
                                         </div>

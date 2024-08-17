@@ -101,7 +101,7 @@
                                     <h6>Buyer Address</h6>
                                     <div class="mb-2">
                                         <label for="billing_address_pincode">Pincode</label>
-                                        <input type="number" class="form-control form-control-sm" id="billing_address_pincode" wire:model="billing_address.pin_code" placeholder="Enter Pincode">
+                                        <input type="number" class="form-control form-control-sm" id="billing_address_pincode" wire:model="billing_address.pin_code" placeholder="Enter Pincode" wire:change="getStateCityByPincode('billing_address')">
                                     </div>
 
                                     <div class="mb-2">
@@ -116,12 +116,12 @@
 
                                     <div class="mb-2">
                                         <label for="billing_address_city">City</label>
-                                        <input type="text" class="form-control form-control-sm" id="billing_address_city" wire:model="billing_address.city" placeholder="Enter City">
+                                        <input type="text" class="form-control form-control-sm" id="billing_address_city" wire:model="billing_address.city" placeholder="Enter City" readonly>
                                     </div>
 
                                     <div class="mb-2">
                                         <label for="billing_address_state">State</label>
-                                        <input type="text" class="form-control form-control-sm" id="billing_address_state" wire:model="billing_address.state" placeholder="Enter State">
+                                        <input type="text" class="form-control form-control-sm" id="billing_address_state" wire:model="billing_address.state" placeholder="Enter State" readonly>
                                     </div>
                                 </div>
 
@@ -173,7 +173,7 @@
 
                                     <div class="mb-2">
                                         <label for="consignee_detail_pincode">Pincode</label>
-                                        <input type="number" class="form-control form-control-sm" id="consignee_detail_pincode" wire:model="consignee_detail.address.pin_code" placeholder="Enter Pincode">
+                                        <input type="number" class="form-control form-control-sm" id="consignee_detail_pincode" wire:model="consignee_detail.address.pin_code" placeholder="Enter Pincode" wire:change="getStateCityByPincode('consignee_detail')">
                                     </div>
 
                                     <div class="mb-2">
@@ -188,12 +188,12 @@
 
                                     <div class="mb-2">
                                         <label for="consignee_detail_city">City</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_city" wire:model="consignee_detail.address.city" placeholder="Enter City">
+                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_city" wire:model="consignee_detail.address.city" placeholder="Enter City" readonly>
                                     </div>
 
                                     <div class="mb-2">
                                         <label for="consignee_detail_state">State</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_state" wire:model="consignee_detail.address.state" placeholder="Enter State">
+                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_state" wire:model="consignee_detail.address.state" placeholder="Enter State" readonly>
                                     </div>
 
                                     <div class="mb-2">

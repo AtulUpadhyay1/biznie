@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Admin\CommodityProductOrderDriver;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Models\CommodityProductOrder;
 use App\Models\CommodityProductOrderDriver;
 
 class Create extends Component
@@ -56,6 +58,16 @@ class Create extends Component
         $data->transporter_phone_number  = $this->transporter_phone_number;
         $data->advance_amount  = $this->advance_amount;
         $data->save();
+
+        $driver_count = CommodityProductOrderDriver::where('order_id', $this->order_id)->count();
+        if($driver_count == 1){
+            $order = CommodityProductOrder::find($this->order_id);
+            $order->status = "vehicle booked";
+            $history = $order->history;
+            $history[] = ['status' => 'Order ' .ucwords($order->status). ' By Admin', 'created_at' => Carbon::now()];
+            $order->history = $history;
+            $order->save();
+        }
 
         session()->flash('success', 'Driver added successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->order_id ,navigate: true);

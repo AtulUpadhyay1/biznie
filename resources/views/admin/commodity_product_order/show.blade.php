@@ -6,11 +6,21 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-6 card-title">
+                        <div class="col-5 card-title">
                             <h4>{{ $page_title }}</h4>
                         </div>
-                        <div class="col-6 text-end">
+                        <div class="col-7 text-end">
                             {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
+                            <a href="{{route('admin.commodity-product-order.show', $data->id)}}" class="btn btn-secondary btn-icon btn-sm" title="View" wire:navigate>
+                                <i class="bi bi-eye icon-sm"></i>
+                            </a>
+                            <a href="{{route('admin.commodity-product-order.status', $data->id)}}" class="btn btn-secondary btn-icon btn-sm" title="Update Status" wire:navigate>
+                                <i class="bi bi-device-ssd icon-sm"></i>
+                            </a>
+                            <a href="{{route('admin.commodity-product-order.history', $data->id)}}" class="btn btn-secondary btn-icon btn-sm me-1" title="History" wire:navigate>
+                                <i class="bi bi-clock-history icon-sm"></i>
+                            </a>
+
                             <a href="{{route('admin.commodity-product-order.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                     </div>
@@ -204,7 +214,7 @@
                         <div class="card-body">
                             <div class="row profile-body">
                                 @foreach ($data->getDrivers as $driver)
-                                    <div class="d-none d-md-block col-md-3 left-wrapper">
+                                    <div class="d-none d-md-block col-md-3 left-wrapper mb-3">
                                         <div class="card rounded">
                                             <div class="card-body p-3">
                                                 <div class="text-center mb-1">
@@ -292,7 +302,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="reset" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                                                        <button type="submit" class="btn btn-primary btn-xs" data-bs-dismiss="modal">Save</button>
                                                     </div>
                                                 </form>
                                             </div>

@@ -77,10 +77,7 @@
                                         <div class="col-11">
                                             <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $list_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $list_data->id }}">
-                                                    <b>{{ $list_data->getUser->name}} ({{ getSellerType($list_data->user_id) }})</b>, &nbsp;
-                                                    <b>Brand</b> : {{ $list_data->getBrand->name }}, &nbsp;
-                                                    <b>State</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }}, &nbsp;
-                                                    <b>City</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }}, &nbsp;
+                                                    <b>{{ $list_data->getUser->getBusiness->name}} ({{$list_data->getUser->phone}}), ({{ getSellerType($list_data->user_id) }}) </b>,
                                                     <b>Base Price</b> : {{ $list_data->base_price }}
                                                 </button>
                                             </h2>
@@ -88,6 +85,26 @@
                                     </div>
                                     <div id="collapse_{{ $list_data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $list_data->id }}" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
+
+                                            <b>Name : </b> {{ $list_data->getUser->name }} <br>
+                                            <b>Brand</b> : {{ $list_data->getBrand->name }} <br>
+                                            <b>State</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }} <br>
+                                            <b>City</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }} <br>
+                                            <b>Loading Address: </b> <br>
+                                            <div class="row">
+                                                @foreach ($list_data->loading_address as $loading_address)
+                                                    <div class="col-md-6">
+                                                        <div class="card card-body">
+                                                            <b>Pincode: </b> {{ $loading_address['pin_code'] }} <br>
+                                                            <b>Address Line One: </b> {{ $loading_address['address_line_one'] }} <br>
+                                                            <b>Address Line Two: </b> {{ $loading_address['address_line_two'] }} <br>
+                                                            <b>City: </b> {{ isset($loading_address['city']) ? $loading_address['city'] : '--' }} <br>
+                                                            <b>State: </b> {{ isset($loading_address['state']) ? $loading_address['state'] : '--' }} <br>
+                                                            <b>Loading Position: </b> {{ $loading_address['loading_position'] }} <br>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                             <div class="table-responsive">
                                                 <table class="custom-table">
                                                     <thead>
