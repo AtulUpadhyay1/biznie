@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="photo">
-                                    Banner
+                                    Banner <span class="text-danger">*</span>
                                     <br>
                                     @if ($photo)
                                         <img src="{{ $photo->temporaryUrl() }}" height="150" width="300">

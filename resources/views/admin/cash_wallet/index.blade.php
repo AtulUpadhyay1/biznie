@@ -26,7 +26,7 @@
                                     <div class="card-body">
                                         <div class="mb-2">
                                             <div wire:ignore>
-                                                <label for="user_id" class="form-label">User</label>
+                                                <label for="user_id" class="form-label">User <span class="text-danger">*</span></label>
                                                 <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
                                                     <option value="">Select User</option>
                                                     @foreach ($user_list as $user_data)
@@ -38,7 +38,7 @@
                                         </div>
 
                                         <div class="mb-2">
-                                            <label for="amount" class="form-label">Amount</label>
+                                            <label for="amount" class="form-label">Amount <span class="text-danger">*</span></label>
                                             <input type="number" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="Enter Amount" wire:model="amount">
                                             @error('amount') <small class="text-danger">{{ $message }}</small>@enderror
                                         </div>
@@ -100,7 +100,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>User Details</h5>
+                                    <h5>User Details <span class="text-danger">*</span></h5>
                                 </div>
                                 <div class="card-body">
                                     @if ($user_detail)

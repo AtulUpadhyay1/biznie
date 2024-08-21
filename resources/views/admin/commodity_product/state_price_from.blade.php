@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label for="brand_id" class="form-label">Brand</label>
+                                    <label for="brand_id" class="form-label">Brand <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('brand_id') is-invalid @enderror" id="brand_id" wire:model="brand_id" {{ $state_price_id ? 'disabled' : '' }}>
                                         <option>Select Brand</option>
                                         @foreach ($brand_list as $brand_data)
@@ -32,7 +32,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label for="state_name" class="form-label">State</label>
+                                    <label for="state_name" class="form-label">State <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('state_name') is-invalid @enderror" id="state_name" wire:model="state_name" {{ $state_price_id ? 'disabled' : '' }}>
                                         <option>Select State</option>
                                         @foreach ($state_list as $state_data)
@@ -45,7 +45,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <div>
-                                    <label for="city_name" class="form-label">City</label>
+                                    <label for="city_name" class="form-label">City <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('city_name') is-invalid @enderror" id="city_name" wire:model="city_name" {{ $state_price_id ? 'disabled' : '' }}>
                                         <option>Select City</option>
                                         @foreach ($city_list as $city_data)

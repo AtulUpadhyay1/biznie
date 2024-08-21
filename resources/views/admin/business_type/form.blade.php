@@ -23,16 +23,18 @@
                                 <div class="row">
                                     <h5 class="card-heading-h5">Business Details:</h5>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label" for="name">Name</label>
+                                        <label class="form-label" for="name">Name <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" id="name"
-                                            class="form-control @error('name') is-invalid @enderror"
-                                            wire:model="name" placeholder="Enter name">
+                                            class="form-control @error('name') is-invalid @enderror" wire:model="name"
+                                            placeholder="Enter name">
                                         @error('name')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label" for="icon">Icon</label>
+                                        <label class="form-label" for="icon">Icon <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>' !!}</span>
                                             <input type="text" id="icon"
@@ -76,7 +78,8 @@
                                 <div class="row">
                                     <h5 class="card-heading-h5">Images:</h5>
                                     <div class="col-md-12">
-                                        <label class="form-label" for="vendor_thumbnail">Thumbnail Image</label>
+                                        <label class="form-label" for="vendor_thumbnail">Thumbnail Image <span
+                                                class="text-danger">*</span></label>
                                         <input type='file' id="vendor_thumbnail"
                                             class="form-control @error('thumbnail') is-invalid @enderror"
                                             wire:model="thumbnail">
@@ -84,19 +87,20 @@
                                             @if ($thumbnail)
                                                 <img src="{{ $thumbnail->temporaryUrl() }}" class="label-thumbnail">
                                             @elseif ($showThumbnail)
-                                                <img src="{{ $showThumbnail }}"
-                                                    class="label-thumbnail">
+                                                <img src="{{ $showThumbnail }}" class="label-thumbnail">
                                             @else
                                                 <img class="label-thumbnail"
                                                     src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                             @endif
                                         </label>
+                                        <br>
                                         @error('thumbnail')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="form-label" for="vendor_banner">Banner Image</label>
+                                        <label class="form-label" for="vendor_banner">Banner Image <span
+                                                class="text-danger">*</span></label>
                                         <input type='file' id="vendor_banner"
                                             class="form-control @error('banner') is-invalid @enderror"
                                             wire:model="banner">
@@ -104,12 +108,13 @@
                                             @if ($banner)
                                                 <img src="{{ $banner->temporaryUrl() }}" class="label-banner">
                                             @elseif ($showBanner)
-                                                <img src="{{  $showBanner }}" class="label-banner">
+                                                <img src="{{ $showBanner }}" class="label-banner">
                                             @else
                                                 <img class="label-thumbnail"
                                                     src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                             @endif
                                         </label>
+                                        <br>
                                         @error('banner')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror

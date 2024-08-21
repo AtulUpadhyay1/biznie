@@ -21,12 +21,12 @@
                         <div class="row mb-3">
                             <h5 class="card-heading-h5">Unit Details:</h5>
                             <div class="col-md-6">
-                                <label class="form-label" for="name">Name</label>
+                                <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                                 <input type="text" id="name" class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror" wire:model="name" placeholder="Enter name">
                                 @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label" for="short_name">Short Name</label>
+                                <label class="form-label" for="short_name">Short Name <span class="text-danger">*</span></label>
                                 <input type="text" id="short_name" class="form-control mb-4 mb-md-0 @error('short_name') is-invalid @enderror" wire:model="short_name" placeholder="Enter short name">
                                 @error('short_name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>

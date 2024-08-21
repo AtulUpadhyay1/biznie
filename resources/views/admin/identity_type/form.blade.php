@@ -21,7 +21,7 @@
                         <div class="row mb-3">
                             <h5 class="card-heading-h5">Identity Details:</h5>
                             <div class="col-md-12">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
                                 <input type="text" id="name"
                                     class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror"
                                     wire:model="name" placeholder="Enter identity name">

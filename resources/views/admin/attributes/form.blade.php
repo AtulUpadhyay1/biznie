@@ -20,7 +20,7 @@
                     <form wire:submit.prevent="{{ $hidden_id ? 'update()' : 'save()' }}">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label class="form-label" for="name">Attribute Name <span class="text-muted fst-italic">(Characters that are not allowed [.,\/@#$%&*+_=\-!~`])</span></label>
+                                <label class="form-label" for="name">Attribute Name <span class="text-danger">*</span><span class="text-muted fst-italic">(Characters that are not allowed [.,\/@#$%&*+_=\-!~`])</span></label>
                                 <input type="text" class="form-control  @error('name') is-invalid @enderror"
                                     id="name" wire:model="name" placeholder="Enter attribute name">
                                 @error('name')

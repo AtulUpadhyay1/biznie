@@ -20,14 +20,14 @@
                     <form wire:submit.prevent="{{ $hidden_id ? 'update()' : 'save()' }}">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label class="form-label" for="title">FAQ Title</label>
+                                <label class="form-label" for="title">FAQ Title <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" wire:model="title" placeholder="Enter FAQ title">
                                 @error('title')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label class="form-label" for="description">FAQ Description</label>
+                                <label class="form-label" for="description">FAQ Description <span class="text-danger">*</span></label>
                                 <textarea class="form-control @error('description') is-invalid @enderror" rows="3" id="description" wire:model="description" placeholder="Enter Faq Description"></textarea>
                                 @error('description')
                                     <small class="text-danger">{{ $message }}</small>

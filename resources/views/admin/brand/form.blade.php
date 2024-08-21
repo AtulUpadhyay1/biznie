@@ -23,7 +23,8 @@
                                 <div class="row">
                                     <h5 class="card-heading-h5">Brand Details:</h5>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label" for="name">Name</label>
+                                        <label class="form-label" for="name">Name <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control  @error('name') is-invalid @enderror"
                                             id="name" wire:model="name" placeholder="Enter name">
                                         @error('name')
@@ -56,8 +57,7 @@
                                         <label class="form-label" for="keyword">Meta Keywords</label>
                                         <input type="text"
                                             class="form-control @error('meta_keywords') is-invalid @enderror"
-                                            wire:model='meta_keywords' id="keyword"
-                                            placeholder="Enter keywords">
+                                            wire:model='meta_keywords' id="keyword" placeholder="Enter keywords">
                                         @error('meta_keywords')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -76,7 +76,8 @@
                                 <div class="row">
                                     <h5 class="card-heading-h5">Images:</h5>
                                     <div class="col-md-12">
-                                        <label class="form-label" for="brand_thumbnail">Thumbnail Image</label>
+                                        <label class="form-label" for="brand_thumbnail">Thumbnail Image <span
+                                                class="text-danger">*</span></label>
                                         <input type="file"
                                             class="form-control @error('thumbnail') is-invalid @enderror"
                                             wire:model="thumbnail" id="brand_thumbnail">
@@ -91,23 +92,30 @@
                                                     src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                             @endif
                                         </label>
+                                        <br>
                                         @error('thumbnail')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-12">
-                                        <label class="form-label" for="brand_banner">Banner Image</label>
-                                        <input type="file" class="form-control @error('banner') is-invalid @enderror" wire:model="banner" id="brand_banner">
+                                        <label class="form-label" for="brand_banner">Banner Image <span
+                                                class="text-danger">*</span></label>
+                                        <input type="file" class="form-control @error('banner') is-invalid @enderror"
+                                            wire:model="banner" id="brand_banner">
                                         <label for="brand_banner">
-                                            @if($banner)
-                                                <img src="{{$banner->temporaryUrl()}}" class="label-banner">
+                                            @if ($banner)
+                                                <img src="{{ $banner->temporaryUrl() }}" class="label-banner">
                                             @elseif ($showBanner)
-                                                <img src="{{asset('storage/'.$showBanner)}}" class="label-banner">
+                                                <img src="{{ asset('storage/' . $showBanner) }}" class="label-banner">
                                             @else
-                                            <img class="label-thumbnail" src="{{asset('admin_css/assets/images/others/placeholder.jpg')}}" >
+                                                <img class="label-thumbnail"
+                                                    src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                             @endif
                                         </label>
-                                        @error('banner') <small class="text-danger">{{ $message }}</small>@enderror
+                                        <br>
+                                        @error('banner')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div>
-                                    <label for="product_id" class="form-label">Product</label>
+                                    <label for="product_id" class="form-label">Product <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('product_id') is-invalid @enderror" id="product_id" wire:model="product_id">
                                         <option value="">Select Product</option>
                                         @foreach ($product_list as $product_data)
@@ -45,7 +45,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div>
-                                    <label for="brand_id" class="form-label">Brand</label>
+                                    <label for="brand_id" class="form-label">Brand <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('brand_id') is-invalid @enderror" id="brand_id" wire:model="brand_id">
                                         <option value="">Select Brand</option>
                                         @foreach ($brand_list as $brand_data)
@@ -57,7 +57,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div>
-                                    <label for="state" class="form-label">State</label>
+                                    <label for="state" class="form-label">State <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('state') is-invalid @enderror" id="state" wire:model="state">
                                         <option value="">Select State</option>
                                         @foreach ($state_list as $state_data)
@@ -70,7 +70,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <div>
-                                    <label for="city" class="form-label">City</label>
+                                    <label for="city" class="form-label">City <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('city') is-invalid @enderror" id="city" wire:model="city">
                                         <option value="">Select City</option>
                                         @foreach ($city_list as $city_data)

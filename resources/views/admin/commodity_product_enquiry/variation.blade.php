@@ -81,7 +81,7 @@
                                     <div wire:ignore>
                                         <div class="row">
                                             <div class="col-6">
-                                                <label for="user_id" class="form-label">User</label>
+                                                <label for="user_id" class="form-label">User <span class="text-danger">*</span></label>
                                             </div>
                                             <div class="col-6 text-end">
                                                 <a href="#" class="btn btn-xs btn-light mb-1">Add</a>

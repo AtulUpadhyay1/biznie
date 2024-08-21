@@ -21,19 +21,19 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="name" class="form-label">Type</label>
+                                <label for="name" class="form-label">Type <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter credit wallet document type" wire:model="name">
                                 @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <h5>Number Of Documents</h5>
                             <div class="col-md-5 mb-3">
-                                <label for="title" class="form-label">Title</label>
+                                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('title.0') is-invalid @enderror" id="title" placeholder="Enter title" wire:model="title.0">
                                 @error('title.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="description" class="form-label">Description</label>
+                                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
                                 <textarea id="description" class="form-control @error('description.0') is-invalid @enderror" rows="1" cols="1" placeholder="Enter description" wire:model="description.0"></textarea>
                                 @error('description.0') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>

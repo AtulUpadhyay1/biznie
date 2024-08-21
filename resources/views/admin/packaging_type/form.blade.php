@@ -20,7 +20,7 @@
                     <form wire:submit.prevent="{{ $hidden_id ? 'update()' : 'save()' }}">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label class="form-label" for="name">Packaging type</label>
+                                <label class="form-label" for="name">Packaging type <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control  @error('name') is-invalid @enderror"
                                     id="name" wire:model="name" placeholder="Enter packaging type">
                                 @error('name')

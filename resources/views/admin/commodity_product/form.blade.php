@@ -31,7 +31,7 @@
             <form wire:submit.prevent="save()">
                 <div class="card card-body">
                     <div class="col-md-12 mb-3">
-                        <label for="name" class="form-label">Product Name</label>
+                        <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter product name" wire:model="name">
                         @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                     </div>
@@ -57,7 +57,7 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label for="category" class="form-label">Category</label>
+                                    <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
                                         <option value="">Select Category</option>
                                         @foreach ($category_list as $category_data)
@@ -69,7 +69,7 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="sub_category" class="form-label">Sub Category</label>
+                                <label for="sub_category" class="form-label">Sub Category <span class="text-danger">*</span></label>
                                 <select class="form-select select2 sub_category @error('sub_category') is-invalid @enderror" id="sub_category" wire:model="sub_category_id">
                                     <option>Select Sub Category</option>
                                     @foreach ($sub_category_list as $sub_category_data)
@@ -104,7 +104,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label for="unit_id" class="form-label">Unit</label>
+                                    <label for="unit_id" class="form-label">Unit <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('unit_id') is-invalid @enderror" id="unit_id" wire:model="unit_id">
                                         <option>Select Unit</option>
                                         @foreach ($unit_list as $unit_data)
@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label class="form-label" for="attribute">Attribute</label>
+                                    <label class="form-label" for="attribute">Attribute <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('attribute') is-invalid @enderror" id="attribute" wire:model="attribute" data-placeholder="Select Attribute" multiple @if($variation_count > 0) disabled @endif>
                                         @foreach($attribute_list as $attribute_data)
                                             <option value="{{$attribute_data->id}}">{{$attribute_data->name}}</option>
@@ -127,7 +127,7 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label for="packaging_type" class="form-label">Packaging Type</label>
+                                    <label for="packaging_type" class="form-label">Packaging Type <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('packaging_type') is-invalid @enderror" id="packaging_type" wire:model="packaging_type" data-placeholder="Select packaging type" multiple>
                                         @foreach ($packaging_type_list as $packaging_type_data)
                                             <option value="{{ $packaging_type_data->id }}">{{ $packaging_type_data->name }}</option>
@@ -154,7 +154,7 @@
                     <div class="col-md-4">
                         <div class="card card-body">
                             <label for="thumbnail">
-                                Product Thumbnail
+                                Product Thumbnail <span class="text-danger">*</span>
                                 <br>
                                 @if ($thumbnail)
                                     <img src="{{ $thumbnail->temporaryUrl() }}" height="200" width="200">

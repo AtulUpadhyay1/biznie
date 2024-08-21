@@ -20,7 +20,7 @@
                     <form wire:submit.prevent="{{$hidden_id ? 'update()' : 'save()'}}">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label class="form-label" for="name">Name</label>
+                                <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
                                 <input type="text" id="name" class="form-control mb-4 mb-md-0 @error('name') is-invalid @enderror" wire:model="name" placeholder="Enter tag name">
                                 @error('name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>

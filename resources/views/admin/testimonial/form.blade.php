@@ -20,7 +20,7 @@
                     <form wire:submit.prevent="{{ $hidden_id ? 'update()' : 'save()' }}">
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="name">User Name</label>
+                                <label class="form-label" for="name">User Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control  @error('name') is-invalid @enderror"
                                     id="name" wire:model="name" placeholder="Enter name">
                                 @error('name')
@@ -29,7 +29,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="designation">User Designation</label>
+                                <label class="form-label" for="designation">User Designation <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control  @error('designation') is-invalid @enderror"
                                     id="designation" wire:model="designation" placeholder="Enter Designation">
                                 @error('designation')
@@ -37,7 +37,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="message">Message</label>
+                                <label class="form-label" for="message">Message <span class="text-danger">*</span></label>
                                 <textarea id="message" class="form-control @error('message') is-invalid @enderror" wire:model.live="message" rows="5" placeholder="Enter message"></textarea>
                                 <small class="badge bg-success float-end">{{ 300-$characterCount }}</small>
                                 @error('message')
@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="image">
-                                    User Photo
+                                    User Photo <span class="text-danger">*</span>
                                     <br>
                                     @if ($image)
                                         <img src="{{ $image->temporaryUrl() }}" height="150" width="150">

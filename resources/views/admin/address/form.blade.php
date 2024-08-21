@@ -20,7 +20,7 @@
                     <form wire:submit.prevent="{{ $hidden_id ? 'update()' : 'save()' }}">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="pincode">Pincode</label>
+                                <label class="form-label" for="pincode">Pincode <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control @error('pincode') is-invalid @enderror"
                                     id="pincode" wire:model="pincode" placeholder="Enter pincode">
                                 @error('pincode')
@@ -28,7 +28,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="city">City</label>
+                                <label class="form-label" for="city">City <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('city') is-invalid @enderror"
                                     id="city" wire:model="city" placeholder="Enter city">
                                 @error('city')
@@ -36,7 +36,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="state">State</label>
+                                <label class="form-label" for="state">State <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('state') is-invalid @enderror"
                                     id="state" wire:model="state" placeholder="Enter state">
                                 @error('state')
@@ -44,7 +44,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="country">Country</label>
+                                <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('country') is-invalid @enderror"
                                     id="country" wire:model="country" placeholder="Enter country">
                                 @error('country')

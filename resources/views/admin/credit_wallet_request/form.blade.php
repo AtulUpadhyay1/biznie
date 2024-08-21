@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div wire:ignore>
-                                    <label for="user_id" class="form-label">User</label>
+                                    <label for="user_id" class="form-label">User <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
                                         <option value="">Select User</option>
                                         @foreach ($user_list as $user_data)
@@ -57,7 +57,7 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label class="form-label" for="reference_number">Reference Number</label>
+                                <label class="form-label" for="reference_number">Reference Number <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control  @error('reference_number') is-invalid @enderror" id="reference_number" wire:model="reference_number" placeholder="Enter Reference Number">
                                 @error('reference_number')
                                     <small class="text-danger">{{ $message }}</small>

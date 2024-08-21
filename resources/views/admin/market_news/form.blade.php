@@ -20,7 +20,7 @@
                     <form wire:submit.prevent="{{ $hidden_id ? 'update()' : 'save()' }}">
                         <div class="row mb-3">
                             <div class="col-md-12 mb-3">
-                                <label class="form-label" for="title">Title</label>
+                                <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control  @error('title') is-invalid @enderror"
                                     id="title" wire:model="title" placeholder="Enter title">
                                 @error('title')
@@ -28,7 +28,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label class="form-label" for="description">Description</label>
+                                <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
                                 <textarea id="description" class="form-control @error('description') is-invalid @enderror" wire:model="description" rows="5" placeholder="Enter description"></textarea>
                                 @error('description')
                                     <small class="text-danger">{{ $message }}</small>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="image">
-                                    Banner
+                                    Banner <span class="text-danger">*</span>
                                     <br>
                                     @if ($image)
                                         <img src="{{ $image->temporaryUrl() }}" height="150" width="300">
