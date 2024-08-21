@@ -38,4 +38,9 @@ class ProductEnquiry extends Model
     {
         return $this->hasOne(SellerProductEnquiry::class, 'product_enquiries_id')->where('is_mark', 1);
     }
+
+    public function getCommodityProductOrder()
+    {
+        return $this->hasOne(CommodityProductOrder::class, 'product_enquiries_id');
+    }
 }

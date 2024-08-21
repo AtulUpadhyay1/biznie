@@ -45,4 +45,9 @@ class CommodityProductOrder extends Model
     {
         return $this->belongsTo(User::class, 'customer_user_id');
     }
+
+    public function getProductEnquiry()
+    {
+        return $this->belongsTo(ProductEnquiry::class, 'product_enquiries_id');
+    }
 }

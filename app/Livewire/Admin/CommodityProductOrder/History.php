@@ -17,7 +17,7 @@ class History extends Component
 
     public function render()
     {
-        $data = CommodityProductOrder::findOrFail($this->hidden_id);
+        $data = CommodityProductOrder::with('getProductEnquiry')->findOrFail($this->hidden_id);
         return view('admin.commodity_product_order.history', compact('data'));
     }
 }

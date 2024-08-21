@@ -60,6 +60,9 @@
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td>
                                             {{ ucfirst($data->status) }}
+                                            @if ($data->status == 'ordered' && $data->getCommodityProductOrder)
+                                                <br><small><a href="{{route('admin.commodity-product-order.show', $data->getCommodityProductOrder->id)}}" wire:navigate>{{ $data->getCommodityProductOrder->order_id }}</a></small>
+                                            @endif
                                         </td>
                                         <td class="text-center">
                                             <a type="button" id="ActionBtn{{$data->id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-light btn-xs px-2">

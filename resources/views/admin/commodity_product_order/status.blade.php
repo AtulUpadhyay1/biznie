@@ -8,6 +8,8 @@
                     <div class="row">
                         <div class="col-6 card-title">
                             <h4>{{ $page_title }}</h4>
+                            <small> ( {{ $data->order_id }} ) </small>
+                            <span class="badge bg-primary rounded-pill ms-1">{{ $data->status }} </span>
                         </div>
                         <div class="col-6 text-end">
                             {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}

@@ -37,7 +37,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Unique Id</th>
+                                    <th>Order Id</th>
                                     <th>Brand</th>
                                     <th>Product</th>
                                     <th>Customer</th>
@@ -50,7 +50,11 @@
                                 @forelse ($list as $key => $data)
                                     <tr>
                                         <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
-                                        <td>{{ $data->order_id }}</td>
+                                        <td>
+                                            {{ $data->getProductEnquiry->unique_id }}
+                                            <br>
+                                            <small>({{ $data->order_id }})</small>
+                                        </td>
                                         <td>{{ $data->getBrand->name }}</td>
                                         <td>{{ $data->getCommodityProduct->name }}</td>
                                         <td>{{ $data->getCustomer->name }}</td>

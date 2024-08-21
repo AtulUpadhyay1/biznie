@@ -14,13 +14,13 @@ class Status extends Component
     public function mount($id)
     {
         $this->hidden_id = $id;
-        $this->data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer')->findOrFail($this->hidden_id);
+        $this->data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getProductEnquiry')->findOrFail($this->hidden_id);
         $this->status = $this->data->status;
     }
 
     public function render()
     {
-        $this->page_title = 'Order Status For - '. $this->data->order_id;
+        $this->page_title = 'Order Status For - '. $this->data->getProductEnquiry->unique_id;
         return view('admin.commodity_product_order.status');
     }
 

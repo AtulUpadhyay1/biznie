@@ -8,7 +8,9 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-6 card-title">
-                                <h4> {{ $page_title }} - {{ $data->order_id }}</h4>
+                                <h4> {{ $page_title }} - {{ $data->getProductEnquiry->unique_id }}</h4>
+                                <small> ( {{ $data->order_id }} ) </small>
+                                <span class="badge bg-primary rounded-pill ms-1">{{ $data->status }} </span>
                             </div>
                             <div class="col-6 text-end">
                                 <a href="{{route('admin.commodity-product-order.show', $data->id)}}" class="btn btn-secondary btn-icon btn-sm" title="View" wire:navigate>
