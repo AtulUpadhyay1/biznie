@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label for="category_id" class="form-label">Category</label>
+                                    <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
                                         <option value="">Select Category</option>
                                         @foreach ($category_list as $category_data)
@@ -80,6 +80,32 @@
                                 </div>
                                 @error('city') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+                            <div class="col-md-4 mb-3"></div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="city" class="form-label">Commission Type <span class="text-danger">*</span></label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="commission_type" id="commission_type" wire:model="commission_type" value="exclude">
+                                        <label class="form-check-label" for="commission_type">
+                                            Exclude
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="commission_type" id="commission_type1" wire:model="commission_type" value="include">
+                                        <label class="form-check-label" for="commission_type1">
+                                            Include
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="commission_amount" class="form-label">Commission Amount <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control @error('commission_amount') is-invalid @enderror" id="commission_amount" placeholder="Enter product pin code" wire:model="commission_amount">
+                                @error('commission_amount') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
 
                             <h5>My Package Type</h5>
                             <hr>

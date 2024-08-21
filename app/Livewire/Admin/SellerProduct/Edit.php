@@ -13,6 +13,7 @@ class Edit extends Component
     public $name;
     public $packaging_type = [], $packaging_type_name = [], $packaging_type_price = [];
     public $loading_address = [];
+    public $commission_type = 'exclude', $commission_amount = 0;
 
     public function mount($user_id, $product_id)
     {
@@ -25,7 +26,8 @@ class Edit extends Component
         $this->packaging_type       = $data->packaging_type;
         $this->packaging_type_price = $data->packaging_type_price;
         $this->loading_address      = $data->loading_address;
-
+        $this->commission_type      = $data->commission_type;
+        $this->commission_amount    = $data->commission_amount;
     }
 
     public function render()
@@ -40,6 +42,8 @@ class Edit extends Component
     {
         $this->validate([
             'name'  => 'required',
+            'commission_type'   => 'required|in:exclude,include',
+            'commission_amount' => 'required|numeric|min:0',
         ]);
         try {
             $data = SellerCommodityProduct::findOrFail($this->product_id);
@@ -48,6 +52,8 @@ class Edit extends Component
             $data->packaging_type = $this->packaging_type ?? [];
             $data->packaging_type_price = $this->packaging_type_price ?? [];
             $data->loading_address = $this->loading_address ?? [];
+            $data->commission_type      = $this->commission_type;
+            $data->commission_amount    = $this->commission_amount;
             $data->save();
 
             $this->dispatch('alert',

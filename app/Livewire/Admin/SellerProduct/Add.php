@@ -24,6 +24,8 @@ class Add extends Component
     public $packaging_type = [], $packaging_type_name = [], $packaging_type_price = [];
     public $loading_address = [];
 
+    public $commission_type = 'exclude', $commission_amount = 0;
+
     public function mount($user_id)
     {
         $this->user_id      = $user_id;
@@ -69,6 +71,8 @@ class Add extends Component
             'brand_id'      => 'required',
             'state'         => 'required',
             'city'          => 'required',
+            'commission_type'   => 'required|in:exclude,include',
+            'commission_amount' => 'required|numeric|min:0',
         ]);
 
         // try {
@@ -137,6 +141,8 @@ class Add extends Component
             $data->specification_notes  = $commodity_product->specification_notes;
             $data->thumbnail            = $commodity_product->thumbnail;
             $data->images               = $commodity_product->images;
+            $data->commission_type      = $this->commission_type;
+            $data->commission_amount    = $this->commission_amount;
             $data->loading_address      = [$this->loading_address] ?? [];
             $data->video_url            = $commodity_product->video_url;
             $data->meta_title           = $commodity_product->meta_title;
