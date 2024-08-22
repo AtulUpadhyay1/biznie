@@ -45,7 +45,8 @@ class SellerReply extends Component
             }
             $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? formatIndianNumber($this->set_enquiry_data->base_price) : 0;
             $this->transport_price = $this->set_enquiry_data->transport_price ? formatIndianNumber($this->set_enquiry_data->transport_price) : 0;
-            $this->commission = $this->set_enquiry_data->commission ? formatIndianNumber($this->set_enquiry_data->commission) : 0;
+            $this->commission = $this->set_enquiry_data->commission ? formatIndianNumber($this->set_enquiry_data->commission) : formatIndianNumber($this->set_enquiry_data->getSellerCommodityProduct->commission_amount);
+
         }
     }
 

@@ -78,7 +78,7 @@
                                             <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $list_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $list_data->id }}">
                                                     <b>{{ $list_data->getUser->getBusiness->name}} ({{$list_data->getUser->phone}}), ({{ getSellerType($list_data->user_id) }}) </b>,
-                                                    <b>Base Price</b> : {{ $list_data->base_price }}
+                                                    <b>Base Price</b> : ₹ {{ formatIndianNumber($list_data->base_price) }}
                                                 </button>
                                             </h2>
                                         </div>
@@ -100,7 +100,7 @@
                                                             <b>Address Line Two: </b> {{ $loading_address['address_line_two'] }} <br>
                                                             <b>City: </b> {{ isset($loading_address['city']) ? $loading_address['city'] : '--' }} <br>
                                                             <b>State: </b> {{ isset($loading_address['state']) ? $loading_address['state'] : '--' }} <br>
-                                                            <b>Loading Position: </b> {{ $loading_address['loading_position'] }} <br>
+                                                            <b>Loading Position: </b> {{ $loading_address['loading_position'] }} / Days <br>
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -113,7 +113,7 @@
                                                             @foreach ($list_data->value[0]['value'] as $variation_heading)
                                                                 <th>{{ $variation_heading['name'] }}</th>
                                                             @endforeach
-                                                            <th>Quantity</th>
+                                                            <th>Quantity (MT)</th>
                                                             <th>Gauge Diff.</th>
                                                             <th>Final Price</th>
                                                             <th>For Price</th>                                                           </th>
@@ -177,9 +177,9 @@
                                                                     <td>{{ $value['value'] }}</td>
                                                                 @endforeach
                                                                 <td>{{ $variation['quantity'] }}</td>
-                                                                <td>{{ $variation['price'] }}</td>
-                                                                <td>{{ $final_variation_price }}</td>
-                                                                <td>{{ $final_variation_price + $list_data->base_price }}</td>
+                                                                <td>₹ {{ formatIndianNumber($variation['price']) }}</td>
+                                                                <td>₹ {{ formatIndianNumber($final_variation_price) }}</td>
+                                                                <td>₹ {{ formatIndianNumber($final_variation_price + $list_data->base_price) }}</td>
                                                             </tr>
 
                                                         @endforeach
@@ -213,6 +213,10 @@
                         </div>
 
                         @if ($set_enquiry_data)
+                            @php
+                                $total_variation_price = 0;
+                                $total_transport_price = 0;
+                            @endphp
                             <div class="modal fade bd-example-modal-lg" id="updatePrice" tabindex="-1" aria-labelledby="updatePriceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -253,7 +257,13 @@
                                                                     <input type="number" class="form-control" wire:model="set_enquiry_data_price.{{$loop->index}}">
                                                                 </td>
                                                                 <td>
-                                                                    {{ formatIndianNumber($variation['price'] + str_replace(',', '', $set_enquiry_data_base_price)) }}
+                                                                    @php
+                                                                        $variation_price = $variation['price'] + str_replace(',', '', $set_enquiry_data_base_price);
+                                                                        $total_variation_price += $variation_price;
+
+                                                                        $total_transport_price +=  $variation['quantity'] * $transport_price;
+                                                                    @endphp
+                                                                    ₹ {{ formatIndianNumber($variation_price) }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -280,12 +290,26 @@
                                                         <tr>
                                                             <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
                                                             <td style="border-right: hidden;">
-                                                                <label for="commission" class="form-label">Commission</label>
+                                                                <label for="commission" class="form-label">Commission <br>
+                                                                    ({{ ucfirst($set_enquiry_data->getSellerCommodityProduct->commission_type) }})
+                                                                </label>
                                                             </td>
                                                             <td colspan="2">
                                                                 <input type="text" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model="commission" oninput="formatIndianCurrency(this)">
                                                                 @error('commission') <small class="text-danger">{{ $message }}</small>@enderror
+                                                            </td>
+                                                        </tr>
 
+                                                        <tr>
+                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
+                                                            <td style="border-right: hidden;">
+                                                                {{-- <label for="" class="form-label">Total Transport Price</label> --}}
+                                                                <label for="" class="form-label">Total</label>
+                                                            </td>
+                                                            <td colspan="2">
+                                                                {{-- ₹ {{ formatIndianNumber($total_transport_price) }}
+                                                                <br> --}}
+                                                                ₹ {{ formatIndianNumber($total_variation_price) }}
                                                             </td>
                                                         </tr>
                                                     </tbody>

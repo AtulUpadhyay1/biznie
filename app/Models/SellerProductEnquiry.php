@@ -36,7 +36,7 @@ class SellerProductEnquiry extends Model
 
     public function getSellerCommodityProduct()
     {
-        return $this->belongsTo(SellerCommodityProduct::class, 'commodity_product_id');
+        return $this->belongsTo(SellerCommodityProduct::class, 'user_id', 'user_id');
     }
 
     public function getUser()
