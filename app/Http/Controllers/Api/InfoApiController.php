@@ -32,4 +32,12 @@ class InfoApiController extends Controller
 
         }
     }
+
+    public function handshake()
+    {
+        return response([
+            'success' => true,
+            'message' => 'Handshake successful.'
+        ],200);
+    }
 }

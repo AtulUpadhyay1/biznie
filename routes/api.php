@@ -20,6 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
+    // Handshake
+    Route::get('handshake', 'InfoApiController@handshake');
+
     // Registeration form info
     Route::get('registration-form-info', 'InfoApiController@registrationFormInfo');
 
