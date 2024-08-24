@@ -22,6 +22,7 @@ class OrderDetailResource extends JsonResource
             'id'                => $this->id,
             'unique_id'         => $this->unique_id,
             'order_id'          => $this->order_id,
+            'enquiry_id'        => $this->getProductEnquiry->unique_id,
             'brand'             => $this->getBrand ? [
                     'id'        => $this->getBrand->id,
                     'name'      => $this->getBrand->name
