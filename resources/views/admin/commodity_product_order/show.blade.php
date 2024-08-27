@@ -9,7 +9,7 @@
                         <div class="col-5 card-title">
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
-                            <span class="badge bg-primary rounded-pill ms-1">{{ $data->status }} </span>
+                            <span class="badge rounded-pill border {{$data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }} </span>
                         </div>
                         <div class="col-7 text-end">
                             {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}

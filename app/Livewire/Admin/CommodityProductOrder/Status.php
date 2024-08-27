@@ -9,7 +9,7 @@ use App\Models\CommodityProductOrder;
 class Status extends Component
 {
     public $page_title = 'Order Status';
-    public $hidden_id, $data, $status;
+    public $hidden_id, $data, $status, $cancel_reason;
 
     public function mount($id)
     {
@@ -27,6 +27,7 @@ class Status extends Component
     public function updateStatus()
     {
         $this->data->status = $this->status;
+        $this->data->cancel_reason = $this->cancel_reason;
         $history = $this->data->history;
         $history[] = ['status' => 'Order ' .ucwords($this->status). ' By Admin', 'created_at' => Carbon::now()];
         $this->data->history = $history;

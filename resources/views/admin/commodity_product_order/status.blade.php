@@ -9,7 +9,7 @@
                         <div class="col-6 card-title">
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
-                            <span class="badge bg-primary rounded-pill ms-1">{{ $data->status }} </span>
+                            <span class="badge rounded-pill border {{$data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }} </span>
                         </div>
                         <div class="col-6 text-end">
                             {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
@@ -31,21 +31,21 @@
                         <div class="col-8">
                             <p><b>Current Status : </b> {{ ucwords($data->status) }}</p>
                         </div>
-
-                        <div class="col-4 text-end mb-2">
-                            <select class="form-select" wire:model="status" wire:change="updateStatus()">
-                                <option value="pending" disabled="">Pending</option>
-                                <option value="confirm">Confirm</option>
-                                <option value="vehicle booked">Vehicle Booked</option>
-                                <option value="vehicle waiting to load">Vehicle Waiting To Load</option>
-                                <option value="loading">Loading</option>
-                                <option value="bills generated">Bills Generated</option>
-                                <option value="dispatched">Dispatched</option>
-                                <option value="delivered">Delivered</option>
-                                <option value="cancel">Cancel</option>
-                            </select>
-                        </div>
-
+                        @if ($data->status != 'cancel')
+                            <div class="col-4 text-end mb-2">
+                                <select class="form-select" wire:model="status" id="status">
+                                    <option value="pending" disabled="">Pending</option>
+                                    <option value="confirm">Confirm</option>
+                                    <option value="vehicle booked">Vehicle Booked</option>
+                                    <option value="vehicle waiting to load">Vehicle Waiting To Load</option>
+                                    <option value="loading">Loading</option>
+                                    <option value="bills generated">Bills Generated</option>
+                                    <option value="dispatched">Dispatched</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="cancel">Cancel</option>
+                                </select>
+                            </div>
+                        @endif
                         <hr>
                         <div class="col-4">
                             <p>
@@ -155,4 +155,38 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="orderCancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="orderCancelLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderCancelLabel">Cancel Reason</h5>
+                </div>
+                <div class="modal-body">
+                    <lable for="cancel_reason">Please provide a brief description of why you want to cancel this order. <span class="text-danger">*</span></lable>
+                    <textarea class="form-control" id="cancel_reason" rows="5" wire:model="cancel_reason"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <a href="" class="btn btn-secondary" wire:navigate>Close</a>
+                    <button type="button" class="btn btn-danger" wire:click="updateStatus()" data-bs-dismiss="modal">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#status').change(function() {
+                    let status = $(this).val();
+                    if(status != 'cancel'){
+                        @this.updateStatus();
+                    }else{
+                        $('#orderCancel').modal('show');
+                    }
+                });
+            });
+        </script>
+    @endpush
 </div>
