@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Customer\Authenticated;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -162,6 +163,78 @@ class OrderApiController extends Controller
         return response([
             'success'   => true,
             'message'   => 'Order Id '.$order->order_id.' payment successfully completed.',
+        ],200);
+    }
+
+    public function statusUpdate(Request $request)
+    {
+        $request->validate([
+            'order_id'  => 'required',
+            'status'    => 'required'
+        ]);
+        $data = CommodityProductOrder::find($request->order_id);
+        if(!$data){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid given id.',
+            ],200);
+        }
+        $data->status = $request->status;
+        $data->cancel_reason = $request->cancel_reason;
+        $history = $data->history;
+        $history[] = ['status' => 'Order ' .ucwords($request->status). ' By Customer', 'created_at' => Carbon::now()];
+        $data->history = $history;
+        $data->save();
+
+        if($request->status == 'cancel') {
+
+            $user = User::find($data->customer_user_id);
+
+            $cash_wallet_amount = CashWalletTransaction::where('commodity_product_order_id', $data->id)->where('status', 'debit')->sum('amount');
+
+            if($cash_wallet_amount > 0) {
+                $user->cash_balance = $user->cash_balance + $cash_wallet_amount;
+                $user->save();
+
+                $cash_history = new CashWalletTransaction;
+                $cash_history->user_id           = $user->id;
+                $cash_history->commodity_product_order_id = $data->id;
+                $cash_history->amount            = $cash_wallet_amount;
+                $cash_history->description       = 'Amount refunded from Order Id: '.$data->order_id;
+                $cash_history->mode              = 'online';
+                $cash_history->status            = 'credit';
+                $cash_history->transaction_status= 'Amount Refunded';
+                $cash_history->save();
+
+                $cash_history->transaction_id    = 'TX-'.date('Ymd').$cash_history->id.$user->id.rand(111, 999);
+                $cash_history->save();
+            }
+
+            $credit_wallet_amount = CreditWalletTransaction::where('commodity_product_order_id', $data->id)->where('status', 'debit')->sum('amount');
+
+            if($credit_wallet_amount > 0) {
+                $user->credit_balance = $user->credit_balance + $credit_wallet_amount;
+                $user->save();
+
+                $credit_history = new CreditWalletTransaction;
+                $credit_history->user_id           = $user->id;
+                $credit_history->commodity_product_order_id = $data->id;
+                $credit_history->amount            = $credit_wallet_amount;
+                $credit_history->description       = 'Amount refunded from Order Id: '.$data->order_id;
+                $credit_history->status            = 'credit';
+                $credit_history->transaction_status= 'Amount Refunded';
+                $credit_history->save();
+
+                $credit_history->transaction_id    = 'TX-'.date('Ymd').$credit_history->id.$user->id.rand(111, 999);
+                $credit_history->save();
+
+            }
+
+        }
+
+        return response([
+            'success'   => true,
+            'message'   => 'Order status updated successfully.',
         ],200);
     }
 }

@@ -110,6 +110,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
         Route::post('update-quality-check-status', 'Authenticated\OrderApiController@qualityCheckStatus');
         Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity');
         Route::post('pay-order-due/{id}', 'Authenticated\OrderApiController@payOrderDue');
+        Route::post('order-status-update', 'Authenticated\OrderApiController@statusUpdate');
 
     });
 

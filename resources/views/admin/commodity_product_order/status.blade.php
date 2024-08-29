@@ -159,17 +159,52 @@
     <!-- Modal -->
     <div class="modal fade" id="orderCancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="orderCancelLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered modal-lg">
+            <x-loader />
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="orderCancelLabel">Cancel Reason</h5>
                 </div>
                 <div class="modal-body">
-                    <lable for="cancel_reason">Please provide a brief description of why you want to cancel this order. <span class="text-danger">*</span></lable>
-                    <textarea class="form-control" id="cancel_reason" rows="5" wire:model="cancel_reason"></textarea>
+                    <lable for="cancel_reason">Please Select Reason <span class="text-danger">*</span></lable>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="price_increased" value="Price Increased" wire:model.live="cancel_reason">
+                        <label class="form-check-label" for="price_increased">
+                            Price Increased
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="price_descreased" value="Price Decreased" wire:model.live="cancel_reason">
+                        <label class="form-check-label" for="price_descreased">
+                            Price Decreased
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="sale_closed" value="Sale Closed" wire:model.live="cancel_reason">
+                        <label class="form-check-label" for="sale_closed">
+                            Sale Closed
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="stock_out" value="Stock Out" wire:model.live="cancel_reason">
+                        <label class="form-check-label" for="stock_out">
+                            Stock Out
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="other" value="Other" wire:model.live="cancel_reason">
+                        <label class="form-check-label" for="other">
+                            Other
+                        </label>
+                    </div>
+                    @if($this->cancel_reason == 'Other')
+                        <textarea class="form-control" id="cancel_reason" rows="5" wire:model="cancel_reason_text" placeholder="Please provide a brief description of why you want to cancel this order."></textarea>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <a href="" class="btn btn-secondary" wire:navigate>Close</a>
-                    <button type="button" class="btn btn-danger" wire:click="updateStatus()" data-bs-dismiss="modal">Update</button>
+                    @if ($this->cancel_reason)
+                        <button type="button" class="btn btn-danger" wire:click="updateStatus()" data-bs-dismiss="modal">Update</button>
+                    @endif
                 </div>
             </div>
         </div>

@@ -122,6 +122,7 @@ class ConvertToOrder extends Component
 
             $cash_history = new CashWalletTransaction;
             $cash_history->user_id           = $customer->id;
+            $cash_history->commodity_product_order_id   = $order->id;
             $cash_history->amount            = $this->token_amount;
             $cash_history->description       = 'Amount debited for Order Id: '.$order->order_id;
             $cash_history->mode              = 'online';
@@ -139,6 +140,7 @@ class ConvertToOrder extends Component
             // Cash balance
             $cash_history = new CashWalletTransaction;
             $cash_history->user_id           = $customer->id;
+            $cash_history->commodity_product_order_id   = $order->id;
             $cash_history->amount            = $customer->cash_balance;
             $cash_history->description       = 'Amount debited for Order Id: '.$order->order_id;
             $cash_history->mode              = 'online';
@@ -159,6 +161,7 @@ class ConvertToOrder extends Component
 
             $credit_history = new CreditWalletTransaction;
             $credit_history->user_id           = $customer->id;
+            $credit_history->commodity_product_order_id   = $order->id;
             $credit_history->amount            = $remaining_amount;
             $credit_history->description       = 'Amount debited for Order Id: '.$order->order_id;
             $credit_history->status            = 'debit';
