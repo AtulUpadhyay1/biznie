@@ -9,7 +9,7 @@ use App\Models\CommodityProductOrderDriver;
 class Edit extends Component
 {
     use WithFileUploads;
-    public $page_title = 'Edit Driver';
+    public $page_title = 'Edit Vehicle';
 
     public $hidden_id, $order_id, $name, $phone, $alternate_phone_number, $vehicle_number, $tracking_number, $transporter_name, $transporter_phone_number, $advance_amount, $driver_photo, $unloaded_vehicle_photo, $loaded_vehicle_photo, $driver_with_vehicle_photo, $invoice, $ebill, $ebill_expiry_date, $transport_receipt;
     public $show_driver_photo, $show_unloaded_vehicle_photo, $show_loaded_vehicle_photo, $show_driver_with_vehicle_photo, $show_invoice, $show_ebill, $show_transport_receipt;

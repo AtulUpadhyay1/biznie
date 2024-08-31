@@ -7,7 +7,7 @@ use App\Models\CommodityProductOrderDriver;
 
 class Show extends Component
 {
-    public $page_title = 'View Driver';
+    public $page_title = 'View Vehicle';
     public $hidden_id, $order_id;
     public function mount($order_id, $id)
     {

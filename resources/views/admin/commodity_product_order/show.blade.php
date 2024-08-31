@@ -203,13 +203,16 @@
                     <div class="card mt-2">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-10">
+                                <div class="col-8">
                                     <div class="card-title">
-                                        <h5>Driver List</h5>
+                                        <h5>Vehicle List</h5>
                                     </div>
                                 </div>
-                                <div class="col-2">
-                                    <a href="{{route('admin.commodity-product-order-driver.create', $data->id)}}" class="btn btn-secondary btn-xs btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-plus btn-icon-prepend"></i>Add</a>
+                                <div class="col-4 float-end">
+                                    <a href="{{route('admin.commodity-product-order-driver.create', $data->id)}}" class="btn btn-secondary btn-xs btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-plus-lg btn-icon-prepend"></i>Add</a>
+                                    <button type="button" class="btn btn-light btn-xs btn-icon-text float-end align-items-center me-2" data-bs-toggle="modal" data-bs-target="#notesModal">
+                                        <i class="bi bi-journal-text btn-icon-prepend"></i>Notes
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -223,25 +226,39 @@
                                                     <img class="wd-70 rounded-circle profile-img" src="{{ imageUrl($driver->photo) }}" onerror="this.onerror=null; this.src='{{ asset('admin_css/assets/images/avatar.png') }}'" alt="profile">
                                                 </div>
                                                 <div class="text-center mb-2">
-                                                    <h6 class="card-title mb-0">{{$driver->name}}</h6>
-                                                </div>
-                                                <p><i class="bi bi-phone"></i> {{$driver->phone}} </p>
-                                                <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Vehicle Number:</label>
-                                                    <p class="text-muted">{{$driver->vehicle_number}}</p>
-                                                </div>
-                                                <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Tracking Number:</label>
-                                                    <p class="text-muted">{{$driver->tracking_number ?? '--'}}</p>
+                                                    <h6 class="card-title mb-0">{{$driver->vehicle_number}}</h6>
                                                 </div>
                                                 <div class="mt-1">
                                                     <label class="tx-11 fw-bolder mb-0 text-uppercase">Transporter Name:</label>
                                                     <p class="text-muted">{{$driver->transporter_name ?? '--'}}</p>
                                                 </div>
+
                                                 <div class="mt-1">
                                                     <label class="tx-11 fw-bolder mb-0 text-uppercase">Transporter Phone Number:</label>
                                                     <p class="text-muted">{{$driver->transporter_phone_number ?? '--'}}</p>
                                                 </div>
+
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Total Quantity:</label>
+                                                    <p class="text-muted">0</p>
+                                                </div>
+
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Driver Name:</label>
+                                                    <p class="text-muted">{{$driver->name ?? '--'}}</p>
+                                                </div>
+
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Driver Phone Number:</label>
+                                                    <p class="text-muted">{{$driver->phone}}</p>
+                                                </div>
+
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Tracking Number:</label>
+                                                    <p class="text-muted">{{$driver->tracking_number ?? '--'}}</p>
+                                                </div>
+
+
                                                 <div class="mt-1">
                                                     <label class="tx-11 fw-bolder mb-0 text-uppercase">Advance Amount:</label>
                                                     <p class="text-muted">{{$driver->advance_amount ?? '--'}}</p>
@@ -374,4 +391,22 @@
         </div>
     </div>
 
+    <div class="modal fade" id="notesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="notesModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form wire:submit.prevent="uploadVehicleNotes()">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="notesModalLabel">Vehicle Notes</h1>
+                    </div>
+                    <div class="modal-body">
+                        <textarea class="form-control" cols="30" rows="10" placeholder="Enter Vehicle Notes..." wire:model="vehicle_notes"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

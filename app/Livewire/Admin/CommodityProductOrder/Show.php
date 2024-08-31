@@ -15,7 +15,7 @@ class Show extends Component
 {
     use WithFileUploads;
     public $page_title = 'View Order';
-    public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file;
+    public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file, $vehicle_notes;
 
     public function mount($id)
     {
@@ -26,6 +26,7 @@ class Show extends Component
     {
         $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getProductEnquiry')->findOrFail($this->hidden_id);
         $this->page_title = 'View Order '. $data->getProductEnquiry->unique_id;
+        $this->vehicle_notes = $data->vehicle_notes;
         return view('admin.commodity_product_order.show', compact('data'));
     }
 
@@ -209,5 +210,22 @@ class Show extends Component
             type : 'success',
             message : 'Customer quality check status updated successfully !!',
         );
+    }
+
+    public function uploadVehicleNotes()
+    {
+        $data = CommodityProductOrder::find($this->hidden_id);
+        if (!$data) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Invalid id given. Please try again.'
+            ]);
+            return false;
+        }
+        $data->vehicle_notes = $this->vehicle_notes;
+        $data->save();
+
+        session()->flash('success', 'Vehicle notes updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
 }
