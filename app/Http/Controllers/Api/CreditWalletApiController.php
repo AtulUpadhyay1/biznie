@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\CreditWalletRequest;
 use App\Http\Controllers\Controller;
@@ -23,6 +24,9 @@ class CreditWalletApiController extends Controller
     public function creditWallet()
     {
         $transaction = CreditWalletTransaction::where('user_id', auth()->id())->select(['transaction_id', 'amount', 'description', 'notes', 'status', 'transaction_status', 'created_at'])->latest()->simplePaginate(getPaginate());
+        foreach ($transaction as $item) {
+            $item->created_date = Carbon::parse($item->created_at)->format('d-m-Y H:i:s');
+        }
         return response([
             'success'               => true,
             'credit_balance'        => auth()->user()->credit_balance,

@@ -264,30 +264,33 @@
                                                     <p class="text-muted">{{$driver->advance_amount ?? '--'}}</p>
                                                 </div>
                                             </div>
-                                            <div class="card-footer">
-                                                <div class="d-flex">
-                                                    <a href="{{route('admin.commodity-product-order-driver.show', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs me-2 btn-light" title="View" wire:navigate>
-                                                        <i class="bi bi-eye"></i>
-                                                    </a>
-                                                    <a href="{{route('admin.commodity-product-order-driver.edit', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs me-2 btn-info" title="Edit" wire:navigate>
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                    <a href="javascript:;" class="btn btn-icon border btn-xs me-2 btn-danger" title="Remove" wire:click="driverDelete({{$driver->id}})">
-                                                        <i class="bi bi-trash3"></i>
-                                                    </a>
-                                                    @if ($driver->generate_invoice)
-                                                        <button type="button" class="btn btn-icon border btn-xs me-2 btn-success" title="Print Invoice" wire:click="generateInvoice({{$driver->id}})">
-                                                            <i class="bi bi-printer"></i>
-                                                        </button>
-                                                    @else
-                                                        <button type="button" class="btn btn-icon border btn-xs me-2 btn-primary" title="Generate Invoice" type="button" data-bs-toggle="modal" data-bs-target="#invoiceGenrateModal_{{$driver->id}}">
-                                                            <i class="bi bi-gear-wide-connected"></i>
-                                                        </button>
-                                                    @endif
-                                                    <button type="button" class="btn btn-icon border btn-xs me-2 btn-primary" title="eBill" type="button" data-bs-toggle="modal" data-bs-target="#eBillModal_{{$driver->id}}">
-                                                        <i class="bi bi-receipt"></i>
+                                            <div class="card-footer p-1">
+                                                <a href="{{route('admin.commodity-product-order-driver.show', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs m-1 btn-light" title="View" wire:navigate>
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="{{route('admin.commodity-product-order-driver.edit', [$data->id, $driver->id])}}" class="btn btn-icon border btn-xs m-1 btn-info" title="Edit" wire:navigate>
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <a href="javascript:;" class="btn btn-icon border btn-xs m-1 btn-danger" title="Remove" wire:click="driverDelete({{$driver->id}})">
+                                                    <i class="bi bi-trash3"></i>
+                                                </a>
+                                                @if ($driver->generate_invoice)
+                                                    <button type="button" class="btn btn-icon border btn-xs m-1 btn-success" title="Print Invoice" wire:click="generateInvoice({{$driver->id}})">
+                                                        <i class="bi bi-printer"></i>
                                                     </button>
-                                                </div>
+                                                @else
+                                                    <button type="button" class="btn btn-icon border btn-xs m-1 btn-primary" title="Generate Invoice" type="button" data-bs-toggle="modal" data-bs-target="#invoiceGenrateModal_{{$driver->id}}">
+                                                        <i class="bi bi-gear-wide-connected"></i>
+                                                    </button>
+                                                @endif
+                                                <button type="button" class="btn btn-icon border btn-xs m-1 btn-primary" title="eBill" type="button" data-bs-toggle="modal" data-bs-target="#eBillModal_{{$driver->id}}">
+                                                    <i class="bi bi-receipt"></i>
+                                                </button>
+
+                                                <a href="{{route('admin.commodity-product-order-driver.quantity', [$data->id, $driver->id])}}" class="btn btn-secondary btn-xs btn-icon-text m-1" title="View" wire:navigate>
+                                                    <i class="bi bi-clipboard2-data btn-icon-prepend"></i> Update Quantity
+                                                </a>
+
                                             </div>
                                         </div>
                                     </div>
