@@ -26,6 +26,30 @@
                     <p><span class="fw-bold text-danger">Alternate Number </span> : {{ $driver_data->alternate_phone_number }} </p>
                     <p><span class="fw-bold text-danger">Transporter Name </span> : {{ $driver_data->transporter_name }} </p>
                     <p><span class="fw-bold text-danger">Transporter Number </span> : {{ $driver_data->transporter_phone_number }} </p>
+
+                    <div class="table-responsive mt-3">
+                        <table class="custom-table">
+                            <tbody>
+                                @foreach ($order_data->value as $key => $variation)
+
+                                    <tr>
+                                        @foreach ($variation['value'] as $value)
+                                            <td>{{ $value['name'] }} : <span class="fw-bold">{{ $value['value'] }} {{ $value['unit']['short_name'] }}</span> </td>
+                                        @endforeach
+                                        <td style="width: 30%;">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control form-control-sm @error('quantity.'.$key) is-invalid @enderror" placeholder="Enter quantity" wire:model="quantity.{{$key}}">
+                                                <span class="input-group-text input-group-addon p-1">MT</span>
+                                            </div>
+                                            @error('quantity.'.$key) <small class="text-danger">{{ $message }}</small>@enderror
+                                        </td>
+                                    </tr>
+
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-danger mt-2" wire:click="update()">Submit</button>
                 </div>
             </div>
         </div>

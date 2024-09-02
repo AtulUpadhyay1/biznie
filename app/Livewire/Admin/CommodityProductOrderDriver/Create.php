@@ -69,7 +69,7 @@ class Create extends Component
             $order->save();
         }
 
-        session()->flash('success', 'Driver added successfully !!');
+        session()->flash('success', 'Vehicle added successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->order_id ,navigate: true);
     }
 }

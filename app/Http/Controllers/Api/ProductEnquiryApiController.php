@@ -42,7 +42,7 @@ class ProductEnquiryApiController extends Controller
             'origin_city'           => 'required',
             'variation'             => 'required',
             'billing_address'       => 'required',
-            'delivery_address'      => 'required',
+            // 'delivery_address'      => 'required',
         ]);
 
         try {
