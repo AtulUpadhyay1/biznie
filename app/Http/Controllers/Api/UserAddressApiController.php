@@ -13,7 +13,7 @@ class UserAddressApiController extends Controller
      */
     public function index()
     {
-        $list = UserAddress::where('user_id', auth()->id())->select(['id', 'pincode', 'address_line_one', 'address_line_two', 'city', 'state', 'country'])->get();
+        $list = UserAddress::where('user_id', auth()->id())->select(['id', 'pincode', 'address_line_one', 'address_line_two', 'city', 'state', 'country', 'company_name', 'phone', 'gst'])->get();
         return response()->json([
             'success'   => true,
             'list'      => $list
@@ -31,6 +31,9 @@ class UserAddressApiController extends Controller
             'address_line_two'  => 'required',
             'city'              => 'required',
             'state'             => 'required',
+            'company_name'      => 'required',
+            'phone'             => 'required',
+            'gst'               => 'required',
         ]);
 
         $data = new UserAddress;
@@ -41,6 +44,9 @@ class UserAddressApiController extends Controller
         $data->city             = $request->city;
         $data->state            = $request->state;
         $data->country          = 'India';
+        $data->company_name     = $request->company_name;
+        $data->phone            = $request->phone;
+        $data->gst              = $request->gst;
         $data->save();
         return response()->json([
            'success'    => true,
@@ -67,6 +73,9 @@ class UserAddressApiController extends Controller
             'address_line_two'  => 'required',
             'city'              => 'required',
             'state'             => 'required',
+            'company_name'      => 'required',
+            'phone'             => 'required',
+            'gst'               => 'required',
         ]);
 
         $data = UserAddress::where('user_id', auth()->id())->find($id);
@@ -83,6 +92,9 @@ class UserAddressApiController extends Controller
         $data->city             = $request->city;
         $data->state            = $request->state;
         $data->country          = 'India';
+        $data->company_name     = $request->company_name;
+        $data->phone            = $request->phone;
+        $data->gst              = $request->gst;
         $data->save();
         return response()->json([
            'success'    => true,
