@@ -261,7 +261,7 @@
 
                                                 <div class="mt-1">
                                                     <label class="tx-11 fw-bolder mb-0 text-uppercase">Advance Amount:</label>
-                                                    <p class="text-muted">{{$driver->advance_amount ?? '--'}}</p>
+                                                    <p class="text-muted">₹ {{formatIndianNumber($driver->advance_amount) ?? '--'}}</p>
                                                 </div>
                                             </div>
                                             <div class="card-footer p-1">
