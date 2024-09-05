@@ -240,7 +240,7 @@
 
                                                 <div class="mt-1">
                                                     <label class="tx-11 fw-bolder mb-0 text-uppercase">Total Quantity:</label>
-                                                    <p class="text-muted">0</p>
+                                                    <p class="text-muted">{{$driver->final_quantity_by_seller ? array_sum($driver->final_quantity_by_seller) : 0}}</p>
                                                 </div>
 
                                                 <div class="mt-1">
