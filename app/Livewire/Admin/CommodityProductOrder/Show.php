@@ -140,36 +140,88 @@ class Show extends Component
             $order_detail->history = $history;
             $order_detail->save();
         }
-        // Create the initial data array
+
         $data = [
             'order_detail' => $order_detail,
             'driver_detail' => $driver_detail,
         ];
 
-        // Generate PDF content without QR code
         $pdfContent = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->output();
 
-        // Save PDF to storage
-        $filePath = 'public/order_invoice/' . $order_detail->order_id . '_invoice.pdf';
-        Storage::put($filePath, $pdfContent);
+        return response()->streamDownload(function () use ($pdfContent) {
+            echo $pdfContent;
+        }, $order_detail->order_id . '_invoice.pdf', [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $order_detail->order_id . '_invoice.pdf"'
+        ]);
 
-        // Get public URL
-        $publicUrl = Storage::url($filePath);
-
-        // Generate QR Code for the public URL
-        $qrCode = QrCode::size(100)->generate($publicUrl);
-        $data['qrCode'] = $qrCode;
-
-        // Generate PDF content again including the QR code
-        $pdfContentWithQrCode = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->output();
-
-        // Save PDF to storage again
-        Storage::put($filePath, $pdfContentWithQrCode);
-
-        // Redirect to the public URL
-        return redirect($publicUrl);
-
+        // // Stream the PDF to the browser for inline viewing
+        // return response()->stream(function () use ($pdfContent) {
+        //     echo $pdfContent;
+        // }, 200, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename="' . $order_detail->order_id . '_invoice.pdf"'
+        // ]);
     }
+
+    // public function generateInvoice($driver_id)
+    // {
+    //     $data = CommodityProductOrderDriver::find($driver_id);
+    //     if (!$data) {
+    //         $this->dispatch('alert', [
+    //             'type' => 'error',
+    //             'message' => 'Invalid id given. Please try again.'
+    //         ]);
+    //         return false;
+    //     }
+    //     if (!$data->generate_invoice) {
+    //         $this->validate([
+    //             'generate_invoice' => 'required'
+    //         ]);
+    //         $data->generate_invoice = $this->generate_invoice;
+    //         $data->save();
+    //     }
+    //     $driver_detail = $data;
+    //     $order_detail = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer')->findOrFail($this->hidden_id);
+
+    //     $driver_count = CommodityProductOrderDriver::where('order_id', $this->hidden_id)->whereNotNull('generate_invoice')->count();
+    //     if($driver_count == 1){
+    //         $order_detail->status = "bills generated";
+    //         $history = $order_detail->history;
+    //         $history[] = ['status' => 'Order ' .ucwords($order_detail->status). ' By Admin', 'created_at' => Carbon::now()];
+    //         $order_detail->history = $history;
+    //         $order_detail->save();
+    //     }
+    //     // Create the initial data array
+    //     $data = [
+    //         'order_detail' => $order_detail,
+    //         'driver_detail' => $driver_detail,
+    //     ];
+
+    //     // Generate PDF content without QR code
+    //     $pdfContent = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->output();
+
+    //     // Save PDF to storage
+    //     $filePath = 'public/order_invoice/' . $order_detail->order_id . '_invoice.pdf';
+    //     Storage::put($filePath, $pdfContent);
+
+    //     // Get public URL
+    //     $publicUrl = Storage::url($filePath);
+
+    //     // Generate QR Code for the public URL
+    //     $qrCode = QrCode::size(100)->generate($publicUrl);
+    //     $data['qrCode'] = $qrCode;
+
+    //     // Generate PDF content again including the QR code
+    //     $pdfContentWithQrCode = PDF::loadView('admin.commodity_product_order.print_invoice', $data)->output();
+
+    //     // Save PDF to storage again
+    //     Storage::put($filePath, $pdfContentWithQrCode);
+
+    //     // Redirect to the public URL
+    //     return redirect($publicUrl);
+
+    // }
 
     public function updateeBill($driver_id)
     {
