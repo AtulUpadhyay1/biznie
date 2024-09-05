@@ -1,0 +1,126 @@
+<div>
+    @section('title', config('app.name') . ' | ' . $page_title)
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-6 card-title">
+                            <h4>{{ $page_title }}</h4>
+                        </div>
+                        <div class="col-6 text-end">
+                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
+                                {{-- <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
+                                    <span class="input-group-text input-group-addon bg-transparent border-danger"
+                                        data-toggle><i data-feather="calendar" class="text-danger"></i></span>
+                                    <input type="text" class="form-control bg-transparent border-danger"
+                                        placeholder="Select date" data-input>
+                                </div>
+                                <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
+                                    <i class="btn-icon-prepend" data-feather="download-cloud"></i>
+                                    Download Report
+                                </button> --}}
+                                <a href="{{ route('admin.transporter.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
+                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
+                                    Add
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-horizontal filter-list-group">
+                        <li class="list-group-item border-0">
+                            <form class="custom-search-bar">
+                                <div class="input-group">
+                                    <span class="input-group-text"> <i data-feather="search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search here...">
+                                </div>
+                            </form>
+                        </li>
+                        <li class="list-group-item border-0">
+                            <select class="form-select">
+                                <option>Type</option>
+                                <option>Dairy</option>
+                            </select>
+                        </li>
+                        <li class="list-group-item border-0">
+                            <select class="form-select">
+                                <option selected disabled>City</option>
+                            </select>
+                        </li>
+                        <li class="list-group-item border-0">
+                            <select class="form-select">
+                                <option selected disabled>State</option>
+                            </select>
+                        </li>
+                        <li class="list-group-item border-0">
+                            <select class="form-select">
+                                <option selected disabled>Pincode</option>
+                            </select>
+                        </li>
+                        <li class="list-group-item border-0">
+                            <select class="form-select">
+                                <option selected disabled>Status</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Contact Info</th>
+                                    <th>Registration Date</th>
+                                    <th>Last Active</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($list as $key => $data)
+                                    <tr>
+                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $data->name }}</td>
+                                        <td>
+                                            <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>
+                                        </td>
+                                        <td>{{ dateFormat($data->created_at) }}</td>
+                                        <td>{{ lastActive($data->id) }}</td>
+                                        <td>
+                                            {!! $data->status == 'active' ? '<span class="text-success fw-bolder"> Active </span>' : '<span class="text-danger fw-bolder"> Inactive </span>' !!}
+                                        </td>
+                                        <td class="text-center">
+                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.edit', $data->id)}}" wire:navigate><i
+                                                    class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <x-table-no-data />
+                                @endforelse
+                            </tbody>
+                        </table>
+                        <div class="mt-2">
+                            {{ $list->links() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

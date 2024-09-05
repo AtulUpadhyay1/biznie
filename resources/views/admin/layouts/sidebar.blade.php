@@ -65,6 +65,27 @@
                 </ul>
             </div>
             <!--End of customer -->
+
+            <!--Customers-->
+            <li class="nav-item {{ isActiveRoute(['admin.transporter.index']) ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#trasporter" role="button"
+                    aria-expanded="false" aria-controls="trasporter">
+                    <i class="bi bi-truck-front"></i>
+                    <span class="link-title">Transporters</span>
+                    <i class="bi bi-chevron-down link-arrow"></i>
+                </a>
+            </li>
+            <div class="collapse {{ isActiveRoute(['admin.transporter.index']) ? 'show' : '' }}" id="trasporter">
+                <ul class="nav sub-menu">
+                    <li class="nav-item {{ isActiveRoute(['admin.transporter.index']) ? 'active' : '' }}">
+                        <a href="{{route('admin.transporter.index')}}" class="nav-link" wire:navigate>
+                            All Transporters
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--End of customer -->
+
             <li class="nav-item nav-category">Product Management</li>
             <li class="nav-item {{ isActiveRoute(['admin.attribute.index', 'admin.attribute.create', 'admin.attribute.edit']) ? 'active' : '' }}">
                 <a href="{{route('admin.attribute.index')}}" class="nav-link" wire:navigate>

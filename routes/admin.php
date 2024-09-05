@@ -223,6 +223,12 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('credit-wallet-request/create', AdminRoot\CreditWalletRequest\Create::class)->name('credit-wallet-request.create');
         Route::get('credit-wallet-request/show/{id}', AdminRoot\CreditWalletRequest\Show::class)->name('credit-wallet-request.show');
 
+        // Transporter
+        Route::get('transporter', AdminRoot\Transporter\Index::class)->name('transporter.index');
+        Route::get('transporter/create', AdminRoot\Transporter\Create::class)->name('transporter.create');
+        Route::get('transporter/edit/{id}', AdminRoot\Transporter\Edit::class)->name('transporter.edit');
+
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

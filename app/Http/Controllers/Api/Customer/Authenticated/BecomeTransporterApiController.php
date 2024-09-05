@@ -24,22 +24,22 @@ class BecomeTransporterApiController extends Controller
 
         $user = auth()->user();
 
-        if($user->type == 'transport'){
+        if($user->type == 'transporter'){
             return response([
                 'success'   => false,
-                'message'   => 'Yor are already a transport.'
+                'message'   => 'Yor are already a transporter.'
             ],400);
         }
 
         $user->name = $request->user_name;
         $user->email = $request->email;
-        $user->type = 'transport';
+        $user->type = 'transporter';
         $user->save();
 
         $user_log_history = new UserPromotionHistory;
         $user_log_history->user_id = $user->id;
         $user_log_history->old_type = "customer";
-        $user_log_history->new_type = "transport";
+        $user_log_history->new_type = "transporter";
         $user_log_history->save();
 
         $transporter_details = new TransporterDetail;
@@ -53,7 +53,7 @@ class BecomeTransporterApiController extends Controller
 
         return response([
             'success'   => true,
-            'message'   => 'Congratulations, Now you are a transport.'
+            'message'   => 'Congratulations, Now you are a transporter.'
         ],200);
     }
 }
