@@ -58,7 +58,7 @@ class Edit extends Component
         $transporter->address       = $this->address;
         $transporter->save();
 
-        session()->flash('message', 'Transporter updated successfully.');
+        session()->flash('success', 'Transporter updated successfully.');
         return $this->redirectRoute('admin.transporter.index', navigate: true);
 
     }

@@ -228,6 +228,10 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('transporter/create', AdminRoot\Transporter\Create::class)->name('transporter.create');
         Route::get('transporter/edit/{id}', AdminRoot\Transporter\Edit::class)->name('transporter.edit');
 
+        // Vehicle
+        Route::get('vehicle', AdminRoot\Vehicle\Index::class)->name('vehicle.index');
+        Route::get('vehicle/create', AdminRoot\Vehicle\Create::class)->name('vehicle.create');
+        Route::get('vehicle/edit/{id}', AdminRoot\Vehicle\Edit::class)->name('vehicle.edit');
 
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');

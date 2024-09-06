@@ -42,7 +42,7 @@ class Create extends Component
         $transporter->address       = $this->address;
         $transporter->save();
 
-        session()->flash('message', 'Transporter created successfully.');
+        session()->flash('success', 'Transporter created successfully.');
         return $this->redirectRoute('admin.transporter.index', navigate: true);
 
     }
