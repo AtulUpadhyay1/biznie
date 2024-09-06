@@ -100,11 +100,14 @@
                                             {!! $data->status == 'active' ? '<span class="text-success fw-bolder"> Active </span>' : '<span class="text-danger fw-bolder"> Inactive </span>' !!}
                                         </td>
                                         <td class="text-center">
-                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
+                                            <a type="button" id="actionBtn_{{$data->id}}" data-bs-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
-                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
+                                            <div class="dropdown-menu" aria-labelledby="actionBtn_{{$data->id}}">
+                                                <button class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#showDetailsModal" wire:click="showDetail({{$data->id}})">
+                                                    <i class="bi bi-eye icon-sm me-2"></i>View
+                                                </button>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.edit', $data->id)}}" wire:navigate><i
                                                     class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
                                             </div>
@@ -123,4 +126,31 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="showDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDetailsLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showDetailsLabel">View</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if ($show)
+                    <p>Name: {{ $show->name }}</p>
+                    <p>Phone: {{ $show->phone }}</p>
+                    <p>Alternate Phone: {{ $show->getTransporterDetail->alternate_phone }}</p>
+                    <p>Company Name: {{ $show->getTransporterDetail->company_name }}</p>
+                    <p>GST Number: {{ $show->getTransporterDetail->gst_number }}</p>
+                    <p>Aadhar Number: {{ $show->getTransporterDetail->aadhar_number }}</p>
+                    <p>Address: {{ $show->getTransporterDetail->address }}</p>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
