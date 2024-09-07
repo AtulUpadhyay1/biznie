@@ -9,19 +9,15 @@
         @page {
             margin: 0;
             padding: 0;
-            page-break-before: always;
+            page-break-after: always;
         }
-
-        @media print {
-            .page-break {
-                page-break-before: always;
-            }
-        }
-
         body {
             font-weight: normal;
             padding: 0;
             margin: 0;
+        }
+        .page-break {
+            page-break-after: always;
         }
 
         table {
@@ -89,10 +85,6 @@
         .t-bold {
             font-weight: 600;
         }
-
-        .h-30 {
-            height: 30px;
-        }
     </style>
 </head>
 
@@ -150,7 +142,8 @@
                     <b>M/S {{ $order_detail->getSeller->name }}</b><br>
                     {{ $order_detail->billing_address['address_line_one'] }}, MOB<br>
                     NO {{ $order_detail->getSeller->phone }}<br>
-                    {{ $order_detail->billing_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }}, India<br>
+                    {{ $order_detail->billing_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }},
+                    India<br>
                     GSTIN/UIN : 09AGOPN3178Q1ZC<br>
                     State Name : {{ $order_detail->billing_address['state'] }}
                 </td>
@@ -168,21 +161,23 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" style="border-bottom:0;">Term oF Delivery
+                <td rowspan="2" colspan="2" style="border-bottom:1px solid #fff;">Term oF Delivery
                     <br>
-                    <span class="t-bold">FREIGHT PAID BY CONSIGNEE</span>
+                    <p class="t-bold">FREIGHT PAID BY CONSIGNEE</p>
                 </td>
             </tr>
-            <tr>
-                <td colspan="3" rowspan="3" class="a b-top">Buyer (Bill to)<br>
+            <tr class="b-1">
+                <td colspan="3" class="a">Buyer (Bill to)<br>
                     <b>M/S {{ $order_detail->getCustomer->name }}</b><br>
                     {{ $order_detail->delivery_address['address_line_one'] }}, MOB<br>
                     NO {{ $order_detail->getCustomer->phone }}<br>
-                    {{ $order_detail->delivery_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }}, India<br>
+                    {{ $order_detail->delivery_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }},
+                    India<br>
                     GSTIN/UIN : 09AGOPN3178Q1ZC<br>
                     State Name : {{ $order_detail->delivery_address['state'] }}, Code : 09
                 </td>
-                <td rowspan="3" colspan="2" style="border-top:1px solid #fff;"></td>
+                {{-- <td colspan="2" style="border-bottom:0;"> --}}
+                </td>
             </tr>
         </table>
     </div>
@@ -208,14 +203,15 @@
                             {{ $value['value'] }} {{ $value['unit']['short_name'] }},
                         @endforeach
                     </td>
-                    <td>{{rand(1111, 2222)}}</td>
+                    <td>{{ rand(1111, 2222) }}</td>
                     <td class="t-bold text-center">{{ $variation['quantity'] }} MT</td>
                     <td class="text-center">{{ formatIndianNumber($variation['price']) }}</td>
                     <td>MT</td>
                     @php
                         $total_price += $variation['price'] + $order_detail->base_price;
                     @endphp
-                    <td class="t-bold text-end">{{ formatIndianNumber($variation['price'] + $order_detail->base_price) }}</td>
+                    <td class="t-bold text-end">
+                        {{ formatIndianNumber($variation['price'] + $order_detail->base_price) }}</td>
                 </tr>
             @endforeach
             <tr class="b-0 h-30">
@@ -337,7 +333,8 @@
                     <b>M/S {{ $order_detail->getSeller->name }}</b><br>
                     {{ $order_detail->billing_address['address_line_one'] }}, MOB<br>
                     NO {{ $order_detail->getSeller->phone }}<br>
-                    {{ $order_detail->billing_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }}, India<br>
+                    {{ $order_detail->billing_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }},
+                    India<br>
                     GSTIN/UIN : 09AGOPN3178Q1ZC<br>
                     State Name : {{ $order_detail->billing_address['state'] }}
                 </td>
@@ -355,26 +352,28 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" style="border-bottom:0;">Term oF Delivery
+                <td rowspan="2" colspan="2" style="border-bottom:1px solid #fff;">Term oF Delivery
                     <br>
                     <span class="t-bold">FREIGHT PAID BY CONSIGNEE</span>
                 </td>
             </tr>
-            <tr>
-                <td colspan="3" rowspan="3" class="a b-top">Buyer (Bill to)<br>
+            <tr class="b-1">
+                <td colspan="3" class="a">Buyer (Bill to)<br>
                     <b>M/S {{ $order_detail->getCustomer->name }}</b><br>
                     {{ $order_detail->delivery_address['address_line_one'] }}, MOB<br>
                     NO {{ $order_detail->getCustomer->phone }}<br>
-                    {{ $order_detail->delivery_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }}, India<br>
+                    {{ $order_detail->delivery_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }},
+                    India<br>
                     GSTIN/UIN : 09AGOPN3178Q1ZC<br>
                     State Name : {{ $order_detail->delivery_address['state'] }}, Code : 09
                 </td>
-                <td rowspan="3" colspan="2" style="border-top:1px solid #fff;"></td>
+                {{-- <td colspan="2">
+                </td> --}}
             </tr>
         </table>
     </div>
     <div class="invoice">
-        <table class="table border-table">
+        <table class="table">
             <tr class="b-1">
                 <th>S.No.</th>
                 <th>Description Of <br>Good Services</th>
@@ -384,16 +383,16 @@
                 <th>Per</th>
                 <th>Amount</th>
             </tr>
-            <tr class="b-0 h-30">
+            <tr class="b-0">
                 <td></td>
                 <td class="t-bold">TCS ON SALE (0.1%) </td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="text-end t-bold">536.00</td>
+                <td class="text-end t-bold" style="border-right: 1px solid #000;">536.00</td>
             </tr>
-            <tr class="b-0 h-30">
+            <tr class="b-0">
                 <td></td>
                 <td></td>
                 <td></td>
@@ -402,7 +401,7 @@
                 <td></td>
                 <td class="text-end b-top">5,36,633.35</td>
             </tr>
-            <tr class="b-0 h-30">
+            <tr class="b-0">
                 <td></td>
                 <td></td>
                 <td></td>
@@ -411,7 +410,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr class="b-0 h-30">
+            <tr class="b-0">
                 <td></td>
                 <td></td>
                 <td></td>
@@ -420,7 +419,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr class="b-0 h-30">
+            <tr class="b-0">
                 <td></td>
                 <td></td>
                 <td></td>
@@ -451,22 +450,17 @@
 
                 </td>
                 <td colspan="2" class="text-center">CGST</td>
-                <!-- <td></td> -->
                 <td colspan="2" class="text-center">SGST/UTGST</td>
-                <!-- <td></td> -->
                 <td rowspan="2" class="text-center">Total
                     <br>
                     Tax Amount
                 </td>
             </tr>
             <tr>
-                <!-- <td></td> -->
-                <!-- <td>Value</td> -->
                 <td class="text-center">Rate</td>
                 <td class="text-center">Amount</td>
                 <td class="text-center">Rate</td>
                 <td class="text-center">Amount</td>
-                <!-- <td>Tax Amount</td> -->
             </tr>
             <tr>
                 <td rowspan="2">72142090<br>
@@ -480,7 +474,6 @@
                 <td class="text-end">81,759.96</td>
             </tr>
             <tr>
-                <!-- <td>997114</td> -->
                 <td class="text-end">97.80</td>
                 <td class="text-end">9%</td>
                 <td class="text-end">8.80</td>
@@ -500,18 +493,16 @@
             <tr class="b-0">
                 <td colspan="7">Tax Amount (in words) : <b>INR Eighty One Thousand Seven Hundred Seventy Seven and
                         Fifty Six paise Only</b></td>
-                <!-- <td></td> -->
             </tr>
             <tr class="b-0">
                 <td colspan="7">Company’s PAN : <b>AAECM 1417 A</b></td>
-                <!-- <td></td> -->
             </tr>
             <tr class="b-0">
-                <td rowspan="2" colspan="4"><span style="text-decoration:underline;">Declaration </span>:<br>
+                <td colspan="6"><span style="text-decoration:underline;">Declaration </span>:<br>
                     <span>We declare that this invoice shows the actual price of the <br>
                         goods described and that all particulars are true and correct.</span>
                 </td>
-                <td rowspan="2" class="text-end b-top" colspan="6"><b>for  BIZNIE</b><br><br>
+                <td class="text-end b-top"><b>for BIZNIE</b><br><br>
                     Authorised Signatory
                 </td>
             </tr>
