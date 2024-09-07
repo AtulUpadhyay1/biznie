@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->string('capacity')->nullable();
             $table->string('photo')->nullable();
+            $table->string('status')->nullable()->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

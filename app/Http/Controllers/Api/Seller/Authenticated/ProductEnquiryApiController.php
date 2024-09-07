@@ -42,7 +42,8 @@ class ProductEnquiryApiController extends Controller
         $data->base_price   = $request->base_price;
         $data->loading_address = $request->loading_address;
         $data->transport_price = $request->transport_price;
-        $data->delivery_by  = 'seller';
+        $data->delivery_by  = $request->delivery_by ?? 'biznie';
+        $data->description  = $request->description;
         $data->status       = 'replied';
 
         $history = $data->history;
