@@ -12,5 +12,6 @@ class TransporterDetail extends Model
 
     protected $casts = [
         'type'      => 'array',
+        'vehicle'   => 'array',
     ];
 }

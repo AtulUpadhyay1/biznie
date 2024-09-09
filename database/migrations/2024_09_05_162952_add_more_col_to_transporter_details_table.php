@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('transporter_details', function (Blueprint $table) {
             $table->string('alternate_phone')->nullable()->after('address');
             $table->string('aadhar_number')->nullable()->after('alternate_phone');
+            $table->string('vehicle')->nullable()->after('aadhar_number');
         });
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('transporter_details', function (Blueprint $table) {
             $table->dropColumn('alternate_phone');
             $table->dropColumn('aadhar_number');
+            $table->dropColumn('vehicle');
         });
     }
 };

@@ -110,6 +110,8 @@
                                                 </button>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.edit', $data->id)}}" wire:navigate><i
                                                     class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.vehicle', $data->id)}}" wire:navigate><i
+                                                    class="bi bi-truck icon-sm me-2"></i><span>Vehicle</span></a>
                                             </div>
                                         </td>
                                     </tr>
