@@ -42,16 +42,16 @@
                                 <b>Phone: </b> {{ $data->getCustomer->phone }} <br>
                             </p><br>
                             <p>
-                                <b>Delivery Address</b> <br>
-                                <b>Pincode: </b> {{ $data->delivery_address['pin_code'] }} <br>
-                                @isset($data->delivery_address['address'])
-                                    <b>Address: </b> {{ $data->delivery_address['address'] }} <br>
+                                <b>Consignee Address</b> <br>
+                                <b>Pincode: </b> {{ $data->consignee_detail['pin_code'] }} <br>
+                                @isset($data->consignee_detail['address'])
+                                    <b>Address: </b> {{ $data->consignee_detail['address'] }} <br>
                                 @else
-                                    <b>Address Line One: </b> {{ $data->delivery_address['address_line_one'] }} <br>
-                                    <b>Address Line Two: </b> {{ $data->delivery_address['address_line_two'] }} <br>
+                                    <b>Address Line One: </b> {{ $data->consignee_detail['address_line_one'] }} <br>
+                                    <b>Address Line Two: </b> {{ $data->consignee_detail['address_line_two'] }} <br>
                                 @endisset
-                                <b>City: </b> {{ $data->delivery_address['city'] }} <br>
-                                <b>State: </b> {{ $data->delivery_address['state'] }} <br>
+                                <b>City: </b> {{ $data->consignee_detail['city'] }} <br>
+                                <b>State: </b> {{ $data->consignee_detail['state'] }} <br>
                             </p>
                         </div>
 

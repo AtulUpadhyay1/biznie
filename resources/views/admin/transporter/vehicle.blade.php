@@ -22,7 +22,7 @@
                             @foreach ($vehicle_list as $vehicle_data)
                                 <div class="col-md-3">
                                     <div class="card">
-                                        <input type="checkbox" class="form-check-input" id="vehicle_{{$vehicle_data->id}}" wire:model="vehicle" value="{{$vehicle_data->id}}">
+                                        <input type="checkbox" class="form-check-input" id="vehicle_{{$vehicle_data->id}}" wire:model="vehicle" value="{{$vehicle_data->id}}" style="position: absolute;">
                                         <img src="{{ imageUrl($vehicle_data->photo) }}" class="card-img-top">
                                         <div class="card-body">
                                             <p><b>Name : </b>{{ $vehicle_data->name }}</p>
