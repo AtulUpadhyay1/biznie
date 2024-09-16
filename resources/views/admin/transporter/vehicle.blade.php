@@ -20,7 +20,7 @@
                     <form wire:submit.prevent="assignVehicle()">
                         <div class="row">
                             @foreach ($vehicle_list as $vehicle_data)
-                                <div class="col-md-3">
+                                <div class="col-md-3 mb-3">
                                     <div class="card">
                                         <input type="checkbox" class="form-check-input" id="vehicle_{{$vehicle_data->id}}" wire:model="vehicle" value="{{$vehicle_data->id}}" style="position: absolute;">
                                         <img src="{{ imageUrl($vehicle_data->photo) }}" class="card-img-top">

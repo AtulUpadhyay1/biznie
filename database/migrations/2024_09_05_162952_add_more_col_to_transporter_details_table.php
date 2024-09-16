@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('alternate_phone')->nullable()->after('address');
             $table->string('aadhar_number')->nullable()->after('alternate_phone');
             $table->string('vehicle')->nullable()->after('aadhar_number');
+            $table->string('commodity_product')->nullable()->after('vehicle');
         });
     }
 

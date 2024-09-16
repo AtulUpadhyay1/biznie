@@ -87,7 +87,7 @@
             <!--End of Vehicle -->
 
             <!--Transporter-->
-            <li class="nav-item {{ isActiveRoute(['admin.transporter.index', 'admin.transporter.create', 'admin.transporter.edit', 'admin.transporter.vehicle']) ? 'active' : '' }}">
+            <li class="nav-item {{ isActiveRoute(['admin.transporter.index', 'admin.transporter.create', 'admin.transporter.edit', 'admin.transporter.vehicle', 'admin.transporter.product']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#vehicle" role="button"
                     aria-expanded="false" aria-controls="vehicle">
                     <i class="bi bi-truck-front"></i>
@@ -95,9 +95,9 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.transporter.index', 'admin.transporter.create', 'admin.transporter.edit', 'admin.transporter.vehicle']) ? 'show' : '' }}" id="vehicle">
+            <div class="collapse {{ isActiveRoute(['admin.transporter.index', 'admin.transporter.create', 'admin.transporter.edit', 'admin.transporter.vehicle', 'admin.transporter.product']) ? 'show' : '' }}" id="vehicle">
                 <ul class="nav sub-menu">
-                    <li class="nav-item {{ isActiveRoute(['admin.transporter.index', 'admin.transporter.create', 'admin.transporter.edit', 'admin.transporter.vehicle']) ? 'active' : '' }}">
+                    <li class="nav-item {{ isActiveRoute(['admin.transporter.index', 'admin.transporter.create', 'admin.transporter.edit', 'admin.transporter.vehicle', 'admin.transporter.product']) ? 'active' : '' }}">
                         <a href="{{route('admin.transporter.index')}}" class="nav-link" wire:navigate>
                             All Transporters
                         </a>

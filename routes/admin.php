@@ -228,6 +228,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('transporter/create', AdminRoot\Transporter\Create::class)->name('transporter.create');
         Route::get('transporter/edit/{id}', AdminRoot\Transporter\Edit::class)->name('transporter.edit');
         Route::get('transporter/vehicle/{id}', AdminRoot\Transporter\Vehicle::class)->name('transporter.vehicle');
+        Route::get('transporter/product/{id}', AdminRoot\Transporter\Product::class)->name('transporter.product');
 
         // Vehicle
         Route::get('vehicle', AdminRoot\Vehicle\Index::class)->name('vehicle.index');
