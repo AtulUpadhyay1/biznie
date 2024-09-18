@@ -307,6 +307,7 @@ class ProductEnquiryApiController extends Controller
         $order->due_amount                  = $request->total_amount - $request->token_amount;
         $order->loading_address             = $mark_seller->loading_address;
         $order->delivery_by                 = $mark_seller->delivery_by;
+        $order->consignee_detail            = $mark_seller->consignee_detail;
         $order->status                      = 'pending';
         $order->history                     = [['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()]];
         $order->customer_quality_check_visibility = websiteSetupValue('customer_quality_check_visibility') ?? 0;

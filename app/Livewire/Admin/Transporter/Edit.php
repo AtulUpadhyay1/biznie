@@ -18,7 +18,7 @@ class Edit extends Component
         $this->name     = $user->name;
         $this->phone    = $user->phone;
 
-        $transporter = TransporterDetail::where('user_id', $user->id)->first();
+        $transporter = TransporterDetail::where('user_id', $user->id)->firstOrFail();
         $this->company_name  = $transporter->company_name;
         $this->gst_number    = $transporter->gst_number;
         $this->address       = $transporter->address;

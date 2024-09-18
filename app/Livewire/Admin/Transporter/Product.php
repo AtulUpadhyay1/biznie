@@ -14,7 +14,7 @@ class Product extends Component
     public function mount($id)
     {
         $this->hidden_id      = $id;
-        $transporter = TransporterDetail::where('user_id', $this->hidden_id)->first();
+        $transporter = TransporterDetail::where('user_id', $this->hidden_id)->firstOrFail();
         $this->commodity_product = $transporter->commodity_product ?? [];
     }
 

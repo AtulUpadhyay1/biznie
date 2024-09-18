@@ -114,6 +114,8 @@
                                                     class="bi bi-truck icon-sm me-2"></i><span>Vehicles</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.product', $data->id)}}" wire:navigate><i
                                                     class="bi bi-cart icon-sm me-2"></i><span>Products</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.addressPrice', $data->id)}}" wire:navigate><i
+                                                    class="bi bi-diagram-2 icon-sm me-2"></i><span>Belts</span></a>
                                             </div>
                                         </td>
                                     </tr>
