@@ -11,6 +11,8 @@ use App\Models\UserPromotionHistory;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\LoginResource;
 use Illuminate\Validation\Rules\Password;
+use App\Http\Resources\Seller\BusinessResource;
+use App\Http\Resources\Seller\KycDetailResource;
 
 class AuthApiController extends Controller
 {
@@ -245,6 +247,9 @@ class AuthApiController extends Controller
                 'type'      => $user->type,
                 'email'     => $user->email,
                 'phone'     => $user->phone,
+                'phone_verified_at' => dateTimeFormat($user->phone_verified_at),
+                'business_details'  => $user->getBusiness ? new BusinessResource($user->getBusiness) : null,
+                'kyc_details'       => $user->getSellerKycDetail ? new KycDetailResource($user->getSellerKycDetail) : null,
             ],
         ],200);
     }
