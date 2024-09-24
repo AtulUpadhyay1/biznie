@@ -54,6 +54,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         // Image upload
         Route::post('image-upload', 'ImageUploadController@imageUpload');
 
+        Route::get('user-detail', 'Auth\AuthApiController@userDetail');
+
         Route::post('business-interest', 'Auth\AuthApiController@businessInterest');
 
         // Notification

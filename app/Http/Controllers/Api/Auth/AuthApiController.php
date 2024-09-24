@@ -234,4 +234,18 @@ class AuthApiController extends Controller
             'message'   => 'Interest business category updated successfully.',
         ],200);
     }
+
+    public function userDetail()
+    {
+        $user = auth()->user();
+        return response([
+            'success'   => true,
+            'data'      => [
+                'name'      => $user->name,
+                'type'      => $user->type,
+                'email'     => $user->email,
+                'phone'     => $user->phone,
+            ],
+        ],200);
+    }
 }
