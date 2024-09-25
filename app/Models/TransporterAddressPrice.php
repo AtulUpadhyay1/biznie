@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class TransporterAddressPrice extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

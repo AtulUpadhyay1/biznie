@@ -396,8 +396,8 @@
                             Privacy Policy
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{route('admin.website_setup.setting')}}" class="nav-link {{ isActiveRoute(['admin.website_setup.setting']) ? 'active' : ''}}">
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.setting']) ? 'active' : ''}}">
+                        <a href="{{route('admin.website_setup.setting')}}" class="nav-link">
                             Setting
                         </a>
                     </li>

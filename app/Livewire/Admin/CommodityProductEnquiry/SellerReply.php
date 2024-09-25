@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
+use App\Models\TransporterAddressPrice;
 
 class SellerReply extends Component
 {
@@ -32,7 +33,8 @@ class SellerReply extends Component
     public function render()
     {
         $this->updatePriceForm();
-        return view('admin.commodity_product_enquiry.seller_reply');
+        $available_transports = TransporterAddressPrice::where('state', $this->data->billing_address['state'])->where('city', $this->data->billing_address['city'])->with('getUser')->get();
+        return view('admin.commodity_product_enquiry.seller_reply', compact('available_transports'));
     }
 
     public function updatePriceForm()

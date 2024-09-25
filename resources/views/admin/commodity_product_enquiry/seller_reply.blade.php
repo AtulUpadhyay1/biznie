@@ -191,7 +191,7 @@
                                 </div>
 
                                 <div class="modal fade " id="updateBasePrice_{{ $list_data->id }}" tabindex="-1" aria-labelledby="updateBasePriceLable_{{ $list_data->id }}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-dialog-scrollable">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="updateBasePriceLable_{{ $list_data->id }}">Update Base Price</h5>
@@ -288,7 +288,16 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
+                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;">
+                                                                <ol>
+                                                                    @foreach ($available_transports as $available_transport)
+                                                                        <li>
+                                                                            {{ $available_transport->getUser->name }} ({{ $available_transport->getUser->phone }}) <br>
+                                                                            ₹ {{ formatIndianNumber($available_transport->min_price) }} - ₹ {{ formatIndianNumber($available_transport->max_price) }}
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ol>
+                                                            </td>
                                                             <td style="border-right: hidden;">
                                                                 <label for="commission" class="form-label">Commission <br>
                                                                     ({{ ucfirst($set_enquiry_data->getSellerCommodityProduct->commission_type) }})
