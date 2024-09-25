@@ -26,7 +26,24 @@ class AddressPrice extends Component
             return $cities->pluck('city')->toArray();
         });
 
-        return view('admin.transporter.address_price', compact('state_list', 'city_list'));
+        $transporter_address = TransporterAddressPrice::where('user_id', $this->hidden_id)
+        ->get()
+        ->groupBy('loading_address')
+        ->map(function ($group) {
+            return [
+                'loading_address'   => $group->first()->loading_address,
+                'unloading_address' => $group->map(function ($item) {
+                    return [
+                        'state'     => $item->state,
+                        'city'      => $item->city,
+                        'min_price' => $item->min_price,
+                        'max_price' => $item->max_price,
+                    ];
+                })->toArray(),
+            ];
+        })->values()->toArray();
+
+        return view('admin.transporter.address_price', compact('state_list', 'city_list', 'transporter_address'));
     }
 
     public function save()

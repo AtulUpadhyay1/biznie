@@ -13,10 +13,10 @@
                                 href="{{ route('admin.transporter.index') }}" wire:navigate>
                                 <i class="bi bi-arrow-left btn-icon-prepend"></i>Back
                             </a>
-                            <a class="btn btn-secondary btn-sm btn-icon-text float-end align-items-center me-1" title="Cancel"
-                                href="#" wire:navigate>
+
+                            <button type="button" class="btn btn-secondary btn-icon me-1" data-bs-toggle="modal" data-bs-target="#viewBeltModal">
                                 <i class="bi bi-eye"></i>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -86,6 +86,44 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="viewBeltModal" tabindex="-1" aria-labelledby="viewBeltModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewBeltModalLabel">View Belt</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    @forelse ($transporter_address as $address)
+                        <div class="card mb-2">
+                            <div class="card-header"> <h5> {{$address['loading_address']}} </h5></div>
+                            <div class="card-body p-2">
+                                <h5>Unloading Address : </h5>
+                                <div class="row">
+                                    @foreach ($address['unloading_address'] as $unloading_address)
+                                        <div class="col-6 mb-2">
+                                            <div class="card card-body">
+                                                <p>
+                                                    <b>State : </b> {{ $unloading_address['state'] }} <br>
+                                                    <b>City : </b> {{ $unloading_address['city'] }} <br>
+                                                    <b>Price : </b> {{ formatIndianNumber($unloading_address['min_price']) }} - {{ formatIndianNumber($unloading_address['max_price']) }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <h5 class="text-danger text-center">No Data Found...</h5>
+                    @endforelse
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
