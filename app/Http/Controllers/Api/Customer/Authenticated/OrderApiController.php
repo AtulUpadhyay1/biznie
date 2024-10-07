@@ -38,7 +38,7 @@ class OrderApiController extends Controller
             return response([
                 'success'   => false,
                 'message'   => 'Invalid given id.',
-            ],200);
+            ],404);
         }
         return response([
             'success'   => true,

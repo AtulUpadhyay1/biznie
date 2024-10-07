@@ -165,3 +165,21 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
     });
 
 });
+
+// Transporter api routes
+Route::group(['namespace' => 'App\Http\Controllers\Api\Transporter', 'prefix' => 'transporter'], function () {
+
+    // Transporter authenticated route
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Profile
+        Route::get('profile', 'Authenticated\ProfileApiController@profile');
+        Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
+
+        // Vehicle
+        Route::get('vehicle', 'Authenticated\VehicleApiController@index');
+        Route::get('assign-vehicle', 'Authenticated\VehicleApiController@assignVehicle');
+
+    });
+
+});
