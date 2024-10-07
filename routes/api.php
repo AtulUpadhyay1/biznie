@@ -180,6 +180,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Transporter', 'prefix' =>
         Route::get('vehicle', 'Authenticated\VehicleApiController@index');
         Route::get('assign-vehicle', 'Authenticated\VehicleApiController@assignVehicle');
 
+        // Product
+        Route::get('product', 'Authenticated\ProductApiController@index');
+        Route::get('assign-product', 'Authenticated\ProductApiController@assignProduct');
     });
 
 });
