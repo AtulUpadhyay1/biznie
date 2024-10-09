@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Transporter\Authenticated;
 
 use Illuminate\Http\Request;
 use App\Models\CommodityProduct;
+use App\Models\TransporterDetail;
 use App\Http\Controllers\Controller;
 
 class ProductApiController extends Controller

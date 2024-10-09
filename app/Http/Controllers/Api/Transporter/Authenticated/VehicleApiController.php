@@ -28,7 +28,7 @@ class VehicleApiController extends Controller
             'vehicle' =>'nullable|array'
         ]);
 
-        $transporter = TransporterDetail::where('user_id', auht()->id())->first();
+        $transporter = TransporterDetail::where('user_id', auth()->id())->first();
         $transporter->vehicle = $request->vehicle;
         $transporter->save();
 

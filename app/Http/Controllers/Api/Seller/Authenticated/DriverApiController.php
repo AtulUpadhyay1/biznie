@@ -43,6 +43,7 @@ class DriverApiController extends Controller
         $driver->vehicle_number                 = $request->vehicle_number;
         $driver->transporter_name               = $request->transporter_name;
         $driver->transporter_phone_number       = $request->transporter_phone_number;
+        $driver->alternate_phone_number         = $request->alternate_phone_number;
         $driver->save();
 
         return response([
