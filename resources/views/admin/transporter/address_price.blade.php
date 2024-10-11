@@ -1,6 +1,7 @@
 <div>
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
+        <x-loader />
         <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-header">

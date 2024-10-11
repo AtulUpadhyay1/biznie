@@ -23,7 +23,7 @@ class AddressPrice extends Component
         $state_list = Address::select('state')->groupBy('state')->orderBy('state', 'asc')->get();
         $city_list  = Address::whereIn('state', $this->state_name)->orderBy('city', 'asc')->get()->groupBy('state')
         ->map(function ($cities) {
-            return $cities->pluck('city')->toArray();
+            return $cities->pluck('city')->unique()->toArray();
         });
 
         $transporter_address = TransporterAddressPrice::where('user_id', $this->hidden_id)

@@ -23,6 +23,7 @@ Route::group(['as'=>'admin.'], function () {
     Route::get('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'showLoginForm'])->name('login');
     Route::post('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'login'])->name('login');
 
+    // Route::get('address-syn', [App\Http\Controllers\Admin\DashboardController::class, 'addressSyn']);
 
     // Authenticated Routes
     Route::group(['middleware' => 'auth:admin'], function () {
