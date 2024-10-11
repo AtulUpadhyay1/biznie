@@ -183,6 +183,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Transporter', 'prefix' =>
         // Product
         Route::get('product', 'Authenticated\ProductApiController@index');
         Route::post('assign-product', 'Authenticated\ProductApiController@assignProduct');
+
+        // Belt
+        Route::get('belt', 'Authenticated\AddressPriceApiController@index');
+        Route::post('assign-belt', 'Authenticated\AddressPriceApiController@assignBelt');
+
     });
 
 });

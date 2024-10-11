@@ -77,7 +77,7 @@ class AddressPrice extends Component
                 $data->save();
             }
 
-            session()->flash('success', 'Vehicle assigned successfully.');
+            session()->flash('success', 'Belt created successfully.');
             return $this->redirectRoute('admin.transporter.addressPrice', $this->hidden_id, navigate: true);
         }
 
