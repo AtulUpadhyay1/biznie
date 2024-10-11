@@ -9,6 +9,15 @@ use App\Models\TransporterAddressPrice;
 
 class AddressPriceApiController extends Controller
 {
+    public function state()
+    {
+        $state_list  = Address::orderBy('state', 'asc')->get()->pluck('state')->unique()->values()->toArray();
+        return response([
+            'success'   => true,
+            'state_list'=> $state_list
+        ],200);
+    }
+
     public function city($state)
     {
         $city_list  = Address::where('state', $state)->orderBy('city', 'asc')->get()->pluck('city')->unique()->values()->toArray();

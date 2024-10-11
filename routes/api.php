@@ -185,6 +185,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Transporter', 'prefix' =>
         Route::post('assign-product', 'Authenticated\ProductApiController@assignProduct');
 
         // Belt
+        Route::get('state', 'Authenticated\AddressPriceApiController@state');
         Route::get('city/{state}', 'Authenticated\AddressPriceApiController@city');
         Route::get('belt', 'Authenticated\AddressPriceApiController@index');
         Route::post('assign-belt', 'Authenticated\AddressPriceApiController@assignBelt');
