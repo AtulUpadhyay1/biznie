@@ -191,7 +191,7 @@ class ProductEnquiryApiController extends Controller
                 $enquiry_data->save();
             }
 
-            $transporters_ids = TransporterDetail::orWhereJsonContains('commodity_product', $enquiry_data->commodity_product_id)->pluck('user_id')->toArray();
+            $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $enquiry_data->commodity_product_id)->pluck('user_id')->toArray();
             $available_transporters = TransporterAddressPrice::whereIn('user_id', $transporters_ids)->where('state', $enquiry_data->billing_address['state'])->where('city', $enquiry_data->billing_address['city'])->with('getUser')->get();
             foreach ($available_transporters as $available_transport) {
 
@@ -224,7 +224,7 @@ class ProductEnquiryApiController extends Controller
                 ];
                 sendNotification($available_transport->getUser, $title, $body, $type, $data_info, true);
             }
-            
+
             return response([
                 'success'   => true,
                 'message'   => 'Product enquiry added successfully.'

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->string('unique_id')->nullable();
             $table->text('origin_city')->nullable();
-            $table->text('value')->nullable();
             $table->text('billing_address')->nullable();
             $table->text('delivery_address')->nullable();
             $table->text('consignee_detail')->nullable();

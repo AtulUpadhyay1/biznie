@@ -6,20 +6,31 @@ use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
+use App\Models\TransporterDetail;
 use App\Models\SellerProductEnquiry;
 use App\Models\SellerCommodityProduct;
+use App\Models\TransporterAddressPrice;
+use App\Models\TransporterProductEnquiry;
 use App\Models\SellerCommodityProductStatePrice;
 
 class Show extends Component
 {
     public $page_title = 'View Enquiry';
-    public $hidden_id, $user_id = [];
+    public $active_tab = 'seller';
+    protected $queryString = [
+        'active_tab'        => ['except' => '']
+    ];
+
+    public $hidden_id, $user_id = [], $transporter_user_id = [];
 
     public function mount($id)
     {
         $this->hidden_id = $id;
         $selected_user_id = SellerProductEnquiry::where('product_enquiries_id', $id)->pluck('user_id')->toArray();
         $this->user_id = $selected_user_id;
+
+        $selected_transporters = TransporterProductEnquiry::where('product_enquiries_id', $id)->pluck('user_id')->toArray();
+        $this->transporter_user_id = $selected_transporters;
     }
 
     public function render()
@@ -46,7 +57,9 @@ class Show extends Component
         }));
 
         $seller_list = SellerCommodityProduct::whereIn('user_id', $seller_ids)->with('getStatePrice', 'getBrand', 'getUser')->get();
-        return view('admin.commodity_product_enquiry.show', compact('data', 'seller_list', 'variation_arr'));
+        $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $data->commodity_product_id)->pluck('user_id')->toArray();
+        $transporter_list = TransporterAddressPrice::whereIn('user_id', $transporters_ids)->where('state', $data->billing_address['state'])->where('city', $data->billing_address['city'])->with('getUser')->get();
+        return view('admin.commodity_product_enquiry.show', compact('data', 'seller_list', 'variation_arr', 'transporter_list'));
     }
 
     public function sendEnquiry()
@@ -147,6 +160,86 @@ class Show extends Component
             $history[] = ['status' => 'Enquiry Send To Seller', 'created_at' => Carbon::now()];
             $enquiry_data->history = $history;
             $enquiry_data->save();
+
+            $this->dispatch('alert',
+                type : 'success',
+                message : 'Enquiry sent successfully.',
+            );
+
+        } catch (\Throwable $th) {
+
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Something went wrong.',
+            );
+
+        }
+
+    }
+
+    public function sendTransporterEnquiry()
+    {
+        try {
+
+            if(count($this->transporter_user_id) == 0){
+                $this->dispatch('alert',
+                    type : 'error',
+                    message : 'There are no transporter selected.',
+                );
+                return false;
+            }
+
+            $enquiry_data = ProductEnquiry::findOrFail($this->hidden_id);
+
+            if($enquiry_data && $enquiry_data->status == 'ordered'){
+                $this->dispatch('alert',
+                    type : 'error',
+                    message : 'This enquiry has been converted to an order.',
+                );
+                return false;
+            }
+
+            foreach ($this->transporter_user_id as $transporter_user_id) {
+                $data = TransporterProductEnquiry::where('user_id', $transporter_user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
+                if(!$data){
+                    $data                   = new TransporterProductEnquiry;
+                }
+                $data->user_id              = $transporter_user_id;
+                $data->product_enquiries_id = $enquiry_data->id;
+                $data->customer_user_id     = $enquiry_data->user_id;
+                $data->commodity_product_id = $enquiry_data->commodity_product_id;
+                $data->brand_id             = $enquiry_data->brand_id;
+                $data->unique_id            = $enquiry_data->unique_id;
+                $data->origin_city          = $enquiry_data->origin_city;
+                $data->billing_address      = $enquiry_data->billing_address;
+                $data->delivery_address     = $enquiry_data->delivery_address;
+                $data->consignee_detail     = $enquiry_data->consignee_detail;
+                $data->purpose              = $enquiry_data->purpose;
+                $data->description          = $enquiry_data->description;
+                $data->message              = $enquiry_data->message;
+                $data->status               = $data->status ?? 'pending';
+                if(!$data->history){
+                    $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
+                }
+                $data->save();
+
+                $user = User::find($transporter_user_id);
+
+                $title = 'New Product Enquiry';
+                $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
+                $type = 'product_enquiry';
+                $data_info = [
+                    'unique_id'     => $data->unique_id,
+                ];
+                sendNotification($user, $title, $body, $type, $data_info, true);
+
+            }
+
+            // $enquiry_data->status = 'Enquiry Send To Seller';
+            // $history = $enquiry_data->history;
+            // $history[] = ['status' => 'Enquiry Send To Seller', 'created_at' => Carbon::now()];
+            // $enquiry_data->history = $history;
+            // $enquiry_data->save();
 
             $this->dispatch('alert',
                 type : 'success',

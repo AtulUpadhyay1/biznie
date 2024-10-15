@@ -15,7 +15,6 @@ class TransporterProductEnquiry extends Model
     ];
 
     protected $casts = [
-        'value'                 => 'array',
         'billing_address'       => 'array',
         'delivery_address'      => 'array',
         'consignee_detail'      => 'array',

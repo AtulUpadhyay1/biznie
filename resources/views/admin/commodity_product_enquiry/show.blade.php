@@ -56,7 +56,7 @@
 
                         <h5 class="my-3">Selected Product Variation</h5>
 
-                        <div class="table-responsive">
+                        <div class="table-responsive mb-3">
                             <table class="custom-table">
                                 <thead>
                                     <tr>
@@ -83,124 +83,173 @@
                             </table>
                         </div>
 
-                        <div class="col-8">
-                            <h5 class="my-3">Available seller for selected variation</h5>
-                        </div>
+                        <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link {{$active_tab == 'seller' ? 'active' : ''}}" id="seller-line-tab" href="{{url()->current()}}?active_tab=seller" aria-controls="seller_tab" wire:navigate>Seller</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{$active_tab == 'transporter' ? 'active' : ''}}" id="transporter-line-tab" href="{{url()->current()}}?active_tab=transporter" aria-controls="transporter" wire:navigate>Transporter</a>
+                            </li>
 
-                        <div class="col-4 text-end">
-                            @if (count($this->user_id))
-                                <button class="btn btn-primary btn-xs my-2" title="Send enquiry to seller" wire:click="sendEnquiry()">Send Enquiry</button>
-                            @endif
-                        </div>
-
-                        <div class="accordion" id="state_price">
-                            @foreach ($seller_list as $seller_data)
-                                <div class="accordion-item">
-                                    <div class="row">
-                                        <div class="col-1 text-center mt-3">
-                                            <input type="checkbox" id="seller_{{ $seller_data->user_id }}" class="form-check-input" value="{{ $seller_data->user_id }}" wire:model.live="user_id">
-                                        </div>
-                                        <div class="col-11">
-                                            <h2 class="accordion-header" id="heading_{{ $seller_data->id }}">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $seller_data->id }}">
-                                                <b>{{ $seller_data->getUser->getBusiness->name}} ({{$seller_data->getUser->phone}}) {{ $seller_data->getUser->name}} ({{ getSellerType($seller_data->user_id) }})</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}, &nbsp; <b>Base Price</b> : {{ $seller_data->base_price }}
-                                                </button>
-                                            </h2>
-                                        </div>
+                        </ul>
+                        <div class="tab-content mt-3" id="lineTabContent">
+                            <div class="tab-pane fade {{$active_tab == 'seller' ? 'show active' : ''}}" id="seller_tab" role="tabpanel" aria-labelledby="seller-line-tab">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h5 class="my-3">Available seller for selected variation</h5>
                                     </div>
-                                    <div id="collapse_{{ $seller_data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $seller_data->id }}" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <div class="table-responsive">
-                                                <table class="custom-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            @php
-                                                                $attributes = $seller_data->getStatePrice[0]->value;
-                                                            @endphp
-                                                            @foreach ($attributes as $attribute)
-                                                                <th>
-                                                                    {{$attribute['name']}}
-                                                                </th>
-                                                            @endforeach
-                                                            <th>Gauge Difference</th>
-                                                            <th>EX Price</th>
-                                                            <th>Stock</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @php
-                                                            $total_charges = 0;
-                                                            $ex_price = 0;
 
-                                                            foreach ($seller_data->packaging_type as $packaging_charge) {
-                                                                $packaging_price = $seller_data->packaging_type_price[$packaging_charge];
-                                                                $total_charges += $packaging_price;
-                                                            }
+                                    <div class="col-4 text-end">
+                                        @if (count($this->user_id))
+                                            <button class="btn btn-primary btn-xs my-2" title="Send enquiry to seller" wire:click="sendEnquiry()">Send Enquiry</button>
+                                        @endif
+                                    </div>
 
-                                                            foreach ($seller_data->charge_name as $charge_key => $charge_name) {
-
-                                                                $other_charges_price = $seller_data->charge_price[$charge_key];
-                                                                $other_charges_operator = $seller_data->operator[$charge_key];
-
-                                                                if($other_charges_operator == "+"){
-                                                                    $total_charges += $other_charges_price;
-                                                                }elseif($other_charges_operator == "-"){
-                                                                    $total_charges -= $other_charges_price;
-                                                                }elseif($other_charges_operator == "*"){
-                                                                    $total_charges += $ex_price * $other_charges_price;
-                                                                }elseif($other_charges_operator == "/"){
-                                                                    $total_charges += $ex_price / $other_charges_price;
-                                                                }elseif($other_charges_operator == "%"){
-                                                                    $total_charges += $ex_price * ($other_charges_price / 100);
-                                                                }
-                                                            }
-
-                                                            if($seller_data->is_quality){
-
-                                                                foreach ($seller_data->quality as $quality_key => $quality) {
-                                                                    $other_quantity_charge_arr['name']          = $quality;
-                                                                    $other_quantity_price = $seller_data->quality_price[$quality_key];
-                                                                    $total_charges += $other_quantity_price;
-                                                                }
-                                                            }
-                                                        @endphp
-
-                                                        @foreach ($seller_data->getStatePrice as $state_price)
-                                                            <tr>
-                                                                <th>
-                                                                    {{ $loop->iteration }}
-                                                                    @if($state_price->is_selected)
-                                                                        <i class="bi bi-check2-circle text-success fs-5"></i>
-                                                                    @endif
-                                                                </th>
-                                                                @foreach ($state_price->value as $price_value)
-                                                                    <td>{{ $price_value['value'] }} </td>
-                                                                @endforeach
-                                                                <td> {{ $state_price->price }} </td>
-                                                                <td>
+                                    <div class="accordion" id="state_price">
+                                        @foreach ($seller_list as $seller_data)
+                                            <div class="accordion-item">
+                                                <div class="row">
+                                                    <div class="col-1 text-center mt-3">
+                                                        <input type="checkbox" id="seller_{{ $seller_data->user_id }}" class="form-check-input" value="{{ $seller_data->user_id }}" wire:model.live="user_id">
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <h2 class="accordion-header" id="heading_{{ $seller_data->id }}">
+                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $seller_data->id }}">
+                                                            <b>{{ $seller_data->getUser->getBusiness->name}} ({{$seller_data->getUser->phone}}) {{ $seller_data->getUser->name}} ({{ getSellerType($seller_data->user_id) }})</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}, &nbsp; <b>Base Price</b> : {{ $seller_data->base_price }}
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+                                                </div>
+                                                <div id="collapse_{{ $seller_data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $seller_data->id }}" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <div class="table-responsive">
+                                                            <table class="custom-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        @php
+                                                                            $attributes = $seller_data->getStatePrice[0]->value;
+                                                                        @endphp
+                                                                        @foreach ($attributes as $attribute)
+                                                                            <th>
+                                                                                {{$attribute['name']}}
+                                                                            </th>
+                                                                        @endforeach
+                                                                        <th>Gauge Difference</th>
+                                                                        <th>EX Price</th>
+                                                                        <th>Stock</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
                                                                     @php
-                                                                        $final_variation_price = 0;
-                                                                        $tax = ($state_price->price + $seller_data->base_price) * $seller_data->gst / 100;
-                                                                        $per_unit_price = ($state_price->price + $seller_data->base_price) + $tax + $total_charges;
-                                                                        $final_price    = $per_unit_price;
-                                                                        $final_variation_price += $final_price;
-                                                                        // $gst_amount += $tax
+                                                                        $total_charges = 0;
+                                                                        $ex_price = 0;
+
+                                                                        foreach ($seller_data->packaging_type as $packaging_charge) {
+                                                                            $packaging_price = $seller_data->packaging_type_price[$packaging_charge];
+                                                                            $total_charges += $packaging_price;
+                                                                        }
+
+                                                                        foreach ($seller_data->charge_name as $charge_key => $charge_name) {
+
+                                                                            $other_charges_price = $seller_data->charge_price[$charge_key];
+                                                                            $other_charges_operator = $seller_data->operator[$charge_key];
+
+                                                                            if($other_charges_operator == "+"){
+                                                                                $total_charges += $other_charges_price;
+                                                                            }elseif($other_charges_operator == "-"){
+                                                                                $total_charges -= $other_charges_price;
+                                                                            }elseif($other_charges_operator == "*"){
+                                                                                $total_charges += $ex_price * $other_charges_price;
+                                                                            }elseif($other_charges_operator == "/"){
+                                                                                $total_charges += $ex_price / $other_charges_price;
+                                                                            }elseif($other_charges_operator == "%"){
+                                                                                $total_charges += $ex_price * ($other_charges_price / 100);
+                                                                            }
+                                                                        }
+
+                                                                        if($seller_data->is_quality){
+
+                                                                            foreach ($seller_data->quality as $quality_key => $quality) {
+                                                                                $other_quantity_charge_arr['name']          = $quality;
+                                                                                $other_quantity_price = $seller_data->quality_price[$quality_key];
+                                                                                $total_charges += $other_quantity_price;
+                                                                            }
+                                                                        }
                                                                     @endphp
-                                                                    {{ $final_variation_price }}
-                                                                </td>
-                                                                <td> {{ $state_price->stock ?? 0 }} </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+
+                                                                    @foreach ($seller_data->getStatePrice as $state_price)
+                                                                        <tr>
+                                                                            <th>
+                                                                                {{ $loop->iteration }}
+                                                                                @if($state_price->is_selected)
+                                                                                    <i class="bi bi-check2-circle text-success fs-5"></i>
+                                                                                @endif
+                                                                            </th>
+                                                                            @foreach ($state_price->value as $price_value)
+                                                                                <td>{{ $price_value['value'] }} </td>
+                                                                            @endforeach
+                                                                            <td> {{ $state_price->price }} </td>
+                                                                            <td>
+                                                                                @php
+                                                                                    $final_variation_price = 0;
+                                                                                    $tax = ($state_price->price + $seller_data->base_price) * $seller_data->gst / 100;
+                                                                                    $per_unit_price = ($state_price->price + $seller_data->base_price) + $tax + $total_charges;
+                                                                                    $final_price    = $per_unit_price;
+                                                                                    $final_variation_price += $final_price;
+                                                                                    // $gst_amount += $tax
+                                                                                @endphp
+                                                                                {{ $final_variation_price }}
+                                                                            </td>
+                                                                            <td> {{ $state_price->stock ?? 0 }} </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
 
+                            </div>
+
+                            <div class="tab-pane fade {{$active_tab == 'transporter' ? 'show active' : ''}}" id="transporter" role="tabpanel" aria-labelledby="transporter-line-tab">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h5 class="my-3">Available Transporter</h5>
+                                    </div>
+
+                                    <div class="col-4 text-end">
+                                        @if (count($this->transporter_user_id))
+                                            <button class="btn btn-primary btn-xs my-2" title="Send enquiry to seller" wire:click="sendTransporterEnquiry()">Send Enquiry</button>
+                                        @endif
+                                    </div>
+
+                                    <div class="accordion" id="state_price">
+                                        @foreach ($transporter_list as $transporter_data)
+                                            <div class="accordion-item">
+                                                <div class="row">
+                                                    <div class="col-1 text-center mt-3">
+                                                        <input type="checkbox" id="transporter_{{ $transporter_data->user_id }}" class="form-check-input" value="{{ $transporter_data->user_id }}" wire:model.live="transporter_user_id">
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <h2 class="accordion-header" id="heading_{{ $transporter_data->id }}">
+                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $transporter_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $transporter_data->id }}">
+                                                            <b>{{ $transporter_data->getUser->name}} ({{$transporter_data->getUser->phone}})</b>, &nbsp;<b>State</b> : {{ $transporter_data->state }}, &nbsp;<b>City</b> : {{ $transporter_data->city }}, &nbsp; <b>Price</b> : {{ $transporter_data->min_price }} - {{ $transporter_data->max_price }}
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
