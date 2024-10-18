@@ -115,8 +115,8 @@
                                                             @endforeach
                                                             <th>Quantity (MT)</th>
                                                             <th>Gauge Diff.</th>
-                                                            <th>Final Price</th>
-                                                            <th>For Price</th>                                                           </th>
+                                                            {{-- <th>EX Price</th> --}}
+                                                            <th>EX Price</th>                                                           </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -178,7 +178,7 @@
                                                                 @endforeach
                                                                 <td>{{ $variation['quantity'] }}</td>
                                                                 <td>₹ {{ formatIndianNumber($variation['price']) }}</td>
-                                                                <td>₹ {{ formatIndianNumber($final_variation_price) }}</td>
+                                                                {{-- <td>₹ {{ formatIndianNumber($final_variation_price) }}</td> --}}
                                                                 <td>₹ {{ formatIndianNumber($final_variation_price + $list_data->base_price) }}</td>
                                                             </tr>
 

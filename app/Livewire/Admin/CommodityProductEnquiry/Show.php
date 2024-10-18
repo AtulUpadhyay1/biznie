@@ -179,7 +179,7 @@ class Show extends Component
 
     public function sendTransporterEnquiry()
     {
-        try {
+        // try {
 
             if(count($this->transporter_user_id) == 0){
                 $this->dispatch('alert',
@@ -201,6 +201,7 @@ class Show extends Component
 
             foreach ($this->transporter_user_id as $transporter_user_id) {
                 $data = TransporterProductEnquiry::where('user_id', $transporter_user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
+                $available_transport = TransporterAddressPrice::where('user_id', $transporter_user_id)->first();
                 if(!$data){
                     $data                   = new TransporterProductEnquiry;
                 }
@@ -217,6 +218,8 @@ class Show extends Component
                 $data->purpose              = $enquiry_data->purpose;
                 $data->description          = $enquiry_data->description;
                 $data->message              = $enquiry_data->message;
+                $data->min_price            = $available_transport->min_price;
+                $data->max_price            = $available_transport->max_price;
                 $data->status               = $data->status ?? 'pending';
                 if(!$data->history){
                     $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
@@ -235,25 +238,25 @@ class Show extends Component
 
             }
 
-            // $enquiry_data->status = 'Enquiry Send To Seller';
-            // $history = $enquiry_data->history;
-            // $history[] = ['status' => 'Enquiry Send To Seller', 'created_at' => Carbon::now()];
-            // $enquiry_data->history = $history;
-            // $enquiry_data->save();
+            $enquiry_data->status = count($available_transporters)!=0 ? 'Enquiry Sent To Transporters' : 'No Transporters Available';
+            $history = $enquiry_data->history;
+            $history[] = ['status' => 'Enquiry Sent To Transporters', 'created_at' => Carbon::now()];
+            $enquiry_data->history = $history;
+            $enquiry_data->save();
 
             $this->dispatch('alert',
                 type : 'success',
                 message : 'Enquiry sent successfully.',
             );
 
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
 
-            $this->dispatch('alert',
-                type : 'error',
-                message : 'Something went wrong.',
-            );
+        //     $this->dispatch('alert',
+        //         type : 'error',
+        //         message : 'Something went wrong.',
+        //     );
 
-        }
+        // }
 
     }
 }

@@ -192,6 +192,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Transporter', 'prefix' =>
 
         // Product Enquiry
         Route::get('product-enquiry', 'Authenticated\ProductEnquiryApiController@index');
+        Route::get('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@show');
+        Route::post('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@update');
 
     });
 

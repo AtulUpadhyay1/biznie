@@ -26,6 +26,9 @@ return new class extends Migration
             $table->string('purpose')->nullable();
             $table->text('description')->nullable();
             $table->longText('message')->nullable();
+            $table->string('min_price')->nullable();
+            $table->string('max_price')->nullable();
+            $table->string('price')->nullable();
             $table->string('status')->nullable()->default('pending');
             $table->longText('history')->nullable();
             $table->tinyInteger('is_mark')->nullable()->default(0);
