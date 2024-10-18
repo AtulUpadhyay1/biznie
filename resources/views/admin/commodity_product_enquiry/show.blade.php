@@ -85,10 +85,10 @@
 
                         <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link {{$active_tab == 'seller' ? 'active' : ''}}" id="seller-line-tab" href="{{url()->current()}}?active_tab=seller" aria-controls="seller_tab" wire:navigate>Seller</a>
+                                <a class="nav-link {{$active_tab == 'seller' ? 'active' : ''}}" id="seller-line-tab" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}?active_tab=seller" aria-controls="seller_tab" wire:navigate>Seller</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {{$active_tab == 'transporter' ? 'active' : ''}}" id="transporter-line-tab" href="{{url()->current()}}?active_tab=transporter" aria-controls="transporter" wire:navigate>Transporter</a>
+                                <a class="nav-link {{$active_tab == 'transporter' ? 'active' : ''}}" id="transporter-line-tab" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}?active_tab=transporter" aria-controls="transporter" wire:navigate>Transporter</a>
                             </li>
 
                         </ul>

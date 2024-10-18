@@ -21,6 +21,11 @@ class TransporterProductEnquiry extends Model
         'history'               => 'array',
     ];
 
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function getBrand()
     {
         return $this->belongsTo(Brand::class, 'brand_id');
