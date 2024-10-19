@@ -4,6 +4,7 @@ namespace App\Http\Resources\Customer;
 
 use Illuminate\Http\Request;
 use App\Models\SellerCommodityProduct;
+use App\Models\TransporterProductEnquiry;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductEnquiryDetailResource extends JsonResource
@@ -53,6 +54,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'packaging_charge'  => [],
             'other_charge'      => [],
             'other_quantity_charge'    => [],
+            'transporter_detail' => [],
             'total_quantity'    => 0,
             'base_price'        => 0,
             'loading_charge'    => 0,
@@ -148,6 +150,16 @@ class ProductEnquiryDetailResource extends JsonResource
             $data['variation']   = $this->variation;
         }
 
+        $transporter = TransporterProductEnquiry::where('product_enquiries_id', $this->id)->where('is_mark', '1')->with('getUser')->first();
+        if($transporter){
+            $data['transporter_detail'] = [
+                'name'          => $transporter->getUser->name,
+                'phone'         => $transporter->getUser->phone,
+                'min_price'     => $transporter->min_price,
+                'max_price'     => $transporter->max_price,
+                'price'         => $transporter->price,
+            ];
+        }
         return $data;
     }
 }

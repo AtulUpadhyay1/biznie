@@ -30,8 +30,11 @@ class SellerReply extends Component
         $status = ['Mark For Sell', 'replied', 'ordered'];
         $this->list = SellerProductEnquiry::where('product_enquiries_id', $this->hidden_id)->with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->get();
         foreach ($this->list as $data) {
-            $this->selected_enquiry_id = $data->is_mark == 1 ? $data->id : '';
+            if($data->is_mark == 1){
+                $this->selected_enquiry_id = $data->id;
+            }
         }
+
         if($this->list->count() == 0){
             session()->flash('error', 'No sellers have responded yet.');
             return $this->redirectRoute('admin.commodity-product-enquiry.index', navigate: true);
