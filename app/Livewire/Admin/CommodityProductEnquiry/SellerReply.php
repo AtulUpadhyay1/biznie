@@ -47,7 +47,11 @@ class SellerReply extends Component
     public function render()
     {
         $this->updatePriceForm();
-        return view('admin.commodity_product_enquiry.seller_reply');
+        $selected_transporter = TransporterProductEnquiry::where('product_enquiries_id', $this->hidden_id)->where('is_mark', '1')->with('getUser')->first();
+        if($selected_transporter){
+            $this->transport_price = $selected_transporter->price;
+        }
+        return view('admin.commodity_product_enquiry.seller_reply', compact('selected_transporter'));
     }
 
     public function updatePriceForm()

@@ -354,14 +354,14 @@
 
                                                         <tr>
                                                             <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;">
-                                                                {{-- <ol>
-                                                                    @foreach ($available_transports as $available_transport)
-                                                                        <li>
-                                                                            {{ $available_transport->getUser->name }} ({{ $available_transport->getUser->phone }}) <br>
-                                                                            ₹ {{ formatIndianNumber($available_transport->min_price) }} - ₹ {{ formatIndianNumber($available_transport->max_price) }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ol> --}}
+                                                                @if ($selected_transporter)
+                                                                    Name : {{ $selected_transporter->getUser->name }} <br>
+                                                                    Phone : {{ $selected_transporter->getUser->phone }} <br>
+                                                                    Price : ₹ {{ formatIndianNumber($selected_transporter->min_price) }} - ₹ {{ formatIndianNumber($selected_transporter->max_price) }}<br>
+                                                                    Given Price : ₹ {{ formatIndianNumber($selected_transporter->price) }}<br>
+                                                                @else
+                                                                    <a href="{{route('admin.commodity-product-enquiry.sellerReply', $hidden_id)}}?active_tab=transporter" wire:navigate>Select Transpoter</a>
+                                                                @endif
                                                             </td>
                                                             <td style="border-right: hidden;">
                                                                 <label for="commission" class="form-label">Commission <br>
