@@ -21,19 +21,19 @@ class AllSellerCommodityProductResource extends JsonResource
             'name'              => $this->name,
             'slug'              => $this->slug,
             'loading_address'   => $this->loading_address ?? [],
-            'brands'            => [],
+            'brands'            => $this->getBrand ? ['id' => $this->getBrand->id, 'name' => $this->getBrand->name] : null,
         ];
 
-        if($this->brand_id){
-            foreach ($this->brand_id as $brand_id) {
+        // if($this->brand_id){
+        //     foreach ($this->brand_id as $brand_id) {
 
-                $brand = getBrand($brand_id);
-                $brand_data['id'] = $brand->id;
-                $brand_data['name'] = $brand->name;
-                $data['brands'][] = $brand_data;
+        //         $brand = getBrand($brand_id);
+        //         $brand_data['id'] = $brand->id;
+        //         $brand_data['name'] = $brand->name;
+        //         $data['brands'][] = $brand_data;
 
-            }
-        }
+        //     }
+        // }
 
         return $data;
     }
