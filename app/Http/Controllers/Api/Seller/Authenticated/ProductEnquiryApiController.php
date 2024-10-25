@@ -20,10 +20,29 @@ class ProductEnquiryApiController extends Controller
 
     public function show($id)
     {
-        $data = SellerProductEnquiry::with('getBrand', 'getSellerCommodityProduct')->findOrFail($id);
+        $data = SellerProductEnquiry::where('user_id', auth()->id())->with('getBrand', 'getSellerCommodityProduct')->find($id);
+        if(!$data){
+            return response([
+                'success'   => false,
+                'message'   => 'Product enquiry not found.'
+            ],400);
+        }
+
+        $bidding_list = SellerProductEnquiry::where('user_id', '!=', auth()->id())
+            ->where('product_enquiries_id', $data->product_enquiries_id)
+            ->where('status', '!=', 'pending')
+            ->orderBy('base_price', 'asc')
+            ->with(['getUser:id,name,phone'])
+            ->select(['base_price', 'user_id'])
+            ->get()
+            ->map(function ($item) {
+                unset($item->user_id);
+                return $item;
+            });
         return response([
             'success'   => true,
-            'data'      => new ProductEnquiryDetailResource($data)
+            'data'      => new ProductEnquiryDetailResource($data),
+            'bidding_list' => $bidding_list
         ],200);
     }
 

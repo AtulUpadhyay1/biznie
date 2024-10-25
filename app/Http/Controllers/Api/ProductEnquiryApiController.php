@@ -191,48 +191,48 @@ class ProductEnquiryApiController extends Controller
                 $enquiry_data->save();
             }
 
-            if(websiteSetupValue('enquiry_send_to_transporter') && websiteSetupValue('enquiry_send_to_transporter') == 1){
-                $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $enquiry_data->commodity_product_id)->pluck('user_id')->toArray();
-                $available_transporters = TransporterAddressPrice::whereIn('user_id', $transporters_ids)->where('state', $enquiry_data->billing_address['state'])->where('city', $enquiry_data->billing_address['city'])->with('getUser')->get();
-                foreach ($available_transporters as $available_transport) {
+            // if(websiteSetupValue('enquiry_send_to_transporter') && websiteSetupValue('enquiry_send_to_transporter') == 1){
+            //     $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $enquiry_data->commodity_product_id)->pluck('user_id')->toArray();
+            //     $available_transporters = TransporterAddressPrice::whereIn('user_id', $transporters_ids)->where('state', $enquiry_data->billing_address['state'])->where('city', $enquiry_data->billing_address['city'])->with('getUser')->get();
+            //     foreach ($available_transporters as $available_transport) {
 
-                    $transporters_product = new TransporterProductEnquiry;
-                    $transporters_product->user_id              = $available_transport->user_id;
-                    $transporters_product->product_enquiries_id = $enquiry_data->id;
-                    $transporters_product->customer_user_id     = $enquiry_data->user_id;
-                    $transporters_product->commodity_product_id = $enquiry_data->commodity_product_id;
-                    $transporters_product->brand_id             = $enquiry_data->brand_id;
-                    $transporters_product->unique_id            = $enquiry_data->unique_id;
-                    $transporters_product->origin_city          = $enquiry_data->origin_city;
-                    $transporters_product->billing_address      = $enquiry_data->billing_address;
-                    $transporters_product->delivery_address     = $enquiry_data->delivery_address;
-                    $transporters_product->consignee_detail     = $enquiry_data->consignee_detail;
-                    $transporters_product->purpose              = $enquiry_data->purpose;
-                    $transporters_product->description          = $enquiry_data->description;
-                    $transporters_product->message              = $enquiry_data->message;
-                    $transporters_product->min_price            = $available_transport->min_price;
-                    $transporters_product->max_price            = $available_transport->max_price;
-                    $transporters_product->status               = $transporters_product->status ?? 'pending';
-                    if(!$transporters_product->history){
-                        $transporters_product->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
-                    }
-                    $transporters_product->save();
+            //         $transporters_product = new TransporterProductEnquiry;
+            //         $transporters_product->user_id              = $available_transport->user_id;
+            //         $transporters_product->product_enquiries_id = $enquiry_data->id;
+            //         $transporters_product->customer_user_id     = $enquiry_data->user_id;
+            //         $transporters_product->commodity_product_id = $enquiry_data->commodity_product_id;
+            //         $transporters_product->brand_id             = $enquiry_data->brand_id;
+            //         $transporters_product->unique_id            = $enquiry_data->unique_id;
+            //         $transporters_product->origin_city          = $enquiry_data->origin_city;
+            //         $transporters_product->billing_address      = $enquiry_data->billing_address;
+            //         $transporters_product->delivery_address     = $enquiry_data->delivery_address;
+            //         $transporters_product->consignee_detail     = $enquiry_data->consignee_detail;
+            //         $transporters_product->purpose              = $enquiry_data->purpose;
+            //         $transporters_product->description          = $enquiry_data->description;
+            //         $transporters_product->message              = $enquiry_data->message;
+            //         $transporters_product->min_price            = $available_transport->min_price;
+            //         $transporters_product->max_price            = $available_transport->max_price;
+            //         $transporters_product->status               = $transporters_product->status ?? 'pending';
+            //         if(!$transporters_product->history){
+            //             $transporters_product->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
+            //         }
+            //         $transporters_product->save();
 
-                    $title = 'New Product Enquiry';
-                    $body = 'Dear '.$available_transport->getUser->name.', Your have new product enquiry. Please fill your price.';
-                    $type = 'product_enquiry';
-                    $data_info = [
-                        'unique_id'     => $data->unique_id,
-                    ];
-                    sendNotification($available_transport->getUser, $title, $body, $type, $data_info, true);
-                }
+            //         $title = 'New Product Enquiry';
+            //         $body = 'Dear '.$available_transport->getUser->name.', Your have new product enquiry. Please fill your price.';
+            //         $type = 'product_enquiry';
+            //         $data_info = [
+            //             'unique_id'     => $data->unique_id,
+            //         ];
+            //         sendNotification($available_transport->getUser, $title, $body, $type, $data_info, true);
+            //     }
 
-                $enquiry_data->status = count($available_transporters)!=0 ? 'Enquiry Sent To Transporters' : 'No Transporters Available';
-                $history = $enquiry_data->history;
-                $history[] = ['status' => 'Enquiry Sent To Transporters', 'created_at' => Carbon::now()];
-                $enquiry_data->history = $history;
-                $enquiry_data->save();
-            }
+            //     $enquiry_data->status = count($available_transporters)!=0 ? 'Enquiry Sent To Transporters' : 'No Transporters Available';
+            //     $history = $enquiry_data->history;
+            //     $history[] = ['status' => 'Enquiry Sent To Transporters', 'created_at' => Carbon::now()];
+            //     $enquiry_data->history = $history;
+            //     $enquiry_data->save();
+            // }
 
             return response([
                 'success'   => true,

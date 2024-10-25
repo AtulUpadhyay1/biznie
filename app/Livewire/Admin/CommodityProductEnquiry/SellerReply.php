@@ -43,7 +43,9 @@ class SellerReply extends Component
 
         $this->transporter_list = TransporterProductEnquiry::where('product_enquiries_id', $this->hidden_id)->with('getUser')->get();
         foreach ($this->transporter_list as $transporter_data) {
-            $this->selected_transporter_id = $transporter_data->is_mark == 1 ? $transporter_data->id : '';
+            if($transporter_data->is_mark == 1){
+                $this->selected_transporter_id = $transporter_data->id;
+            }
         }
     }
 

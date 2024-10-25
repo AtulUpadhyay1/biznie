@@ -238,7 +238,7 @@ class Show extends Component
 
             }
 
-            $enquiry_data->status = count($available_transporters)!=0 ? 'Enquiry Sent To Transporters' : 'No Transporters Available';
+            $enquiry_data->status = count($this->transporter_user_id)!=0 ? 'Enquiry Sent To Transporters' : 'No Transporters Available';
             $history = $enquiry_data->history;
             $history[] = ['status' => 'Enquiry Sent To Transporters', 'created_at' => Carbon::now()];
             $enquiry_data->history = $history;
