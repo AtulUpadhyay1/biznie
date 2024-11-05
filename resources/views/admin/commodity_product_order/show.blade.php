@@ -48,6 +48,13 @@
                                 <b>Seller: </b> {{ $data->getSeller->name }} <br>
                                 <b>Phone: </b> {{ $data->getSeller->phone }} <br>
                             </p>
+                            @if ($data->getTransporter)
+                                <br>
+                                <p>
+                                    <b>Transporter: </b> {{ $data->getTransporter->name }} <br>
+                                    <b>Phone: </b> {{ $data->getTransporter->phone }} <br>
+                                </p>
+                            @endif
                         </div>
                     </div>
                     <div class="row mt-3">

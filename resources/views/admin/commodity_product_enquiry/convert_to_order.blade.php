@@ -13,10 +13,10 @@
                         Category : {{ $enquiry_data->getCommodityProduct->getCategory->name }} <br>
                         Product : {{ $enquiry_data->getCommodityProduct->name }} <br>
                         Brand : {{ $enquiry_data->getBrand->name }} <br>
-                        Delivery Location : {{ $enquiry_data->delivery_address['address_line_one'] }}
-                        {{ $enquiry_data->delivery_address['address_line_two'] }}
-                        {{ $enquiry_data->delivery_address['city'] }}
-                        {{ $enquiry_data->delivery_address['pin_code'] }}
+                        Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
+                        {{ $enquiry_data->consignee_detail['address_line_two'] }}
+                        {{ $enquiry_data->consignee_detail['city'] }}
+                        {{ $enquiry_data->consignee_detail['pin_code'] }}
                     </p>
                 </div>
             </div>
@@ -52,13 +52,13 @@
                 </div>
                 <div class="card-body">
                     <p>
-                        Phone : {{ $enquiry_data->consignee_detail['consignee_phone'] }} <br>
-                        GST Number : {{ $enquiry_data->consignee_detail['gst_number'] }} <br>
-                        Company : {{ $enquiry_data->consignee_detail['consignee_company'] }} <br>
-                        Address : {{ $enquiry_data->consignee_detail['address']['address_line_one'] }}
-                        {{ $enquiry_data->consignee_detail['address']['address_line_two'] }}
-                        {{ $enquiry_data->consignee_detail['address']['city'] }} <br>
-                        Pincode : {{ $enquiry_data->consignee_detail['address']['pin_code'] }}
+                        Phone : {{ $enquiry_data->consignee_detail['phone_number'] }} <br>
+                        GST Number : {{ $enquiry_data->consignee_detail['gst'] }} <br>
+                        Company : {{ $enquiry_data->consignee_detail['company_name'] }} <br>
+                        Address : {{ $enquiry_data->consignee_detail['address_line_one'] }}
+                        {{ $enquiry_data->consignee_detail['address_line_two'] }}
+                        {{ $enquiry_data->consignee_detail['city'] }} {{ $enquiry_data->consignee_detail['state'] }} <br>
+                        Pincode : {{ $enquiry_data->consignee_detail['pin_code'] }}
                     </p>
                 </div>
             </div>

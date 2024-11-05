@@ -24,7 +24,7 @@ class Show extends Component
 
     public function render()
     {
-        $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getProductEnquiry')->findOrFail($this->hidden_id);
+        $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')->findOrFail($this->hidden_id);
         $this->page_title = 'View Order '. $data->getProductEnquiry->unique_id;
         $this->vehicle_notes = $data->vehicle_notes;
         return view('admin.commodity_product_order.show', compact('data'));

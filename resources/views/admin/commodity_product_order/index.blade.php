@@ -42,6 +42,7 @@
                                     <th>Product</th>
                                     <th>Customer</th>
                                     <th>Seller</th>
+                                    <th>Transporter</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -59,6 +60,7 @@
                                         <td>{{ $data->getCommodityProduct->name }}</td>
                                         <td>{{ $data->getCustomer->name }}</td>
                                         <td>{{ $data->getSeller->name }}</td>
+                                        <td>{{ $data->getTransporter ? $data->getTransporter->name : 'NA' }}</td>
                                         <td>
                                             {{ ucfirst($data->status) }}
                                         </td>
