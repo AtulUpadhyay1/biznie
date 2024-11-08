@@ -19,7 +19,7 @@ class Edit extends Component
     public $page_title = "Edit Commodity Product";
     use WithFileUploads;
 
-    public $hidden_id, $name, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $attribute=[], $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes;
+    public $hidden_id, $name, $hsn_code, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $attribute=[], $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes;
 
     public $sub_category_list = [];
     public $sub_sub_category_list = [];
@@ -33,6 +33,7 @@ class Edit extends Component
         $this->hidden_id = $id;
         $data = CommodityProduct::with('getCommodityProductVariation')->find($this->hidden_id);
         $this->name                 = $data->name;
+        $this->hsn_code             = $data->hsn_code;
         $this->description          = $data->description;
         $this->specification_notes  = $data->specification_notes;
         $this->category_id          = $data->category_id;
@@ -92,6 +93,7 @@ class Edit extends Component
 
         $data = CommodityProduct::find($this->hidden_id);
         $data->name             = $this->name;
+        $data->hsn_code         = $this->hsn_code;
         $data->slug             = Str::slug($this->name);
         $data->category_id      = $this->category_id;
         $data->sub_category_id  = $this->sub_category_id;

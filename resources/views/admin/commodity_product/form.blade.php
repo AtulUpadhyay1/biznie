@@ -30,24 +30,31 @@
             </div>
             <form wire:submit.prevent="save()">
                 <div class="card card-body">
-                    <div class="col-md-12 mb-3">
-                        <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter product name" wire:model="name">
-                        @error('name') <small class="text-danger">{{ $message }}</small>@enderror
-                    </div>
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter product name" wire:model="name">
+                            @error('name') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
 
-                    <div class="col-md-12 mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" id="description" cols="30" rows="5" placeholder="Enter product description" wire:model="description"></textarea>
-                        @error('description') <small class="text-danger">{{ $message }}</small>@enderror
-                    </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="hsn_code" class="form-label">HSN Code</label>
+                            <input type="text" class="form-control @error('hsn_code') is-invalid @enderror" id="hsn_code" placeholder="Enter hsn code" wire:model="hsn_code">
+                            @error('hsn_code') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
 
-                    <div class="col-md-12 mb-3">
-                        <label for="specification_notes" class="form-label">Specification Notes</label>
-                        <textarea class="form-control @error('specification_notes') is-invalid @enderror" id="specification_notes" cols="30" rows="5" placeholder="Enter product specification notes" wire:model="specification_notes"></textarea>
-                        @error('specification_notes') <small class="text-danger">{{ $message }}</small>@enderror
-                    </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" cols="30" rows="5" placeholder="Enter product description" wire:model="description"></textarea>
+                            @error('description') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
 
+                        <div class="col-md-12 mb-3">
+                            <label for="specification_notes" class="form-label">Specification Notes</label>
+                            <textarea class="form-control @error('specification_notes') is-invalid @enderror" id="specification_notes" cols="30" rows="5" placeholder="Enter product specification notes" wire:model="specification_notes"></textarea>
+                            @error('specification_notes') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                    </div>
                 </div>
                 <div class="card mt-3">
                     <div class="card-header">
