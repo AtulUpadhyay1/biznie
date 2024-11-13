@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Customer\Authenticated;
 
 use App\Models\Business;
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use App\Models\SellerKycDetail;
 use App\Http\Controllers\Controller;
@@ -27,6 +28,8 @@ class BecomeSellerApiController extends Controller
             // 'gst_type'          => 'required',
             'gst_number'        => 'required',
             'address'           => 'required',
+            'credit_duration'   => 'required|in:yes,no',
+            'credit_duration_day'=> 'required_if:credit_duration,yes'
         ]);
 
         $user = auth()->user();
@@ -69,6 +72,15 @@ class BecomeSellerApiController extends Controller
         $data->gst_number = $request->gst_number;
         $data->address  = $request->address;
         $data->save();
+
+        $user_detail = UserDetail::where('user_id', auth()->id())->first();
+        if(!$user_detail){
+            $user_detail = new UserDetail;
+            $user_detail->user_id = auth()->id();
+        }
+        $user_detail->credit_duration = $request->credit_duration;
+        $user_detail->credit_duration_day = $request->credit_duration_day;
+        $user_detail->save();
 
         return response([
             'success'   => true,

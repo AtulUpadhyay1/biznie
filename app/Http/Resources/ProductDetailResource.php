@@ -27,7 +27,7 @@ class ProductDetailResource extends JsonResource
             'unit'                          => ['id' => $this->getCommodityProduct->getUnit->id, 'name' => $this->getCommodityProduct->getUnit->name],
             'address'                       => $this->city,
             'base_price'                    => $this->base_price,
-            'thumbnail'                     => $this->getCommodityProduct->thumbnail ? imageUrl($this->getCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
+            'thumbnail'                     => $this->getSellerCommodityProduct->thumbnail ? imageUrl($this->getSellerCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
             'images'                        => [],
             'base_price'                    => $this->base_price,
             'loading_charge'                => $this->loading_charge,
@@ -46,15 +46,16 @@ class ProductDetailResource extends JsonResource
                 $data['charts'][] = imageUrl($chart);
             }
         }
+
+        $product = $this->getSellerCommodityProduct;
+
+        if($product->images && $product->images != ""){
+            foreach ($product->images as $images) {
+                $data['images'][]           = imageUrl($images);
+            }
+        }
+
         return $data;
-
-        // $product = $this->getSellerCommodityProduct;
-
-        // if($product->images && $product->images != ""){
-        //     foreach ($product->images as $images) {
-        //         $data['images'][]           = imageUrl($images);
-        //     }
-        // }
 
         // if($product->charge_name){
         //     foreach($product->charge_name as $key => $charge_name){
