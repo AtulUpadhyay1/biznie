@@ -53,6 +53,7 @@ class ProductEnquiryApiController extends Controller
             'price'     => 'required|array',
             'base_price'=> 'required',
             'loading_address' => 'required|array',
+            'price_validity'  => 'required'
         ]);
 
         $data               = SellerProductEnquiry::find($id);
@@ -61,6 +62,7 @@ class ProductEnquiryApiController extends Controller
         $data->base_price   = $request->base_price;
         $data->loading_address = $request->loading_address;
         $data->transport_price = $request->transport_price;
+        $data->price_validity = $request->price_validity;
         $data->delivery_by  = $request->delivery_by ?? 'biznie';
         $data->description  = $request->description;
         $data->status       = 'replied';
