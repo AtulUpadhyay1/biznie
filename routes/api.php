@@ -82,6 +82,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         // Address Management
         Route::apiResource('address', 'UserAddressApiController');
+
+        // Send Otp
+        Route::post('send-otp', 'InfoApiController@sendOtp');
     });
 });
 

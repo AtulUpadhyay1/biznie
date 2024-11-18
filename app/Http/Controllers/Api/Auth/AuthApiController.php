@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User;
-use App\Models\UserOtp;
 use App\Models\TempUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,20 +39,7 @@ class AuthApiController extends Controller
         $temp_user->password = bcrypt($request->password);
         $temp_user->save();
 
-        $otp = 1234;
-        // $otp = rand(1111, 9999);
-
-        // if(config('app.env') == 'production' && $request->phone != "8920976591"){
-        //     Msg91::sms()->to('91'.$request->phone)->flow('648d8690d6fc051b591f1ec3')->variable('user', $user->name)->variable('otp', $otp)->send();
-        // }
-
-        $data = UserOtp::where('phone', $request->phone)->first();
-        if(!$data){
-            $data = new UserOtp;
-        }
-        $data->phone = $request->phone;
-        $data->otp = $otp;
-        $data->save();
+        sendOtp($request->phone);
 
         return response([
             'success'   => true,
@@ -90,21 +76,7 @@ class AuthApiController extends Controller
             ],400);
         }
 
-        $otp = 1234;
-
-        // $otp = rand(1111, 9999);
-
-        // if(config('app.env') == 'production' && $request->phone != "8920976591"){
-        //     Msg91::sms()->to('91'.$request->phone)->flow('648d8690d6fc051b591f1ec3')->variable('user', $user->name)->variable('otp', $otp)->send();
-        // }
-
-        $data = UserOtp::where('phone', $request->phone)->first();
-        if(!$data){
-            $data = new UserOtp;
-        }
-        $data->phone = $request->phone;
-        $data->otp = $otp;
-        $data->save();
+        sendOtp($request->phone);
 
         return response([
             'success'   => true,
