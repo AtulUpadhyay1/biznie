@@ -24,53 +24,37 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-6 text-end">
+                        <span class="badge border border-success text-success p-3">
+                            <h6>Cash Balance</h6>
+                            <h3> ₹ {{ formatIndianNumber($data->cash_balance) }} </h3>
+                        </span>
+                    </div>
+                    <div class="col-6">
+                        <span class="badge border border-primary text-primary p-3">
+                            <h6>Credit Balance</h6>
+                            <h3> ₹ {{ formatIndianNumber($data->credit_balance) }} </h3>
+                        </span>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="custom-table">
                             <thead>
                                 <tr>
-                                    <th>Type</th>
-                                    <th>Transaction ID</th>
-                                    <th>Transaction Date/Time</th>
-                                    <th style="width: 20%">Amount</th>
+                                    <th>Id</th>
+                                    <th>Amount</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><img src="{{asset('admin_css/assets/images/arrow-up.png')}}" alt=""></td>
                                     <td>#12345674542321</td>
-                                    <td>04/10/2023<br>6.45 PM</td>
                                     <td><b>RS 14000</b></td>
                                     <td class="text-success fw-bolder">Completed</td>
-                                    <td class="text-center">
-                                        <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                            <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
-                                            <a class="dropdown-item d-flex align-items-center" href=""><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="{{asset('admin_css/assets/images/arrow-down.png')}}" alt=""></td>
-                                    <td>#12345674542321</td>
                                     <td>04/10/2023<br>6.45 PM</td>
-                                    <td><b>RS 14000</b></td>
-                                    <td class="text-danger fw-bolder">Refund</td>
-                                    <td class="text-center">
-                                        <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                            <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
-                                            <a class="dropdown-item d-flex align-items-center" href=""><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                        </div>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>

@@ -30,82 +30,37 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Order Code</th>
-                                    <th>No Of products</th>
+                                    <th>Order Id</th>
+                                    <th>Products</th>
                                     <th style="width: 20%">Amount</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>#000134e8263826823</td>
-                                    <td>12</td>
-                                    <td><b>RS 14000</b></td>
-                                    <td class="text-primary fw-bolder">Pending</td>
-                                    <td class="text-center">
-                                        <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                            <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
-                                            <a class="dropdown-item d-flex align-items-center" href=""><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>#000134e8263826823</td>
-                                    <td>12</td>
-                                    <td><b>RS 14000</b></td>
-                                    <td class="text-success fw-bolder">Completed</td>
-                                    <td class="text-center">
-                                        <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                            <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
-                                            <a class="dropdown-item d-flex align-items-center" href=""><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>#000134e8263826823</td>
-                                    <td>12</td>
-                                    <td><b>RS 14000</b></td>
-                                    <td class="text-danger fw-bolder">Cancelled</td>
-                                    <td class="text-center">
-                                        <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                            <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
-                                            <a class="dropdown-item d-flex align-items-center" href=""><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>#000134e8263826823</td>
-                                    <td>12</td>
-                                    <td><b>RS 14000</b></td>
-                                    <td class="text-warning fw-bolder">Dispatched</td>
-                                    <td class="text-center">
-                                        <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                            <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
-                                            <a class="dropdown-item d-flex align-items-center" href=""><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a>
-                                            <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @foreach ($list as $key => $data)
+                                    <tr>
+                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>
+                                            {{ $data->getProductEnquiry->unique_id }}
+                                            <br>
+                                            <small>({{ $data->order_id }})</small>
+                                        </td>
+                                        <td>{{ $data->getCommodityProduct->name }}</td>
+                                        <td><b>RS {{ $data->total_amount }}</b></td>
+                                        <td class="fw-bolder">{{ ucfirst($data->status) }}</td>
+                                        <td class="text-center">
+                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
+                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
+                                                <a class="dropdown-item d-flex align-items-center" href=""><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a>
+                                                {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
