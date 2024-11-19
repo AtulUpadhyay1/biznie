@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User;
+use App\Models\UserOtp;
 use App\Models\TempUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
