@@ -22,6 +22,7 @@ class ProfileResource extends JsonResource
             'email'     => $this->email,
             'phone'     => $this->phone,
             'phone_verified_at' => dateTimeFormat($this->phone_verified_at),
+            'credit_availability' => $this->credit_availability ? true : false,
             'user_detail' => NULL,
         ];
         if($this->getUserDetail){

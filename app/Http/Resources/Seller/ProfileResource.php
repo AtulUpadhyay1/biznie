@@ -21,6 +21,7 @@ class ProfileResource extends JsonResource
             'email'             => $this->email,
             'phone'             => $this->phone,
             'phone_verified_at' => dateTimeFormat($this->phone_verified_at),
+            'credit_availability' => $this->credit_availability ? true : false,
             'business_details'  => $this->getBusiness ? new BusinessResource($this->getBusiness) : null,
             'kyc_details'       => $this->getSellerKycDetail ? new KycDetailResource($this->getSellerKycDetail) : null,
         ];

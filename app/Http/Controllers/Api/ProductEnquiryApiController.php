@@ -73,6 +73,8 @@ class ProductEnquiryApiController extends Controller
             $data->purpose              = $request->purpose;
             $data->description          = $request->description;
             $data->price                = $request->price;
+            $data->payment_mode         = $request->payment_mode;
+            $data->credit_day           = $request->credit_day;
             $data->history              = [['status' => 'pending', 'created_at' => Carbon::now()]];
             $data->save();
 
