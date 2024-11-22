@@ -28,8 +28,8 @@ class BecomeSellerApiController extends Controller
             // 'gst_type'          => 'required',
             'gst_number'        => 'required',
             'address'           => 'required',
-            'credit_duration'   => 'required|in:yes,no',
-            'credit_duration_day'=> 'required_if:credit_duration,yes'
+            // 'credit_duration'   => 'required|in:yes,no',
+            // 'credit_duration_day'=> 'required_if:credit_duration,yes'
         ]);
 
         $user = auth()->user();
