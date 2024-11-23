@@ -158,11 +158,11 @@
                                                                 <div class="col-md-6">
                                                                     <div class="card card-body">
                                                                         <b>Pincode: </b> {{ $loading_address['pin_code'] }} <br>
-                                                                        <b>Address Line One: </b> {{ $loading_address['address_line_one'] }} <br>
-                                                                        <b>Address Line Two: </b> {{ $loading_address['address_line_two'] }} <br>
+                                                                        <b>Address Line One: </b> {{ isset($loading_address['address_line_one']) ? $loading_address['address_line_one'] : '--' }} <br>
+                                                                        <b>Address Line Two: </b> {{ isset($loading_address['address_line_two']) ? $loading_address['address_line_two'] : '--' }} <br>
                                                                         <b>City: </b> {{ isset($loading_address['city']) ? $loading_address['city'] : '--' }} <br>
                                                                         <b>State: </b> {{ isset($loading_address['state']) ? $loading_address['state'] : '--' }} <br>
-                                                                        <b>Loading Position: </b> {{ $loading_address['loading_position'] }} / Days <br>
+                                                                        <b>Loading Position: </b> {{ isset($loading_address['loading_position']) ? $loading_address['loading_position'] : '--' }} / Days <br>
                                                                     </div>
                                                                 </div>
                                                             @endforeach
