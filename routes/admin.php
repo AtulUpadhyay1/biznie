@@ -127,6 +127,9 @@ Route::group(['as'=>'admin.'], function () {
         //Cutomer Payment List
         Route::get('customer-payment-list/{id}', AdminRoot\Customer\Payments::class)->name('customer-payment-list');
 
+        //Cutomer Enquiry List
+        Route::get('customer-enquiry-list/{id}', AdminRoot\Customer\Enquiry::class)->name('customer-enquiry-list');
+
         //Product List
         Route::get('product-list', AdminRoot\Product\Index::class)->name('product-list');
 
