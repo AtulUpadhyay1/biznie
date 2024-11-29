@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-enquiry-list') nav_active @endif" href="{{route('admin.customer-enquiry-list', $data->id)}}">RFQ
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-enquiry-list') nav_active @endif" href="{{route('admin.customer-enquiry-list', $data->id)}}" wire:navigate>RFQ
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
