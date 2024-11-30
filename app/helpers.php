@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Brand;
+use App\Models\UserOtp;
 use App\Models\Attribute;
 use App\Models\SellerType;
 use App\Models\UserDetail;
@@ -180,6 +181,25 @@ if(!function_exists('formatIndianNumber')){
 
         // Return the formatted number
         return $whole . $decimal;
+    }
+}
+
+if(!function_exists('sendOtp')){
+    function sendOtp($phone) {
+        $otp = 1234;
+        // $otp = rand(1111, 9999);
+
+        // if(config('app.env') == 'production' && $request->phone != "8920976591"){
+        //     Msg91::sms()->to('91'.$request->phone)->flow('648d8690d6fc051b591f1ec3')->variable('user', $user->name)->variable('otp', $otp)->send();
+        // }
+
+        $data = UserOtp::where('phone', $phone)->first();
+        if(!$data){
+            $data = new UserOtp;
+        }
+        $data->phone = $phone;
+        $data->otp = $otp;
+        $data->save();
     }
 }
 

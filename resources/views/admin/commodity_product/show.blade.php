@@ -39,6 +39,9 @@
                             {{ getPackagingType($packaging_type)->name}} - ₹ {{ $data->packaging_type_price ? $data->packaging_type_price[$loop->iteration] : 0 }}@if(!$loop->last), @endif
                         @endforeach
                     </p>
+                    <p><b>HSN Code :</b>
+                        {{ $data->hsn_code }}
+                    </p>
                     <hr>
                     <h4>Pricing & Others</h4>
                     <hr>

@@ -40,4 +40,13 @@ class InfoApiController extends Controller
             'message' => 'Handshake successful.'
         ],200);
     }
+
+    public function sendOtp(Request $request)
+    {
+        sendOtp(auth()->user()->phone);
+        return response([
+            'success' => true,
+           'message' => 'OTP sent successfully.'
+        ],200);
+    }
 }

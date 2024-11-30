@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\CommodityProductEnquiry;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\UserOtp;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ use App\Models\CommodityProductOrderLedger;
 class ConvertToOrder extends Component
 {
     public $page_title = 'Conver To Order';
-    public $hidden_id, $token_amount, $total_amount, $message;
+    public $hidden_id, $token_amount, $total_amount, $message, $otp;
 
     public function mount($id)
     {
@@ -24,8 +25,7 @@ class ConvertToOrder extends Component
 
     public function render()
     {
-        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->findOrFail($this->hidden_id);
-
+        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($this->hidden_id);
         return view('admin.commodity_product_enquiry.convert_to_order', compact('enquiry_data'));
     }
 
@@ -36,10 +36,34 @@ class ConvertToOrder extends Component
         // dd([$this->token_amount, $this->total_amount]);
     }
 
+    public function sendOtp()
+    {
+        $enquiry = ProductEnquiry::with('getMarkedSellerProductEnquiry.getUser')->find($this->hidden_id);
+        $seller = $enquiry->getMarkedSellerProductEnquiry->getUser;
+
+        sendOtp($seller->phone);
+
+        $this->dispatch('alert',
+            type : 'success',
+            message : 'OTP sent successfully. Please enter the OTP to proceed.',
+        );
+    }
+
     public function enquiryToOrder()
     {
-        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry')->find($this->hidden_id);
+        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry', 'getMarkedTransporterEnquiry', 'getMarkedSellerProductEnquiry.getUser')->find($this->hidden_id);
         $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
+        $mark_transporter = $enquiry_data->getMarkedTransporterEnquiry;
+
+        $checkOtp = UserOtp::where('phone', $mark_seller->getUser->phone)->where('otp', $this->otp)->first();
+        if(!$checkOtp){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Please enter a valid OTP.',
+            );
+            return ;
+        }
+        $checkOtp->delete();
 
         $customer = User::find($mark_seller->customer_user_id);
         $user_total_balance = $customer->cash_balance + $customer->credit_balance;
@@ -56,6 +80,8 @@ class ConvertToOrder extends Component
         $history = $enquiry_data->history;
         $history[] = ['status' => 'Ordered', 'created_at' => Carbon::now()];
         $enquiry_data->history = $history;
+        $enquiry_data->accepted_by = 'admin';
+        $enquiry_data->accepted_by_id = auth()->id();
         $enquiry_data->save();
 
 
@@ -65,9 +91,18 @@ class ConvertToOrder extends Component
         $mark_seller->history = $history;
         $mark_seller->save();
 
+        if($mark_transporter){
+            $mark_transporter->status = 'ordered';
+            $history = $mark_transporter->history;
+            $history[] = ['status' => 'Ordered', 'created_at' => Carbon::now()];
+            $mark_transporter->history = $history;
+            $mark_transporter->save();
+        }
+
         $order                              = new CommodityProductOrder;
         $order->seller_user_id              = $mark_seller->user_id;
         $order->customer_user_id            = $mark_seller->customer_user_id;
+        $order->transporter_user_id         = $mark_transporter ? $mark_transporter->user_id : null;
         $order->product_enquiries_id        = $mark_seller->product_enquiries_id;
         $order->seller_product_enquiries_id = $mark_seller->id;
         $order->commodity_product_id        = $mark_seller->commodity_product_id;
@@ -77,7 +112,7 @@ class ConvertToOrder extends Component
         $order->origin_city                 = $mark_seller->origin_city;
         $order->value                       = $mark_seller->value;
         $order->billing_address             = $mark_seller->billing_address;
-        $order->delivery_address            = $mark_seller->delivery_address;
+        $order->consignee_detail            = $mark_seller->consignee_detail;
         $order->purpose                     = $mark_seller->purpose;
         $order->description                 = $mark_seller->description;
         $order->message                     = $mark_seller->message;
@@ -92,6 +127,8 @@ class ConvertToOrder extends Component
         $order->loading_address             = $mark_seller->loading_address;
         $order->delivery_by                 = $mark_seller->delivery_by;
         $order->status                      = 'pending';
+        $order->accepted_by                 = 'admin';
+        $order->accepted_by_id              = auth()->id();
         $order->history                     = [['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()]];
         $order->customer_quality_check_visibility = websiteSetupValue('customer_quality_check_visibility') ?? 0;
         $order->save();

@@ -54,6 +54,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         // Image upload
         Route::post('image-upload', 'ImageUploadController@imageUpload');
 
+        Route::get('user-detail', 'Auth\AuthApiController@userDetail');
+
         Route::post('business-interest', 'Auth\AuthApiController@businessInterest');
 
         // Notification
@@ -80,6 +82,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         // Address Management
         Route::apiResource('address', 'UserAddressApiController');
+
+        // Send Otp
+        Route::post('send-otp', 'InfoApiController@sendOtp');
     });
 });
 
@@ -159,6 +164,43 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::post('driver', 'Authenticated\DriverApiController@store');
         Route::put('driver/{id}', 'Authenticated\DriverApiController@update');
         Route::delete('driver/{id}', 'Authenticated\DriverApiController@destroy');
+
+    });
+
+});
+
+// Transporter api routes
+Route::group(['namespace' => 'App\Http\Controllers\Api\Transporter', 'prefix' => 'transporter'], function () {
+
+    // Transporter authenticated route
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Profile
+        Route::get('profile', 'Authenticated\ProfileApiController@profile');
+        Route::post('update-profile', 'Authenticated\ProfileApiController@updateProfile');
+
+        // Vehicle
+        Route::get('vehicle', 'Authenticated\VehicleApiController@index');
+        Route::post('assign-vehicle', 'Authenticated\VehicleApiController@assignVehicle');
+
+        // Product
+        Route::get('product', 'Authenticated\ProductApiController@index');
+        Route::post('assign-product', 'Authenticated\ProductApiController@assignProduct');
+
+        // Belt
+        Route::get('state', 'Authenticated\AddressPriceApiController@state');
+        Route::get('city/{state}', 'Authenticated\AddressPriceApiController@city');
+        Route::get('belt', 'Authenticated\AddressPriceApiController@index');
+        Route::post('assign-belt', 'Authenticated\AddressPriceApiController@assignBelt');
+
+        // Product Enquiry
+        Route::get('product-enquiry', 'Authenticated\ProductEnquiryApiController@index');
+        Route::get('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@show');
+        Route::post('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@update');
+
+        // Order
+        Route::get('order', 'Authenticated\OrderApiController@index');
+        Route::get('order-detail/{id}', 'Authenticated\OrderApiController@show');
 
     });
 

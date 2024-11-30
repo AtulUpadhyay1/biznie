@@ -48,6 +48,13 @@
                                 <b>Seller: </b> {{ $data->getSeller->name }} <br>
                                 <b>Phone: </b> {{ $data->getSeller->phone }} <br>
                             </p>
+                            @if ($data->getTransporter)
+                                <br>
+                                <p>
+                                    <b>Transporter: </b> {{ $data->getTransporter->name }} <br>
+                                    <b>Phone: </b> {{ $data->getTransporter->phone }} <br>
+                                </p>
+                            @endif
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -62,11 +69,15 @@
                         </div>
                         <div class="col-6 text-end">
                             <p>
-                                <b>Delivery Address</b> <br>
-                                <b>Pincode: </b> {{ $data->delivery_address['pin_code'] }} <br>
-                                <b>Address: </b> {{ $data->delivery_address['address_line_one']??'' }} <br>
-                                <b>City: </b> {{ $data->delivery_address['city'] }} <br>
-                                <b>State: </b> {{ $data->delivery_address['state'] }} <br>
+                                <b>Consignee Detail</b> <br>
+                                <b>Company: </b> {{ $data->consignee_detail['company_name'] }} <br>
+                                <b>Phone: </b> {{ $data->consignee_detail['phone_number'] }} <br>
+                                <b>Pincode: </b> {{ $data->consignee_detail['pin_code'] }} <br>
+                                <b>Address 1: </b> {{ $data->consignee_detail['address_line_one'] }} <br>
+                                <b>Address 2: </b> {{ $data->consignee_detail['address_line_two'] }} <br>
+                                <b>City: </b> {{ $data->consignee_detail['city'] }} <br>
+                                <b>State: </b> {{ $data->consignee_detail['state'] }} <br>
+                                <b>Gst Number: </b> {{ $data->consignee_detail['gst'] }} <br>
                             </p>
                         </div>
                     </div>

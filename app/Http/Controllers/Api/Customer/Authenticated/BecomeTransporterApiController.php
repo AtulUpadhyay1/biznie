@@ -11,15 +11,12 @@ class BecomeTransporterApiController extends Controller
 {
     public function becomeTransport(Request $request)
     {
-        $this->validate($request, [
-            'user_name'         => 'required',
-            'email'             => 'required|unique:users,email,'.auth()->id(),
-            'company_name'      => 'required',
-            'type'              => 'required|array|min:1',
-            'type.*'            => 'required|integer|min:1',
-            'pan_number'        => 'required',
-            'gst_number'        => 'required',
-            'address'           => 'required',
+        $request->validate([
+            'name'          => 'required',
+            'phone'         => 'required|numeric|digits:10',
+            'gst_number'    => 'required',
+            'address'       => 'required',
+            'company_name'  => 'required',
         ]);
 
         $user = auth()->user();
@@ -31,9 +28,9 @@ class BecomeTransporterApiController extends Controller
             ],400);
         }
 
-        $user->name = $request->user_name;
-        $user->email = $request->email;
-        $user->type = 'transporter';
+        $user->name     = $request->name;
+        $user->type     = 'transporter';
+        $user->phone    = $request->phone;
         $user->save();
 
         $user_log_history = new UserPromotionHistory;
@@ -42,14 +39,14 @@ class BecomeTransporterApiController extends Controller
         $user_log_history->new_type = "transporter";
         $user_log_history->save();
 
-        $transporter_details = new TransporterDetail;
-        $transporter_details->user_id = $user->id;
-        $transporter_details->company_name = $request->company_name;
-        $transporter_details->type = $request->type;
-        $transporter_details->pan_number = $request->pan_number;
-        $transporter_details->gst_number = $request->gst_number;
-        $transporter_details->address = $request->address;
-        $transporter_details->save();
+        $transporter = new TransporterDetail;
+        $transporter->user_id       = $user->id;
+        $transporter->company_name  = $request->company_name;
+        $transporter->gst_number    = $request->gst_number;
+        $transporter->address       = $request->address;
+        $transporter->alternate_phone = $request->alternate_phone;
+        $transporter->aadhar_number = $request->aadhar_number;
+        $transporter->save();
 
         return response([
             'success'   => true,

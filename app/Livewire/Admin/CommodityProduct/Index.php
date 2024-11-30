@@ -15,8 +15,8 @@ class Index extends Component
 
     public function render()
     {
-        $total = CommodityProduct::count();
         $list = CommodityProduct::latest()->with('getCategory')->paginate(getPaginate());
+        $total = $list->total();
         return view('admin.commodity_product.index', compact('total', 'list'));
     }
 

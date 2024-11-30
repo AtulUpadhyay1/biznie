@@ -45,11 +45,10 @@
                                 <tbody>
                                     <tr>
                                         <td><b>Customer Name:</b><span class="ms-2">{{ $data->name }}</span></td>
-                                        <td><b>Mobile Number:</b><span class="ms-2">6390041900</span></td>
+                                        <td><b>Mobile Number:</b><span class="ms-2">{{ $data->phone }}</span></td>
                                     </tr>
                                     <tr>
-                                        <td><b>Email:</b><span class="ms-2">sudhanhsu123@gmail.com</span></td>
-                                        <td><b>Gender:</b><span class="ms-2">Male</span></td>
+                                        <td><b>Email:</b><span class="ms-2">{{ $data->email }}</span></td>
                                     </tr>
                                 </tbody>
                             </table>

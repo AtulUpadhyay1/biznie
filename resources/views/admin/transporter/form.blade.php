@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label class="form-label" for="alternate_phone">Alternat Phone</label>
+                                <label class="form-label" for="alternate_phone">Alternate Phone</label>
                                 <input type="number" class="form-control @error('alternate_phone') is-invalid @enderror" id="alternate_phone" wire:model="alternate_phone" placeholder="Enter Alternate Phone">
                                 @error('alternate_phone')
                                     <small class="text-danger">{{ $message }}</small>

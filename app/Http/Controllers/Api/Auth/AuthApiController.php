@@ -11,6 +11,8 @@ use App\Models\UserPromotionHistory;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\LoginResource;
 use Illuminate\Validation\Rules\Password;
+use App\Http\Resources\Seller\BusinessResource;
+use App\Http\Resources\Seller\KycDetailResource;
 
 class AuthApiController extends Controller
 {
@@ -38,20 +40,7 @@ class AuthApiController extends Controller
         $temp_user->password = bcrypt($request->password);
         $temp_user->save();
 
-        $otp = 1234;
-        // $otp = rand(1111, 9999);
-
-        // if(config('app.env') == 'production' && $request->phone != "8920976591"){
-        //     Msg91::sms()->to('91'.$request->phone)->flow('648d8690d6fc051b591f1ec3')->variable('user', $user->name)->variable('otp', $otp)->send();
-        // }
-
-        $data = UserOtp::where('phone', $request->phone)->first();
-        if(!$data){
-            $data = new UserOtp;
-        }
-        $data->phone = $request->phone;
-        $data->otp = $otp;
-        $data->save();
+        sendOtp($request->phone);
 
         return response([
             'success'   => true,
@@ -88,21 +77,7 @@ class AuthApiController extends Controller
             ],400);
         }
 
-        $otp = 1234;
-
-        // $otp = rand(1111, 9999);
-
-        // if(config('app.env') == 'production' && $request->phone != "8920976591"){
-        //     Msg91::sms()->to('91'.$request->phone)->flow('648d8690d6fc051b591f1ec3')->variable('user', $user->name)->variable('otp', $otp)->send();
-        // }
-
-        $data = UserOtp::where('phone', $request->phone)->first();
-        if(!$data){
-            $data = new UserOtp;
-        }
-        $data->phone = $request->phone;
-        $data->otp = $otp;
-        $data->save();
+        sendOtp($request->phone);
 
         return response([
             'success'   => true,
@@ -232,6 +207,23 @@ class AuthApiController extends Controller
         return response([
             'success'   => true,
             'message'   => 'Interest business category updated successfully.',
+        ],200);
+    }
+
+    public function userDetail()
+    {
+        $user = auth()->user();
+        return response([
+            'success'   => true,
+            'data'      => [
+                'name'      => $user->name,
+                'type'      => $user->type,
+                'email'     => $user->email,
+                'phone'     => $user->phone,
+                'phone_verified_at' => dateTimeFormat($user->phone_verified_at),
+                'business_details'  => $user->getBusiness ? new BusinessResource($user->getBusiness) : null,
+                'kyc_details'       => $user->getSellerKycDetail ? new KycDetailResource($user->getSellerKycDetail) : null,
+            ],
         ],200);
     }
 }

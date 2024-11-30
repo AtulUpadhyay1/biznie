@@ -10,7 +10,7 @@ class KycDetail extends Component
     public $data, $status;
     public function mount($id)
     {
-        $this->data = User::with('getSellerKycDetail', 'getBusiness')->find($id);
+        $this->data = User::where('type', 'seller')->with('getSellerKycDetail', 'getBusiness')->findOrFail($id);
         $this->status = $this->data->getSellerKycDetail->status;
     }
 

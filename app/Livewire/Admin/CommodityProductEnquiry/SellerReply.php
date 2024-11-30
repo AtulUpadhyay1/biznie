@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
+use App\Models\TransporterAddressPrice;
+use App\Models\TransporterProductEnquiry;
 
 class SellerReply extends Component
 {
@@ -14,25 +16,47 @@ class SellerReply extends Component
 
     public $product_enquiry_data, $base_price;
 
+    public $transporter_list;
+    public $transporter_enquiry, $transporter_price, $selected_transporter_id;
+
+    public $active_tab = 'transporter';
+    protected $queryString = [
+        'active_tab'        => ['except' => '']
+    ];
+
     public function mount($id)
     {
         $this->hidden_id = $id;
         $status = ['Mark For Sell', 'replied', 'ordered'];
         $this->list = SellerProductEnquiry::where('product_enquiries_id', $this->hidden_id)->with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->get();
         foreach ($this->list as $data) {
-            $this->selected_enquiry_id = $data->is_mark == 1 ? $data->id : '';
+            if($data->is_mark == 1){
+                $this->selected_enquiry_id = $data->id;
+            }
         }
+
         if($this->list->count() == 0){
             session()->flash('error', 'No sellers have responded yet.');
             return $this->redirectRoute('admin.commodity-product-enquiry.index', navigate: true);
         }
         $this->data = $this->list[0];
+
+        $this->transporter_list = TransporterProductEnquiry::where('product_enquiries_id', $this->hidden_id)->with('getUser')->get();
+        foreach ($this->transporter_list as $transporter_data) {
+            if($transporter_data->is_mark == 1){
+                $this->selected_transporter_id = $transporter_data->id;
+            }
+        }
     }
 
     public function render()
     {
         $this->updatePriceForm();
-        return view('admin.commodity_product_enquiry.seller_reply');
+        $selected_transporter = TransporterProductEnquiry::where('product_enquiries_id', $this->hidden_id)->where('is_mark', '1')->with('getUser')->first();
+        if($selected_transporter){
+            $this->transport_price = $selected_transporter->price;
+        }
+        return view('admin.commodity_product_enquiry.seller_reply', compact('selected_transporter'));
     }
 
     public function updatePriceForm()
@@ -155,5 +179,69 @@ class SellerReply extends Component
             );
         }
 
+    }
+
+    public function setTransporterPrice($id)
+    {
+        $this->transporter_enquiry = TransporterProductEnquiry::find($id);
+        $this->transporter_price = $this->transporter_enquiry->price ?? 0;
+    }
+
+    public function updateTransporterPrice()
+    {
+        $this->validate([
+            'transporter_price'    => 'required|min:1'
+        ]);
+        $data = $this->transporter_enquiry;
+        $data->price = $this->transporter_price;
+        $data->status = 'replied';
+        $history = $data->history;
+        $history[] = ['status' => 'Replied', 'created_at' => Carbon::now()];
+        $data->history = $history;
+        $data->save();
+
+        $enquiry = ProductEnquiry::findOrFail($data->product_enquiries_id);
+        if($enquiry){
+            if($enquiry->status != 'Transporter Replied'){
+                $enquiry->status = 'Transporter Replied';
+                $history = $enquiry->history;
+                $history[] = ['status' => 'Transporter Replied', 'created_at' => Carbon::now()];
+                $enquiry->history = $history;
+                $enquiry->save();
+            }
+        }
+
+        session()->flash('success', 'Transporter price updated successfully.');
+        return $this->redirectRoute('admin.commodity-product-enquiry.sellerReply', $this->hidden_id, navigate: true);
+    }
+
+    public function markTransporter()
+    {
+        $enquiry = ProductEnquiry::findOrFail($this->hidden_id);
+
+        if($enquiry && $enquiry->status == 'ordered'){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'This enquiry has been converted to an order.',
+            );
+            return false;
+        }
+
+        TransporterProductEnquiry::where('product_enquiries_id', $this->hidden_id)->update(['is_mark' => 0]);
+
+        $data = TransporterProductEnquiry::find($this->selected_transporter_id);
+        $data->is_mark = 1;
+        $data->save();
+
+        if($enquiry->history != "Transporter Marked"){
+            $enquiry->status = 'Transporter Marked';
+            $history = $enquiry->history;
+            $history[] = ['status' => 'Transporter Marked', 'created_at' => Carbon::now()];
+            $enquiry->history = $history;
+            $enquiry->save();
+        }
+
+        session()->flash('success', 'Transporter mark successfully.');
+        return $this->redirectRoute('admin.commodity-product-enquiry.sellerReply', $this->hidden_id, navigate: true);
     }
 }

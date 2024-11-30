@@ -39,7 +39,6 @@ class Create extends Component
         $transporter->address       = $this->address;
         $transporter->alternate_phone = $this->alternate_phone;
         $transporter->aadhar_number = $this->aadhar_number;
-        $transporter->address       = $this->address;
         $transporter->save();
 
         session()->flash('success', 'Transporter created successfully.');

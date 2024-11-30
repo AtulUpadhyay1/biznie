@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Vehicle extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public function scopeActive($query)
+    {
+        $query->where("status", 1);
+    }
 }

@@ -72,9 +72,11 @@ class ProductApiController extends Controller
     {
         try {
             $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand', 'getSellerStatePrice')->findOrFail($id);
+            $seller_product_list = SellerCommodityProduct::where('id', '!=', $id)->where('user_id', $data->user_id)->with('getBrand')->latest()->get();
             return response([
                 'success'        => true,
-                'products_data'  => new ProductDetailResource($data)
+                'products_data'  => new ProductDetailResource($data),
+                'seller_product_list' => AllSellerCommodityProductResource::collection($seller_product_list)
             ],200);
 
         } catch (\Throwable $th) {

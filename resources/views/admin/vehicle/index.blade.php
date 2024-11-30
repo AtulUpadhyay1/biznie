@@ -30,6 +30,7 @@
                                     <th>Name</th>
                                     <th>Type</th>
                                     <th>Capacity</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -37,10 +38,18 @@
                                 @forelse ($list as $key => $data)
                                     <tr>
                                         <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
-                                        <td>{{ $data->photo }}</td>
+                                        <td>
+                                            <img src="{{ imageUrl($data->photo) }}">
+                                        </td>
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->type }}</td>
                                         <td>{{ $data->capacity }}</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input status_update" wire:click="updateStatus({{$data->id}})"
+                                                    value="20" {{$data->status == 1 ? 'checked' : ''}}>
+                                            </div>
+                                        </td>
                                         <td class="text-center">
                                             <a type="button" id="actionBtn_{{$data->id}}" data-bs-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">

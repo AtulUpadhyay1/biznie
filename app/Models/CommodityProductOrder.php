@@ -19,6 +19,7 @@ class CommodityProductOrder extends Model
         'price'             => 'array',
         'quality_check_image'   => 'array',
         'history'           => 'array',
+        'consignee_detail'  => 'array',
     ];
 
     public function getBrand()
@@ -44,6 +45,11 @@ class CommodityProductOrder extends Model
     public function getCustomer()
     {
         return $this->belongsTo(User::class, 'customer_user_id');
+    }
+
+    public function getTransporter()
+    {
+        return $this->belongsTo(User::class, 'transporter_user_id');
     }
 
     public function getProductEnquiry()

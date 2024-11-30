@@ -23,6 +23,7 @@ Route::group(['as'=>'admin.'], function () {
     Route::get('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'showLoginForm'])->name('login');
     Route::post('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'login'])->name('login');
 
+    // Route::get('address-syn', [App\Http\Controllers\Admin\DashboardController::class, 'addressSyn']);
 
     // Authenticated Routes
     Route::group(['middleware' => 'auth:admin'], function () {
@@ -96,6 +97,8 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('seller-kyc-detail/{id}', AdminRoot\Seller\KycDetail::class)->name('seller-kyc-detail');
         Route::get('edit-seller', AdminRoot\Seller\Edit::class)->name('edit-seller');
         Route::get('tag-priority/{id}', AdminRoot\Seller\TagPriority::class)->name('tag-priority');
+        Route::get('seller/orders/{id}', AdminRoot\Seller\Orders::class)->name('seller.orders');
+        Route::get('seller/payments/{id}', AdminRoot\Seller\Payments::class)->name('seller.payments');
 
         // Seller Product Section
         Route::get('seller-product/{user_id}', AdminRoot\SellerProduct\Index::class)->name('seller-product.index');
@@ -125,6 +128,9 @@ Route::group(['as'=>'admin.'], function () {
 
         //Cutomer Payment List
         Route::get('customer-payment-list/{id}', AdminRoot\Customer\Payments::class)->name('customer-payment-list');
+
+        //Cutomer Enquiry List
+        Route::get('customer-enquiry-list/{id}', AdminRoot\Customer\Enquiry::class)->name('customer-enquiry-list');
 
         //Product List
         Route::get('product-list', AdminRoot\Product\Index::class)->name('product-list');
@@ -227,6 +233,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('transporter', AdminRoot\Transporter\Index::class)->name('transporter.index');
         Route::get('transporter/create', AdminRoot\Transporter\Create::class)->name('transporter.create');
         Route::get('transporter/edit/{id}', AdminRoot\Transporter\Edit::class)->name('transporter.edit');
+        Route::get('transporter/vehicle/{id}', AdminRoot\Transporter\Vehicle::class)->name('transporter.vehicle');
+        Route::get('transporter/product/{id}', AdminRoot\Transporter\Product::class)->name('transporter.product');
+        Route::get('transporter/address-price/{id}', AdminRoot\Transporter\AddressPrice::class)->name('transporter.addressPrice');
 
         // Vehicle
         Route::get('vehicle', AdminRoot\Vehicle\Index::class)->name('vehicle.index');

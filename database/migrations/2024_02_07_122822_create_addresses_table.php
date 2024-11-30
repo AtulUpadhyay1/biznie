@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('pincode')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('country')->nullable();
+            $table->string('pincode')->index()->nullable();
+            $table->string('city')->index()->nullable();
+            $table->string('state')->index()->nullable();
+            $table->string('country')->index()->nullable();
             $table->tinyInteger('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

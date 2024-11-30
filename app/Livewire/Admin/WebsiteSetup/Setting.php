@@ -16,6 +16,7 @@ class Setting extends Component
         $this->value['minimum_balance_for_enquiry'] = websiteSetupValue('minimum_balance_for_enquiry');
         $this->value['order_token_amount'] = websiteSetupValue('order_token_amount');
         $this->value['customer_quality_check_visibility'] = websiteSetupValue('customer_quality_check_visibility');
+        $this->value['enquiry_send_to_transporter'] = websiteSetupValue('enquiry_send_to_transporter');
         return view('admin.website_setup.setting');
     }
 

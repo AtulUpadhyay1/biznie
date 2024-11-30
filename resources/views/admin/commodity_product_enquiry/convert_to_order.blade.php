@@ -1,4 +1,5 @@
 <div>
+    @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <div class="col-md-4 mb-3">
             <div class="card">
@@ -13,10 +14,10 @@
                         Category : {{ $enquiry_data->getCommodityProduct->getCategory->name }} <br>
                         Product : {{ $enquiry_data->getCommodityProduct->name }} <br>
                         Brand : {{ $enquiry_data->getBrand->name }} <br>
-                        Delivery Location : {{ $enquiry_data->delivery_address['address_line_one'] }}
-                        {{ $enquiry_data->delivery_address['address_line_two'] }}
-                        {{ $enquiry_data->delivery_address['city'] }}
-                        {{ $enquiry_data->delivery_address['pin_code'] }}
+                        Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
+                        {{ $enquiry_data->consignee_detail['address_line_two'] }}
+                        {{ $enquiry_data->consignee_detail['city'] }}
+                        {{ $enquiry_data->consignee_detail['pin_code'] }}
                     </p>
                 </div>
             </div>
@@ -52,13 +53,13 @@
                 </div>
                 <div class="card-body">
                     <p>
-                        Phone : {{ $enquiry_data->consignee_detail['consignee_phone'] }} <br>
-                        GST Number : {{ $enquiry_data->consignee_detail['gst_number'] }} <br>
-                        Company : {{ $enquiry_data->consignee_detail['consignee_company'] }} <br>
-                        Address : {{ $enquiry_data->consignee_detail['address']['address_line_one'] }}
-                        {{ $enquiry_data->consignee_detail['address']['address_line_two'] }}
-                        {{ $enquiry_data->consignee_detail['address']['city'] }} <br>
-                        Pincode : {{ $enquiry_data->consignee_detail['address']['pin_code'] }}
+                        Phone : {{ $enquiry_data->consignee_detail['phone_number'] }} <br>
+                        GST Number : {{ $enquiry_data->consignee_detail['gst'] }} <br>
+                        Company : {{ $enquiry_data->consignee_detail['company_name'] }} <br>
+                        Address : {{ $enquiry_data->consignee_detail['address_line_one'] }}
+                        {{ $enquiry_data->consignee_detail['address_line_two'] }}
+                        {{ $enquiry_data->consignee_detail['city'] }} {{ $enquiry_data->consignee_detail['state'] }} <br>
+                        Pincode : {{ $enquiry_data->consignee_detail['pin_code'] }}
                     </p>
                 </div>
             </div>
@@ -289,7 +290,36 @@
                         <input type="text" name="total_amount" value="{{ $data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price']) }}"> --}}
                         <textarea rows="5" placeholder="Write Your Message" class="form-control" wire:model="message"></textarea>
                         <div class="text-end">
-                            <button class="btn btn-success floa-end mt-2" wire:click="enquiryToOrder()"> Confirm & Pay </button>
+                            {{-- <button class="btn btn-success floa-end mt-2" wire:click="enquiryToOrder()"> Confirm & Pay </button> --}}
+                            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#otpVeryfiy" wire:click="sendOtp()">
+                                Generate OTP
+                            </button>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="otpVeryfiy" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="otpVeryfiyLabel" aria-hidden="true" wire:ignore.self>
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="otpVeryfiyLabel">OTP Verification</h5>
+                                        {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="otp">Otp Send On {{ $enquiry_data->getMarkedSellerProductEnquiry->getUser->phone }}</label>
+                                        <input type="number" class="form-control" id="otp" placeholder="Enter OTP" wire:model="otp">
+                                        <div class="text-end">
+                                            <small id="resend-otp" class="d-none" wire:click="sendOtp()">
+                                                <a href="javascript:;" onclick="restartTimer()">Resend OTP</a>
+                                            </small>
+                                            <small id="timer"></small>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success btn-sm" wire:click="enquiryToOrder()">Verify</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -300,6 +330,43 @@
         <script>
             $(document).ready(function () {
                 @this.setAmount({{ $data['required_booking_amount'] }}, {{ $data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price']) }});
+            });
+        </script>
+
+        <script>
+            const modalElement = document.getElementById('otpVeryfiy');
+            const resendOtpElement = document.getElementById('resend-otp');
+            const timerElement = document.getElementById('timer');
+            let timer;
+
+            function startTimer(seconds) {
+                let remaining = seconds;
+                resendOtpElement.classList.add('d-none');
+
+                clearInterval(timer);
+                timer = setInterval(() => {
+                    if (remaining > 0) {
+                        timerElement.textContent = `Resend OTP in ${remaining--} seconds`;
+                    } else {
+                        clearInterval(timer);
+                        timerElement.textContent = '';
+                        resendOtpElement.classList.remove('d-none');
+                    }
+                }, 1000);
+            }
+
+            function restartTimer() {
+                startTimer(60);
+            }
+
+            modalElement.addEventListener('shown.bs.modal', function () {
+                startTimer(60);
+            });
+
+            modalElement.addEventListener('hidden.bs.modal', function () {
+                clearInterval(timer);
+                timerElement.textContent = '';
+                resendOtpElement.classList.add('d-none');
             });
         </script>
     @endpush
