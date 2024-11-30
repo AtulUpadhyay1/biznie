@@ -15,14 +15,7 @@
                             <h5 class="mt-2">Seller Order List</h5>
                         </div>
                         <div class="col-4 text-end">
-                            @if ($data->getSellerKycDetail && $data->getSellerKycDetail->status == 'uploaded' || $data->getSellerKycDetail->status == 'pending')
-                                <select class="form-select" wire:model="status" wire:change="updateStatus()">
-                                    <option value="pending" disabled>Pending</option>
-                                    <option value="uploaded" disabled>Uploaded</option>
-                                    <option value="approved">Approved</option>
-                                    <option value="rejected">Rejected</option>
-                                </select>
-                            @endif
+
                         </div>
                     </div>
                 </div>

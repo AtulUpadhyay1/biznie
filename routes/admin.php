@@ -98,6 +98,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('edit-seller', AdminRoot\Seller\Edit::class)->name('edit-seller');
         Route::get('tag-priority/{id}', AdminRoot\Seller\TagPriority::class)->name('tag-priority');
         Route::get('seller/orders/{id}', AdminRoot\Seller\Orders::class)->name('seller.orders');
+        Route::get('seller/payments/{id}', AdminRoot\Seller\Payments::class)->name('seller.payments');
 
         // Seller Product Section
         Route::get('seller-product/{user_id}', AdminRoot\SellerProduct\Index::class)->name('seller-product.index');

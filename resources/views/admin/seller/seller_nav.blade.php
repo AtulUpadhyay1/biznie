@@ -40,7 +40,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-payment-list') nav_active @endif" href="{{route('admin.customer-payment-list', $data->id)}}" wire:navigate>Payment History
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.seller.payments') nav_active @endif" href="{{route('admin.seller.payments', $data->id)}}" wire:navigate>Payment History
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
