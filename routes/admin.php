@@ -97,6 +97,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('seller-kyc-detail/{id}', AdminRoot\Seller\KycDetail::class)->name('seller-kyc-detail');
         Route::get('edit-seller', AdminRoot\Seller\Edit::class)->name('edit-seller');
         Route::get('tag-priority/{id}', AdminRoot\Seller\TagPriority::class)->name('tag-priority');
+        Route::get('seller/orders/{id}', AdminRoot\Seller\Orders::class)->name('seller.orders');
 
         // Seller Product Section
         Route::get('seller-product/{user_id}', AdminRoot\SellerProduct\Index::class)->name('seller-product.index');

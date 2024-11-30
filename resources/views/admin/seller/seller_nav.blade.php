@@ -29,8 +29,23 @@
             <ul class="custom-un-li">
                 <li class="nav-item">
                     <a class="nav-link @if(Route::currentRouteName()=='admin.seller-kyc-detail') nav_active @endif"
-                        href="{{route('admin.seller-kyc-detail', $data->id)}}"  wire:navigate>
+                        href="{{route('admin.seller-kyc-detail', $data->id)}}" wire:navigate>
                         Seller Kyc Detail
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.seller.orders') nav_active @endif" href="{{route('admin.seller.orders', $data->id)}}" wire:navigate>Order List
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-payment-list') nav_active @endif" href="{{route('admin.customer-payment-list', $data->id)}}" wire:navigate>Payment History
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-enquiry-list') nav_active @endif" href="{{route('admin.customer-enquiry-list', $data->id)}}" wire:navigate>RFQ
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>

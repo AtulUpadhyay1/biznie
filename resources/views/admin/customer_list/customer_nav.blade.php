@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-orders-list') nav_active @endif" href="{{route('admin.customer-orders-list', $data->id)}}" wire:navigate>Order Details
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-orders-list') nav_active @endif" href="{{route('admin.customer-orders-list', $data->id)}}" wire:navigate>Order List
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
