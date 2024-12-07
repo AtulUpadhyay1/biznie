@@ -111,15 +111,21 @@
                                             <span class="text-success">Textile</span>
                                             <br>
                                             <span class="pe-2 border-end" data-bs-toggle="tooltip"
-                                                title="Total orders"><i class="bi bi-bag-plus"></i> : <b>0</b></span>
-                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
-                                                title="Total users"><i class="bi bi-people"></i> : <b>273</b></span>
+                                                title="Cash Balance"><i class="bi bi-cash-stack"></i> : <b>
+                                                    <i class="bi bi-currency-rupee"></i>
+                                                    {{ formatIndianNumber($data->cash_balance) }}</b>
+                                            </span>
                                             <br>
                                             <span class="pe-2 border-end" data-bs-toggle="tooltip"
-                                                title="Total earnings"><i class="bi bi-wallet2"></i> : <i
-                                                    class="bi bi-currency-rupee"></i><b>5L</b></span>
-                                            <span class="pe-2" data-bs-toggle="tooltip" title="Total messages"><i
-                                                    class="bi bi-chat-square-dots"></i>: <b>0</b></span>
+                                                title="Credit Balance"><i class="bi bi-credit-card-2-front"></i> : <b>
+                                                    <i class="bi bi-currency-rupee"></i>
+                                                    {{ formatIndianNumber($data->credit_balance) }}</b>
+                                                </span>
+                                            <br>
+                                            <span class="pe-2 border-end" data-bs-toggle="tooltip"
+                                                title="Product Enquiry"><i class="bi bi-cart"></i> :<b> {{ $data->getSellerProductEnquiries->count() }}</b></span>
+                                            <span class="pe-2" data-bs-toggle="tooltip" title="Total Orders"><i
+                                                    class="bi bi-cart-check"></i>: <b> {{ $data->getSellerOrders->count() }} </b></span>
                                         </td>
                                         <td>
                                             <b>Registration Date:</b>

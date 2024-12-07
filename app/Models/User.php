@@ -68,4 +68,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(TransporterDetail::class);
     }
+
+    public function getSellerProductEnquiries()
+    {
+        return $this->hasMany(SellerProductEnquiry::class, 'user_id');
+    }
+
+    public function getSellerOrders()
+    {
+        return $this->hasMany(CommodityProductOrder::class, 'seller_user_id');
+    }
 }

@@ -38,7 +38,7 @@
                                                 {{$attribute['name']}}
                                             </th>
                                         @endforeach
-                                        <th>Price</th>
+                                        <th>Guage Difference</th>
                                     </tr>
                                 </thead>
                                 <tbody>

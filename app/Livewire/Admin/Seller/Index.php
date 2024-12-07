@@ -15,7 +15,7 @@ class Index extends Component
 
     public function render()
     {
-        $list = User::search($this->search)->where('type', 'seller')->with('getBusiness', 'getSellerKycDetail')->latest()->simplePaginate(getPaginate());
+        $list = User::search($this->search)->where('type', 'seller')->with('getBusiness', 'getSellerKycDetail', 'getSellerProductEnquiries', 'getSellerOrders')->latest()->simplePaginate(getPaginate());
         return view('admin.seller.index', compact('list'), ['page_title' => 'Seller List']);
     }
 
