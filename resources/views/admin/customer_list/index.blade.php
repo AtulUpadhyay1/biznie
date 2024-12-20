@@ -29,39 +29,20 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <ul class="list-group list-group-horizontal filter-list-group">
+                    <ul class="list-group list-group-horizontal filter-list-group float-end">
                         <li class="list-group-item border-0">
-                            <form class="custom-search-bar">
+                            <div class="custom-search-bar">
                                 <div class="input-group">
                                     <span class="input-group-text"> <i data-feather="search"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search here...">
+                                    <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
                                 </div>
-                            </form>
+                            </div>
                         </li>
                         <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option>Type</option>
-                                <option>Dairy</option>
-                            </select>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option selected disabled>City</option>
-                            </select>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option selected disabled>State</option>
-                            </select>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option selected disabled>Pincode</option>
-                            </select>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option selected disabled>Status</option>
+                            <select class="form-select" wire:model.live="status">
+                                <option value="">Status</option>
+                                <option value="active">Active</option>
+                                <option value="in_active">In Active</option>
                             </select>
                         </li>
                     </ul>
