@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Address;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -31,5 +32,15 @@ class DashboardController extends Controller
         }
 
         return redirect()->back()->with('success', 'Address data synchronized successfully.');
+    }
+
+    public function notificationRead()
+    {
+        $list = Notification::where('is_admin_read', 0)->latest()->get();
+        foreach ($list as $item){
+            $item->is_admin_read = 1;
+            $item->save();
+        }
+        return redirect()->route('admin.dashboard')->with('success', 'Notification marked as read successfully.');
     }
 }

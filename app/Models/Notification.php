@@ -13,4 +13,9 @@ class Notification extends Model
     protected $casts = [
         'data'      => 'array',
     ];
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

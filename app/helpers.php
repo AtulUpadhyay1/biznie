@@ -203,4 +203,11 @@ if(!function_exists('sendOtp')){
     }
 }
 
+if(!function_exists('getAdminUnredNotificationList')){
+    function getAdminUnredNotificationList() {
+        $notifications = Notification::latest()->with('getUser')->where('is_admin_read', 0)->get();
+        return $notifications;
+    }
+}
+
 ?>

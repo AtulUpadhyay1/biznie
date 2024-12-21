@@ -28,6 +28,8 @@ Route::group(['as'=>'admin.'], function () {
     // Authenticated Routes
     Route::group(['middleware' => 'auth:admin'], function () {
 
+        Route::get('notification-read', [App\Http\Controllers\Admin\DashboardController::class, 'notificationRead'])->name('notification.read');
+
         // Admin Dashboard
         Route::get('dashboard', AdminRoot\DashboardLivewire::class)->name('dashboard');
 

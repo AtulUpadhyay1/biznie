@@ -24,7 +24,7 @@
                     </div>
                 </form>
             </li> --}}
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="bi bi-envelope fs-4"></i>
@@ -105,7 +105,7 @@
                         <a href="javascript:;">View all</a>
                     </div>
                 </div>
-            </li>
+            </li> --}}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown"
                     role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -116,61 +116,32 @@
                 </a>
                 <div class="dropdown-menu p-0" aria-labelledby="notificationDropdown">
                     <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
-                        <p>6 New Notifications</p>
-                        <a href="javascript:;" class="text-muted">Clear all</a>
+                        <p>{{ getAdminUnredNotificationList()->count() }} New Notifications</p>
+                        @if(getAdminUnredNotificationList()->count() > 0)
+                            <a href="{{route('admin.notification.read')}}" class="text-muted">Clear all</a>
+                        @endif
                     </div>
                     <div class="p-1">
-                        <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
-                            <div
-                                class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                                <i class="icon-sm text-white" data-feather="gift"></i>
-                            </div>
-                            <div class="flex-grow-1 me-2">
-                                <p>New Order Recieved</p>
-                                <p class="tx-12 text-muted">30 min ago</p>
-                            </div>
-                        </a>
-                        <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
-                            <div
-                                class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                                <i class="icon-sm text-white" data-feather="alert-circle"></i>
-                            </div>
-                            <div class="flex-grow-1 me-2">
-                                <p>Server Limit Reached!</p>
-                                <p class="tx-12 text-muted">1 hrs ago</p>
-                            </div>
-                        </a>
-                        <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
-                            <div
-                                class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                                <img class="wd-30 ht-30 rounded-circle"
-                                    src="{{asset('admin_css/assets/images/faces/face1.jpg')}}" alt="userr">
-                            </div>
-                            <div class="flex-grow-1 me-2">
-                                <p>New customer registered</p>
-                                <p class="tx-12 text-muted">2 sec ago</p>
-                            </div>
-                        </a>
-                        <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
-                            <div
-                                class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                                <i class="icon-sm text-white" data-feather="layers"></i>
-                            </div>
-                            <div class="flex-grow-1 me-2">
-                                <p>Apps are ready for update</p>
-                                <p class="tx-12 text-muted">5 hrs ago</p>
-                            </div>
-                        </a>
-                        <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
-                            <div
-                                class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                                <i class="icon-sm text-white" data-feather="download"></i>
-                            </div>
-                            <div class="flex-grow-1 me-2">
-                                <p>Download completed</p>
-                                <p class="tx-12 text-muted">6 hrs ago</p>
-                            </div>
-                        </a>
+                        @forelse (getAdminUnredNotificationList()->take(6) as $notification)
+                            <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
+                                <div class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
+                                    <i class="bi bi-bell icon-sm text-white"></i>
+                                </div>
+                                <div class="flex-grow-1 me-2">
+                                    <p>{{ $notification->title }}</p>
+                                    <p class="tx-12 text-muted">{{ $notification->created_at->diffForHumans() }}</p>
+                                </div>
+                            </a>
+                        @empty
+                            <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
+                                <div class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-secondary rounded-circle me-3">
+                                    <i class="bi bi-bell-slash icon-sm text-white"></i>
+                                </div>
+                                <div class="flex-grow-1 me-2">
+                                    <p>No notifications found</p>
+                                </div>
+                            </a>
+                        @endforelse
                     </div>
                     <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top">
                         <a href="javascript:;">View all</a>
