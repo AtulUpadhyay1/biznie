@@ -10,6 +10,21 @@
                         </div>
                         <div class="col-6 text-end">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
+                                <li class="list-group-item border-0 me-2">
+                                    <div class="custom-search-bar">
+                                        <div class="input-group">
+                                            <span class="input-group-text"> <i data-feather="search"></i></span>
+                                            <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item border-0 me-2">
+                                    <select class="form-select" wire:model.live="status">
+                                        <option value="">Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="in_active">In Active</option>
+                                    </select>
+                                </li>
                                 {{-- <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
                                     <span class="input-group-text input-group-addon bg-transparent border-danger"
                                         data-toggle><i data-feather="calendar" class="text-danger"></i></span>
@@ -28,50 +43,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <ul class="list-group list-group-horizontal filter-list-group">
-                        <li class="list-group-item border-0">
-                            <form class="custom-search-bar">
-                                <div class="input-group">
-                                    <span class="input-group-text"> <i data-feather="search"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search here...">
-                                </div>
-                            </form>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option>Type</option>
-                                <option>Dairy</option>
-                            </select>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option selected disabled>City</option>
-                            </select>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option selected disabled>State</option>
-                            </select>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option selected disabled>Pincode</option>
-                            </select>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select">
-                                <option selected disabled>Status</option>
-                            </select>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="custom-table">
@@ -105,9 +76,8 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="actionBtn_{{$data->id}}">
-                                                <button class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#showDetailsModal" wire:click="showDetail({{$data->id}})">
-                                                    <i class="bi bi-eye icon-sm me-2"></i>View
-                                                </button>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.profile', $data->id)}}" wire:navigate><i
+                                                    class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.edit', $data->id)}}" wire:navigate><i
                                                     class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.vehicle', $data->id)}}" wire:navigate><i
@@ -129,6 +99,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+
             </div>
         </div>
     </div>

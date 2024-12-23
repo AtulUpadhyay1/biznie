@@ -14,14 +14,19 @@ class Index extends Component
     public $page_title = 'Transporter List';
     public $show;
 
+    public $search, $status;
+    protected $queryString = [
+        'search'        => ['except' => ''],
+        'status'        => ['except' => ''],
+    ];
+
     public function render()
     {
-        $list = User::where('type', 'transporter')->latest()->paginate(getPaginate());
+        $query = User::search($this->search)->where('type', 'transporter');
+        if ($this->status) {
+            $query->where('status', $this->status);
+        }
+        $list = $query->latest()->paginate(getPaginate());
         return view('admin.transporter.index', compact('list'));
-    }
-
-    public function showDetail($id)
-    {
-        $this->show = User::with('getTransporterDetail')->findOrFail($id);
     }
 }
