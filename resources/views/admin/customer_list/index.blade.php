@@ -10,6 +10,21 @@
                         </div>
                         <div class="col-6 text-end">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
+                                <li class="list-group-item border-0 me-2">
+                                    <div class="custom-search-bar">
+                                        <div class="input-group">
+                                            <span class="input-group-text"> <i data-feather="search"></i></span>
+                                            <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item border-0 me-2">
+                                    <select class="form-select" wire:model.live="status">
+                                        <option value="">Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="in_active">In Active</option>
+                                    </select>
+                                </li>
                                 {{-- <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
                                     <span class="input-group-text input-group-addon bg-transparent border-danger"
                                         data-toggle><i data-feather="calendar" class="text-danger"></i></span>
@@ -28,31 +43,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <ul class="list-group list-group-horizontal filter-list-group float-end">
-                        <li class="list-group-item border-0">
-                            <div class="custom-search-bar">
-                                <div class="input-group">
-                                    <span class="input-group-text"> <i data-feather="search"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item border-0">
-                            <select class="form-select" wire:model.live="status">
-                                <option value="">Status</option>
-                                <option value="active">Active</option>
-                                <option value="in_active">In Active</option>
-                            </select>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="custom-table">

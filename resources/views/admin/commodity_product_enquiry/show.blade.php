@@ -62,7 +62,11 @@
                                     <tr>
                                         <th>#</th>
                                         @foreach ($data->variation[0]['value'] as $variation_heading)
-                                            <th>{{ $variation_heading['name'] }}</th>
+                                            <th>{{ $variation_heading['name'] }}
+                                                @if($variation_heading['unit'])
+                                                    ({{ $variation_heading['unit']['short_name'] }})
+                                                @endif
+                                            </th>
                                         @endforeach
                                         {{-- <th>Price</th> --}}
                                         <th>Quantity</th>

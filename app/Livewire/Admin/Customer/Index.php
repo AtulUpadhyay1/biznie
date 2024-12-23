@@ -19,15 +19,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = User::where('type', 'customer');
-
-        if ($this->search) {
-            $query->where(function($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%');
-            });
-        }
-
+        $query = User::search($this->search)->where('type', 'customer');
         if ($this->status) {
             $query->where('status', $this->status);
         }

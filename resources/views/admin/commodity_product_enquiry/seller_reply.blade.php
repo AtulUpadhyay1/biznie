@@ -38,6 +38,8 @@
                         <div class="col-6">
                             <p>
                                 <b>User: </b> {{ $data->getCustomer->name }} <br>
+                                <b>Company Name: </b> {{ $data->getCustomer->getUserDetail ? $data->getCustomer->getUserDetail->company_name : '--' }} <br>
+                                <b>GST: </b> {{ $data->getCustomer->getUserDetail ? $data->getCustomer->getUserDetail->gst_number : '--' }} <br>
                                 <b>Origin City: </b> {{ $data->origin_city	}} <br>
                                 <b>Phone: </b> {{ $data->getCustomer->phone }} <br>
                             </p><br>
@@ -149,6 +151,7 @@
                                                     <div class="accordion-body">
 
                                                         <b>Name : </b> {{ $list_data->getUser->name }} <br>
+                                                        <b>GST : </b> {{ $list_data->getUser->getUserDetail ? $list_data->getUser->getUserDetail->gst_number : '--' }} <br>
                                                         <b>Brand</b> : {{ $list_data->getBrand->name }} <br>
                                                         <b>State</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }} <br>
                                                         <b>City</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }} <br>

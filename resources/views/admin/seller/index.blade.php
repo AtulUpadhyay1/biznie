@@ -11,6 +11,14 @@
                         </div>
                         <div class="col-6 text-end">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
+                                <li class="list-group-item border-0">
+                                    <div class="custom-search-bar">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                            <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
+                                        </div>
+                                    </div>
+                                </li>
                                 {{-- <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
                                     <span class="input-group-text input-group-addon bg-transparent border-danger"
                                         data-toggle><i data-feather="calendar" class="text-danger"></i></span>
@@ -26,14 +34,14 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <ul class="list-group list-group-horizontal filter-list-group">
+                    {{-- <ul class="list-group list-group-horizontal filter-list-group float-end">
                         <li class="list-group-item border-0">
-                            <form class="custom-search-bar">
+                            <div class="custom-search-bar">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                                     <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
                                 </div>
-                            </form>
+                            </div>
                         </li>
                         <li class="list-group-item border-0">
                             <select class="form-select">
@@ -61,15 +69,7 @@
                                 <option selected disabled>Status</option>
                             </select>
                         </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
+                    </ul> --}}
                     <div class="table-responsive">
                         <table class="custom-table">
                             <thead>
@@ -179,6 +179,15 @@
                         </table>
                     </div>
                     {{$list->links()}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
                 </div>
             </div>
         </div>

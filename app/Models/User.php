@@ -46,7 +46,11 @@ class User extends Authenticatable
     ];
 
     public function scopeSearch($query, $value){
-        $query->where("name", "like", "%{$value}%");
+        $query->where(function($q) use ($value) {
+            $q->where("name", "like", "%{$value}%")
+              ->orWhere("email", "like", "%{$value}%")
+              ->orWhere("phone", "like", "%{$value}%");
+        });
     }
 
     public function getBusiness()
