@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-8">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <button type="button" class="btn btn-danger btn-icon-text me-3 mb-2 mb-md-0">
+                                {{-- <button type="button" class="btn btn-danger btn-icon-text me-3 mb-2 mb-md-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round"
@@ -32,23 +32,28 @@
                                     title="Edit" href="{{ route('admin.edit-customer-info', $data->id) }}" wire:navigate>
                                     <i class="bi bi-pencil-square btn-icon-prepend"></i>
                                     Edit
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <h6 class="py-2 bg-orange-light">Customer Details</h6>
+                        <h6 class="py-2 bg-orange-light">Details</h6>
                         <div class="table-responsive mb-4">
                             <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
-                                        <td><b>Customer Name:</b><span class="ms-2">{{ $data->name }}</span></td>
+                                        <td><b>Name:</b><span class="ms-2">{{ $data->name }}</span></td>
                                         <td><b>Mobile Number:</b><span class="ms-2">{{ $data->phone }}</span></td>
                                     </tr>
                                     <tr>
                                         <td><b>Email:</b><span class="ms-2">{{ $data->email }}</span></td>
+                                        <td><b>Company Name:</b><span class="ms-2">{{ $data->getTransporterDetail ? $data->getTransporterDetail->company_name : '--' }} (<b>GST No.:</b> {{ $data->getTransporterDetail ? $data->getTransporterDetail->gst_number : '--' }})</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Alternate Phone:</b><span class="ms-2">{{ $data->getTransporterDetail ? $data->getTransporterDetail->alternate_phone : '--' }}</span></td>
+                                        <td><b>Aadhar Number:</b><span class="ms-2">{{ $data->getTransporterDetail ? $data->getTransporterDetail->aadhar_number : '--' }}</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -58,6 +63,9 @@
                             <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
+                                        <td><b>Address:</b><span class="ms-2">{{ $data->getTransporterDetail ? $data->getTransporterDetail->address : '--' }}</span></td>
+                                    </tr>
+                                    {{-- <tr>
                                         <td><b>Address Line 1:</b><span class="ms-2">Shri sai baba mandir, behind vinayaka hospital, bhelupur road</span></td>
                                         <td><b>Address Line 2:</b><span class="ms-2">gurudham colony, varanasi, uttarpradesh</span></td>
                                     </tr>
@@ -71,7 +79,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2"><b>Country:</b><span class="ms-2">India</span></td>
-                                    </tr>
+                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>
