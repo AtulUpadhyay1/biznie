@@ -12,7 +12,15 @@
         <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
             <p>{{ $notifications->count() }} New Notifications</p>
             @if($notifications->count() > 0)
-                <a href="javasript:;" class="text-muted ms-2" wire:click="markAllAsRead()">Clear all</a>
+                <a href="javascript:;" class="text-muted ms-2" wire:click="markAllAsRead()">Clear all</a>
+                <audio id="notificationSound" src="{{ asset('admin_css/notification.wav') }}" preload="auto"></audio>
+                <script>
+                    window.onload = function() {
+                        document.getElementById('notificationDropdown').addEventListener('click', function() {
+                            document.getElementById('notificationSound').play();
+                        });
+                    };
+                </script>
             @endif
         </div>
         <div class="p-1">
