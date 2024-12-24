@@ -24,7 +24,7 @@
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link @if(Route::currentRouteName()=='admin.customer-orders-list') nav_active @endif" href="{{route('admin.customer-orders-list', $data->id)}}" wire:navigate>Order List
                         <i class="bi bi-chevron-right"></i>
                     </a>
@@ -33,9 +33,9 @@
                     <a class="nav-link @if(Route::currentRouteName()=='admin.customer-payment-list') nav_active @endif" href="{{route('admin.customer-payment-list', $data->id)}}" wire:navigate>Payment History
                         <i class="bi bi-chevron-right"></i>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link @if(Route::currentRouteName()=='admin.customer-enquiry-list') nav_active @endif" href="{{route('admin.customer-enquiry-list', $data->id)}}" wire:navigate>RFQ
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.transporter.enquiry') nav_active @endif" href="{{route('admin.transporter.enquiry', $data->id)}}" wire:navigate>RFQ
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
