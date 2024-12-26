@@ -86,6 +86,25 @@ class VariationForm extends Component
 
     }
 
+    public function makeDefaultVariation($id)
+    {
+        $data = CommodityProductVariation::where('commodity_product_id', $this->hidden_id)->find($id);
+        if(!$data){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Product variation not found !!',
+            );
+        }
+        CommodityProductVariation::where('commodity_product_id', $this->hidden_id)->update(['is_default' => 0]);
+        $data->is_default = 1;
+        $data->save();
+
+        $this->dispatch('alert',
+            type : 'success',
+            message : 'Default product variation set successfully !!',
+        );
+    }
+
     function save($redirect=true)
     {
         if($this->variation){

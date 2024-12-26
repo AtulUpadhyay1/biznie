@@ -33,8 +33,8 @@
                                                 </select>
                                             </th>
                                         @endforeach
-
-                                        <th class="text-center">Action</th>
+                                        <th class="col-1 text-center">Default</th>
+                                        <th class="col-1 text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -49,7 +49,17 @@
                                             @endforeach
 
                                             <td>
-                                                <div class="col-md-1">
+                                                <div class="text-center">
+                                                    @if ($variation->is_default == 1)
+                                                        <span class="badge border border-primary text-primary">Default</span>
+                                                    @else
+                                                        <button type="button" class="btn btn-inverse-primary btn-sm btn-icon" wire:click="makeDefaultVariation({{$variation->id}})" title="Make Default"><i class="bi bi-check2-circle"></i></button>
+                                                    @endif
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="text-center">
                                                     <button type="button" class="btn btn-inverse-danger btn-sm btn-icon" wire:click="removeVariation({{$variation->id}})" title="Remove Variation"><i class="bi bi-x-circle"></i></button>
                                                 </div>
                                             </td>

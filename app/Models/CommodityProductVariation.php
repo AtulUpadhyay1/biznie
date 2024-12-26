@@ -13,4 +13,8 @@ class CommodityProductVariation extends Model
     protected $casts = [
         'value'     => 'array',
     ];
+
+    protected $fillable = [
+        'is_default',
+    ];
 }
