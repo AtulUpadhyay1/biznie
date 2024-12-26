@@ -75,7 +75,7 @@
                                             </td>
                                         @endforeach
 
-                                        <td></td>
+                                        <td colspan="2"></td>
                                     </tr>
                                 </tbody>
                             </table>
