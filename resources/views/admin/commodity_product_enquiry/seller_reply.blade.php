@@ -169,6 +169,21 @@
                                                                     </div>
                                                                 </div>
                                                             @endforeach
+                                                            @php
+                                                                $repliedStatus = collect($list_data->history)->firstWhere('status', 'Replied');
+                                                            @endphp
+                                                            @if ($repliedStatus)
+                                                                <div class="col-md-4">
+                                                                    <strong>Status:</strong> {{ $repliedStatus['status'] }}
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <strong>Replied At:</strong> {{ \Carbon\Carbon::parse($repliedStatus['created_at'])->toFormattedDateString() }}
+                                                                </div>
+                                                            @else
+                                                                <div class="col-md-12">
+                                                                    <p>No 'Replied' status found.</p>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                         <div class="table-responsive">
                                                             <table class="custom-table">
