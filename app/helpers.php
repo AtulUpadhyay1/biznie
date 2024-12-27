@@ -12,6 +12,7 @@ use App\Models\WebsiteSetup;
 use App\Models\PackagingType;
 use App\Firebase\FireBaseManager;
 use Illuminate\Support\Facades\DB;
+use App\Models\CommodityProductVariation;
 
 if (!function_exists('websiteSetupValue')) {
     function websiteSetupValue($key){
@@ -200,6 +201,14 @@ if(!function_exists('sendOtp')){
         $data->phone = $phone;
         $data->otp = $otp;
         $data->save();
+    }
+}
+
+if(!function_exists('getDefaultCommodityProductVariationPrice')){
+    function getDefaultCommodityProductVariationPrice($commodity_id, $brand_id, $state, $city){
+        $variation = CommodityProductVariation::where('commodity_product_id', $commodity_id)->where('is_default', 1)->first();
+        
+
     }
 }
 

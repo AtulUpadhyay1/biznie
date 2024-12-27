@@ -132,6 +132,9 @@
 
                                     <div class="accordion" id="seller_price">
                                         @foreach ($list as $list_data)
+                                            @php
+                                                $repliedStatus = collect($list_data->history)->firstWhere('status', 'Replied');
+                                            @endphp
                                             <div class="accordion-item">
                                                 <div class="row">
                                                     <div class="col-1 text-center mt-3">
@@ -141,51 +144,44 @@
                                                     <div class="col-11">
                                                         <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
                                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $list_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $list_data->id }}">
-                                                                <b>{{ $list_data->getUser->getBusiness->name}} ({{$list_data->getUser->phone}}), ({{ getSellerType($list_data->user_id) }}) </b>,
-                                                                <b>Base Price</b> : ₹ {{ formatIndianNumber($list_data->base_price) }}
+                                                                <b>{{ $list_data->getUser->getBusiness->name}} ({{ getSellerType($list_data->user_id) }}) </b>,
+                                                                <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($list_data->base_price) }},
+                                                                <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber($list_data->base_price) }},
+
+                                                                @if ($repliedStatus)
+                                                                    <b class="ms-1">Status: </b><span class="badge bg-success">{{ $repliedStatus['status'] }}</span>
+                                                                    <span class="ms-1">{{ \Carbon\Carbon::parse($repliedStatus['created_at'])->format('d-m-Y H:i:s') }}</span>
+                                                                @endif
                                                             </button>
                                                         </h2>
                                                     </div>
                                                 </div>
                                                 <div id="collapse_{{ $list_data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $list_data->id }}" data-bs-parent="#accordionExample">
                                                     <div class="accordion-body">
-
-                                                        <b>Name : </b> {{ $list_data->getUser->name }} <br>
-                                                        <b>GST : </b> {{ $list_data->getUser->getUserDetail ? $list_data->getUser->getUserDetail->gst_number : '--' }} <br>
-                                                        <b>Brand</b> : {{ $list_data->getBrand->name }} <br>
-                                                        <b>State</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }} <br>
-                                                        <b>City</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }} <br>
-                                                        <b>Loading Address: </b> <br>
                                                         <div class="row">
+                                                            <div class="col-md-6">
+                                                                <b>Name : </b> {{ $list_data->getUser->name }} <br>
+                                                                <b>Company Name: </b> {{ $list_data->getUser->getBusiness->name }} <br>
+                                                                <b>GST : </b> {{ $list_data->getUser->getUserDetail ? $list_data->getUser->getUserDetail->gst_number : '--' }} <br>
+                                                                <b>Phone : </b> {{$list_data->getUser->phone}} <br>
+                                                                <b>Brand</b> : {{ $list_data->getBrand->name }} <br>
+                                                                <b>State</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }} <br>
+                                                                <b>City</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }} <br>
+
+                                                            </div>
                                                             @foreach ($list_data->loading_address as $loading_address)
                                                                 <div class="col-md-6">
-                                                                    <div class="card card-body">
-                                                                        <b>Pincode: </b> {{ $loading_address['pin_code'] }} <br>
-                                                                        <b>Address Line One: </b> {{ isset($loading_address['address_line_one']) ? $loading_address['address_line_one'] : '--' }} <br>
-                                                                        <b>Address Line Two: </b> {{ isset($loading_address['address_line_two']) ? $loading_address['address_line_two'] : '--' }} <br>
-                                                                        <b>City: </b> {{ isset($loading_address['city']) ? $loading_address['city'] : '--' }} <br>
-                                                                        <b>State: </b> {{ isset($loading_address['state']) ? $loading_address['state'] : '--' }} <br>
-                                                                        <b>Loading Position: </b> {{ isset($loading_address['loading_position']) ? $loading_address['loading_position'] : '--' }} / Days <br>
-                                                                    </div>
+                                                                    <b>Loading Address: </b> <br>
+                                                                    <b>Pincode: </b> {{ $loading_address['pin_code'] }} <br>
+                                                                    <b>Address Line One: </b> {{ isset($loading_address['address_line_one']) ? $loading_address['address_line_one'] : '--' }} <br>
+                                                                    <b>Address Line Two: </b> {{ isset($loading_address['address_line_two']) ? $loading_address['address_line_two'] : '--' }} <br>
+                                                                    <b>City: </b> {{ isset($loading_address['city']) ? $loading_address['city'] : '--' }} <br>
+                                                                    <b>State: </b> {{ isset($loading_address['state']) ? $loading_address['state'] : '--' }} <br>
+                                                                    <b>Loading Position: </b> {{ isset($loading_address['loading_position']) ? $loading_address['loading_position'] : '--' }} / Days <br>
                                                                 </div>
                                                             @endforeach
-                                                            @php
-                                                                $repliedStatus = collect($list_data->history)->firstWhere('status', 'Replied');
-                                                            @endphp
-                                                            @if ($repliedStatus)
-                                                                <div class="col-md-4">
-                                                                    <strong>Status:</strong> {{ $repliedStatus['status'] }}
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <strong>Replied At:</strong> {{ \Carbon\Carbon::parse($repliedStatus['created_at'])->toFormattedDateString() }}
-                                                                </div>
-                                                            @else
-                                                                <div class="col-md-12">
-                                                                    <p>No 'Replied' status found.</p>
-                                                                </div>
-                                                            @endif
                                                         </div>
-                                                        <div class="table-responsive">
+                                                        <div class="table-responsive mt-3">
                                                             <table class="custom-table">
                                                                 <thead>
                                                                     <tr>
