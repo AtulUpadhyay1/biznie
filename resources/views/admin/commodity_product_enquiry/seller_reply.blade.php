@@ -198,7 +198,7 @@
                                                                         <th>Quantity (MT)</th>
                                                                         <th>Gauge Diff.</th>
                                                                         {{-- <th>EX Price</th> --}}
-                                                                        <th>EX Price</th>                                                           </th>
+                                                                        <th>EX Price</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
