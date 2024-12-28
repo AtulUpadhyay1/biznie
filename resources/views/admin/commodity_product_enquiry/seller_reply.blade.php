@@ -142,11 +142,16 @@
                                                         <button class="btn btn-info btn-sm p-0 ms-2" title="Update Price" data-bs-toggle="modal" data-bs-target="#updateBasePrice_{{ $list_data->id }}" wire:click="setBasePrice({{ $list_data->id }})"><i class="bi bi-pencil-square"></i></button>
                                                     </div>
                                                     <div class="col-11">
+                                                        @php
+                                                            $address = $list_data->loading_address[0];
+                                                            $city = isset($address['city']) ? $address['city'] : '';
+                                                            $state = isset($address['state']) ? $address['state'] : '';
+                                                        @endphp
                                                         <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
                                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $list_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $list_data->id }}">
                                                                 <b>{{ $list_data->getUser->getBusiness->name}} ({{ getSellerType($list_data->user_id) }}) </b>,
                                                                 <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($list_data->base_price) }},
-                                                                <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber($list_data->base_price) }},
+                                                                <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber(getDefaultCommodityProductVariationPrice($list_data->commodity_product_id, $list_data->brand_id, $state, $city)) }},
 
                                                                 @if ($repliedStatus)
                                                                     <b class="ms-1">Status: </b><span class="badge bg-success">{{ $repliedStatus['status'] }}</span>
@@ -159,6 +164,7 @@
                                                 <div id="collapse_{{ $list_data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $list_data->id }}" data-bs-parent="#accordionExample">
                                                     <div class="accordion-body">
                                                         <div class="row">
+
                                                             <div class="col-md-6">
                                                                 <b>Name : </b> {{ $list_data->getUser->name }} <br>
                                                                 <b>Company Name: </b> {{ $list_data->getUser->getBusiness->name }} <br>
