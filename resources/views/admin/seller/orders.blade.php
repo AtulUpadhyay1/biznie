@@ -11,16 +11,27 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-8 card-title">
+                        <div class="col-4 card-title">
                             <h5 class="mt-2">Seller Order List</h5>
                         </div>
-                        <div class="col-4 text-end">
+                        <div class="col-8 text-end">
 
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <p class="h6">
+                        <b>Total RFQ | 0</b> &nbsp; &nbsp;
+                        <b>Total Order | 0</b> &nbsp; &nbsp;
+                        <b>Total Replied | 0</b> &nbsp; &nbsp;
+                        <b>Total Not Replied | 0</b> &nbsp; &nbsp;
+                        <b>Total Delivered | 0</b> &nbsp; &nbsp;
+                        <b>Total Dispatched | 0</b> &nbsp; &nbsp;
+                        <b>Total In-transit | 0</b> &nbsp; &nbsp;
+                        <b>Total Deals | 0</b>
+                    </p>
+
+                    <div class="table-responsive mt-2">
                         <table class="custom-table">
                             <thead>
                                 <tr>

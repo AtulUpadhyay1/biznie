@@ -24,7 +24,7 @@ class Index extends Component
             $query->where('status', $this->status);
         }
 
-        $list = $query->latest()->paginate(getPaginate());
+        $list = $query->latest()->with(['getUserDetail'])->paginate(getPaginate());
 
         return view('admin.customer_list.index', compact('list'), ['page_title' => 'Buyers List']);
     }

@@ -49,7 +49,7 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Name</th>
+                                    <th>Detail</th>
                                     <th>Contact Info</th>
                                     <th>Registration Date</th>
                                     <th>Last Active</th>
@@ -61,7 +61,10 @@
                                 @forelse ($list as $key => $data)
                                     <tr>
                                         <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
-                                        <td>{{ $data->name }}</td>
+                                        <td>
+                                            <b>Name: </b> {{ $data->name }} <br>
+                                            <b>Company Name: </b> {{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }}
+                                        </td>
                                         <td>
                                             <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>
                                             <br>
