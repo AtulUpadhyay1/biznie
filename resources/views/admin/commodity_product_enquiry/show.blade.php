@@ -24,7 +24,7 @@
                             </p><br>
                             <p>
                                 <b>Billing Address</b> <br>
-                                <b>Pincode: </b> {{ $data->billing_address['pin_code'] }} <br>
+                                <b>Pincode: </b> {{ isset($data->billing_address['pin_code']) ? $data->billing_address['pin_code'] : $data->billing_address['pincode'] }} <br>
                                 @isset($data->billing_address['address'])
                                     <b>Address: </b> {{ $data->billing_address['address'] }} <br>
                                 @else
@@ -44,8 +44,8 @@
                             <p>
                                 <b>Consignee Detail</b> <br>
                                 <b>Company: </b> {{ $data->consignee_detail['company_name'] }} <br>
-                                <b>Phone: </b> {{ $data->consignee_detail['phone_number'] }} <br>
-                                <b>Pincode: </b> {{ $data->consignee_detail['pin_code'] }} <br>
+                                <b>Phone: </b> {{ isset($data->consignee_detail['phone_number']) ? $data->consignee_detail['phone_number'] : $data->consignee_detail['phone'] }} <br>
+                                <b>Pincode: </b> {{ isset($data->consignee_detail['pin_code']) ? $data->consignee_detail['pin_code'] : $data->consignee_detail['pincode'] }} <br>
                                 <b>Address 1: </b> {{ $data->consignee_detail['address_line_one'] }} <br>
                                 <b>Address 2: </b> {{ $data->consignee_detail['address_line_two'] }} <br>
                                 <b>City: </b> {{ $data->consignee_detail['city'] }} <br>
