@@ -146,12 +146,25 @@
                                                             $address = $list_data->loading_address[0];
                                                             $city = isset($address['city']) ? $address['city'] : '';
                                                             $state = isset($address['state']) ? $address['state'] : '';
+
+                                                            $seller_commodity_product = $list_data->getSellerCommodityProduct;
+
+                                                            $defaul_ex_price = 0;
+                                                            $default_price = getDefaultCommodityProductVariationPrice($list_data->commodity_product_id, $list_data->brand_id, $state, $city);
+                                                            if($default_price){
+                                                                $default_tax            = ($default_price + $list_data->base_price) * $seller_commodity_product->gst / 100;
+                                                                $per_unit_price         = ($default_price + $list_data->base_price) + $default_tax;
+                                                                $default_final_price    = $per_unit_price * 1;
+                                                                $defaul_ex_price        += $default_final_price;
+                                                            }
+                                                            // $gst_amount         += $tax;
+
                                                         @endphp
                                                         <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
                                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $list_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $list_data->id }}">
                                                                 <b>{{ $list_data->getUser->getBusiness->name}} ({{ getSellerType($list_data->user_id) }}) </b>,
                                                                 <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($list_data->base_price) }},
-                                                                <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber(getDefaultCommodityProductVariationPrice($list_data->commodity_product_id, $list_data->brand_id, $state, $city)) }},
+                                                                <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber($defaul_ex_price) }},
 
                                                                 @if ($repliedStatus)
                                                                     <b class="ms-1">Status: </b><span class="badge bg-success">{{ $repliedStatus['status'] }}</span>
