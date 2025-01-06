@@ -49,7 +49,7 @@
                 <a class="nav-link" data-bs-toggle="collapse" href="#customer" role="button"
                     aria-expanded="false" aria-controls="customer">
                     <i class="bi bi-people"></i>
-                    <span class="link-title">Customers</span>
+                    <span class="link-title">Buyer</span>
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
@@ -59,7 +59,7 @@
                     <li class="nav-item {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
                         'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info', 'admin.customer-enquiry-list']) ? 'active' : '' }}">
                         <a href="{{route('admin.customer-list')}}" class="nav-link" wire:navigate>
-                            All Customers
+                            All Buyers
                         </a>
                     </li>
                 </ul>

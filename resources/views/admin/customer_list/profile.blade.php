@@ -12,7 +12,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-4 card-title">
-                            <h5 class="mt-2">Customer Profile</h5>
+                            <h5 class="mt-2">Buyer Profile</h5>
                         </div>
                         <div class="col-8">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
@@ -39,16 +39,17 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <h6 class="py-2 bg-orange-light">Customer Details</h6>
+                        <h6 class="py-2 bg-orange-light">Buyer Details</h6>
                         <div class="table-responsive mb-4">
                             <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
-                                        <td><b>Customer Name:</b><span class="ms-2">{{ $data->name }}</span></td>
+                                        <td><b>Name:</b><span class="ms-2">{{ $data->name }}</span></td>
                                         <td><b>Mobile Number:</b><span class="ms-2">{{ $data->phone }}</span></td>
                                     </tr>
                                     <tr>
                                         <td><b>Email:</b><span class="ms-2">{{ $data->email }}</span></td>
+                                        <td><b>Company Name:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->company_name : '' }}</span></td>
                                     </tr>
                                 </tbody>
                             </table>

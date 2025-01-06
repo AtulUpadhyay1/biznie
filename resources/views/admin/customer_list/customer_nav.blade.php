@@ -20,7 +20,7 @@
                 <li class="nav-item">
                     <a class="nav-link @if(Route::currentRouteName()=='admin.customer-profile' || Route::currentRouteName()=='admin.edit-customer-info') nav_active @endif"
                         href="{{route('admin.customer-profile', $data->id)}}" wire:navigate>
-                        Customer Profile
+                        Profile
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>

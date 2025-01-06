@@ -26,6 +26,6 @@ class Index extends Component
 
         $list = $query->latest()->paginate(getPaginate());
 
-        return view('admin.customer_list.index', compact('list'), ['page_title' => 'Customer List']);
+        return view('admin.customer_list.index', compact('list'), ['page_title' => 'Buyers List']);
     }
 }
