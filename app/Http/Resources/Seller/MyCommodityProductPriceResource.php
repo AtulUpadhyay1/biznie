@@ -25,6 +25,7 @@ class MyCommodityProductPriceResource extends JsonResource
             'gst'               => $this->gst,
             'tcs'               => $this->tcs,
             'price_validity'    => $this->price_validity,
+            'updated_at'        => dateTimeFormat($this->updated_at),
             'charges'           => [],
         ];
         if($this->charge_name){
