@@ -351,6 +351,7 @@ class CommodityProductApiController extends Controller
             $data->quality_charge   = $request->quality_charge;
             $data->gst              = $request->gst;
             $data->tcs              = $request->tcs;
+            $data->price_validity   = $request->price_validity;
             // $data->charge_name      = $request->charge_name ?? $data->charge_name;
             // $data->charge_price     = $request->charge_price ?? $data->charge_price;
             // $data->operator         = $request->operator ?? $data->operator;

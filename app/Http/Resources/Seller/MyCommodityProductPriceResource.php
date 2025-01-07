@@ -24,6 +24,7 @@ class MyCommodityProductPriceResource extends JsonResource
             'quality_charge'    => $this->quality_charge,
             'gst'               => $this->gst,
             'tcs'               => $this->tcs,
+            'price_validity'    => $this->price_validity,
             'charges'           => [],
         ];
         if($this->charge_name){
