@@ -31,6 +31,7 @@ class ProductDetailResource extends JsonResource
             'images'                        => [],
             'base_price'                    => $this->base_price,
             'loading_charge'                => $this->loading_charge,
+            'loading_position'              => $this->getSellerCommodityProduct->loading_position,
             'insurance_charge'              => $this->insurance_charge,
             'quality_charge'                => $this->quality_charge,
             'gst'                           => $this->gst,
