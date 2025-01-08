@@ -29,6 +29,7 @@ class MyCommodityProductResource extends JsonResource
             'unit'              => $this->getUnit ? ['id' => $this->unit_id,'name' => $this->getUnit->name] : '',
             'loading_address'   => $this->loading_address,
             'price_validity'    => $this->price_validity ? dateTimeFormat($this->price_validity) : null,
+            'loading_position'  => $this->loading_position,
             'updated_at'        => dateTimeFormat($this->updated_at),
             'brands'            => null,
             'packaging'         => [],
