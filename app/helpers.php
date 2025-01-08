@@ -205,6 +205,15 @@ if(!function_exists('sendOtp')){
     }
 }
 
+if(!function_exists('getDefaultCommodityProductVariation')){
+    function getDefaultCommodityProductVariation($commodity_id, $brand_id, $state, $city){
+
+        return $variation = CommodityProductVariation::with('getCommodityProduct')
+            ->where('commodity_product_id', $commodity_id)
+            ->where('is_default', 1)->first();
+    }
+}
+
 if(!function_exists('getDefaultCommodityProductVariationPrice')){
     function getDefaultCommodityProductVariationPrice($commodity_id, $brand_id, $state, $city){
         $price = 0;

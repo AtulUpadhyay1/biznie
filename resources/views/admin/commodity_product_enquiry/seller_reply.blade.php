@@ -177,7 +177,22 @@
                                                 <div id="collapse_{{ $list_data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $list_data->id }}" data-bs-parent="#accordionExample">
                                                     <div class="accordion-body">
                                                         <div class="row">
+                                                            @php
+                                                                $default_variation = getDefaultCommodityProductVariation($list_data->commodity_product_id, $list_data->brand_id, $state, $city)
+                                                            @endphp
+                                                            @if($default_variation)
+                                                                <div class="col-md-12">
+                                                                    <b>Default Variation:</b>
 
+                                                                    @foreach ($default_variation->value as $default_variations)
+                                                                        {{ $default_variations['name'] }} : {{ $default_variations['value'] }}
+                                                                        @if($default_variation->getCommodityProduct->unit && $default_variation->getCommodityProduct->unit[$default_variations['name']])
+                                                                            ({{getProductUnit($default_variation->getCommodityProduct->unit[$default_variations['name']])->short_name}})
+                                                                        @endif
+                                                                        <br>
+                                                                    @endforeach
+                                                                </div>
+                                                            @endif
                                                             <div class="col-md-6">
                                                                 <b>Name : </b> {{ $list_data->getUser->name }} <br>
                                                                 <b>Company Name: </b> {{ $list_data->getUser->getBusiness->name }} <br>

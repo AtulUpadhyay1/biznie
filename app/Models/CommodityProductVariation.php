@@ -17,4 +17,9 @@ class CommodityProductVariation extends Model
     protected $fillable = [
         'is_default',
     ];
+
+    public function getCommodityProduct()
+    {
+        return $this->belongsTo(CommodityProduct::class, 'commodity_product_id');
+    }
 }
