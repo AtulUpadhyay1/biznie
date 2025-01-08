@@ -526,4 +526,37 @@ class CommodityProductApiController extends Controller
 
         }
     }
+
+    public function loadingPosition(Request $request, $id)
+    {
+        $this->validate($request, [
+            'loading_position' =>'required',
+        ]);
+        try {
+
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+            $data->loading_position = $request->loading_position;
+            $data->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Loading position updated successfully.',
+            ],200);
+
+        } catch (\Throwable $th) {
+
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
 }

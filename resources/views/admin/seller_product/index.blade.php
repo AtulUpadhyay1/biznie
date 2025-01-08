@@ -40,9 +40,12 @@
                                         <td>{{ isset($data->getStatePrice[0]) ? $data->getStatePrice[0]->state : '--' }}</td>
                                         <td>{{ isset($data->getStatePrice[0]) ? $data->getStatePrice[0]->city : '--' }}</td>
                                         <td>
-                                            {{ $data->base_price }}
+                                            {{ formatIndianNumber($data->base_price) }}
                                             @if ($data->price_validity)
-                                                <br><small class="text-danger" style="font-size: x-small;">{{ $data->price_validity }}</small>
+                                                <br><small class="text-danger" style="font-size: x-small;">
+                                                    Price Validity <br>
+                                                    {{ $data->price_validity }}
+                                                </small>
                                             @endif
                                         </td>
                                         <td>{{ $data->updated_at }}</td>

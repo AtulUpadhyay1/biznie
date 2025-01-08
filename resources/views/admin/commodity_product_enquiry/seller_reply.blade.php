@@ -24,7 +24,7 @@
                             </p><br>
                             <p>
                                 <b>Billing Address</b> <br>
-                                <b>Pincode: </b> {{ $data->billing_address['pin_code'] }} <br>
+                                <b>Pincode: </b> {{ isset($data->billing_address['pin_code']) ? $data->billing_address['pin_code'] :  $data->billing_address['pincode'] }} <br>
                                 @isset($data->billing_address['address'])
                                     <b>Address: </b> {{ $data->billing_address['address'] }} <br>
                                 @else
@@ -45,7 +45,7 @@
                             </p><br>
                             <p>
                                 <b>Consignee Address</b> <br>
-                                <b>Pincode: </b> {{ $data->consignee_detail['pin_code'] }} <br>
+                                <b>Pincode: </b> {{ isset($data->consignee_detail['pin_code']) ? $data->consignee_detail['pin_code'] : $data->consignee_detail['pincode'] }} <br>
                                 @isset($data->consignee_detail['address'])
                                     <b>Address: </b> {{ $data->consignee_detail['address'] }} <br>
                                 @else
@@ -165,7 +165,17 @@
                                                                 <b>{{ $list_data->getUser->getBusiness->name}} ({{ getSellerType($list_data->user_id) }}) </b>,
                                                                 <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($list_data->base_price) }},
                                                                 <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber($defaul_ex_price) }},
-
+                                                                @php
+                                                                    $default_variation = getDefaultCommodityProductVariation($list_data->commodity_product_id, $list_data->brand_id, $state, $city)
+                                                                @endphp
+                                                                @if($default_variation)
+                                                                    @foreach ($default_variation->value as $default_variations)
+                                                                        {{ $default_variations['name'] }}: {{ $default_variations['value'] }}
+                                                                        @if($default_variation->getCommodityProduct->unit && $default_variation->getCommodityProduct->unit[$default_variations['name']])
+                                                                            ({{getProductUnit($default_variation->getCommodityProduct->unit[$default_variations['name']])->short_name}})
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
                                                                 @if ($repliedStatus)
                                                                     <b class="ms-1">Status: </b><span class="badge bg-success">{{ $repliedStatus['status'] }}</span>
                                                                     <span class="ms-1">{{ \Carbon\Carbon::parse($repliedStatus['created_at'])->format('d-m-Y H:i:s') }}</span>
@@ -177,22 +187,7 @@
                                                 <div id="collapse_{{ $list_data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $list_data->id }}" data-bs-parent="#accordionExample">
                                                     <div class="accordion-body">
                                                         <div class="row">
-                                                            @php
-                                                                $default_variation = getDefaultCommodityProductVariation($list_data->commodity_product_id, $list_data->brand_id, $state, $city)
-                                                            @endphp
-                                                            @if($default_variation)
-                                                                <div class="col-md-12">
-                                                                    <b>Default Variation:</b>
 
-                                                                    @foreach ($default_variation->value as $default_variations)
-                                                                        {{ $default_variations['name'] }} : {{ $default_variations['value'] }}
-                                                                        @if($default_variation->getCommodityProduct->unit && $default_variation->getCommodityProduct->unit[$default_variations['name']])
-                                                                            ({{getProductUnit($default_variation->getCommodityProduct->unit[$default_variations['name']])->short_name}})
-                                                                        @endif
-                                                                        <br>
-                                                                    @endforeach
-                                                                </div>
-                                                            @endif
                                                             <div class="col-md-6">
                                                                 <b>Name : </b> {{ $list_data->getUser->name }} <br>
                                                                 <b>Company Name: </b> {{ $list_data->getUser->getBusiness->name }} <br>
