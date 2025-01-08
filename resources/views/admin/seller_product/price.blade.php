@@ -26,6 +26,12 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
+                                <label for="price_validity" class="form-label">Price Validity</label>
+                                <input type="datetime-local" class="form-control @error('price_validity') is-invalid @enderror" id="price_validity" placeholder="Enter Price Validity" wire:model="price_validity">
+                                @error('price_validity') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
                                 <label for="loading_charge" class="form-label">Loading Charge</label>
                                 <input type="number" class="form-control @error('loading_charge') is-invalid @enderror" id="loading_charge" placeholder="Enter Loading Charge" wire:model="loading_charge">
                                 @error('loading_charge') <small class="text-danger">{{ $message }}</small>@enderror

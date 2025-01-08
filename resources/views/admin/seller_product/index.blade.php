@@ -39,7 +39,12 @@
                                         <td>{{ $data->getBrand ? $data->getBrand->name : '--' }} </td>
                                         <td>{{ isset($data->getStatePrice[0]) ? $data->getStatePrice[0]->state : '--' }}</td>
                                         <td>{{ isset($data->getStatePrice[0]) ? $data->getStatePrice[0]->city : '--' }}</td>
-                                        <td>{{ $data->base_price }}</td>
+                                        <td>
+                                            {{ $data->base_price }}
+                                            @if ($data->price_validity)
+                                                <br><small class="text-danger" style="font-size: x-small;">{{ $data->price_validity }}</small>
+                                            @endif
+                                        </td>
                                         <td>{{ $data->updated_at }}</td>
                                         <td>
                                             <a type="button" id="ActionBtn_{{$data->id}}" data-bs-toggle="dropdown" role="button"
