@@ -28,7 +28,7 @@ class MyCommodityProductResource extends JsonResource
             'sub_sub_category'  => $this->getSubSubCategory ? ['id' => $this->sub_sub_category_id,'name' => $this->getSubSubCategory->name] : '',
             'unit'              => $this->getUnit ? ['id' => $this->unit_id,'name' => $this->getUnit->name] : '',
             'loading_address'   => $this->loading_address,
-            'price_validity'    => $this->price_validity,
+            'price_validity'    => dateTimeFormat($this->price_validity),
             'updated_at'        => dateTimeFormat($this->updated_at),
             'brands'            => null,
             'packaging'         => [],
