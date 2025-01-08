@@ -32,13 +32,18 @@ class ProductDetailResource extends JsonResource
             'base_price'                    => $this->base_price,
             'loading_charge'                => $this->loading_charge,
             'loading_position'              => $this->getSellerCommodityProduct->loading_position,
+            'price_validity'                => $this->getSellerCommodityProduct->price_validity ? dateTimeFormat($this->getSellerCommodityProduct->price_validity) : null,
             'insurance_charge'              => $this->insurance_charge,
             'quality_charge'                => $this->quality_charge,
             'gst'                           => $this->gst,
             'tcs'                           => $this->tcs,
+            'min_order_qty'                 => $this->min_order_qty,
+            'order_amount_type'             => $this->order_amount_type,
+            'required_order_amount'         => $this->required_order_amount,
             'charts'                        => [],
             'charges'                       => [],
-            'variation'                     => MyCommodityProductVariationResource::collection($this->getSellerStatePrice)
+            'variation'                     => MyCommodityProductVariationResource::collection($this->getSellerStatePrice),
+            'default_variation'             => [],
         ];
 
         $product_state = CommodityProductState::where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->where('city', $this->city)->first();
