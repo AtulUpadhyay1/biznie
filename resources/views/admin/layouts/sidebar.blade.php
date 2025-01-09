@@ -361,7 +361,7 @@
             <!--End of messages-->
 
             <!--App Setup-->
-            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#app-setup" role="button"
                     aria-expanded="false" aria-controls="app-setup">
                     <i class="bi bi-gear"></i>
@@ -369,29 +369,29 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting']) ? 'show' : ''}}" id="app-setup">
+            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy']) ? 'show' : ''}}" id="app-setup">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'active' : ''}}">
                         <a href="{{route('admin.faq.index')}}" class="nav-link">
                            FAQ
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.about']) ? 'active' : ''}}">
                         <a href="{{route('admin.website_setup.about')}}" class="nav-link">
                             About Us
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.returns']) ? 'active' : ''}}">
                         <a href="{{route('admin.website_setup.returns')}}" class="nav-link">
                             Returns Policy
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.terms']) ? 'active' : ''}}">
                         <a href="{{route('admin.website_setup.terms')}}" class="nav-link">
                             Terms & Condition
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.privacy']) ? 'active' : ''}}">
                         <a href="{{route('admin.website_setup.privacy')}}" class="nav-link">
                             Privacy Policy
                         </a>

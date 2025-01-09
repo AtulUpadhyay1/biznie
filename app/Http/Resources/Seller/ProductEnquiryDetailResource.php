@@ -86,7 +86,7 @@ class ProductEnquiryDetailResource extends JsonResource
             // $seller_commodity_product   = SellerCommodityProduct::where('user_id', $seller_commodity_product->user_id)->where('commodity_product_id', $seller_commodity_product->commodity_product_id)->where('brand_id', $seller_commodity_product->brand_id)->first();
 
             $packaging_arr = [];
-            foreach ($seller_commodity_product->packaging_type as $packaging_charge) {
+            foreach ($seller_commodity_product->packaging_type ?? [] as $packaging_charge) {
                 $packaging_arr['name'] = getPackagingType($packaging_charge)->name;
                 $packaging_arr['price'] = $seller_commodity_product->packaging_type_price[$packaging_charge];
                 $data['total_charges'] += $packaging_arr['price'];
@@ -94,7 +94,7 @@ class ProductEnquiryDetailResource extends JsonResource
             }
 
             $other_charges_arr = [];
-            foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
+            foreach ($seller_commodity_product->charge_name ?? [] as $charge_key => $charge_name) {
                 $other_charges_arr['name'] = $charge_name;
                 $other_charges_arr['price'] = $seller_commodity_product->charge_price[$charge_key];
                 $other_charges_arr['operator'] = $seller_commodity_product->operator[$charge_key];
@@ -115,7 +115,7 @@ class ProductEnquiryDetailResource extends JsonResource
 
             if($seller_commodity_product->is_quality){
                 $other_quantity_charge_arr = [];
-                foreach ($seller_commodity_product->quality as $quality_key => $quality) {
+                foreach ($seller_commodity_product->quality ?? [] as $quality_key => $quality) {
                     $other_quantity_charge_arr['name']          = $quality;
                     $other_quantity_charge_arr['quality_price'] = $seller_commodity_product->quality_price[$quality_key];
                     $data['total_charges'] += $other_quantity_charge_arr['quality_price'];
