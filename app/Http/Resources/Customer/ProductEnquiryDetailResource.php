@@ -113,7 +113,7 @@ class ProductEnquiryDetailResource extends JsonResource
                 $data['other_charge'][] = $other_charges_arr;
             }
 
-            if($seller_commodity_product->is_quality){
+            if($seller_commodity_product && $seller_commodity_product->is_quality){
                 $other_quantity_charge_arr = [];
                 foreach ($seller_commodity_product->quality ?? [] as $quality_key => $quality) {
                     $other_quantity_charge_arr['name']          = $quality;
