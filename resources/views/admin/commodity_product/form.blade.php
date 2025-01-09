@@ -63,6 +63,27 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4 mb-3">
+                                <label for="min_order_qty" class="form-label">Min Order Qty <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('min_order_qty') is-invalid @enderror" id="min_order_qty" placeholder="Enter product min order qty" wire:model="min_order_qty">
+                                @error('min_order_qty') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="order_amount_type" class="form-label">Order Amount Type <span class="text-danger">*</span></label>
+                                <select class="form-select @error('order_amount_type') is-invalid @enderror" id="order_amount_type" wire:model="order_amount_type">
+                                    <option value="percent">Percent</option>
+                                    <option value="flat">Flat</option>
+                                </select>
+                                @error('order_amount_type') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="required_order_amount" class="form-label">Required Order Amount <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('required_order_amount') is-invalid @enderror" id="required_order_amount" placeholder="Enter product min order qty" wire:model="required_order_amount">
+                                @error('required_order_amount') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
                                 <div wire:ignore>
                                     <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">

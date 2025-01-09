@@ -19,7 +19,7 @@ class Edit extends Component
     public $page_title = "Edit Commodity Product";
     use WithFileUploads;
 
-    public $hidden_id, $name, $hsn_code, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $attribute=[], $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes;
+    public $hidden_id, $name, $hsn_code, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $attribute=[], $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes, $min_order_qty, $order_amount_type = 'percent', $required_order_amount;
 
     public $sub_category_list = [];
     public $sub_sub_category_list = [];
@@ -36,6 +36,9 @@ class Edit extends Component
         $this->hsn_code             = $data->hsn_code;
         $this->description          = $data->description;
         $this->specification_notes  = $data->specification_notes;
+        $this->min_order_qty        = $data->min_order_qty;
+        $this->order_amount_type   = $data->order_amount_type ?? 'percent';
+        $this->required_order_amount = $data->required_order_amount;
         $this->category_id          = $data->category_id;
         $this->sub_category_id      = $data->sub_category_id;
         $this->sub_sub_category_id  = $data->sub_sub_category_id;
@@ -105,6 +108,9 @@ class Edit extends Component
         $data->packaging_type_price = $this->packaging_type_price;
         $data->description      = $this->description;
         $data->specification_notes  = $this->specification_notes;
+        $data->min_order_qty    = $this->min_order_qty;
+        $data->order_amount_type   = $this->order_amount_type;
+        $data->required_order_amount = $this->required_order_amount;
         $data->thumbnail        = $this->thumbnail ? imageUpload($this->thumbnail, 'product_thumbnail', $data->thumbnail) : $data->thumbnail;
         $data->images           = $this->images ? [imageUpload($this->images, 'product_images', $data->images)] : $data->images;
         $data->video_url        = $this->video_url;
