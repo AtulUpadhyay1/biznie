@@ -5,7 +5,7 @@ class FireBaseManager
 {
     private static function getGoogleAccessToken(){
 
-        $credentialsFilePath = 'biznie-b2952-firebase-adminsdk-86p12-16ba79b176.json'; //replace this with your actual path and file name
+        $credentialsFilePath = 'biznie-b2952-firebase-adminsdk-86p12-f51654347f.json'; //replace this with your actual path and file name
         $client = new \Google_Client();
         $client->setAuthConfig($credentialsFilePath);
         $client->addScope('https://www.googleapis.com/auth/firebase.messaging');

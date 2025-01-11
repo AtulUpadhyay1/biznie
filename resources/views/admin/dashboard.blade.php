@@ -16,7 +16,7 @@
                 <i class="btn-icon-prepend" data-feather="printer"></i>
                 Print
             </button> --}}
-            <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
+            <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0" wire:click="notificationTest()">
                 <i class="bi bi-cloud-download btn-icon-prepend"></i>
                 Download Report
             </button>

@@ -14,4 +14,15 @@ class DashboardLivewire extends Component
         $total_transporter = User::where('type', 'transporter')->count();
         return view('admin.dashboard', compact('total_customer', 'total_seller', 'total_transporter'), ['page_title' => 'Admin Dashboard']);
     }
+
+    public function notificationTest()
+    {
+        $user = User::find(39);
+        sendNotification($user, 'Hi Test', 'This is test notification.', $type="notification", [], false);
+
+        $this->dispatch('alert',
+            type: 'success',
+            message: 'Notification sent successfully.'
+        );
+    }
 }
