@@ -19,6 +19,11 @@ class CommodityProductState extends Model
         return $this->hasMany(CommodityProductStatePrice::class, 'commodity_product_state_id');
     }
 
+    public function getCommodityProduct()
+    {
+        return $this->belongsTo(CommodityProduct::class, 'commodity_product_id');
+    }
+
     public function getBrand()
     {
         return $this->belongsTo(Brand::class, 'brand_id');

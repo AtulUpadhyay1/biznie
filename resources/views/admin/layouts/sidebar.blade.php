@@ -121,7 +121,7 @@
                 </a>
             </li>
 
-            <li class="nav-item {{ isActiveRoute(['admin.brand', 'admin.create-brand', 'admin.edit-brand']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.brand', 'admin.create-brand', 'admin.edit-brand', 'admin.brand.show']) ? 'active' : ''}}">
                 <a href="{{route('admin.brand')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-bing"></i>
                     <span class="link-title">Brand</span>

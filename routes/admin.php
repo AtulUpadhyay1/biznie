@@ -87,6 +87,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('brand', AdminRoot\Brand\Index::class)->name('brand');
         Route::get('create-brand', AdminRoot\Brand\Create::class)->name('create-brand');
         Route::get('edit-brand/{id}', AdminRoot\Brand\Edit::class)->name('edit-brand');
+        Route::get('brand/show/{id}', AdminRoot\Brand\Show::class)->name('brand.show');
 
         //Identity Types
         Route::get('identity-type', AdminRoot\IdentityType\Index::class)->name('identity-type');

@@ -4,12 +4,21 @@ namespace App\Livewire\Admin\Brand;
 
 use App\Models\Brand;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    public $search, $status;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = Brand::latest()->get();
+        $list = Brand::search($this->search)->latest()->paginate(getPaginate());
         return view('admin.brand.index', compact('list'), ['page_title' => 'Brand']);
     }
 
