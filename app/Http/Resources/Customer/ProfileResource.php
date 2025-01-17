@@ -25,9 +25,14 @@ class ProfileResource extends JsonResource
             'credit_availability' => $this->credit_availability ? true : false,
             'user_detail' => NULL,
         ];
-        if($this->getUserDetail){
-            $getUserDetail = $this->getUserDetail;
+        $getUserDetail = $this->getUserDetail;
+        if($getUserDetail){
+            $user_detail['profile_photo']   = $getUserDetail->profile_photo ? imageUrl($getUserDetail->profile_photo) : asset('common/images/no-photo.png');
             $user_detail['company_name']    = $getUserDetail->company_name;
+            $user_detail['company_logo']    = $getUserDetail->company_logo ? imageUrl($getUserDetail->company_logo) : asset('common/images/no-photo.png');
+            $user_detail['company_address'] = $getUserDetail->company_address;
+            $user_detail['state']           = $getUserDetail->state;
+            $user_detail['city']            = $getUserDetail->city;
             $user_detail['type']            = [];
 
             if(!empty($getUserDetail->type) && count($getUserDetail->type) > 0){

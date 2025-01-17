@@ -29,12 +29,18 @@ class ProfileApiController extends Controller
         $user->email    = $request->email;
         $user->save();
 
-        $user_detail    = UserDetail::where('user_id', $user->id)->first();
-        if(!$user_detail){
-            $user_detail = new UserDetail;
-        }
+        $user_detail    = UserDetail::firstOrNew(['user_id' => $user->id]);;
         $user_detail->user_id       = $user->id;
+        if($request->profile_photo){
+            $user_detail->profile_photo = $request->profile_photo;
+        }
         $user_detail->company_name  = $request->company_name;
+        if($request->company_logo){
+            $user_detail->company_logo = $request->company_logo;
+        }
+        $user_detail->company_address       = $request->company_address;
+        $user_detail->state         = $request->state;
+        $user_detail->city          = $request->city;
         $user_detail->type          = $request->type??[];
         $user_detail->gst_number    = $request->gst_number;
         $user_detail->pan_number    = $request->pan_number;
