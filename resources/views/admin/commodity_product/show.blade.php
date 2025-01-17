@@ -33,7 +33,12 @@
                                             {{ getBrand($brand_id)->name }}@if(!$loop->last), @endif
                                         @endforeach
                                     </p>
-
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
                                     <p><b>Unit :</b> {{ $data->getUnit ? $data->getUnit->name : '--' }}</p>
 
                                     <p><b>Description :</b> {{ $data->description }}</p>
@@ -45,11 +50,11 @@
                                     </p>
                                     <p><b>HSN Code :</b>
                                         {{ $data->hsn_code }}
-                                    </p>
+                                    </p>    
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
                                     <h4>Pricing & Others</h4>
@@ -68,7 +73,7 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     @if ($data->quality)
                         <div class="accordion mt-2" id="product_quality">
