@@ -128,6 +128,13 @@
                 </a>
             </li>
 
+            <li class="nav-item {{ isActiveRoute(['admin.product-wise-seller-buyer.index']) ? 'active' : ''}}">
+                <a href="{{route('admin.product-wise-seller-buyer.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-people"></i>
+                    <span class="link-title">Product wise Seller / Buyer</span>
+                </a>
+            </li>
+
             <!--products-->
             <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product',
             'admin.product-category', 'admin.create-product-category', 'admin.edit-product-category',

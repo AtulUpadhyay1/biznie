@@ -177,6 +177,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product-order/driver/edit/{order_id}/{id}', AdminRoot\CommodityProductOrderDriver\Edit::class)->name('commodity-product-order-driver.edit');
         Route::get('commodity-product-order/driver/quantity/{order_id}/{id}', AdminRoot\CommodityProductOrderDriver\Quantity::class)->name('commodity-product-order-driver.quantity');
 
+        // Product wise seller and buyer
+        Route::get('product-wise-seller-buyer', AdminRoot\ProductWiseSellerBuyer\Index::class)->name('product-wise-seller-buyer.index');
+
         // Banner
         Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
         Route::get('banner/create', AdminRoot\Banner\Create::class)->name('banner.create');
