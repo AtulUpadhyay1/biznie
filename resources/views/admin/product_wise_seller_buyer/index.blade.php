@@ -38,83 +38,116 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="row">
-                                <div class="accordion" id="state_price">
-                                    @forelse ($seller_list ?? [] as $data)
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="heading_{{ $data->id }}">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link active" id="seller-tab" data-bs-toggle="tab" href="#seller" role="tab" aria-controls="seller" aria-selected="true">Seller</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" id="buyer-tab" data-bs-toggle="tab" href="#buyer" role="tab" aria-controls="buyer" aria-selected="false">Buyer</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content border border-top-0 p-3" id="myTabContent">
+                                <div class="tab-pane fade show active" id="seller" role="tabpanel" aria-labelledby="seller-tab">
+                                    <div class="accordion" id="state_price_accordion">
+                                        @forelse ($seller_list ?? [] as $seller_data)
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="seller_heading_{{ $seller_data->id }}">
 
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $data->id }}" aria-expanded="false" aria-controls="collapse_{{ $data->id }}">
-                                                <b>{{ $data->getUser->getBusiness->name}} <small>({{$data->getUser->name}} - {{$data->getUser->phone}})</small></b>, &nbsp;<b>Brand</b> : {{ $data->getBrand->name }}, &nbsp;<b>State</b> : {{ $data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $data->getStatePrice[0]->city }}, &nbsp;<b>Base Price</b> : {{ $data->base_price ?? 0 }}
-                                                </button>
-                                            </h2>
-                                            <div id="collapse_{{ $data->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $data->id }}" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <div class="table-responsive">
-                                                        <table class="custom-table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>#</th>
-                                                                    @php
-                                                                        $attributes = $data->getStatePrice[0]->value;
-                                                                    @endphp
-                                                                    @foreach ($attributes as $attribute)
-                                                                        <th>
-                                                                            {{$attribute['name']}}
-                                                                        </th>
-                                                                    @endforeach
-                                                                    <th>Gauge Difference</th>
-                                                                    <th>Stock</th>
-
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($data->getStatePrice as $state_price)
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#seller_collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="seller_collapse_{{ $seller_data->id }}">
+                                                    <b>{{ $seller_data->getUser->getBusiness->name}} <small>({{$seller_data->getUser->name}} - {{$seller_data->getUser->phone}})</small></b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}, &nbsp;<b>Base Price</b> : {{ $seller_data->base_price ?? 0 }}
+                                                    </button>
+                                                </h2>
+                                                <div id="seller_collapse_{{ $seller_data->id }}" class="accordion-collapse collapse" aria-labelledby="seller_heading_{{ $seller_data->id }}" data-bs-parent="#state_price_accordion">
+                                                    <div class="accordion-body">
+                                                        <div class="table-responsive">
+                                                            <table class="custom-table">
+                                                                <thead>
                                                                     <tr>
-                                                                        <th>
-                                                                            {{ $loop->iteration }}
-                                                                            @if($state_price->is_selected)
-                                                                                <i class="bi bi-check2-circle text-success fs-5"></i>
-                                                                            @endif
-                                                                        </th>
-                                                                        @foreach ($state_price->value as $price_value)
-                                                                            <td> {{ $price_value['value'] }} </td>
+                                                                        <th>#</th>
+                                                                        @php
+                                                                            $attributes = $seller_data->getStatePrice[0]->value;
+                                                                        @endphp
+                                                                        @foreach ($attributes as $attribute)
+                                                                            <th>
+                                                                                {{$attribute['name']}}
+                                                                            </th>
                                                                         @endforeach
-                                                                        <td> {{ $state_price->price }} </td>
-                                                                        <td> {{ $state_price->stock ?? 0 }} </td>
+                                                                        <th>Gauge Difference</th>
+                                                                        <th>Stock</th>
+
                                                                     </tr>
-                                                                @endforeach
-                                                                <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">Loading Charge</th>
-                                                                    <td>{{ $data->loading_charge ?? 0 }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">Insurance Charge</th>
-                                                                    <td>{{ $data->insurance_charge ?? 0 }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">Quality Charge</th>
-                                                                    <td>{{ $data->quality_charge ?? 0 }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">GST</th>
-                                                                    <td>{{ $data->gst ?? 0 }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">TCS</th>
-                                                                    <td>{{ $data->tcs ?? 0 }}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($seller_data->getStatePrice as $state_price)
+                                                                        <tr>
+                                                                            <th>
+                                                                                {{ $loop->iteration }}
+                                                                                @if($state_price->is_selected)
+                                                                                    <i class="bi bi-check2-circle text-success fs-5"></i>
+                                                                                @endif
+                                                                            </th>
+                                                                            @foreach ($state_price->value as $price_value)
+                                                                                <td> {{ $price_value['value'] }} </td>
+                                                                            @endforeach
+                                                                            <td> {{ $state_price->price }} </td>
+                                                                            <td> {{ $state_price->stock ?? 0 }} </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                    <tr>
+                                                                        <th colspan="{{count($attributes)+2}}" class="text-end">Loading Charge</th>
+                                                                        <td>{{ $seller_data->loading_charge ?? 0 }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th colspan="{{count($attributes)+2}}" class="text-end">Insurance Charge</th>
+                                                                        <td>{{ $seller_data->insurance_charge ?? 0 }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th colspan="{{count($attributes)+2}}" class="text-end">Quality Charge</th>
+                                                                        <td>{{ $seller_data->quality_charge ?? 0 }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th colspan="{{count($attributes)+2}}" class="text-end">GST</th>
+                                                                        <td>{{ $seller_data->gst ?? 0 }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th colspan="{{count($attributes)+2}}" class="text-end">TCS</th>
+                                                                        <td>{{ $seller_data->tcs ?? 0 }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @empty
+                                        @empty
 
-                                    @endforelse
+                                        @endforelse
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="buyer" role="tabpanel" aria-labelledby="buyer-tab">
+                                    <div class="accordion" id="accordionCustomer">
+                                        @foreach ($customer_list ?? [] as $customer_data)
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="customer_heading_{{ $customer_data->id }}">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#customer_collapse_{{ $customer_data->id }}" aria-expanded="false" aria-controls="customer_collapse_{{ $customer_data->id }}">
+                                                    <b>{{ $customer_data->getUserDetail ? $customer_data->getUserDetail->company_name : '' }} ({{ $customer_data->name }} {{ $customer_data->phone }})</b>
+                                                    </button>
+                                                </h2>
+                                                <div id="customer_collapse_{{ $customer_data->id }}" class="accordion-collapse collapse" aria-labelledby="customer_heading_{{ $customer_data->id }}" data-bs-parent="#accordionCustomer">
+                                                    <div class="accordion-body">
+                                                        <b>Total Enquiry : </b> {{ $customer_data->total_enquiry }} <br>
+                                                        <b>Total Order : </b> {{ $customer_data->total_order }} <br>
+                                                        <b>Total Dispatched : </b> {{ $customer_data->total_dispatched_order }} <br>
+                                                        <b>Total Cancel Order : </b> 0 <br>
+                                                        <b>Total Pending Order : </b> 0 <br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
