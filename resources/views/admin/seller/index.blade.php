@@ -107,9 +107,9 @@
                                                 @endif
                                             @endif
                                             <br>
-                                            <b>Business Category:</b>
+                                            {{-- <b>Business Category:</b>
                                             <span class="text-success">Textile</span>
-                                            <br>
+                                            <br> --}}
                                             <span class="pe-2 border-end" data-bs-toggle="tooltip"
                                                 title="Cash Balance"><i class="bi bi-cash-stack"></i> : <b>
                                                     <i class="bi bi-currency-rupee"></i>
