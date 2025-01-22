@@ -19,7 +19,7 @@ class SellerReply extends Component
     public $transporter_list;
     public $transporter_enquiry, $transporter_price, $selected_transporter_id;
 
-    public $active_tab = 'transporter';
+    public $active_tab = 'seller';
     protected $queryString = [
         'active_tab'        => ['except' => '']
     ];
@@ -54,7 +54,7 @@ class SellerReply extends Component
 
     public function render()
     {
-        $this->updatePriceForm();
+        // $this->updatePriceForm();
         $selected_transporter = TransporterProductEnquiry::where('product_enquiries_id', $this->hidden_id)->where('is_mark', '1')->with('getUser')->first();
         if($selected_transporter){
             $this->transport_price = $selected_transporter->price;
@@ -70,10 +70,9 @@ class SellerReply extends Component
             foreach ($this->set_enquiry_data->value as $variation) {
                 $this->set_enquiry_data_price[] = $variation['price'];
             }
-            $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? formatIndianNumber($this->set_enquiry_data->base_price) : 0;
-            $this->transport_price = $this->set_enquiry_data->transport_price ? formatIndianNumber($this->set_enquiry_data->transport_price) : 0;
-            $this->commission = $this->set_enquiry_data->commission ? formatIndianNumber($this->set_enquiry_data->commission) : formatIndianNumber($this->set_enquiry_data->getSellerCommodityProduct->commission_amount);
-
+            $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? $this->set_enquiry_data->base_price : 0;
+            $this->transport_price = $this->set_enquiry_data->transport_price ? $this->set_enquiry_data->transport_price : 0;
+            $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_enquiry_data->getSellerCommodityProduct->commission_amount;
         }
     }
 

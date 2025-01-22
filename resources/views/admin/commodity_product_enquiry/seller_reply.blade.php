@@ -230,8 +230,8 @@
                                                                         $ex_price = 0;
                                                                         $seller_commodity_product = $list_data->getSellerCommodityProduct;
                                                                         $base_price = $list_data->base_price;
-                                                                        $transport_price = $list_data->transport_price;
-                                                                        $commission =  $seller_commodity_product->commission;
+                                                                        // $transport_price = $list_data->transport_price;
+                                                                        // $commission =  $seller_commodity_product->commission;
 
                                                                         foreach ($seller_commodity_product->packaging_type as $packaging_charge) {
                                                                             $packaging_price = $seller_commodity_product->packaging_type_price[$packaging_charge];
@@ -320,26 +320,30 @@
                             </div>
                         </div>
 
-                        @if ($set_enquiry_data)
-                            @php
-                                $total_variation_price = 0;
-                                $total_transport_price = 0;
-                            @endphp
-                            <div class="modal fade bd-example-modal-lg" id="updatePrice" tabindex="-1" aria-labelledby="updatePriceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <x-loader />
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="updatePriceLabel">
+                        @php
+                            $total_variation_price = 0;
+                            $total_transport_price = 0;
+                        @endphp
+                        <div class="modal fade bd-example-modal-lg" id="updatePrice" tabindex="-1" aria-labelledby="updatePriceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    {{-- <x-loader /> --}}
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updatePriceLabel">
+                                            @if ($set_enquiry_data)
                                                 <b>{{ $set_enquiry_data->getUser->name}} ({{ getSellerType($set_enquiry_data->user_id) }})</b>,
                                                 <b>Brand</b> : {{ $set_enquiry_data->getBrand->name }},
                                                 <b>State</b> : {{ $set_enquiry_data->getSellerCommodityProduct->getStatePrice[0]->state }},
                                                 <b>City</b> : {{ $set_enquiry_data->getSellerCommodityProduct->getStatePrice[0]->city }}
+                                            @else
+                                                <b>Loading...</b>
+                                            @endif
                                                 {{-- <b>Base Price</b> : {{ $set_enquiry_data->base_price }} --}}
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
-                                        </div>
-                                        <div class="modal-body">
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        @if ($set_enquiry_data)
                                             <div class="table-responsive">
                                                 <table class="custom-table">
                                                     <thead>
@@ -366,10 +370,10 @@
                                                                 </td>
                                                                 <td>
                                                                     @php
-                                                                        $variation_price = $variation['price'] + str_replace(',', '', $set_enquiry_data_base_price);
+                                                                        $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0);
                                                                         $total_variation_price += $variation_price;
 
-                                                                        $total_transport_price +=  $variation['quantity'] * $transport_price;
+                                                                        // $total_transport_price +=  $variation['quantity'] * $transport_price;
                                                                     @endphp
                                                                     ₹ {{ formatIndianNumber($variation_price) }}
                                                                 </td>
@@ -380,7 +384,7 @@
                                                                 <label for="transport_price" class="form-label">Transport Price</label>
                                                             </td>
                                                             <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
-                                                                <input type="text" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model="transport_price" oninput="formatIndianCurrency(this)">
+                                                                <input type="text" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model.live="transport_price">
                                                                 @error('transport_price') <small class="text-danger">{{ $message }}</small>@enderror
 
                                                             </td>
@@ -389,7 +393,7 @@
                                                                 <label for="base_price" class="form-label">Base Price</label>
                                                             </td>
                                                             <td colspan="2">
-                                                                <input type="text" class="form-control" id="base_price" placeholder="Enter Base Price" wire:model="set_enquiry_data_base_price" oninput="formatIndianCurrency(this)">
+                                                                <input type="number" class="form-control" id="base_price" placeholder="Enter Base Price" wire:model.live="set_enquiry_data_base_price">
                                                                 @error('set_enquiry_data_base_price') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
 
@@ -412,7 +416,7 @@
                                                                 </label>
                                                             </td>
                                                             <td colspan="2">
-                                                                <input type="text" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model="commission" oninput="formatIndianCurrency(this)">
+                                                                <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model.live="commission">
                                                                 @error('commission') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
                                                         </tr>
@@ -426,21 +430,25 @@
                                                             <td colspan="2">
                                                                 {{-- ₹ {{ formatIndianNumber($total_transport_price) }}
                                                                 <br> --}}
+                                                                @php
+                                                                    $total_variation_price += $commission != "" ? $commission : 0;
+                                                                    $total_variation_price += $transport_price != "" ? $transport_price : 0;
+                                                                @endphp
                                                                 ₹ {{ formatIndianNumber($total_variation_price) }}
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" wire:click="markSeller()">Update</button>
-                                        </div>
+                                        @endif
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" wire:click="markSeller()">Update</button>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        </div>
 
                     </div>
                 </div>
