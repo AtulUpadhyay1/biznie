@@ -34,9 +34,9 @@ class Edit extends Component
     {
         $this->validate([
             'name'  => 'required',
-            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
-            'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
-            'icon' => 'required',
+            // 'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg',
+            // 'banner'    => 'nullable|image|mimes:jpg,png,jpeg',
+            // 'icon' => 'required',
         ]);
 
         try

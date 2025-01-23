@@ -21,9 +21,9 @@ class Create extends Component
     {
         $this->validate([
             'name' => 'required',
-            'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
-            'banner' => 'required|image|mimes:jpg,png,jpeg',
-            'icon' => 'required',
+            // 'thumbnail' => 'required|image|mimes:jpg,png,jpeg',
+            // 'banner' => 'required|image|mimes:jpg,png,jpeg',
+            // 'icon' => 'required',
         ]);
 
         try
