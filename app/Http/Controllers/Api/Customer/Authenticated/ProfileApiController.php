@@ -29,7 +29,10 @@ class ProfileApiController extends Controller
         $user->email    = $request->email;
         $user->save();
 
-        $user_detail    = UserDetail::firstOrNew(['user_id' => $user->id]);;
+        $user_detail    = UserDetail::where('user_id', $user_id)->first();
+        if(!$user_detail){
+            $user_detail = new UserDetail;
+        }
         $user_detail->user_id       = $user->id;
         if($request->profile_photo){
             $user_detail->profile_photo = $request->profile_photo;
