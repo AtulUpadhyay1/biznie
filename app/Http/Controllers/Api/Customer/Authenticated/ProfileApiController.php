@@ -29,7 +29,7 @@ class ProfileApiController extends Controller
         $user->email    = $request->email;
         $user->save();
 
-        $user_detail    = UserDetail::where('user_id', $user_id)->first();
+        $user_detail    = UserDetail::where('user_id', auth()->id())->first();
         if(!$user_detail){
             $user_detail = new UserDetail;
         }
