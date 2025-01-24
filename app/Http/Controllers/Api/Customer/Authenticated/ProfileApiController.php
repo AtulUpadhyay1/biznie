@@ -30,6 +30,17 @@ class ProfileApiController extends Controller
         $user->save();
 
         $user_detail    = UserDetail::where('user_id', auth()->id())->first();
+        if($user_detail){
+            $request->validate([
+                'gst_number'    => 'nullable|unique:user_details,gst_number,'.$user_detail->id,
+                'pan_number'    => 'nullable|unique:user_details,pan_number,'.$user_detail->id,
+            ]);
+        }else{
+            $request->validate([
+                'gst_number'    => 'nullable|unique:user_details,gst_number',
+                'pan_number'    => 'nullable|unique:user_details,pan_number',
+            ]);
+        }
         if(!$user_detail){
             $user_detail = new UserDetail;
         }
