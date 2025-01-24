@@ -46,18 +46,26 @@ class BecomeSellerApiController extends Controller
         $user->type = 'seller';
         $user->save();
 
+        $seller_kyc = SellerKycDetail::where('user_id', auth()->id())->first();
+        if(!$seller_kyc){
+            $seller_kyc = new SellerKycDetail;
+            $seller_kyc->user_id = auth()->id();
+        }
         $user_log_history = new UserPromotionHistory;
         $user_log_history->user_id = $user->id;
         $user_log_history->old_type = "customer";
         $user_log_history->new_type = "seller";
         $user_log_history->save();
 
-        $business = new Business;
-        $business->user_id = $user->id;
+        $business = Business::where('user_id', auth()->id())->first();
+        if(!$business){
+            $business = new Business;
+            $business->user_id = $user->id;
+        }
         $business->name = $request->company_name;
-        // $business->about = $request->about;
-        // $business->category = $request->category;
-        // $business->type = $request->type;
+        $business->about = $request->about;
+        $business->category = $request->category;
+        $business->type = $request->type;
         $business->seller_type = $request->seller_type;
         $business->save();
 
