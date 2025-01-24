@@ -136,11 +136,14 @@
                                             {{ lastActive($data->id) }}
                                         </td>
                                         <td>
+                                            <b>Address Line One:</b>
+                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address_line_one : '' }}</span>
+                                            <br>
+                                            <b>Address Line Two:</b>
+                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address_line_two : '' }}</span>
+                                            <br>
                                             <b>Pincode:</b>
                                             <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->postal_code : '' }}</span>
-                                            <br>
-                                            <b>Area:</b>
-                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address : '' }}</span>
                                             <br>
                                             <b>City:</b>
                                             <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '' }}</span>

@@ -24,8 +24,8 @@ class ProfileApiController extends Controller
             'company_name'      => 'required',
             'seller_type'       => 'required|array|min:1',
             'seller_type.*'     => 'required|integer|min:1',
-            'pan_number'        => 'required',
-            'gst_number'        => 'required',
+            'pan_number'        => 'required|unique:seller_kyc_details,pan_number,'.auth()->id(),
+            'gst_number'        => 'required|unique:seller_kyc_details,gst_number,'.auth()->id(),
             'address'           => 'required',
         ]);
 
@@ -49,6 +49,12 @@ class ProfileApiController extends Controller
         $seller_kyc->gst_type = $request->gst_type;
         $seller_kyc->gst_number = $request->gst_number;
         $seller_kyc->address  = $request->address;
+        $data->address_line_one = $request->address_line_one;
+        $data->address_line_two = $request->address_line_two;
+        $data->postal_code = $request->pin_code;
+        $data->city = $request->city;
+        $data->state = $request->state;
+        $data->country = $request->country;
         $seller_kyc->save();
 
         return response([

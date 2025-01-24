@@ -22,6 +22,8 @@ class KycDetailResource extends JsonResource
             'ifsc_code'             => $this->ifsc_code,
             'bank_status'           => $this->bank_status,
             'address'               => $this->address,
+            'address_line_one'      => $this->address_line_one,
+            'address_line_two'      => $this->address_line_two,
             'postal_code'           => $this->postal_code,
             'city'                  => $this->city,
             'state'                 => $this->state,
