@@ -27,7 +27,6 @@ class BecomeSellerApiController extends Controller
             'pan_number'        => 'required|unique:seller_kyc_details,identity_number',
             // 'gst_type'          => 'required',
             'gst_number'        => 'required|unique:seller_kyc_details,gst_number',
-            'address'           => 'required',
             // 'credit_duration'   => 'required|in:yes,no',
             // 'credit_duration_day'=> 'required_if:credit_duration,yes'
         ]);
