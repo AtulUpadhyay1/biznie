@@ -74,6 +74,12 @@ class BecomeSellerApiController extends Controller
         $data->gst_type = $request->gst_type;
         $data->gst_number = $request->gst_number;
         $data->address  = $request->address;
+        $data->address_line_one = $request->address_line_one;
+        $data->address_line_two = $request->address_line_two;
+        $data->postal_code = $request->pin_code;
+        $data->city = $request->city;
+        $data->state = $request->state;
+        $data->country = $request->country;
         $data->save();
 
         $user_detail = UserDetail::where('user_id', auth()->id())->first();

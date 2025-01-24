@@ -11,8 +11,7 @@ class SellerKycDetail extends Model
     use HasFactory, SoftDeletes;
 
     protected $casts = [
-        'bank_response' => 'array',
-        'address'       => 'array',
+        'bank_response' => 'array'
     ];
 
 }
