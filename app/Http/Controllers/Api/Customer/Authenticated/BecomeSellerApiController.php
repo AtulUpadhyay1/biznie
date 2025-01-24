@@ -24,9 +24,9 @@ class BecomeSellerApiController extends Controller
             // 'type.*'            => 'required|integer|min:1',
             'seller_type'       => 'required|array|min:1',
             'seller_type.*'     => 'required|integer|min:1',
-            'pan_number'        => 'required',
+            'pan_number'        => 'required|unique:seller_kyc_details,identity_number',
             // 'gst_type'          => 'required',
-            'gst_number'        => 'required',
+            'gst_number'        => 'required|unique:seller_kyc_details,gst_number',
             'address'           => 'required',
             // 'credit_duration'   => 'required|in:yes,no',
             // 'credit_duration_day'=> 'required_if:credit_duration,yes'
@@ -46,11 +46,6 @@ class BecomeSellerApiController extends Controller
         $user->type = 'seller';
         $user->save();
 
-        $seller_kyc = SellerKycDetail::where('user_id', auth()->id())->first();
-        if(!$seller_kyc){
-            $seller_kyc = new SellerKycDetail;
-            $seller_kyc->user_id = auth()->id();
-        }
         $user_log_history = new UserPromotionHistory;
         $user_log_history->user_id = $user->id;
         $user_log_history->old_type = "customer";
