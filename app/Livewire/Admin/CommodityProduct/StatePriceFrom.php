@@ -15,7 +15,7 @@ class StatePriceFrom extends Component
 {
     public $page_title = "Add State Wise Price";
 
-    public $brand_id, $state_name, $city_name, $state_price_id;
+    public $brand_id, $state_name, $city_name, $address_line_one, $address_line_two, $pincode, $state_price_id;
 
     public $hidden_id, $variation_inputs = [], $selected_attributes = [], $variation=[], $uploaded_variation = [], $unit = [];
 
@@ -42,6 +42,7 @@ class StatePriceFrom extends Component
 
                     $uploaded_variation_data[$attribute_name_arr[$variation_key]] = $variation_value['value'];
                     $uploaded_variation_data['Price'] = '0';
+                    $uploaded_variation_data['is_brand_selling'] = 0;
                     $this->uploaded_variation[$product_variation->id] = $uploaded_variation_data;
 
                 }
@@ -56,14 +57,17 @@ class StatePriceFrom extends Component
                 foreach($product_variation->value as $variation_key => $variation_value){
                     $uploaded_variation_data[$attribute_name_arr[$variation_key]] = $variation_value['value'];
                     $uploaded_variation_data['Price'] = $product_variation->price;
+                    $uploaded_variation_data['is_brand_selling'] = $product_variation->is_brand_selling;
                     $this->uploaded_variation[$product_variation->commodity_product_variation_id] = $uploaded_variation_data;
                 }
             }
 
-
             $this->brand_id = $get_state_variation->brand_id;
             $this->state_name = $get_state_variation->state;
             $this->city_name = $get_state_variation->city;
+            $this->address_line_one = $get_state_variation->address_line_one;
+            $this->address_line_two = $get_state_variation->address_line_two;
+            $this->pincode = $get_state_variation->pincode;
         }
 
         foreach ($this->selected_attributes as $attribute) {
@@ -77,6 +81,7 @@ class StatePriceFrom extends Component
         $brand_list = Brand::active()->orderBy('name', 'asc')->get();
         $state_list = Address::select('state')->groupBy('state')->orderBy('state', 'asc')->get();
         $city_list  = Address::where('state', $this->state_name)->select('city')->groupBy('city')->orderBy('city', 'asc')->get();
+        $pincode_list = Address::where('state', $this->state_name)->where('city', $this->city_name)->select('pincode')->groupBy('pincode')->orderBy('pincode', 'asc')->get();
         $unit_list  = ProductUnit::active()->orderBy('name', 'asc')->get();
         $data       = CommodityProduct::findOrFail($this->hidden_id);
 
@@ -91,7 +96,7 @@ class StatePriceFrom extends Component
             }
         }
 
-        return view('admin.commodity_product.state_price_from', compact('brand_list', 'state_list', 'city_list', 'unit_list', 'data'));
+        return view('admin.commodity_product.state_price_from', compact('brand_list', 'state_list', 'city_list', 'pincode_list', 'unit_list', 'data'));
     }
 
     public function save()
@@ -123,14 +128,18 @@ class StatePriceFrom extends Component
             );
             return 1;
         }
+        $state_data = CommodityProductState::find($this->state_price_id);
         if(!$this->state_price_id){
             $state_data = new CommodityProductState;
-            $state_data->commodity_product_id = $this->hidden_id;
-            $state_data->brand_id             = $this->brand_id;
-            $state_data->state                = $this->state_name;
-            $state_data->city                 = $this->city_name;
-            $state_data->save();
         }
+        $state_data->commodity_product_id = $this->hidden_id;
+        $state_data->brand_id             = $this->brand_id;
+        $state_data->state                = $this->state_name;
+        $state_data->city                 = $this->city_name;
+        $state_data->address_line_one     = $this->address_line_one;
+        $state_data->address_line_two     = $this->address_line_two;
+        $state_data->pincode              = $this->pincode;
+        $state_data->save();
 
         foreach ($this->uploaded_variation as $uploaded_variation_id => $uploaded_variation) {
             $uploaded_product_variation = CommodityProductVariation::find($uploaded_variation_id);
@@ -147,6 +156,7 @@ class StatePriceFrom extends Component
                 $data->city                             = $this->city_name;
                 $data->value                            = $uploaded_product_variation->value;
                 $data->price                            = $this->uploaded_variation[$uploaded_product_variation->id]['Price'];
+                $data->is_brand_selling                 = $this->uploaded_variation[$uploaded_product_variation->id]['is_brand_selling'];
                 $data->save();
             }
         }

@@ -55,6 +55,31 @@
                                 </div>
                                 @error('city_name') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+
+                            <div class="col-md-4 mb-3">
+                                <div>
+                                    <label for="pincode" class="form-label">Pincode <span class="text-danger">*</span></label>
+                                    <select class="form-select select2 @error('pincode') is-invalid @enderror" id="pincode" wire:model="pincode">
+                                        <option>Select Pincode</option>
+                                        @foreach ($pincode_list as $pincode_data)
+                                            <option value="{{ $pincode_data->pincode }}">{{ $pincode_data->pincode }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('pincode') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="address_line_one" class="form-label">Address Line One <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('address_line_one') is-invalid @enderror" id="address_line_one" wire:model="address_line_one" placeholder="Address Line One">
+                                @error('address_line_one') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="address_line_two" class="form-label">Address Line Two <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="address_line_two" wire:model="address_line_two" placeholder="Address Line Two">
+                                @error('address_line_two') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
                         </div>
                         <hr>
                         <div class="table-responsive">
@@ -84,7 +109,14 @@
                                 <tbody>
                                     @forelse ($data->getCommodityProductVariation as $variation_key => $variation)
                                         <tr>
-                                            <th><span class="badge bg-danger">{{ $loop->iteration }}</span></th>
+                                            <th>
+                                                <div class="form-check">
+                                                    <label class="form-check-label" for="selection_check_{{ $loop->iteration }}">
+                                                        {{ $loop->iteration }}
+                                                    </label>
+                                                    <input type="checkbox" class="form-check-input" id="selection_check_{{ $loop->iteration }}" value="1" wire:model="uploaded_variation.{{$variation->id}}.is_brand_selling" @if($uploaded_variation[$variation->id]['is_brand_selling']) checked @endif>
+                                                </div>
+                                            </th>
                                             @foreach ($selected_attributes as $attribute)
                                                 <td>
                                                     <input type="text" class="form-control form-control-sm @error('uploaded_variation.'.getAttribute($attribute)->name) is-invalid @enderror" placeholder="Enter {{getAttribute($attribute)->name}}" wire:model="uploaded_variation.{{$variation->id}}.{{getAttribute($attribute)->name}}" readonly style="cursor: no-drop;">
