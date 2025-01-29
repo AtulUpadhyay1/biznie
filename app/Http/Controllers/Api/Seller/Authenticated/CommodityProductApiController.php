@@ -129,6 +129,7 @@ class CommodityProductApiController extends Controller
                 ],400);
             }
 
+            $commodity_product_state = CommodityProductState::where('commodity_product_id', $request->product_id)->where('brand_id', $request->brand_id)->where('state', $request->state)->where('city', $request->city)->first();
             $state_prices = CommodityProductStatePrice::where('commodity_product_id', $request->product_id)->where('brand_id', $request->brand_id)->where('state', $request->state)->where('city', $request->city)->get();
             if(!$state_prices){
                 return response([
@@ -145,6 +146,14 @@ class CommodityProductApiController extends Controller
                     'message'   => 'This product combination already taken by you.',
                 ],400);
             }
+
+            $loading_address = [
+                'address_line_one'   => $commodity_product_state->address_line_one,
+                'address_line_two'   => $commodity_product_state->address_line_two,
+                'pin_code'           => $commodity_product_state->pin_code,
+                'city'               => $commodity_product_state->city,
+                'state'              => $commodity_product_state->state,
+            ];
 
             $data = new SellerCommodityProduct;
             $data->user_id              = auth()->id();
@@ -182,7 +191,7 @@ class CommodityProductApiController extends Controller
             $data->specification_notes  = $commodity_product->specification_notes;
             $data->thumbnail            = $commodity_product->thumbnail;
             $data->images               = $commodity_product->images;
-            $data->loading_address      = $request->loading_address ?? [];
+            $data->loading_address      = [$loading_address] ?? [];
             $data->video_url            = $commodity_product->video_url;
             $data->meta_title           = $commodity_product->meta_title;
             $data->meta_description     = $commodity_product->meta_description;
@@ -203,6 +212,7 @@ class CommodityProductApiController extends Controller
                 $data_price->value                              = $state_price->value;
                 $data_price->price                              = $state_price->price;
                 $data_price->is_selected                        = 1;
+                $data_price->is_brand_selling                   = $state_price->is_brand_selling;
                 $data_price->save();
             }
 
