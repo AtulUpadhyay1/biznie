@@ -10,6 +10,7 @@ use App\Models\CommodityProduct;
 use App\Models\CommodityProductState;
 use App\Models\CommodityProductVariation;
 use App\Models\CommodityProductStatePrice;
+use App\Models\SellerCommodityProductStatePrice;
 
 class StatePriceFrom extends Component
 {
@@ -147,6 +148,21 @@ class StatePriceFrom extends Component
                 $data = new CommodityProductStatePrice;
                 if($this->state_price_id){
                     $data = CommodityProductStatePrice::where('commodity_product_state_id', $this->state_price_id)->where('commodity_product_variation_id', $uploaded_variation_id)->first();
+
+                    $seller_state_price_list = SellerCommodityProductStatePrice::where('commodity_product_id', $data->commodity_product_id)
+                        ->where('commodity_product_variation_id', $data->commodity_product_variation_id)
+                        ->where('commodity_product_state_id', $data->commodity_product_state_id)
+                        ->where('brand_id', $data->brand_id)
+                        ->where('state', $data->state)
+                        ->where('city', $data->city)
+                        ->get();
+
+                    foreach ($seller_state_price_list as $key => $seller_state_price_data) {
+                        $seller_state_price_data->is_brand_selling = $this->uploaded_variation[$uploaded_product_variation->id]['is_brand_selling'];
+                        $seller_state_price_data->save();
+                    }
+
+
                 }
                 $data->commodity_product_id             = $this->hidden_id;
                 $data->commodity_product_variation_id   = $uploaded_product_variation->id;
