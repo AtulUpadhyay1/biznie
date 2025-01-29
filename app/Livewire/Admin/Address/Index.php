@@ -11,11 +11,16 @@ class Index extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public $page_title = 'Address List';
 
     public function render()
     {
-        $list = Address::latest()->paginate(getPaginate());
+        $list = Address::search($this->search)->latest()->paginate(getPaginate());
         return view('admin.address.index', compact('list'));
     }
 
