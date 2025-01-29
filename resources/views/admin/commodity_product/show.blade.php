@@ -50,7 +50,7 @@
                                     </p>
                                     <p><b>HSN Code :</b>
                                         {{ $data->hsn_code }}
-                                    </p>    
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -171,18 +171,29 @@
                                     </h2>
                                     <div id="state_variation_collapse_{{ $state_variation->id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ $state_variation->id }}" data-bs-parent="#accordion_state_variation">
                                         <div class="accordion-body">
-                                            <button type="reset" class="btn btn-light btn-icon btn-xs p-0" data-bs-toggle="modal" title="Chart" data-bs-target="#chartModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
-                                                <i class="bi bi-clipboard-data"></i>
-                                            </button>
-                                            <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0" data-bs-toggle="modal" title="Copy" data-bs-target="#copyModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
-                                                <i class="bi bi-copy"></i>
-                                            </button>
-                                            <a href="{{route('admin.commodity-product.statePrice', $data->id)}}?state_price_id={{ $state_variation->id }}" wire:navigate class="btn btn-primary btn-icon btn-xs" title="Edit">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <button type="button" class="btn btn-danger btn-icon btn-xs p-0" title="Delete" wire:click="deleteStatePrice({{ $state_variation->id }})">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <b>Pincode</b> : {{$state_variation->pincode}} |
+                                                    <b>Address Line One</b> : {{$state_variation->address_line_one}} |
+                                                    <b>Address Line Two</b> : {{$state_variation->address_line_two}}
+
+                                                </div>
+                                                <div class="col-4 text-end">
+                                                    <b>Action</b> :
+                                                    <button type="reset" class="btn btn-light btn-icon btn-xs p-0" data-bs-toggle="modal" title="Chart" data-bs-target="#chartModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
+                                                        <i class="bi bi-clipboard-data"></i>
+                                                    </button>
+                                                    <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0" data-bs-toggle="modal" title="Copy" data-bs-target="#copyModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
+                                                        <i class="bi bi-copy"></i>
+                                                    </button>
+                                                    <a href="{{route('admin.commodity-product.statePrice', $data->id)}}?state_price_id={{ $state_variation->id }}" wire:navigate class="btn btn-primary btn-icon btn-xs" title="Edit">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-danger btn-icon btn-xs p-0" title="Delete" wire:click="deleteStatePrice({{ $state_variation->id }})">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="table-responsive mt-1">
@@ -202,7 +213,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($state_variation->getStateVariationPrice as $key => $variation)
+                                                    @foreach ($state_variation->getStateVariationPrice->where('is_brand_selling', '1') as $key => $variation)
                                                         <tr>
                                                             <td><span class="badge bg-danger">{{$loop->iteration}}</span></td>
                                                             @foreach ($variation->value as $variation_value)
