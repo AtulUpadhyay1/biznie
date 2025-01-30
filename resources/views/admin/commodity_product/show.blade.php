@@ -244,7 +244,7 @@
                                                     <div class="row">
                                                         <div class="col-md-4 mb-3">
                                                             <div>
-                                                                <label for="brand_id_{{$state_variation->id}}" class="form-label">Brand</label>
+                                                                <label for="brand_id_{{$state_variation->id}}" class="form-label">Brand <span class="text-danger">*</span></label>
                                                                 <select class="form-select @error('brand_id') is-invalid @enderror" id="brand_id_{{$state_variation->id}}" wire:model.live="brand_id">
                                                                     <option value="">Select Brand</option>
                                                                     @foreach ($brand_list as $brand_data)
@@ -257,7 +257,7 @@
 
                                                         <div class="col-md-4 mb-3">
                                                             <div>
-                                                                <label for="state_name_{{$state_variation->id}}" class="form-label">State</label>
+                                                                <label for="state_name_{{$state_variation->id}}" class="form-label">State <span class="text-danger">*</span></label>
                                                                 <select class="form-select @error('state_name') is-invalid @enderror" id="state_name_{{$state_variation->id}}" wire:model.live="state_name">
                                                                     <option value="">Select State</option>
                                                                     @foreach ($state_list as $state_data)
@@ -270,7 +270,7 @@
 
                                                         <div class="col-md-4 mb-3">
                                                             <div>
-                                                                <label for="city_name_{{$state_variation->id}}" class="form-label">City</label>
+                                                                <label for="city_name_{{$state_variation->id}}" class="form-label">City <span class="text-danger">*</span></label>
                                                                 <select class="form-select @error('city_name') is-invalid @enderror" id="city_name_{{$state_variation->id}}" wire:model.live="city_name">
                                                                     <option value="">Select City</option>
                                                                     @foreach ($city_list as $city_data)
@@ -279,6 +279,31 @@
                                                                 </select>
                                                             </div>
                                                             @error('city_name') <small class="text-danger">{{ $message }}</small>@enderror
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-3">
+                                                            <div>
+                                                                <label for="pincode_{{$state_variation->id}}" class="form-label">Pincode <span class="text-danger">*</span></label>
+                                                                <select class="form-select @error('pincode') is-invalid @enderror" id="pincode_{{$state_variation->id}}" wire:model.live="pincode">
+                                                                    <option value="">Select Pincode</option>
+                                                                    @foreach ($pincode_list as $pincode_data)
+                                                                        <option value="{{ $pincode_data->pincode }}">{{ $pincode_data->pincode }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            @error('pincode') <small class="text-danger">{{ $message }}</small>@enderror
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="address_line_one" class="form-label">Address Line One <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control @error('address_line_one') is-invalid @enderror" id="address_line_one" wire:model="address_line_one" placeholder="Address Line One">
+                                                            @error('address_line_one') <small class="text-danger">{{ $message }}</small>@enderror
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="address_line_two" class="form-label">Address Line Two <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="address_line_two" wire:model="address_line_two" placeholder="Address Line Two">
+                                                            @error('address_line_two') <small class="text-danger">{{ $message }}</small>@enderror
                                                         </div>
                                                     </div>
                                                 </form>

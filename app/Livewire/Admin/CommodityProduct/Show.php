@@ -16,7 +16,7 @@ class Show extends Component
 
     public $page_title = 'Commodity Product Show';
 
-    public $hidden_id, $brand_id, $state_name, $city_name ;
+    public $hidden_id, $brand_id, $state_name, $city_name, $address_line_one, $address_line_two, $pincode;
     public $chart;
 
     public function mount($id)
@@ -30,6 +30,7 @@ class Show extends Component
         $brand_list = Brand::active()->orderBy('name', 'asc')->get();
         $state_list = Address::select('state')->groupBy('state')->orderBy('state', 'asc')->get();
         $city_list  = Address::where('state', $this->state_name)->select('city')->groupBy('city')->orderBy('city', 'asc')->get();
+        $pincode_list = Address::where('state', $this->state_name)->where('city', $this->city_name)->select('pincode')->groupBy('pincode')->orderBy('pincode', 'asc')->get();
 
         $check_price = CommodityProductState::where('commodity_product_id', $this->hidden_id)->where('brand_id', $this->brand_id)->where('state', $this->state_name)->where('city', $this->city_name)->first();
         if($check_price){
@@ -40,7 +41,7 @@ class Show extends Component
 
         }
 
-        return view('admin.commodity_product.show', compact('data', 'brand_list', 'state_list', 'city_list'));
+        return view('admin.commodity_product.show', compact('data', 'brand_list', 'state_list', 'city_list', 'pincode_list'));
     }
 
     public function copyStatePrice($state_price_id)
@@ -66,6 +67,9 @@ class Show extends Component
         $state_data->brand_id             = $this->brand_id;
         $state_data->state                = $this->state_name;
         $state_data->city                 = $this->city_name;
+        $state_data->address_line_one     = $this->address_line_one;
+        $state_data->address_line_two     = $this->address_line_two;
+        $state_data->pincode              = $this->pincode;
         $state_data->save();
 
         foreach ($get_state_price as $state_price) {
@@ -78,6 +82,7 @@ class Show extends Component
             $data->city                             = $this->city_name;
             $data->value                            = $state_price->value;
             $data->price                            = $state_price->price;
+            $data->is_brand_selling                 = $state_price->is_brand_selling;
             $data->save();
         }
 
