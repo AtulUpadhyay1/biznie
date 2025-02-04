@@ -129,7 +129,7 @@
                                                         @foreach ($data->attributes as $attributes_id)
                                                             <th>
                                                                 {{ getAttribute($attributes_id)->name }}
-                                                                @if($data->unit && $data->unit[getAttribute($attributes_id)->name])
+                                                                @if($data->unit && isset($data->unit[getAttribute($attributes_id)->name]))
                                                                     ({{getProductUnit($data->unit[getAttribute($attributes_id)->name])->short_name}})
                                                                 @endif
                                                             </th>
