@@ -19,7 +19,7 @@ class Edit extends Component
     public $page_title = "Edit Commodity Product";
     use WithFileUploads;
 
-    public $hidden_id, $name, $hsn_code, $category_id, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $attribute=[], $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes, $min_order_qty, $order_amount_type = 'percent', $required_order_amount;
+    public $hidden_id, $name, $hsn_code, $category_id, $sub_category, $sub_category_id, $sub_sub_category_id, $brand_id, $unit_id, $attribute=[], $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes, $min_order_qty, $order_amount_type = 'percent', $required_order_amount;
 
     public $sub_category_list = [];
     public $sub_sub_category_list = [];
