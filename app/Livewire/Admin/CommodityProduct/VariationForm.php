@@ -24,7 +24,7 @@ class VariationForm extends Component
         $this->selected_attributes = $data->attributes;
 
         foreach ($this->selected_attributes as $attribute) {
-            $this->unit[getAttribute($attribute)->name] = $data->unit ? isset($data->unit[getAttribute($attribute)->name]) : '';
+            $this->unit[getAttribute($attribute)->name] = $data->unit && isset($data->unit[getAttribute($attribute)->name]) ? $data->unit[getAttribute($attribute)->name] : '';
         }
 
     }
