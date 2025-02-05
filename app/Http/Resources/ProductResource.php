@@ -42,7 +42,7 @@ class ProductResource extends JsonResource
 
         $data['price_history'] = $price_history->map(function ($history) {
             return [
-                'base_price' => $history->seller_commodity_product_detail['base_price'],
+                'base_price' => (string) $history->seller_commodity_product_detail['base_price'],
                 'created_at' => dateTimeFormat($history->created_at),
                 'updated_at' => dateTimeFormat($history->updated_at),
             ];
