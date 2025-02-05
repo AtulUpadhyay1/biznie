@@ -17,24 +17,20 @@ class ProductApiController extends Controller
     {
         try {
 
-            $commodity = CommodityProduct::first();
-            $id = 0;
             $q = HomeProduct::with('getUser', 'getCommodityProduct', 'getSellerCommodityProduct', 'getBrand');
-            // if($commodity){
-            //     $id = $commodity->id;
-            // }
-            // if($request->commodity_product_id){
-            //     $id = $request->commodity_product_id;
-            // }
-            if($request->search){
+
+            if ($request->search) {
                 $searchTerm = $request->search;
-                $q->whereHas('getCommodityProduct', function ($query) use ($searchTerm) {
-                    $query->where('name', 'like', '%' . $searchTerm . '%');
-                })->orWhereHas('getBrand', function ($query) use ($searchTerm) {
-                    $query->where('name', 'like', '%' . $searchTerm . '%');
+                $q->where(function ($query) use ($searchTerm) {
+                    $query->whereHas('getCommodityProduct', function ($query) use ($searchTerm) {
+                        $query->where('name', 'like', '%' . $searchTerm . '%');
+                    })->orWhereHas('getBrand', function ($query) use ($searchTerm) {
+                        $query->where('name', 'like', '%' . $searchTerm . '%');
+                    });
                 });
             }
-            $list = $q->paginate(getPaginate());
+
+            $list = $q->groupBy('commodity_product_id')->orderBy('base_price', 'desc')->paginate(getPaginate());
             return ProductResource::collection($list);
 
         } catch (\Throwable $th) {

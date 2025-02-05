@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SellerCommodityProductHistory extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $casts = [
         'seller_commodity_product_detail'   => 'array',
