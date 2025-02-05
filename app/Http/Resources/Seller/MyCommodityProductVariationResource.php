@@ -22,6 +22,7 @@ class MyCommodityProductVariationResource extends JsonResource
             'value'         => [],
             'price'         => $this->price,
             'is_selected'   => $this->is_selected,
+            'is_brand_selling' => $this->is_brand_selling,
         ];
 
         foreach($this->value as $value){
