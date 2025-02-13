@@ -112,7 +112,7 @@ class Edit extends Component
         $data->order_amount_type   = $this->order_amount_type;
         $data->required_order_amount = $this->required_order_amount;
         $data->thumbnail        = $this->thumbnail ? imageUpload($this->thumbnail, 'product_thumbnail', $data->thumbnail) : $data->thumbnail;
-        $data->images           = $this->images ? [imageUpload($this->images, 'product_images', $data->images)] : $data->images;
+        $data->images           = $this->images ? [imageUpload($this->images, 'product_images', $data->images[0])] : $data->images;
         $data->video_url        = $this->video_url;
         $data->meta_title       = $this->meta_title;
         $data->meta_description = $this->meta_description;
