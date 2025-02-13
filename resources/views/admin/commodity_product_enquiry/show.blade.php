@@ -113,10 +113,8 @@
                                         @foreach ($seller_list as $seller_data)
                                             <div class="accordion-item">
                                                 <div class="row">
-                                                    <div class="col-1 text-center mt-3">
+                                                    <div class="col-12">
                                                         <input type="checkbox" id="seller_{{ $seller_data->user_id }}" class="form-check-input" value="{{ $seller_data->user_id }}" wire:model.live="user_id">
-                                                    </div>
-                                                    <div class="col-11">
                                                         <h2 class="accordion-header" id="heading_{{ $seller_data->id }}">
                                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $seller_data->id }}">
                                                             <b>{{ $seller_data->getUser->getBusiness->name}} ({{$seller_data->getUser->phone}}) {{ $seller_data->getUser->name}} ({{ getSellerType($seller_data->user_id) }})</b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}, &nbsp; <b>Base Price</b> : {{ $seller_data->base_price }}
@@ -150,25 +148,27 @@
                                                                         $ex_price = 0;
 
                                                                         foreach ($seller_data->packaging_type as $packaging_charge) {
-                                                                            $packaging_price = $seller_data->packaging_type_price[$packaging_charge];
+                                                                            $packaging_price = isset($seller_data->packaging_type_price[$packaging_charge]) ? $seller_data->packaging_type_price[$packaging_charge] : 0;
                                                                             $total_charges += $packaging_price;
                                                                         }
 
                                                                         foreach ($seller_data->charge_name as $charge_key => $charge_name) {
 
-                                                                            $other_charges_price = $seller_data->charge_price[$charge_key];
-                                                                            $other_charges_operator = $seller_data->operator[$charge_key];
+                                                                            $other_charges_price = isset($seller_data->charge_price[$charge_key]) ? $seller_data->charge_price[$charge_key] : 0;
+                                                                            $other_charges_operator = isset($seller_data->operator[$charge_key]) ? $seller_data->operator[$charge_key] : '';
+                                                                            if($other_charges_operator){
 
-                                                                            if($other_charges_operator == "+"){
-                                                                                $total_charges += $other_charges_price;
-                                                                            }elseif($other_charges_operator == "-"){
-                                                                                $total_charges -= $other_charges_price;
-                                                                            }elseif($other_charges_operator == "*"){
-                                                                                $total_charges += $ex_price * $other_charges_price;
-                                                                            }elseif($other_charges_operator == "/"){
-                                                                                $total_charges += $ex_price / $other_charges_price;
-                                                                            }elseif($other_charges_operator == "%"){
-                                                                                $total_charges += $ex_price * ($other_charges_price / 100);
+                                                                                if($other_charges_operator == "+"){
+                                                                                    $total_charges += $other_charges_price;
+                                                                                }elseif($other_charges_operator == "-"){
+                                                                                    $total_charges -= $other_charges_price;
+                                                                                }elseif($other_charges_operator == "*"){
+                                                                                    $total_charges += $ex_price * $other_charges_price;
+                                                                                }elseif($other_charges_operator == "/"){
+                                                                                    $total_charges += $ex_price / $other_charges_price;
+                                                                                }elseif($other_charges_operator == "%"){
+                                                                                    $total_charges += $ex_price * ($other_charges_price / 100);
+                                                                                }
                                                                             }
                                                                         }
 
@@ -176,7 +176,7 @@
 
                                                                             foreach ($seller_data->quality as $quality_key => $quality) {
                                                                                 $other_quantity_charge_arr['name']          = $quality;
-                                                                                $other_quantity_price = $seller_data->quality_price[$quality_key];
+                                                                                $other_quantity_price = isset($seller_data->quality_price[$quality_key]) ? $seller_data->quality_price[$quality_key] : 0;
                                                                                 $total_charges += $other_quantity_price;
                                                                             }
                                                                         }

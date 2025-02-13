@@ -153,7 +153,7 @@ if(!function_exists('getSellerType')){
     function getSellerType($user_id){
         $type = 'Seller';
         $user_detail = UserDetail::where('user_id', $user_id)->first();
-        if($user_detail){
+        if($user_detail && $user_detail->type){
             $seller_type = SellerType::whereIn('id', $user_detail->type)->first();
             if($seller_type){
                 $type = $seller_type->name;

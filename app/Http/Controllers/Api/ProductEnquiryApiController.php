@@ -115,15 +115,23 @@ class ProductEnquiryApiController extends Controller
                     }
                 }
 
-                $seller_ids = SellerCommodityProductStatePrice::where(function($query) use ($variation_arr){
-                    foreach ($variation_arr as $variation) {
-                        $query->orWhereJsonContains('value', $variation)->where('is_selected', '1');
-                    }
-                })->pluck('user_id')->toArray();
-                $seller_ids_with_count = array_count_values($seller_ids);
-                $seller_ids = array_keys(array_filter($seller_ids_with_count, function($count) use ($variation_arr){
-                    return $count === count($variation_arr);
-                }));
+                $seller_ids = SellerCommodityProductStatePrice::where('commodity_product_id', $data->commodity_product_id)
+                    ->where('brand_id', $data->brand_id)
+                    ->where(function($query) use ($variation_arr) {
+                        foreach ($variation_arr as $variation) {
+                            $query->orWhere(function($subQuery) use ($variation) {
+                            $subQuery->whereJsonContains('value', $variation)
+                                ->where('is_selected', '1');
+                            });
+                        }
+                    })
+                    ->pluck('user_id')
+                    ->unique()
+                    ->toArray();
+                // $seller_ids_with_count = array_count_values($seller_ids);
+                // $seller_ids = array_keys(array_filter($seller_ids_with_count, function($count) use ($variation_arr){
+                //     return $count === count($variation_arr);
+                // }));
 
                 foreach ($seller_ids as $user_id) {
                     $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where(function($query) use ($variation_arr){
