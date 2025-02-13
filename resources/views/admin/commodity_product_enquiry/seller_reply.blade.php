@@ -234,24 +234,26 @@
                                                                         // $commission =  $seller_commodity_product->commission;
 
                                                                         foreach ($seller_commodity_product->packaging_type as $packaging_charge) {
-                                                                            $packaging_price = $seller_commodity_product->packaging_type_price[$packaging_charge];
+                                                                            $packaging_price = isset($seller_commodity_product->packaging_type_price[$packaging_charge]) ? $seller_commodity_product->packaging_type_price[$packaging_charge] : 0;
                                                                             $total_charges += $packaging_price;
                                                                         }
 
                                                                         foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
-                                                                            $other_charges_price = $seller_commodity_product->charge_price[$charge_key];
-                                                                            $other_charges_operator = $seller_commodity_product->operator[$charge_key];
+                                                                            $other_charges_price = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : 0;
+                                                                            $other_charges_operator = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : '';
+                                                                            if($other_charges_operator){
 
-                                                                            if($other_charges_operator == "+"){
-                                                                                $total_charges += $other_charges_price;
-                                                                            }elseif($other_charges_operator == "-"){
-                                                                                $total_charges -= $other_charges_price;
-                                                                            }elseif($other_charges_operator == "*"){
-                                                                                $total_charges += $ex_price * $other_charges_price;
-                                                                            }elseif($other_charges_operator == "/"){
-                                                                                $total_charges += $ex_price / $other_charges_price;
-                                                                            }elseif($other_charges_operator == "%"){
-                                                                                $total_charges += $ex_price * ($other_charges_price / 100);
+                                                                                if($other_charges_operator == "+"){
+                                                                                    $total_charges += $other_charges_price;
+                                                                                }elseif($other_charges_operator == "-"){
+                                                                                    $total_charges -= $other_charges_price;
+                                                                                }elseif($other_charges_operator == "*"){
+                                                                                    $total_charges += $ex_price * $other_charges_price;
+                                                                                }elseif($other_charges_operator == "/"){
+                                                                                    $total_charges += $ex_price / $other_charges_price;
+                                                                                }elseif($other_charges_operator == "%"){
+                                                                                    $total_charges += $ex_price * ($other_charges_price / 100);
+                                                                                }
                                                                             }
                                                                         }
 
