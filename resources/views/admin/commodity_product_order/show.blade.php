@@ -61,7 +61,7 @@
                         <div class="col-6">
                             <p>
                                 <b>Billing Address</b> <br>
-                                <b>Pincode: </b> {{ $data->billing_address['pin_code'] }} <br>
+                                <b>Pincode: </b> {{ $data->billing_address['pincode'] }} <br>
                                 <b>Address: </b> {{ $data->billing_address['address_line_one']??'' }} <br>
                                 <b>City: </b> {{ $data->billing_address['city'] }} <br>
                                 <b>State: </b> {{ $data->billing_address['state'] }} <br>
