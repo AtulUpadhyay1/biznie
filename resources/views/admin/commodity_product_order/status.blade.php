@@ -71,7 +71,7 @@
                         <div class="col-6">
                             <p>
                                 <b>Billing Address</b> <br>
-                                <b>Pincode: </b> {{ $data->billing_address['pin_code'] }} <br>
+                                <b>Pincode: </b> {{ $data->billing_address['pincode'] }} <br>
                                 <b>Address: </b> {{ $data->billing_address['address_line_one']??'' }} <br>
                                 <b>City: </b> {{ $data->billing_address['city'] }} <br>
                                 <b>State: </b> {{ $data->billing_address['state'] }} <br>
@@ -81,8 +81,8 @@
                             <p>
                                 <b>Consignee Detail</b> <br>
                                 <b>Company: </b> {{ $data->consignee_detail['company_name'] }} <br>
-                                <b>Phone: </b> {{ $data->consignee_detail['phone_number'] }} <br>
-                                <b>Pincode: </b> {{ $data->consignee_detail['pin_code'] }} <br>
+                                <b>Phone: </b> {{ $data->consignee_detail['phone'] }} <br>
+                                <b>Pincode: </b> {{ $data->consignee_detail['pincode'] }} <br>
                                 <b>Address 1: </b> {{ $data->consignee_detail['address_line_one'] }} <br>
                                 <b>Address 2: </b> {{ $data->consignee_detail['address_line_two'] }} <br>
                                 <b>City: </b> {{ $data->consignee_detail['city'] }} <br>
