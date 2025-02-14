@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Brand;
 use Livewire\Component;
@@ -19,13 +20,29 @@ class DashboardLivewire extends Component
         $total_enquiry = ProductEnquiry::count();
         $total_order = CommodityProductOrder::count();
 
+        $last_7_days_customer = [];
+        for ($i = 0; $i < 7; $i++) {
+            $date = Carbon::now()->subDays($i)->format('Y-m-d');
+            $count = User::where('type', 'seller')->whereDate('created_at', $date)->count();
+            $last_7_days_customer[] = ['date' => $date, 'count' => $count];
+        }
+
+        $last_7_days_seller = [];
+        for ($i = 0; $i < 7; $i++) {
+            $date = Carbon::now()->subDays($i)->format('Y-m-d');
+            $count = User::where('type', 'seller')->whereDate('created_at', $date)->count();
+            $last_7_days_seller[] = ['date' => $date, 'count' => $count];
+        }
+
         return view('admin.dashboard', compact(
             'total_customer',
             'total_seller',
             'total_transporter',
             'total_brand',
             'total_enquiry',
-            'total_order'
+            'total_order',
+            'last_7_days_customer',
+            'last_7_days_seller'
         ), ['page_title' => 'Admin Dashboard']);
     }
 

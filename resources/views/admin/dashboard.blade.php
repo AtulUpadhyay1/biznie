@@ -24,170 +24,106 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-xl-12 stretch-card">
-            <div class="row flex-grow-1">
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">All Buyers</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-secondary pb-3px bi bi-three-dots"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.customer-list') }}" wire:navigate>
-                                            <i class="bi bi-eye icon-sm me-2"></i>
-                                            <span class="">View</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">{{ $total_customer }}</h3>
-                                </div>
+        <div class="col-md-2 mb-3">
+            <a class="text-dark" href="{{ route('admin.customer-list') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Total Buyers</h6>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-12 col-xl-5">
+                                <h3 class="mb-2">{{ $total_customer }}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
+            </a>
+        </div>
 
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">All Sellers</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-secondary pb-3px bi bi-three-dots"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.seller.index') }}" wire:navigate>
-                                            <i class="bi bi-eye icon-sm me-2"></i>
-                                            <span class="">View</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">{{ $total_seller }}</h3>
-                                </div>
+        <div class="col-md-2 mb-3">
+            <a class="text-dark" href="{{ route('admin.seller.index') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Total Sellers</h6>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-12 col-xl-5">
+                                <h3 class="mb-2">{{ $total_seller }}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
+            </a>
+        </div>
 
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">All Transporters</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-secondary pb-3px bi bi-three-dots"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.transporter.index') }}" wire:navigate>
-                                            <i class="bi bi-eye icon-sm me-2"></i>
-                                            <span class="">View</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">{{ $total_transporter }}</h3>
-                                </div>
+        <div class="col-md-2 mb-3">
+            <a class="text-dark" href="{{ route('admin.transporter.index') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Total Transporters</h6>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-12 col-xl-5">
+                                <h3 class="mb-2">{{ $total_transporter }}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
+            </a>
+        </div>
 
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Total Brand</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-secondary pb-3px bi bi-three-dots"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.brand') }}" wire:navigate>
-                                            <i class="bi bi-eye icon-sm me-2"></i>
-                                            <span class="">View</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">{{ $total_brand }}</h3>
-                                </div>
+        <div class="col-md-2 mb-3">
+            <a class="text-dark" href="{{ route('admin.brand') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Total Brand</h6>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-12 col-xl-5">
+                                <h3 class="mb-2">{{ $total_brand }}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
+            </a>
+        </div>
 
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Total Enquiry</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-secondary pb-3px bi bi-three-dots"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.commodity-product-enquiry.index') }}" wire:navigate>
-                                            <i class="bi bi-eye icon-sm me-2"></i>
-                                            <span class="">View</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">{{ $total_enquiry }}</h3>
-                                </div>
+        <div class="col-md-2 mb-3">
+            <a class="text-dark" href="{{ route('admin.commodity-product-enquiry.index') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Total Enquiry</h6>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-12 col-xl-5">
+                                <h3 class="mb-2">{{ $total_enquiry }}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
+            </a>
+        </div>
 
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Total Order</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-secondary pb-3px bi bi-three-dots"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
-                                            <i class="bi bi-eye icon-sm me-2"></i>
-                                            <span class="">View</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">{{ $total_order }}</h3>
-                                </div>
+        <div class="col-md-2 mb-3">
+            <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Total Order</h6>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-12 col-xl-5">
+                                <h3 class="mb-2">{{ $total_order }}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>
