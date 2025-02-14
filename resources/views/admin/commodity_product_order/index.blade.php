@@ -25,12 +25,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="custom-table">
@@ -44,6 +38,7 @@
                                     <th>Seller</th>
                                     <th>Transporter</th>
                                     <th>Status</th>
+                                    <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -64,6 +59,7 @@
                                         <td>
                                             {{ ucfirst($data->status) }}
                                         </td>
+                                        <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td class="text-center">
                                             <a type="button" id="ActionBtn{{$data->id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-light btn-xs px-2">
                                                 <i class="bi bi-three-dots-vertical icon-lg text-dark"></i>
