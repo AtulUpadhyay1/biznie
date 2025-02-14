@@ -200,13 +200,17 @@
                                                             </div>
                                                             @foreach ($list_data->loading_address as $loading_address)
                                                                 <div class="col-md-6">
-                                                                    <b>Loading Address: </b> <br>
-                                                                    <b>Pincode: </b> {{ $loading_address['pin_code'] }} <br>
-                                                                    <b>Address Line One: </b> {{ isset($loading_address['address_line_one']) ? $loading_address['address_line_one'] : '--' }} <br>
-                                                                    <b>Address Line Two: </b> {{ isset($loading_address['address_line_two']) ? $loading_address['address_line_two'] : '--' }} <br>
-                                                                    <b>City: </b> {{ isset($loading_address['city']) ? $loading_address['city'] : '--' }} <br>
-                                                                    <b>State: </b> {{ isset($loading_address['state']) ? $loading_address['state'] : '--' }} <br>
-                                                                    <b>Loading Position: </b> {{ isset($loading_address['loading_position']) ? $loading_address['loading_position'] : '--' }} / Days <br>
+                                                                    @if ($loading_address)
+                                                                        <b>Loading Address: </b> <br>
+                                                                        <b>Pincode: </b> {{ $loading_address['pin_code'] }} <br>
+                                                                        <b>Address Line One: </b> {{ isset($loading_address['address_line_one']) ? $loading_address['address_line_one'] : '--' }} <br>
+                                                                        <b>Address Line Two: </b> {{ isset($loading_address['address_line_two']) ? $loading_address['address_line_two'] : '--' }} <br>
+                                                                        <b>City: </b> {{ isset($loading_address['city']) ? $loading_address['city'] : '--' }} <br>
+                                                                        <b>State: </b> {{ isset($loading_address['state']) ? $loading_address['state'] : '--' }} <br>
+                                                                        <b>Loading Position: </b> {{ isset($loading_address['loading_position']) ? $loading_address['loading_position'] : '--' }} / Days <br>
+                                                                    @else
+                                                                        <b>Loading Address Not Found.</b>
+                                                                    @endif
                                                                 </div>
                                                             @endforeach
                                                         </div>
