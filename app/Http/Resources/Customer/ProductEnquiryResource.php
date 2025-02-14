@@ -54,6 +54,7 @@ class ProductEnquiryResource extends JsonResource
             'commission'        => 0,
             'is_mark'           => false,
             'status'            => $this->status,
+            'created_at'        => dateTimeFormat($this->created_at),
         ];
 
         if($this->getMarkedSellerProductEnquiry){
