@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Models\CommodityProductVariation;
+use App\Models\CommodityProductStatePrice;
 use App\Models\SellerCommodityProductHistory;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,9 +32,50 @@ class ProductResource extends JsonResource
             'thumbnail'     => $this->getCommodityProduct->thumbnail ? imageUrl($this->getCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
             'updated_at'    => dateTimeFormat($this->updated_at),
             'is_mark'       => $this->is_mark ? true : false,
+            'ex_price'      => 0,
             'price_history' => [],
         ];
 
+        $default_variation = CommodityProductVariation::where('commodity_product_id', $this->commodity_product_id)
+            ->where('is_default', 1)
+            ->first();
+
+        if($default_variation){
+            $state_price = CommodityProductStatePrice::where('commodity_product_id', $this->commodity_product_id)
+            ->where('commodity_product_variation_id', $default_variation->id)
+            ->where('brand_id', $this->brand_id)
+            ->first();
+
+            if($state_price){
+                $commodityProduct = $this->getCommodityProduct;
+                $ex_price = $state_price->price + $this->base_price + $commodityProduct->loading_charge + $commodityProduct->insurance_charge + $commodityProduct->quality_charge;
+                $extra_charges = 0;
+                foreach ($commodityProduct->charge_name as $charge_key => $charge_name) {
+                    $other_charges_arr['name'] = $charge_name;
+                    $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : 0;
+                    $other_charges_arr['operator'] = isset($commodityProduct->operator[$charge_key]) ? $commodityProduct->operator[$charge_key] : "";
+
+                    if($other_charges_arr['operator']){
+                        if($other_charges_arr['operator'] == "+"){
+                            $extra_charges += $other_charges_arr['price'];
+                        }elseif($other_charges_arr['operator'] == "-"){
+                            $extra_charges -= $other_charges_arr['price'];
+                        }elseif($other_charges_arr['operator'] == "*"){
+                            $extra_charges += $ex_price * $other_charges_arr['price'];
+                        }elseif($other_charges_arr['operator'] == "/"){
+                            $extra_charges += $ex_price / $other_charges_arr['price'];
+                        }elseif($other_charges_arr['operator'] == "%"){
+                            $extra_charges += $ex_price * ($other_charges_arr['price'] / 100);
+                        }
+                    }
+                }
+
+                $tax_amount = ($ex_price + $extra_charges) * $commodityProduct->gst / 100;
+
+                $data['ex_price'] = round($ex_price + $extra_charges + $tax_amount);
+            }
+
+        }
         $price_history = SellerCommodityProductHistory::where('user_id', $this->user_id)
             ->where('commodity_product_id', $this->commodity_product_id)
             ->where('seller_commodity_product_id', $this->seller_commodity_product_id)
