@@ -30,6 +30,11 @@ class SellerCommodityProduct extends Model
         'loading_address'       => 'array',
     ];
 
+    public function getCommodityProduct()
+    {
+        return $this->belongsTo(CommodityProduct::class, 'commodity_product_id');
+    }
+
     public function getCategory()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');

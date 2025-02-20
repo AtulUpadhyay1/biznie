@@ -10,12 +10,25 @@ use App\Models\SellerCommodityProduct;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductDetailResource;
 use App\Http\Resources\AllSellerCommodityProductResource;
+use App\Http\Resources\SellerListByCommodityProductResource;
 
 class ProductApiController extends Controller
 {
     public function index(Request $request)
     {
         try {
+
+            $q = CommodityProduct::active()->select('id', 'name', 'thumbnail')->latest();
+            if ($request->search) {
+                $searchTerm = $request->search;
+                $q->where('name', 'like', '%' . $searchTerm . '%');
+            }
+            $list = $q->paginate(getPaginate());
+            foreach ($list as $data) {
+                $data->thumbnail = imageUrl($data->thumbnail);
+            }
+
+            return $list;
 
             $q = HomeProduct::with('getUser', 'getCommodityProduct', 'getSellerCommodityProduct', 'getBrand');
 
@@ -91,5 +104,13 @@ class ProductApiController extends Controller
             'success'        => true,
             'products_data'  => AllSellerCommodityProductResource::collection($list)
         ],200);
+    }
+
+    public function sellerListByCommodityProduct($commodity_product_id)
+    {
+        $list = SellerCommodityProduct::where('commodity_product_id', $commodity_product_id)
+            ->where('user_id', 51)
+            ->paginate(getPaginate());
+        return SellerListByCommodityProductResource::collection($list);
     }
 }
