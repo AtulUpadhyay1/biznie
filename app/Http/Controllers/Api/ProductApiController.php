@@ -80,7 +80,8 @@ class ProductApiController extends Controller
     public function show($id)
     {
         try {
-            $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand', 'getSellerStatePrice')->findOrFail($id);
+            // $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand', 'getSellerStatePrice')->findOrFail($id);
+            $data = SellerCommodityProduct::with('getCommodityProduct', 'getBrand', 'getStatePrice')->findOrFail($id);
             $seller_product_list = SellerCommodityProduct::where('id', '!=', $id)->where('user_id', $data->user_id)->with('getBrand')->latest()->get();
             return response([
                 'success'        => true,
@@ -109,7 +110,7 @@ class ProductApiController extends Controller
     public function sellerListByCommodityProduct($commodity_product_id)
     {
         $list = SellerCommodityProduct::where('commodity_product_id', $commodity_product_id)
-            ->where('user_id', 51)
+            ->where('user_id', 50)
             ->paginate(getPaginate());
         return SellerListByCommodityProductResource::collection($list);
     }

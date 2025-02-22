@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use App\Models\CommodityProductState;
+use App\Models\CommodityProductVariation;
+use App\Models\CommodityProductStatePrice;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Seller\MyCommodityProductVariationResource;
 
@@ -17,22 +19,22 @@ class ProductDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         // return parent::toArray($request);
+
         $data = [
             'id'                            => $this->id,
             'commodity_product_id'          => $this->commodity_product_id,
-            'seller_commodity_product_id'   => $this->seller_commodity_product_id,
-            'name'                          => $this->getSellerCommodityProduct->name,
-            'description'                   => $this->getSellerCommodityProduct->description,
+            'seller_commodity_product_id'   => $this->id,
+            'name'                          => $this->name,
+            'description'                   => $this->description,
             'brand'                         => ['id' => $this->getBrand->id, 'name' => $this->getBrand->name],
             'unit'                          => ['id' => $this->getCommodityProduct->getUnit->id, 'name' => $this->getCommodityProduct->getUnit->name],
-            'address'                       => $this->city,
+            'address'                       => isset($this->getStatePrice[0]) ? $this->getStatePrice[0]->city : null,
             'base_price'                    => $this->base_price,
-            'thumbnail'                     => $this->getSellerCommodityProduct->thumbnail ? imageUrl($this->getSellerCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
+            'thumbnail'                     => $this->thumbnail ? imageUrl($this->thumbnail) : asset('common/images/no-photo.png'),
             'images'                        => [],
-            'base_price'                    => $this->base_price,
             'loading_charge'                => $this->loading_charge,
-            'loading_position'              => $this->getSellerCommodityProduct->loading_position,
-            'price_validity'                => $this->getSellerCommodityProduct->price_validity ? dateTimeFormat($this->getSellerCommodityProduct->price_validity) : null,
+            'loading_position'              => $this->loading_position,
+            'price_validity'                => $this->price_validity ? dateTimeFormat($this->price_validity) : null,
             'insurance_charge'              => $this->insurance_charge,
             'quality_charge'                => $this->quality_charge,
             'gst'                           => $this->gst,
@@ -42,8 +44,9 @@ class ProductDetailResource extends JsonResource
             'required_order_amount'         => $this->required_order_amount,
             'charts'                        => [],
             'charges'                       => [],
-            'variation'                     => MyCommodityProductVariationResource::collection($this->getSellerStatePrice),
-            'default_variation'             => [],
+            'variation'                     => MyCommodityProductVariationResource::collection($this->getStatePrice),
+            'ex_price'                      => 0,
+            'default_variation'             => null,
         ];
 
         $product_state = CommodityProductState::where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->where('city', $this->city)->first();
@@ -53,15 +56,105 @@ class ProductDetailResource extends JsonResource
             }
         }
 
-        $product = $this->getSellerCommodityProduct;
-
-        if($product->images && $product->images != ""){
-            foreach ($product->images as $images) {
+        if($this->images && $this->images != ""){
+            foreach ($this->images as $images) {
                 $data['images'][]           = imageUrl($images);
             }
         }
 
+        $default_variation = CommodityProductVariation::where('commodity_product_id', $this->commodity_product_id)
+            ->where('is_default', 1)
+            ->first();
+
+        if($default_variation){
+            $data['default_variation'] = $default_variation;
+
+            if($default_variation){
+                $state_price = CommodityProductStatePrice::where('commodity_product_id', $this->commodity_product_id)
+                ->where('commodity_product_variation_id', $default_variation->id)
+                ->where('brand_id', $this->brand_id)
+                ->first();
+
+                if($state_price){
+                    $commodityProduct = $this->getCommodityProduct;
+                    $ex_price = $state_price->price + $this->base_price + $commodityProduct->loading_charge + $commodityProduct->insurance_charge + $commodityProduct->quality_charge;
+                    $extra_charges = 0;
+                    foreach ($commodityProduct->charge_name as $charge_key => $charge_name) {
+                        $other_charges_arr['name'] = $charge_name;
+                        $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : 0;
+                        $other_charges_arr['operator'] = isset($commodityProduct->operator[$charge_key]) ? $commodityProduct->operator[$charge_key] : "";
+
+                        if($other_charges_arr['operator']){
+                            if($other_charges_arr['operator'] == "+"){
+                                $extra_charges += $other_charges_arr['price'];
+                            }elseif($other_charges_arr['operator'] == "-"){
+                                $extra_charges -= $other_charges_arr['price'];
+                            }elseif($other_charges_arr['operator'] == "*"){
+                                $extra_charges += $ex_price * $other_charges_arr['price'];
+                            }elseif($other_charges_arr['operator'] == "/"){
+                                $extra_charges += $ex_price / $other_charges_arr['price'];
+                            }elseif($other_charges_arr['operator'] == "%"){
+                                $extra_charges += $ex_price * ($other_charges_arr['price'] / 100);
+                            }
+                        }
+                    }
+
+                    $tax_amount = ($ex_price + $extra_charges) * $commodityProduct->gst / 100;
+
+                    $data['ex_price'] = round($ex_price + $extra_charges + $tax_amount);
+                }
+
+            }
+
+        }
+
         return $data;
+
+        // $data = [
+        //     'id'                            => $this->id,
+        //     'commodity_product_id'          => $this->commodity_product_id,
+        //     'seller_commodity_product_id'   => $this->seller_commodity_product_id,
+        //     'name'                          => $this->getSellerCommodityProduct->name,
+        //     'description'                   => $this->getSellerCommodityProduct->description,
+        //     'brand'                         => ['id' => $this->getBrand->id, 'name' => $this->getBrand->name],
+        //     'unit'                          => ['id' => $this->getCommodityProduct->getUnit->id, 'name' => $this->getCommodityProduct->getUnit->name],
+        //     'address'                       => $this->city,
+        //     'base_price'                    => $this->base_price,
+        //     'thumbnail'                     => $this->getSellerCommodityProduct->thumbnail ? imageUrl($this->getSellerCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
+        //     'images'                        => [],
+        //     'base_price'                    => $this->base_price,
+        //     'loading_charge'                => $this->loading_charge,
+        //     'loading_position'              => $this->getSellerCommodityProduct->loading_position,
+        //     'price_validity'                => $this->getSellerCommodityProduct->price_validity ? dateTimeFormat($this->getSellerCommodityProduct->price_validity) : null,
+        //     'insurance_charge'              => $this->insurance_charge,
+        //     'quality_charge'                => $this->quality_charge,
+        //     'gst'                           => $this->gst,
+        //     'tcs'                           => $this->tcs,
+        //     'min_order_qty'                 => $this->min_order_qty,
+        //     'order_amount_type'             => $this->order_amount_type,
+        //     'required_order_amount'         => $this->required_order_amount,
+        //     'charts'                        => [],
+        //     'charges'                       => [],
+        //     'variation'                     => MyCommodityProductVariationResource::collection($this->getSellerStatePrice),
+        //     'default_variation'             => [],
+        // ];
+
+        // $product_state = CommodityProductState::where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->where('city', $this->city)->first();
+        // if ($product_state && $product_state->chart) {
+        //     foreach ($product_state->chart ?? [] as $chart) {
+        //         $data['charts'][] = imageUrl($chart);
+        //     }
+        // }
+
+        // $product = $this->getSellerCommodityProduct;
+
+        // if($product->images && $product->images != ""){
+        //     foreach ($product->images as $images) {
+        //         $data['images'][]           = imageUrl($images);
+        //     }
+        // }
+
+        // return $data;
 
         // if($product->charge_name){
         //     foreach($product->charge_name as $key => $charge_name){
