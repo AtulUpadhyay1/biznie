@@ -110,7 +110,7 @@ class ProductApiController extends Controller
     public function sellerListByCommodityProduct($commodity_product_id)
     {
         $list = SellerCommodityProduct::where('commodity_product_id', $commodity_product_id)
-            ->where('user_id', 50)
+            ->where('user_id', 1)
             ->paginate(getPaginate());
         return SellerListByCommodityProductResource::collection($list);
     }
