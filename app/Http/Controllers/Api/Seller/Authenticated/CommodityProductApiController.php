@@ -96,7 +96,10 @@ class CommodityProductApiController extends Controller
     {
         try {
 
-            $list = SellerCommodityProduct::where('user_id', auth()->id())->with('getBrand')->paginate(getPaginate());
+            $list = SellerCommodityProduct::where('user_id', auth()->id())
+                ->with('getBrand')
+                ->orderBy('name', 'asc')
+                ->paginate(getPaginate());
             return MyCommodityProductResource::collection($list);
 
         } catch (\Throwable $th) {
