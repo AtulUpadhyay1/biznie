@@ -88,6 +88,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         // Send Otp
         Route::post('send-otp', 'InfoApiController@sendOtp');
+
+        // Update Address
+        Route::post('update-address', 'UserAddressApiController@updateAddress');
     });
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\UserDetail;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -121,6 +122,28 @@ class UserAddressApiController extends Controller
         return response()->json([
            'success'    => true,
            'message'    => 'Address deleted successfully.'
+        ], 200);
+    }
+
+    public function updateAddress(Request $request)
+    {
+        $request->validate([
+            'state' => 'required',
+            'city'  => 'required',
+        ]);
+
+        $userDetail = auth()->user()->getUserDetail;
+        if(!$userDetail){
+            $userDetail = new UserDetail;
+            $userDetail->user_id = auth()->id();
+        }
+        $userDetail->state = $request->state;
+        $userDetail->city = $request->city;
+        $userDetail->save();
+        
+        return response()->json([
+           'success'    => true,
+           'message'    => 'Address updated successfully.'
         ], 200);
     }
 }
