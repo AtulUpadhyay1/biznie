@@ -33,4 +33,23 @@ class AddressApiController extends Controller
 
         }
     }
+
+    public function state()
+    {
+        $state_list = Address::distinct()->orderBy('state', 'asc')->pluck('state')->toArray();
+        
+        return response([
+            'success'   => true,
+            'state_list'=> $state_list
+        ],200);
+    }
+
+    public function city($state)
+    {
+        $city_list  = Address::where('state', $state)->orderBy('city', 'asc')->get()->pluck('city')->unique()->values()->toArray();
+        return response([
+            'success'   => true,
+            'city_list' => $city_list
+        ],200);
+    }
 }

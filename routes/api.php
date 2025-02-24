@@ -37,6 +37,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
     // Address
     Route::get('get-address/{pincode}', 'AddressApiController@getAddress');
+    Route::get('state', 'AddressApiController@state');
+    Route::get('city/{state}', 'AddressApiController@city');
 
     // Home Api
     Route::get('home', 'HomeApiController@home');
