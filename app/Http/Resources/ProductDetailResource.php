@@ -3,7 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Models\TransporterDetail;
 use App\Models\CommodityProductState;
+use App\Models\TransporterAddressPrice;
 use App\Models\CommodityProductVariation;
 use App\Models\CommodityProductStatePrice;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -46,9 +48,25 @@ class ProductDetailResource extends JsonResource
             'charges'                       => [],
             'variation'                     => MyCommodityProductVariationResource::collection($this->getStatePrice),
             'ex_price'                      => 0,
+            'freight_price'                 => 0,
             'default_variation'             => null,
         ];
 
+        $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $this->commodity_product_id)
+            ->pluck('user_id');
+
+        $userDetail = auth()->user()->getUserDetail;
+        if ($userDetail && $userDetail->state && $userDetail->city) {
+            $transporter_address_price = TransporterAddressPrice::whereIn('user_id', $transporters_ids)
+            ->where('state', $userDetail->state)
+            ->where('city', $userDetail->city)
+            ->orderBy('min_price', 'asc')
+            ->first();
+
+            if ($transporter_address_price) {
+                $data['freight_price'] = (int) $transporter_address_price->min_price;
+            }
+        }
         $product_state = CommodityProductState::where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->where('city', $this->city)->first();
         if ($product_state && $product_state->chart) {
             foreach ($product_state->chart ?? [] as $chart) {

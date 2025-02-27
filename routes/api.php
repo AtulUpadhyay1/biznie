@@ -47,12 +47,14 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     // Product List
     Route::get('product-list', 'ProductApiController@index');
     Route::get('commodity-product-list', 'ProductApiController@commodityProductList');
-    Route::get('product-detail/{id}', 'ProductApiController@show');
     Route::get('all-seller-commodity-product-list', 'ProductApiController@allSellerCommodityProductList');
     Route::get('seller-list-by-commodity-product/{commodity_product_id}', 'ProductApiController@sellerListByCommodityProduct');
 
     // Common api
     Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // Product Detail
+        Route::get('product-detail/{id}', 'ProductApiController@show');
 
         // Image upload
         Route::post('image-upload', 'ImageUploadController@imageUpload');
