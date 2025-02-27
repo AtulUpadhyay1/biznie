@@ -250,6 +250,11 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('vehicle/create', AdminRoot\Vehicle\Create::class)->name('vehicle.create');
         Route::get('vehicle/edit/{id}', AdminRoot\Vehicle\Edit::class)->name('vehicle.edit');
 
+        // Ingot Price
+        Route::get('ingot-price', AdminRoot\IngotPrice\Index::class)->name('ingot_price.index');
+        Route::get('ingot-price/create', AdminRoot\IngotPrice\Create::class)->name('ingot_price.create');
+        Route::get('ingot-price/edit/{id}', AdminRoot\IngotPrice\Edit::class)->name('ingot_price.edit');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

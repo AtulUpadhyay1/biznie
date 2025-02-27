@@ -224,6 +224,13 @@
                 </a>
             </li>
 
+            <li class="nav-item {{ isActiveRoute(['admin.ingot_price.index', 'admin.ingot_price.create', 'admin.ingot_price.edit']) ? 'active' : '' }}">
+                <a href="{{route('admin.ingot_price.index')}}" class="nav-link" wire:navigate.hover>
+                    <i class="bi bi-graph-up-arrow"></i>
+                    <span class="link-title">Ingot Price</span>
+                </a>
+            </li>
+
             <li class="nav-item nav-category">Wallet Management</li>
 
             <li class="nav-item {{ isActiveRoute(['admin.cash-wallet.index']) ? 'active' : ''}}">
