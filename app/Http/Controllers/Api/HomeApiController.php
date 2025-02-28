@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\Banner;
+use App\Models\IngotPrice;
 use App\Models\MarketNews;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
@@ -10,7 +12,7 @@ use App\Http\Controllers\Controller;
 
 class HomeApiController extends Controller
 {
-    public function home()
+    public function home(Request $request)
     {
         try {
             $banner_list = Banner::where('published', 1)->get(['photo', 'banner_type', 'url', 'resource_type']);
@@ -28,11 +30,75 @@ class HomeApiController extends Controller
                 $testimonial_data->image = imageUrl($testimonial_data->image);
             }
 
+            $ingotLocation = $request->ingot_location ?? 'Durgapur';
+            $ingotPriceType = $request->ingot_price_type ?? 'monthly';
+            $ingotPriceLocation = getIngotPriceLocation();
+
+            $month_list = collect();
+            for ($i = 1; $i <= 12; $i++) {
+                $month_list->push(Carbon::now()->startOfYear()->addMonths($i - 1)->format('m-Y'));
+            }
+
+            $monthly_price = [];
+            foreach ($month_list as $month_data) {
+                $month = explode('-', $month_data)[0];
+                $year = explode('-', $month_data)[1];
+
+                $ingot_prices = IngotPrice::whereMonth('created_at', $month)
+                    ->whereYear('created_at', $year)
+                    ->where('location', $ingotLocation)
+                    ->pluck('price');
+
+                $average_price = round($ingot_prices->avg() ?? 0);
+
+                $monthly_price[] = [
+                    'year' => Carbon::createFromFormat('m-Y', $month_data)->format('M'), // Jan, Feb, etc.
+                    'price' => $average_price,
+                ];
+            }
+
+            $weekly_list = collect();
+            for ($i = 0; $i <= 6; $i++) {
+                $weekly_list->push(Carbon::now()->startOfWeek()->addDays($i)->format('d-Y'));
+            }
+
+            $weekly_price = [];
+            foreach ($weekly_list as $week_data) {
+                $day = explode('-', $week_data)[0];
+                $year = explode('-', $week_data)[1];
+
+                $ingot_prices = IngotPrice::whereDay('created_at', $day)
+                    ->whereYear('created_at', $year)
+                    ->where('location', $ingotLocation)
+                    ->pluck('price');
+
+                $average_price = round($ingot_prices->avg() ?? 0);
+
+                $weekly_price[] = [
+                    'day' => Carbon::createFromFormat('d-Y', $week_data)->format('D'), // Mon, Tue, etc.
+                    'price' => $average_price,
+                ];
+            }
+
+            $last_ingot_price = IngotPrice::where('location', $ingotLocation)
+                ->orderBy('updated_at', 'desc')
+                ->first();
+            if ($last_ingot_price) {
+                $last_update = dateTimeFormat($last_ingot_price->updated_at);
+            } else {
+                $last_update = '';
+            }
+
             return response([
                 'success'           => true,
                 'banners'           => $banner_list,
                 'market_news'       => $market_news,
-                'testimonial_list'  => $testimonial_list
+                'testimonial_list'  => $testimonial_list,
+                'ingot_price_data'  => [
+                    'last_update'   => $last_update,
+                    'location'      => getIngotPriceLocation(),
+                    'price'         => $ingotPriceType == 'weekly' ? $weekly_price :$monthly_price,
+                ]
             ],200);
 
         } catch (\Throwable $th) {
