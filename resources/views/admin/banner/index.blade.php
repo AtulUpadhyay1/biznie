@@ -34,6 +34,7 @@
                                 <tr>
                                     <th>Image</th>
                                     <th>Banner Type</th>
+                                    <th>For</th>
                                     <th>Published</th>
                                     <th>Action</th>
                                 </tr>
@@ -43,6 +44,7 @@
                                     <tr>
                                         <td><img src="{{ imageUrl($data->photo) }}" alt="image"></td>
                                         <td>{{$data->banner_type}}</td>
+                                        <td>{{ucfirst($data->for)}}</td>
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input type="checkbox" class="form-check-input status_update" wire:click="updateStatus({{$data->id}})"

@@ -33,8 +33,19 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
+                                    <label for="for" class="form-label">For</label>
+                                    <select id="for" class="form-select @error('for') is-invalid @enderror" wire:model="for" >
+                                        <option value="both">Both</option>
+                                        <option value="app">App</option>
+                                        <option value="web">Web</option>
+                                    </select>
+                                    @error('for')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
                                     <label for="banner_url" class="form-label">Banner Url</label>
-                                    <input type="text" class="form-control @error('url') is-invalid @enderror" id="banner_url" wire:model="url">
+                                    <input type="text" class="form-control @error('url') is-invalid @enderror" id="banner_url" wire:model="url" placeholder="Banner Url">
                                     @error('url')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror

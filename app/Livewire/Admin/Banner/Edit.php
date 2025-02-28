@@ -16,7 +16,7 @@ class Edit extends Component
 
     use WithFileUploads;
 
-    public $hidden_id, $photo, $showPhoto, $banner_type="Main Banner", $url, $resource_type, $resource_id;
+    public $hidden_id, $photo, $showPhoto, $banner_type="Main Banner", $for="both", $url, $resource_type, $resource_id;
 
     public function mount($id)
     {
@@ -27,6 +27,7 @@ class Edit extends Component
         $this->url = $data->url;
         $this->resource_type = $data->resource_type;
         $this->resource_id = $data->resource_id;
+        $this->for = $data->for;
     }
 
     public function render()
