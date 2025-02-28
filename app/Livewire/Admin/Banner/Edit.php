@@ -60,6 +60,7 @@ class Edit extends Component
             $data->url = $this->url;
             $data->resource_type = $this->resource_type;
             $data->resource_id = $this->resource_id;
+            $data->for = $this->for;
             $data->save();
             session()->flash('success', 'Banner updated successfully !!');
             return $this->redirectRoute('admin.banner.index',navigate: true);
