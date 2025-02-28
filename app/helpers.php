@@ -237,4 +237,16 @@ if(!function_exists('getDefaultCommodityProductVariationPrice')){
     }
 }
 
+if(!function_exists('getIngotPriceLocation')){
+    function getIngotPriceLocation() {
+        $location = [
+            'Durgapur',
+            'Jamshedpur',
+            'Raigarh',
+            'Raipur',
+        ];
+        return $location;
+    }
+}
+
 ?>
