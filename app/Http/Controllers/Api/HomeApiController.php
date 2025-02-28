@@ -15,17 +15,23 @@ class HomeApiController extends Controller
     public function home(Request $request)
     {
         try {
-            $banner_list = Banner::where('published', 1)->get(['photo', 'banner_type', 'url', 'resource_type']);
+            $banner_list = Banner::whereIn('for', ['both', 'web'])
+                ->where('published', 1)
+                ->get(['photo', 'banner_type', 'url', 'resource_type']);
             foreach ($banner_list as $banner_data) {
                 $banner_data->photo = imageUrl($banner_data->photo);
             }
 
-            $market_news = MarketNews::active()->latest()->get(['title', 'slug', 'image', 'description', 'created_at']);
+            $market_news = MarketNews::active()
+                ->latest()
+                ->get(['title', 'slug', 'image', 'description', 'created_at']);
             foreach ($market_news as $news) {
                 $news->image = imageUrl($news->image);
             }
 
-            $testimonial_list = Testimonial::active()->latest()->get(['name', 'image', 'designation', 'message']);
+            $testimonial_list = Testimonial::active()
+                ->latest()
+                ->get(['name', 'image', 'designation', 'message']);
             foreach ($testimonial_list as $testimonial_data) {
                 $testimonial_data->image = imageUrl($testimonial_data->image);
             }
