@@ -216,6 +216,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('website-setup/terms-condition', AdminRoot\WebsiteSetup\Termscondition::class)->name('website_setup.terms');
         Route::get('website-setup/returns-policy', AdminRoot\WebsiteSetup\Returns::class)->name('website_setup.returns');
         Route::get('website-setup/setting', AdminRoot\WebsiteSetup\Setting::class)->name('website_setup.setting');
+        Route::get('website-setup/shop-on', AdminRoot\WebsiteSetup\ShopOn::class)->name('website_setup.shop_on');
 
         // Seller Tag
         Route::get('seller-tag', AdminRoot\SellerTag\Index::class)->name('seller-tag.index');

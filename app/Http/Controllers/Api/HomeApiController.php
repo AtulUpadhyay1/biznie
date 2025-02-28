@@ -104,6 +104,11 @@ class HomeApiController extends Controller
                     'last_update'   => $last_update,
                     'location'      => getIngotPriceLocation(),
                     'price'         => $ingotPriceType == 'weekly' ? $weekly_price :$monthly_price,
+                ],
+                'shop_on'           => [
+                    'title'         => websiteSetupValue('shop_on_title'),
+                    'description'   => websiteSetupValue('shop_on_description'),
+                    'video_link'    => websiteSetupValue('shop_on_video_link'),
                 ]
             ],200);
 

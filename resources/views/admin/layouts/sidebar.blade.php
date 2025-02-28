@@ -314,7 +314,7 @@
             </div>
             <!-- End of biznie set up -->
 
-            <!--Businesses-->
+            {{-- <!--Businesses-->
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#business" role="button"
                     aria-expanded="false" aria-controls="business">
@@ -347,9 +347,9 @@
                     </li>
                 </ul>
             </div>
-            <!--End of business -->
+            <!--End of business --> --}}
 
-            <!--Messages-->
+            {{-- <!--Messages-->
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#message" role="button"
                     aria-expanded="false" aria-controls="message">
@@ -372,10 +372,10 @@
                     </li>
                 </ul>
             </div>
-            <!--End of messages-->
+            <!--End of messages--> --}}
 
             <!--App Setup-->
-            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#app-setup" role="button"
                     aria-expanded="false" aria-controls="app-setup">
                     <i class="bi bi-gear"></i>
@@ -383,35 +383,40 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy']) ? 'show' : ''}}" id="app-setup">
+            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on']) ? 'show' : ''}}" id="app-setup">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'active' : ''}}">
-                        <a href="{{route('admin.faq.index')}}" class="nav-link">
+                        <a href="{{route('admin.faq.index')}}" class="nav-link" wire:navigate.hover>
                            FAQ
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.about']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.about')}}" class="nav-link">
+                        <a href="{{route('admin.website_setup.about')}}" class="nav-link" wire:navigate.hover>
                             About Us
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.returns']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.returns')}}" class="nav-link">
+                        <a href="{{route('admin.website_setup.returns')}}" class="nav-link" wire:navigate.hover>
                             Returns Policy
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.terms']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.terms')}}" class="nav-link">
+                        <a href="{{route('admin.website_setup.terms')}}" class="nav-link" wire:navigate.hover>
                             Terms & Condition
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.privacy']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.privacy')}}" class="nav-link">
+                        <a href="{{route('admin.website_setup.privacy')}}" class="nav-link" wire:navigate.hover>
                             Privacy Policy
                         </a>
                     </li>
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.shop_on']) ? 'active' : ''}}">
+                        <a href="{{route('admin.website_setup.shop_on')}}" class="nav-link" wire:navigate.hover>
+                            Shop on Biznie
+                        </a>
+                    </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.setting']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.setting')}}" class="nav-link">
+                        <a href="{{route('admin.website_setup.setting')}}" class="nav-link" wire:navigate.hover>
                             Setting
                         </a>
                     </li>
