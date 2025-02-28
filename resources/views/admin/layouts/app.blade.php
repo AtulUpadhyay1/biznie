@@ -17,7 +17,7 @@
     <script src="https://use.fontawesome.com/80ace2cf8a.js"></script>
 
     <meta name="keywords"
-        content="Biznie, bootstrap, bootstrap 5, bootstrap5, admin_css, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+        content="Biznie">
 
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
