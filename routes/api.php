@@ -43,6 +43,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     // Home Api
     Route::get('home', 'HomeApiController@home');
     Route::get('view-market-news/{slug}', 'HomeApiController@viewMarketNews');
+    Route::get('ingot-price', 'HomeApiController@ingotPrice');
 
     // Product List
     Route::get('product-list', 'ProductApiController@index');
