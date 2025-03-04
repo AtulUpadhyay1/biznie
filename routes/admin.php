@@ -211,6 +211,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('faq/edit/{id}', AdminRoot\Faq\Edit::class)->name('faq.edit');
 
         //Website Setup
+        Route::get('website-setup/general', AdminRoot\WebsiteSetup\General::class)->name('website_setup.general');
         Route::get('website-setup/about', AdminRoot\WebsiteSetup\About::class)->name('website_setup.about');
         Route::get('website-setup/privacy-policy', AdminRoot\WebsiteSetup\Privacy::class)->name('website_setup.privacy');
         Route::get('website-setup/terms-condition', AdminRoot\WebsiteSetup\Termscondition::class)->name('website_setup.terms');

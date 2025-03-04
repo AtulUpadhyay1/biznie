@@ -13,7 +13,7 @@
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
                                 <a type="button"
                                     class="btn btn-danger btn-sm btn-icon-text float-end align-items-center"
-                                    title="add" href="{{ route('admin.ingot_price.create') }}" wire:navigate.hover>
+                                    title="add" href="{{ route('admin.ingot_price.create') }}" wire:navigate>
                                     <i class="bi bi-plus-lg btn-icon-prepend"></i>
                                     Add
                                 </a>

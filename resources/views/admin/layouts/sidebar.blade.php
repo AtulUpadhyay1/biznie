@@ -1,7 +1,7 @@
 <!-- partial:partials/_sidebar.html -->
 <nav class="sidebar">
     <div class="sidebar-header">
-        <a href="{{route('admin.dashboard')}}" class="sidebar-brand" wire:navigate.hover>
+        <a href="{{route('admin.dashboard')}}" class="sidebar-brand" wire:navigate>
             <img src="{{asset('admin_css/assets/images/logo.png')}}" style="width: 70%;">
         </a>
         <div class="sidebar-toggler not-active">
@@ -11,7 +11,7 @@
     <div class="sidebar-body">
         <ul class="nav">
             <li class="nav-item {{ isActiveRoute(['admin.dashboard']) ? 'active' : '' }}">
-                <a href="{{route('admin.dashboard')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.dashboard')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-speedometer"></i>
                     <span class="link-title">Dashboard</span>
                 </a>
@@ -29,13 +29,13 @@
             <div class="collapse {{ isActiveRoute(['admin.seller.index', 'admin.business-listing', 'admin.edit-business', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.seller.orders', 'admin.seller.payments', 'admin.tag-priority', 'admin.seller.create', 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation', 'admin.seller-product.price', 'admin.seller-product.stock', 'admin.seller-product.add']) ? 'show' : '' }}" id="sellers">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.seller.index', 'admin.edit-seller', 'admin.seller-kyc-detail', 'admin.seller.orders', 'admin.seller.payments', 'admin.tag-priority', 'admin.seller.create', 'admin.seller-product.index', 'admin.seller-product.edit', 'admin.seller-product.variation', 'admin.seller-product.price', 'admin.seller-product.stock', 'admin.seller-product.add']) ? 'active' : '' }}">
-                        <a href="{{route('admin.seller.index')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.seller.index')}}" class="nav-link" wire:navigate>
                            All Sellers
                         </a>
                     </li>
                     {{--
                     <li class="nav-item {{ isActiveRoute(['admin.business-listing', 'admin.edit-business']) ? 'active' : '' }}">
-                        <a href="{{route('admin.business-listing')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.business-listing')}}" class="nav-link" wire:navigate>
                            Business Listings
                         </a>
                     </li> --}}
@@ -58,7 +58,7 @@
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
                         'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info', 'admin.customer-enquiry-list']) ? 'active' : '' }}">
-                        <a href="{{route('admin.customer-list')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.customer-list')}}" class="nav-link" wire:navigate>
                             All Buyers
                         </a>
                     </li>
@@ -78,7 +78,7 @@
             <div class="collapse {{ isActiveRoute(['admin.vehicle.index', 'admin.vehicle.create', 'admin.vehicle.edit']) ? 'show' : '' }}" id="trasporter">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.vehicle.index', 'admin.vehicle.create', 'admin.vehicle.edit']) ? 'active' : '' }}">
-                        <a href="{{route('admin.vehicle.index')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.vehicle.index')}}" class="nav-link" wire:navigate>
                             All Vehicles
                         </a>
                     </li>
@@ -98,7 +98,7 @@
             <div class="collapse {{ isActiveRoute(['admin.transporter.index', 'admin.transporter.create', 'admin.transporter.edit', 'admin.transporter.vehicle', 'admin.transporter.product', 'admin.transporter.addressPrice', 'admin.transporter.profile', 'admin.transporter.enquiry']) ? 'show' : '' }}" id="vehicle">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.transporter.index', 'admin.transporter.create', 'admin.transporter.edit', 'admin.transporter.vehicle', 'admin.transporter.product', 'admin.transporter.addressPrice', 'admin.transporter.profile', 'admin.transporter.enquiry']) ? 'active' : '' }}">
-                        <a href="{{route('admin.transporter.index')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.transporter.index')}}" class="nav-link" wire:navigate>
                             All Transporters
                         </a>
                     </li>
@@ -108,28 +108,28 @@
 
             <li class="nav-item nav-category">Product Management</li>
             <li class="nav-item {{ isActiveRoute(['admin.attribute.index', 'admin.attribute.create', 'admin.attribute.edit']) ? 'active' : '' }}">
-                <a href="{{route('admin.attribute.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.attribute.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-opencollective"></i>
                     <span class="link-title">Product Attributes</span>
                 </a>
             </li>
 
             <li class="nav-item {{ isActiveRoute(['admin.packaging-type.index', 'admin.packaging-type.create', 'admin.packaging-type.edit']) ? 'active' : '' }}">
-                <a href="{{route('admin.packaging-type.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.packaging-type.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-box"></i>
                     <span class="link-title">Packaging Type</span>
                 </a>
             </li>
 
             <li class="nav-item {{ isActiveRoute(['admin.brand', 'admin.create-brand', 'admin.edit-brand', 'admin.brand.show']) ? 'active' : ''}}">
-                <a href="{{route('admin.brand')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.brand')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-bing"></i>
                     <span class="link-title">Brand</span>
                 </a>
             </li>
 
             <li class="nav-item {{ isActiveRoute(['admin.product-wise-seller-buyer.index']) ? 'active' : ''}}">
-                <a href="{{route('admin.product-wise-seller-buyer.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.product-wise-seller-buyer.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-people"></i>
                     <span class="link-title">Product wise Seller / Buyer</span>
                 </a>
@@ -156,31 +156,31 @@
                         <a href="#" class="nav-link">Add New Products</a>
                     </li> --}}
                     {{-- <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
-                        <a href="{{route('admin.product-list')}}?status=pending" class="nav-link" wire:navigate.hover>New Request Products</a>
+                        <a href="{{route('admin.product-list')}}?status=pending" class="nav-link" wire:navigate>New Request Products</a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
-                        <a href="{{route('admin.product-list')}}?status=approved" class="nav-link" wire:navigate.hover>Approved Products</a>
+                        <a href="{{route('admin.product-list')}}?status=approved" class="nav-link" wire:navigate>Approved Products</a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.product-list', 'admin.edit-product']) ? 'active' : '' }}">
-                        <a href="{{route('admin.product-list')}}?status=rejected" class="nav-link" wire:navigate.hover>Rejected Products</a>
+                        <a href="{{route('admin.product-list')}}?status=rejected" class="nav-link" wire:navigate>Rejected Products</a>
                     </li> --}}
                     <li class="nav-item {{ isActiveRoute(['admin.product-category','admin.create-product-category', 'admin.edit-product-category']) ? 'active' : '' }}">
-                        <a href="{{route('admin.product-category')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.product-category')}}" class="nav-link" wire:navigate>
                             Category
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.product-sub-category', 'admin.create-product-sub-category', 'admin.edit-product-sub-category']) ? 'active' : '' }}">
-                        <a href="{{route('admin.product-sub-category')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.product-sub-category')}}" class="nav-link" wire:navigate>
                             Sub Category
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.product-sub-subcategory', 'admin.create-product-sub-subcategory', 'admin.edit-product-sub-subcategory']) ? 'active' : '' }}">
-                        <a href="{{route('admin.product-sub-subcategory')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.product-sub-subcategory')}}" class="nav-link" wire:navigate>
                             Sub Sub Category
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.commodity-product.index', 'admin.commodity-product.create', 'admin.commodity-product.edit', 'admin.commodity-product.price', 'admin.commodity-product.variation', 'admin.commodity-product.quality', 'admin.commodity-product.show', 'admin.commodity-product.statePrice', 'admin.commodity-product.sellerPrice']) ? 'active' : '' }}">
-                        <a href="{{route('admin.commodity-product.index')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.commodity-product.index')}}" class="nav-link" wire:navigate>
                             Commodity Product
                         </a>
                     </li>
@@ -188,7 +188,7 @@
             </div>
 
             <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder']) ? 'active' : '' }}">
-                <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-journal-check"></i>
                     <span class="link-title">Product Enquiry</span>
                 </a>
@@ -196,7 +196,7 @@
             <!--End of product -->
 
             <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show', 'admin.commodity-product-order-driver.create', 'admin.commodity-product-order-driver.show', 'admin.commodity-product-order-driver.edit', 'admin.commodity-product-order.status', 'admin.commodity-product-order.history']) ? 'active' : ''}}">
-                <a href="{{route('admin.commodity-product-order.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.commodity-product-order.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-bootstrap"></i>
                     <span class="link-title">Orders</span>
                 </a>
@@ -204,28 +204,28 @@
 
             <li class="nav-item nav-category">Promotion Management</li>
             <li class="nav-item {{ isActiveRoute(['admin.banner.index', 'admin.banner.create', 'admin.banner.edit']) ? 'active' : '' }}">
-                <a href="{{route('admin.banner.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.banner.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-image"></i>
                     <span class="link-title">Banners</span>
                 </a>
             </li>
 
             <li class="nav-item {{ isActiveRoute(['admin.market-news.index', 'admin.market-news.create', 'admin.market-news.edit']) ? 'active' : '' }}">
-                <a href="{{route('admin.market-news.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.market-news.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-newspaper"></i>
                     <span class="link-title">Market News</span>
                 </a>
             </li>
 
             <li class="nav-item {{ isActiveRoute(['admin.testimonial.index', 'admin.testimonial.create', 'admin.testimonial.edit']) ? 'active' : '' }}">
-                <a href="{{route('admin.testimonial.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.testimonial.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-chat-right-quote-fill"></i>
                     <span class="link-title">Testimonial</span>
                 </a>
             </li>
 
             <li class="nav-item {{ isActiveRoute(['admin.ingot_price.index', 'admin.ingot_price.create', 'admin.ingot_price.edit']) ? 'active' : '' }}">
-                <a href="{{route('admin.ingot_price.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.ingot_price.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-graph-up-arrow"></i>
                     <span class="link-title">Ingot Price</span>
                 </a>
@@ -234,14 +234,14 @@
             <li class="nav-item nav-category">Wallet Management</li>
 
             <li class="nav-item {{ isActiveRoute(['admin.cash-wallet.index']) ? 'active' : ''}}">
-                <a href="{{route('admin.cash-wallet.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.cash-wallet.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-cash-stack"></i>
                     <span class="link-title">Cash Wallet</span>
                 </a>
             </li>
 
             <li class="nav-item {{ isActiveRoute(['admin.credit-wallet-request.index', 'admin.credit-wallet-request.create', 'admin.credit-wallet-request.show']) ? 'active' : ''}}">
-                <a href="{{route('admin.credit-wallet-request.index')}}" class="nav-link" wire:navigate.hover>
+                <a href="{{route('admin.credit-wallet-request.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-credit-card-2-front"></i>
                     <span class="link-title">Credit Wallet Request</span>
                 </a>
@@ -261,52 +261,52 @@
             <div class="collapse {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category', 'admin.vendor-type', 'admin.seller-type', 'admin.brand', 'admin.gst-type', 'admin.product-unit', 'admin.tax-type', 'admin.identity-type', 'admin.business-type', 'admin.create-business-type', 'admin.edit-business-type', 'admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type', 'admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type', 'admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit', 'admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type', 'admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type', 'admin.seller-tag.index', 'admin.seller-tag.create', 'admin.seller-tag.edit', 'admin.credit-wallet-document-type.index', 'admin.credit-wallet-document-type.create', 'admin.credit-wallet-document-type.edit', 'admin.address.index', 'admin.address.create', 'admin.address.edit']) ? 'show' : ''}}" id="master-setting">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.business-category', 'admin.create-business-category', 'admin.edit-business-category']) ? 'active' : ''}}">
-                        <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.business-category')}}" class="nav-link" wire:navigate>
                            Business Category
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.business-type', 'admin.create-business-type', 'admin.edit-business-type']) ? 'active' : ''}}">
-                        <a href="{{route('admin.business-type')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.business-type')}}" class="nav-link" wire:navigate>
                             Business Type
                         </a>
                     </li>
                     <li class="nav-item  {{ isActiveRoute(['admin.seller-type', 'admin.create-seller-type', 'admin.edit-seller-type']) ? 'active' : ''}}">
-                        <a href="{{route('admin.seller-type')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.seller-type')}}" class="nav-link" wire:navigate>
                            Seller Type
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.gst-type', 'admin.create-gst-type', 'admin.edit-gst-type']) ? 'active' : ''}} ">
-                        <a href="{{route('admin.gst-type')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.gst-type')}}" class="nav-link" wire:navigate>
                            GST Type
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.product-unit', 'admin.create-product-unit', 'admin.edit-product-unit']) ? 'active' : ''}}">
-                        <a href="{{route('admin.product-unit')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.product-unit')}}" class="nav-link" wire:navigate>
                            Product Unit
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.tax-type', 'admin.create-tax-type', 'admin.edit-tax-type']) ? 'active' : ''}}">
-                        <a href="{{route('admin.tax-type')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.tax-type')}}" class="nav-link" wire:navigate>
                            Tax Type
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.identity-type', 'admin.create-identity-type', 'admin.edit-identity-type']) ? 'active' : ''}}">
-                        <a href="{{route('admin.identity-type')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.identity-type')}}" class="nav-link" wire:navigate>
                             Identity Type
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.address.index', 'admin.address.create', 'admin.address.edit']) ? 'active' : ''}}">
-                        <a href="{{route('admin.address.index')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.address.index')}}" class="nav-link" wire:navigate>
                             Address Management
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.seller-tag.index', 'admin.seller-tag.create', 'admin.seller-tag.edit']) ? 'active' : ''}}">
-                        <a href="{{route('admin.seller-tag.index')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.seller-tag.index')}}" class="nav-link" wire:navigate>
                             Seller Tag
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.credit-wallet-document-type.index', 'admin.credit-wallet-document-type.create', 'admin.credit-wallet-document-type.edit']) ? 'active' : ''}}">
-                        <a href="{{route('admin.credit-wallet-document-type.index')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.credit-wallet-document-type.index')}}" class="nav-link" wire:navigate>
                             Credit Wallet Document Type
                         </a>
                     </li>
@@ -383,40 +383,45 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on']) ? 'show' : ''}}" id="app-setup">
+            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.website_setup.general', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on']) ? 'show' : ''}}" id="app-setup">
                 <ul class="nav sub-menu">
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.general']) ? 'active' : ''}}">
+                        <a href="{{route('admin.website_setup.general')}}" class="nav-link" wire:navigate>
+                           General Setup
+                        </a>
+                    </li>
                     <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit']) ? 'active' : ''}}">
-                        <a href="{{route('admin.faq.index')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.faq.index')}}" class="nav-link" wire:navigate>
                            FAQ
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.about']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.about')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.website_setup.about')}}" class="nav-link" wire:navigate>
                             About Us
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.returns']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.returns')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.website_setup.returns')}}" class="nav-link" wire:navigate>
                             Returns Policy
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.terms']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.terms')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.website_setup.terms')}}" class="nav-link" wire:navigate>
                             Terms & Condition
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.privacy']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.privacy')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.website_setup.privacy')}}" class="nav-link" wire:navigate>
                             Privacy Policy
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.shop_on']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.shop_on')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.website_setup.shop_on')}}" class="nav-link" wire:navigate>
                             Shop on Biznie
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.setting']) ? 'active' : ''}}">
-                        <a href="{{route('admin.website_setup.setting')}}" class="nav-link" wire:navigate.hover>
+                        <a href="{{route('admin.website_setup.setting')}}" class="nav-link" wire:navigate>
                             Setting
                         </a>
                     </li>
