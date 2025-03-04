@@ -26,6 +26,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     // Registeration form info
     Route::get('registration-form-info', 'InfoApiController@registrationFormInfo');
 
+    // Config
+    Route::get('config', 'ConfigApiController@getConfig');
+
     // Registration & login
     Route::post('register', 'Auth\AuthApiController@register');
     Route::post('email-login', 'Auth\AuthApiController@emailLogin');

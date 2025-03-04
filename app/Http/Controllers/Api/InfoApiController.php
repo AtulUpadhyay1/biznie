@@ -46,7 +46,7 @@ class InfoApiController extends Controller
         sendOtp(auth()->user()->phone);
         return response([
             'success' => true,
-           'message' => 'OTP sent successfully.'
+            'message' => 'OTP sent successfully.'
         ],200);
     }
 }

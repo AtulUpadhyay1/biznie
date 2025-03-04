@@ -36,8 +36,6 @@ class HomeApiController extends Controller
                 $testimonial_data->image = imageUrl($testimonial_data->image);
             }
 
-
-
             return response([
                 'success'           => true,
                 'banners'           => $banner_list,
@@ -47,6 +45,18 @@ class HomeApiController extends Controller
                     'title'         => websiteSetupValue('shop_on_title'),
                     'description'   => websiteSetupValue('shop_on_description'),
                     'video_link'    => websiteSetupValue('shop_on_video_link'),
+                ],
+                'general_setup'     => [
+                    'phone1'        => websiteSetupValue('phone1'),
+                    'phone2'        => websiteSetupValue('phone2'),
+                    'whatsapp'      => websiteSetupValue('whatsapp'),
+                    'email'         => websiteSetupValue('email'),
+                    'short_about'   => websiteSetupValue('short_about'),
+                    'address'       => websiteSetupValue('address'),
+                    'facebook'      => websiteSetupValue('facebook'),
+                    'twitter'       => websiteSetupValue('twitter'),
+                    'instagram'     => websiteSetupValue('instagram'),
+                    'youtube'       => websiteSetupValue('youtube'),
                 ]
             ],200);
 
