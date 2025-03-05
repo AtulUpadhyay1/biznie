@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\IngotPrice;
 
 use Livewire\Component;
 use App\Models\IngotPrice;
+use App\Models\IngotPriceLocation;
 
 class Edit extends Component
 {
@@ -19,7 +20,8 @@ class Edit extends Component
 
     public function render()
     {
-        return view('admin.ingot_price.form', ['page_title' => 'Edit Ingot Price']);
+        $location_list = IngotPriceLocation::orderBy('location', 'ASC')->get();
+        return view('admin.ingot_price.form', compact('location_list'), ['page_title' => 'Edit Ingot Price']);
     }
 
     public function update()
