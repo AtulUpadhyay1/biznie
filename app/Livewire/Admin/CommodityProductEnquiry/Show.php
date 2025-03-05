@@ -64,7 +64,7 @@ class Show extends Component
         //     return $count === count($variation_arr);
         // }));
 
-        $seller_list = SellerCommodityProduct::whereIn('user_id', $seller_ids)->with('getStatePrice', 'getBrand', 'getUser')->get();
+        $seller_list = SellerCommodityProduct::whereIn('user_id', $seller_ids)->where('brand_id', $data->brand_id)->with('getStatePrice', 'getBrand', 'getUser')->get();
         $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $data->commodity_product_id)->pluck('user_id')->toArray();
         $transporter_list = TransporterAddressPrice::whereIn('user_id', $transporters_ids)->where('state', $data->billing_address['state'])->where('city', $data->billing_address['city'])->with('getUser')->get();
         return view('admin.commodity_product_enquiry.show', compact('data', 'seller_list', 'variation_arr', 'transporter_list'));
