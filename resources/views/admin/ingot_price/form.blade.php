@@ -23,8 +23,8 @@
                                 <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
                                 <select id="location" class="form-control mb-4 mb-md-0 @error('location') is-invalid @enderror" wire:model="location">
                                     <option value="">Select Location</option>
-                                    @foreach (getIngotPriceLocation() as $location)
-                                        <option value="{{ $location }}">{{ $location }}</option>
+                                    @foreach ($location_list as $location_data)
+                                        <option value="{{ $location_data->location }}">{{ $location_data->location }}</option>
                                     @endforeach
                                 </select>
                                 @error('location')
