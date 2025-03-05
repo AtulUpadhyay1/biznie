@@ -257,6 +257,11 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('ingot-price/create', AdminRoot\IngotPrice\Create::class)->name('ingot_price.create');
         Route::get('ingot-price/edit/{id}', AdminRoot\IngotPrice\Edit::class)->name('ingot_price.edit');
 
+        // Ingot Price Location
+        Route::get('ingot-price-location', AdminRoot\IngotPriceLocation\Index::class)->name('ingot_price_location.index');
+        Route::get('ingot-price-location/create', AdminRoot\IngotPriceLocation\Create::class)->name('ingot_price_location.create');
+        Route::get('ingot-price-location/edit/{id}', AdminRoot\IngotPriceLocation\Edit::class)->name('ingot_price_location.edit');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

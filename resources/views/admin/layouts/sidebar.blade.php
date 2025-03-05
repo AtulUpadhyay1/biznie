@@ -224,6 +224,13 @@
                 </a>
             </li>
 
+            <li class="nav-item {{ isActiveRoute(['admin.ingot_price_location.index', 'admin.ingot_price_location.create', 'admin.ingot_price_location.edit']) ? 'active' : '' }}">
+                <a href="{{route('admin.ingot_price_location.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-geo-fill"></i>
+                    <span class="link-title">Ingot Price Location</span>
+                </a>
+            </li>
+
             <li class="nav-item {{ isActiveRoute(['admin.ingot_price.index', 'admin.ingot_price.create', 'admin.ingot_price.edit']) ? 'active' : '' }}">
                 <a href="{{route('admin.ingot_price.index')}}" class="nav-link" wire:navigate>
                     <i class="bi bi-graph-up-arrow"></i>
