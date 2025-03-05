@@ -65,6 +65,7 @@ class Show extends Component
         // }));
 
         $seller_list = SellerCommodityProduct::whereIn('user_id', $seller_ids)
+            ->where('commodity_product_id', $data->commodity_product_id)
             ->where('brand_id', $data->brand_id)
             ->with('getStatePrice', 'getBrand', 'getUser')
             ->get()
