@@ -2,12 +2,15 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\TransporterDetail;
+use Illuminate\Support\Facades\DB;
 use App\Models\CommodityProductState;
 use App\Models\TransporterAddressPrice;
 use App\Models\CommodityProductVariation;
 use App\Models\CommodityProductStatePrice;
+use App\Models\SellerCommodityProductHistory;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Seller\MyCommodityProductVariationResource;
 
@@ -125,6 +128,41 @@ class ProductDetailResource extends JsonResource
             }
 
         }
+
+        $thirty_dates = collect();
+        for ($i = 29; $i >= 0; $i--) {
+            $thirty_dates->push(Carbon::now()->subDays($i)->format('d/m/y'));
+        }
+
+        $price_history = SellerCommodityProductHistory::where('user_id', $this->user_id)
+            ->where('commodity_product_id', $this->commodity_product_id)
+            ->where('seller_commodity_product_id', $this->id)
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->get();
+
+            $last_thirty_days_calls = $thirty_dates->mapWithKeys(function ($date) use ($price_history) {
+
+                $filtered_records = $price_history->filter(function ($history) use ($date) {
+                    return Carbon::parse($history->created_at)->format('d/m/y') === $date;
+                });
+
+                $average_base_price = $filtered_records->avg(function ($history) {
+
+                    return $history->seller_commodity_product_detail['base_price'] ?? 0;
+                });
+
+                return [$date => round($average_base_price)];
+            });
+
+        $data['price_history'] = $last_thirty_days_calls;
+
+        // $data['price_history'] = $price_history->map(function ($history) {
+        //     return [
+        //         'base_price' => (string) $history->seller_commodity_product_detail['base_price'],
+        //         'created_at' => dateTimeFormat($history->created_at),
+        //         'updated_at' => dateTimeFormat($history->updated_at),
+        //     ];
+        // });
 
         return $data;
 
