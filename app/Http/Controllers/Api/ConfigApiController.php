@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Faq;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ConfigApiController extends Controller
 {
     public function getConfig()
     {
+        $faq_list = Faq::where('status', 1)->select('title', 'description')->get();
         return response([
             'success'           => true,
             'about_us'          => websiteSetupValue('about_us'),
@@ -28,7 +30,8 @@ class ConfigApiController extends Controller
                 'twitter'       => websiteSetupValue('twitter'),
                 'instagram'     => websiteSetupValue('instagram'),
                 'youtube'       => websiteSetupValue('youtube'),
-            ]
+            ],
+            'faq'               => $faq_list,
         ],200);
     }
 }
