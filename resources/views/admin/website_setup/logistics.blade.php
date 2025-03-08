@@ -16,7 +16,7 @@
                         <div class="row mb-3">
 
                             <div class="col-md-12 mb-3" wire:ignore>
-                                <textarea id="value" class="form-control @error('value') is-invalid @enderror" wire:model="value" rows="10" placeholder="Enter returns policy"></textarea>
+                                <textarea id="value" class="form-control @error('value') is-invalid @enderror" wire:model="value" rows="10" placeholder="Enter About Us"></textarea>
                                 @error('value')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

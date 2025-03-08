@@ -218,6 +218,8 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('website-setup/returns-policy', AdminRoot\WebsiteSetup\Returns::class)->name('website_setup.returns');
         Route::get('website-setup/setting', AdminRoot\WebsiteSetup\Setting::class)->name('website_setup.setting');
         Route::get('website-setup/shop-on', AdminRoot\WebsiteSetup\ShopOn::class)->name('website_setup.shop_on');
+        Route::get('website-setup/payment-methods', AdminRoot\WebsiteSetup\PaymentMethod::class)->name('website_setup.payment_methods');
+        Route::get('website-setup/logistics', AdminRoot\WebsiteSetup\Logistics::class)->name('website_setup.logistics');
 
         // Seller Tag
         Route::get('seller-tag', AdminRoot\SellerTag\Index::class)->name('seller-tag.index');

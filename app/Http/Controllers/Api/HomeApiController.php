@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use App\Models\Brand;
 use App\Models\Banner;
 use App\Models\IngotPrice;
 use App\Models\MarketNews;
@@ -36,11 +37,22 @@ class HomeApiController extends Controller
                 $testimonial_data->image = imageUrl($testimonial_data->image);
             }
 
+            $brand_list = Brand::active()
+                // ->where('featured', 1)
+                ->orderBy('name', 'ASC')
+                ->select('id', 'name', 'thumbnail', 'banner')
+                ->get();
+            foreach ($brand_list as $brand_data) {
+                $brand_data->thumbnail = asset('storage/'.$brand_data->thumbnail);
+                $brand_data->banner = asset('storage/'.$brand_data->banner);
+            }
+
             return response([
                 'success'           => true,
                 'banners'           => $banner_list,
                 'market_news'       => $market_news,
                 'testimonial_list'  => $testimonial_list,
+                'brand_list'        => $brand_list,
                 'shop_on'           => [
                     'title'         => websiteSetupValue('shop_on_title'),
                     'description'   => websiteSetupValue('shop_on_description'),

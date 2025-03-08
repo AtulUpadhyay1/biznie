@@ -11,9 +11,13 @@ class Termscondition extends Component
     public $page_title = "Terms and conditions";
     public $value;
 
-    public function render()
+    public function mount()
     {
         $this->value = websiteSetupValue('terms_condition');
+    }
+
+    public function render()
+    {
         return view('admin.website_setup.termscondition');
     }
 

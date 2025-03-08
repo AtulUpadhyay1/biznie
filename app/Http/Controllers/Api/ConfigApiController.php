@@ -11,6 +11,12 @@ class ConfigApiController extends Controller
     {
         return response([
             'success'           => true,
+            'about_us'          => websiteSetupValue('about_us'),
+            'terms_condition'   => websiteSetupValue('terms_condition'),
+            'returns_policy'    => websiteSetupValue('returns_policy'),
+            'privacy_policy'    => websiteSetupValue('privacy_policy'),
+            'payment_method'    => websiteSetupValue('payment_method'),
+            'logistics'         => websiteSetupValue('logistics'),
             'general_setup'     => [
                 'phone1'        => websiteSetupValue('phone1'),
                 'phone2'        => websiteSetupValue('phone2'),

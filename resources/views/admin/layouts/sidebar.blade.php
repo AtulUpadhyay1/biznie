@@ -382,7 +382,7 @@
             <!--End of messages--> --}}
 
             <!--App Setup-->
-            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on']) ? 'active' : ''}}">
+            <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics']) ? 'active' : ''}}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#app-setup" role="button"
                     aria-expanded="false" aria-controls="app-setup">
                     <i class="bi bi-gear"></i>
@@ -390,7 +390,7 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.website_setup.general', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on']) ? 'show' : ''}}" id="app-setup">
+            <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.website_setup.general', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics']) ? 'show' : ''}}" id="app-setup">
                 <ul class="nav sub-menu">
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.general']) ? 'active' : ''}}">
                         <a href="{{route('admin.website_setup.general')}}" class="nav-link" wire:navigate>
@@ -425,6 +425,16 @@
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.shop_on']) ? 'active' : ''}}">
                         <a href="{{route('admin.website_setup.shop_on')}}" class="nav-link" wire:navigate>
                             Shop on Biznie
+                        </a>
+                    </li>
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.payment_methods']) ? 'active' : ''}}">
+                        <a href="{{route('admin.website_setup.payment_methods')}}" class="nav-link" wire:navigate>
+                            Payment Method
+                        </a>
+                    </li>
+                    <li class="nav-item {{ isActiveRoute(['admin.website_setup.logistics']) ? 'active' : ''}}">
+                        <a href="{{route('admin.website_setup.logistics')}}" class="nav-link" wire:navigate>
+                            Logistics
                         </a>
                     </li>
                     <li class="nav-item {{ isActiveRoute(['admin.website_setup.setting']) ? 'active' : ''}}">
