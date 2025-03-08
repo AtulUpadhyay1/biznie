@@ -122,7 +122,7 @@ class ProductApiController extends Controller
             });
         }
 
-        $list = $q->paginate(getPaginate());
+        $list = $q->with('getCommodityProduct')->paginate(getPaginate());
         return SellerListByCommodityProductResource::collection($list);
     }
 }

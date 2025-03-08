@@ -44,7 +44,7 @@ class ProductDetailResource extends JsonResource
             'quality_charge'                => $this->quality_charge,
             'gst'                           => $this->gst,
             'tcs'                           => $this->tcs,
-            'min_order_qty'                 => $this->min_order_qty,
+            'min_order_qty'                 => 0,
             'order_amount_type'             => $this->order_amount_type,
             'required_order_amount'         => $this->required_order_amount,
             'charts'                        => [],
@@ -54,7 +54,10 @@ class ProductDetailResource extends JsonResource
             'freight_price'                 => 0,
             'default_variation'             => null,
         ];
-
+        if($this->getCommodityProduct){
+            $data['min_order_qty'] = $this->getCommodityProduct->min_order_qty;
+            $data['last_updated'] = dateTimeFormat($this->getCommodityProduct->updated_at);
+        }
         $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $this->commodity_product_id)
             ->pluck('user_id');
 
@@ -88,7 +91,21 @@ class ProductDetailResource extends JsonResource
             ->first();
 
         if($default_variation){
-            $data['default_variation'] = $default_variation;
+            // $data['default_variation'] = $default_variation;
+
+            foreach($default_variation->value as $value){
+                $value['unit']  = null;
+
+                if($this->getCommodityProduct){
+                    $commodity = $this->getCommodityProduct;
+                    if($commodity && $commodity->unit){
+                        $value['unit']['name'] = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->name : '';
+                        $value['unit']['short_name'] = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->short_name : '';
+                    }
+                }
+
+                $data['default_variation'][] = $value;
+            }
 
             if($default_variation){
                 $state_price = CommodityProductStatePrice::where('commodity_product_id', $this->commodity_product_id)

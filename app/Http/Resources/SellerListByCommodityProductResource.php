@@ -30,18 +30,33 @@ class SellerListByCommodityProductResource extends JsonResource
             'updated_at'            => dateTimeFormat($this->updated_at),
             'ex_price'              => 0,
             'default_variation'     => null,
-            'quality'               => $this->quality,
-            'quality_price'         => $this->quality_price,
+            'quality'               => [],
+            'quality_price'         => [],
             'price_history'         => [],
         ];
 
         $default_variation = CommodityProductVariation::where('commodity_product_id', $this->commodity_product_id)
             ->where('is_default', 1)
             ->first();
-
+        if($this->getCommodityProduct){
+            $data['quality'] = $this->getCommodityProduct->quality;
+            $data['quality_price'] = $this->getCommodityProduct->quality_price;
+        }
         if($default_variation){
 
-            $data['default_variation'] = $default_variation->value;
+            foreach($default_variation->value as $value){
+                $value['unit']  = null;
+
+                if($this->getCommodityProduct){
+                    $commodity = $this->getCommodityProduct;
+                    if($commodity && $commodity->unit){
+                        $value['unit']['name'] = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->name : '';
+                        $value['unit']['short_name'] = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->short_name : '';
+                    }
+                }
+
+                $data['default_variation'][] = $value;
+            }
 
             $state_price = CommodityProductStatePrice::where('commodity_product_id', $this->commodity_product_id)
             ->where('commodity_product_variation_id', $default_variation->id)
