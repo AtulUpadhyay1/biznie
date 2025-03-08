@@ -107,11 +107,22 @@ class ProductApiController extends Controller
         ],200);
     }
 
-    public function sellerListByCommodityProduct($commodity_product_id)
+    public function sellerListByCommodityProduct(Request $request, $commodity_product_id)
     {
-        $list = SellerCommodityProduct::where('commodity_product_id', $commodity_product_id)
-            ->where('user_id', 1)
-            ->paginate(getPaginate());
+        $q = SellerCommodityProduct::where('commodity_product_id', $commodity_product_id)
+            ->where('user_id', 1);
+
+        $searchTerm = $request->search;
+        if ($request->search) {
+            $q->where(function ($query) use ($searchTerm) {
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhereHas('getBrand', function ($query) use ($searchTerm) {
+                    $query->where('name', 'like', '%' . $searchTerm . '%');
+                });
+            });
+        }
+
+        $list = $q->paginate(getPaginate());
         return SellerListByCommodityProductResource::collection($list);
     }
 }

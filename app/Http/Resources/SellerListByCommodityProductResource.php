@@ -29,6 +29,9 @@ class SellerListByCommodityProductResource extends JsonResource
             'thumbnail'             => $this->getCommodityProduct->thumbnail ? imageUrl($this->getCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
             'updated_at'            => dateTimeFormat($this->updated_at),
             'ex_price'              => 0,
+            'default_variation'     => null,
+            'quality'               => $this->quality,
+            'quality_price'         => $this->quality_price,
             'price_history'         => [],
         ];
 
@@ -37,6 +40,9 @@ class SellerListByCommodityProductResource extends JsonResource
             ->first();
 
         if($default_variation){
+
+            $data['default_variation'] = $default_variation->value;
+
             $state_price = CommodityProductStatePrice::where('commodity_product_id', $this->commodity_product_id)
             ->where('commodity_product_variation_id', $default_variation->id)
             ->where('brand_id', $this->brand_id)
