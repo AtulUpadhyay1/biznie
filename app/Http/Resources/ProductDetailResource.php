@@ -57,6 +57,9 @@ class ProductDetailResource extends JsonResource
         if($this->getCommodityProduct){
             $data['min_order_qty'] = $this->getCommodityProduct->min_order_qty;
             $data['last_updated'] = dateTimeFormat($this->getCommodityProduct->updated_at);
+
+            $data['quality'] = $this->getCommodityProduct->quality;
+            $data['quality_price'] = $this->getCommodityProduct->quality_price;
         }
         $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $this->commodity_product_id)
             ->pluck('user_id');
@@ -172,6 +175,8 @@ class ProductDetailResource extends JsonResource
             });
 
         $data['price_history'] = $last_thirty_days_calls;
+        $data['product_delivery_info'] = websiteSetupValue('product_delivery_info');
+        $data['product_terms_condition'] = websiteSetupValue('product_terms_condition');
 
         // $data['price_history'] = $price_history->map(function ($history) {
         //     return [
