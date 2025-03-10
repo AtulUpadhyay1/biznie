@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Models\BookmarkProduct;
 use App\Models\CommodityProductVariation;
 use App\Models\CommodityProductStatePrice;
 use App\Models\SellerCommodityProductHistory;
@@ -108,6 +109,15 @@ class SellerListByCommodityProductResource extends JsonResource
                 'updated_at' => dateTimeFormat($history->updated_at),
             ];
         });
+
+        $data['is_bookmarked'] = false;
+        $bookmark = BookmarkProduct::where('commodity_product_id', $this->commodity_product_id)
+            ->where('seller_commodity_product_id', $this->id)
+            ->where('user_id', auth()->id())
+            ->first();
+        if ($bookmark) {
+            $data['is_bookmarked'] = true;
+        }
         return $data;
     }
 }

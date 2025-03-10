@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\BookmarkProduct;
 use App\Models\TransporterDetail;
 use Illuminate\Support\Facades\DB;
 use App\Models\CommodityProductState;
@@ -188,7 +189,14 @@ class ProductDetailResource extends JsonResource
         //         'updated_at' => dateTimeFormat($history->updated_at),
         //     ];
         // });
-
+        $data['is_bookmarked'] = false;
+        $bookmark = BookmarkProduct::where('commodity_product_id', $this->commodity_product_id)
+                ->where('seller_commodity_product_id', $this->id)
+                ->where('user_id', auth()->id())
+                ->first();
+        if ($bookmark) {
+            $data['is_bookmarked'] = true;
+        }
         return $data;
 
         // $data = [

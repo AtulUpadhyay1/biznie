@@ -60,6 +60,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         // Product Detail
         Route::get('product-detail/{id}', 'ProductApiController@show');
 
+        // Bookmark
+        Route::post('bookmark', 'ProductApiController@bookmark');
+
         // Image upload
         Route::post('image-upload', 'ImageUploadController@imageUpload');
 

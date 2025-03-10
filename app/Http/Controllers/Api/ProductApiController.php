@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\HomeProduct;
 use Illuminate\Http\Request;
+use App\Models\BookmarkProduct;
 use App\Models\CommodityProduct;
 use App\Http\Controllers\Controller;
 use App\Models\SellerCommodityProduct;
@@ -125,5 +126,42 @@ class ProductApiController extends Controller
 
         $list = $q->with('getCommodityProduct')->paginate(getPaginate());
         return SellerListByCommodityProductResource::collection($list);
+    }
+
+    public function bookmark(Request $request)
+    {
+        $request->validate([
+            'commodity_product_id'          => 'required|integer',
+            'seller_commodity_product_id'   => 'required|integer',
+        ]);
+        try {
+            $bookmark = BookmarkProduct::where('commodity_product_id', $request->commodity_product_id)
+                ->where('seller_commodity_product_id', $request->seller_commodity_product_id)
+                ->where('user_id', auth()->id())
+                ->first();
+            if ($bookmark) {
+                $bookmark->delete();
+                return response([
+                    'success'   => true,
+                    'message'   => 'Product has been removed from bookmark.'
+                ],200);
+            } else {
+                BookmarkProduct::create([
+                    'seller_commodity_product_id' => $request->seller_commodity_product_id,
+                    'commodity_product_id' => $request->commodity_product_id,
+                    'user_id' => auth()->id()
+                ]);
+                return response([
+                    'success'   => true,
+                    'message'   => 'Product has been added to bookmark.'
+                ],200);
+            }
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+        }
     }
 }
