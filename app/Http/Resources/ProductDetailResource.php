@@ -166,10 +166,13 @@ class ProductDetailResource extends JsonResource
                     return Carbon::parse($history->created_at)->format('d/m/y') === $date;
                 });
 
-                $average_base_price = $filtered_records->avg(function ($history) {
-
-                    return $history->seller_commodity_product_detail['base_price'] ?? 0;
-                });
+                if(isset($history->seller_commodity_product_detail['base_price'])){
+                    $average_base_price = $filtered_records->avg(function ($history) {
+                        return $history->seller_commodity_product_detail['base_price'] ?? 0;
+                    });
+                }else{
+                    $average_base_price = 0;
+                }
 
                 return [$date => round($average_base_price)];
             });
