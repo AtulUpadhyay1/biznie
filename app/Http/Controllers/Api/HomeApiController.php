@@ -9,6 +9,7 @@ use App\Models\IngotPrice;
 use App\Models\MarketNews;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use App\Models\IngotPriceLocation;
 use App\Http\Controllers\Controller;
 
 class HomeApiController extends Controller
@@ -94,9 +95,11 @@ class HomeApiController extends Controller
 
     public function ingotPrice(Request $request)
     {
-        $ingotLocation = $request->ingot_location ?? 'Durgapur';
+        $ingotPriceLocation = IngotPriceLocation::orderBy('location', 'ASC')->get();
+        $defaultIngotPriceLocation = $ingotPriceLocation->where('is_default', 1)->first();
+
+        $ingotLocation = $request->ingot_location ?? ($defaultIngotPriceLocation ? $defaultIngotPriceLocation->location : $ingotPriceLocation->first()->location);
         $ingotPriceType = $request->ingot_price_type ?? 'monthly';
-        $ingotPriceLocation = getIngotPriceLocation();
 
         $month_list = collect();
         for ($i = 1; $i <= 12; $i++) {
@@ -144,6 +147,34 @@ class HomeApiController extends Controller
             ];
         }
 
+        $daily_price = [];
+        $today_prices = IngotPrice::where('location', $ingotLocation)
+            ->whereDate('created_at', Carbon::today())
+            ->get();
+
+        if($today_prices->count() == 0){
+
+            $daily_price = [[
+                'time' => '12:00 AM',
+                'price' => 0,
+            ]];
+
+        }
+        foreach ($today_prices as $today_price) {
+            $daily_price[] = [
+                'time' => timeFormat($today_price->created_at, 'h:i A'),
+                'price' => $today_price->price,
+            ];
+        }
+
+        if($ingotPriceType == 'daily') {
+            $price = $daily_price;
+        }else if($ingotPriceType == 'weekly') {
+            $price = $weekly_price;
+        }else {
+            $price = $monthly_price;
+        }
+
         $last_ingot_price = IngotPrice::where('location', $ingotLocation)
             ->orderBy('updated_at', 'desc')
             ->first();
@@ -153,12 +184,19 @@ class HomeApiController extends Controller
             $last_update = '';
         }
 
+        $last_2_ingot_price = IngotPrice::where('location', $ingotLocation)
+            ->orderBy('updated_at', 'desc')
+            ->limit(2)
+            ->get()
+            ->pluck('price');
+
+
         return response([
             'success'       => true,
             'last_update'   => $last_update,
-            'location'      => getIngotPriceLocation(),
-            'price'         => $ingotPriceType == 'weekly' ? $weekly_price :$monthly_price,
-
+            'latest_price'  => $last_2_ingot_price,
+            'location'      => $ingotPriceLocation->pluck('location'),
+            'price'         => $price,
         ],200);
     }
 

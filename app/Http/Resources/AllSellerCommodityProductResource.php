@@ -21,7 +21,10 @@ class AllSellerCommodityProductResource extends JsonResource
             'name'              => $this->name,
             'slug'              => $this->slug,
             'loading_address'   => $this->loading_address ?? [],
-            'brands'            => $this->getBrand ? ['id' => $this->getBrand->id, 'name' => $this->getBrand->name] : null,
+            'brands'            => $this->getBrand ? [
+                'id' => $this->getBrand->id,
+                'name' => $this->getBrand->name
+            ] : null,
         ];
 
         // if($this->brand_id){
