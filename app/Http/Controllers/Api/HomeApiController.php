@@ -114,13 +114,16 @@ class HomeApiController extends Controller
             $ingot_prices = IngotPrice::whereMonth('created_at', $month)
                 ->whereYear('created_at', $year)
                 ->where('location', $ingotLocation)
-                ->pluck('price');
+                ->latest()
+                ->first();
+                // ->pluck('price');
 
-            $average_price = round($ingot_prices->avg() ?? 0);
+            // $average_price = round($ingot_prices->avg() ?? 0);
+            $average_price = $ingot_prices ? $ingot_prices->price : 0;
 
             $monthly_price[] = [
                 'year' => Carbon::createFromFormat('m-Y', $month_data)->format('M'), // Jan, Feb, etc.
-                'price' => $average_price,
+                'price' => (int)$average_price,
             ];
         }
 
@@ -137,13 +140,16 @@ class HomeApiController extends Controller
             $ingot_prices = IngotPrice::whereDay('created_at', $day)
                 ->whereYear('created_at', $year)
                 ->where('location', $ingotLocation)
-                ->pluck('price');
+                // ->pluck('price');
+                ->latest()
+                ->first();
 
-            $average_price = round($ingot_prices->avg() ?? 0);
+            // $average_price = round($ingot_prices->avg() ?? 0);
+            $average_price = $ingot_prices ? $ingot_prices->price : 0;
 
             $weekly_price[] = [
                 'day' => Carbon::createFromFormat('d-Y', $week_data)->format('D'), // Mon, Tue, etc.
-                'price' => $average_price,
+                'price' => (int)$average_price,
             ];
         }
 
