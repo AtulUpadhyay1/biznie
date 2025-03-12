@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\CommodityProductEnquiry;
 
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\Notification;
 use Livewire\WithPagination;
 use App\Models\ProductEnquiry;
 
@@ -18,7 +19,19 @@ class Index extends Component
     {
         $total = ProductEnquiry::count();
         $list = ProductEnquiry::latest()->with('getBrand', 'getCommodityProduct', 'getUser', 'getCommodityProductOrder')->paginate(getPaginate());
+        $this->markAsRead();
         return view('admin.commodity_product_enquiry.index', compact('total', 'list'));
+    }
+
+    public function markAsRead()
+    {
+        $notifications = Notification::where('title', 'New Product Enquiry')
+            ->where('is_admin_read', 0)
+            ->get();
+        foreach ($notifications as $notification) {
+            $notification->is_admin_read = 1;
+            $notification->save();
+        }
     }
 
     public function processOverPhone($id)

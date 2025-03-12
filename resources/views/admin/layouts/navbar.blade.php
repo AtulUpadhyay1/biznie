@@ -4,14 +4,14 @@
         <i data-feather="menu"></i>
     </a>
     <div class="navbar-content">
-        <form class="search-form">
+        {{-- <form class="search-form">
             <div class="input-group">
                 <div class="input-group-text">
                     <i class="bi bi-search"></i>
                 </div>
                 <input type="text" class="form-control" id="navbarForm" placeholder="Search here...">
             </div>
-        </form>
+        </form> --}}
         <ul class="navbar-nav">
             {{-- <li class="nav-item me-3">
                 <form>
