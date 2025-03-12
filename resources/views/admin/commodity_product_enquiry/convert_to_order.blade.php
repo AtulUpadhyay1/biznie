@@ -53,7 +53,7 @@
                 </div>
                 <div class="card-body">
                     <p>
-                        Phone : {{ $enquiry_data->consignee_detail['phone_number'] }} <br>
+                        Phone : {{ isset($enquiry_data->consignee_detail['phone_number']) ? $enquiry_data->consignee_detail['phone_number'] : $enquiry_data->consignee_detail['phone'] }} <br>
                         GST Number : {{ $enquiry_data->consignee_detail['gst'] }} <br>
                         Company : {{ $enquiry_data->consignee_detail['company_name'] }} <br>
                         Address : {{ $enquiry_data->consignee_detail['address_line_one'] }}
