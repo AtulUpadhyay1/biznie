@@ -390,7 +390,7 @@
                                                                 <label for="transport_price" class="form-label">Transport Price</label>
                                                             </td>
                                                             <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
-                                                                <input type="text" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model.live="transport_price">
+                                                                <input type="number" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model.live="transport_price">
                                                                 @error('transport_price') <small class="text-danger">{{ $message }}</small>@enderror
 
                                                             </td>
