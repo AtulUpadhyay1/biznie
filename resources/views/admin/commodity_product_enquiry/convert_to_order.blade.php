@@ -59,7 +59,7 @@
                         Address : {{ $enquiry_data->consignee_detail['address_line_one'] }}
                         {{ $enquiry_data->consignee_detail['address_line_two'] }}
                         {{ $enquiry_data->consignee_detail['city'] }} {{ $enquiry_data->consignee_detail['state'] }} <br>
-                        Pincode : {{ $enquiry_data->consignee_detail['pin_code'] }}
+                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }}
                     </p>
                 </div>
             </div>
