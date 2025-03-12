@@ -36,7 +36,7 @@
                         Address : {{ $enquiry_data->billing_address['address_line_one'] }}
                         {{ $enquiry_data->billing_address['address_line_two'] }}
                         {{ $enquiry_data->billing_address['city'] }} <br>
-                        Pincode : {{ $enquiry_data->billing_address['pin_code'] }} <br>
+                        Pincode : {{ isset($enquiry_data->billing_address['pin_code']) ? $enquiry_data->billing_address['pin_code'] : $enquiry_data->billing_address['pincode'] }} <br>
                         GSTIN/UIN : 78945613212546VN <br>
                         Phone : {{ $enquiry_data->getUser->phone }}
                     </p>
