@@ -39,13 +39,13 @@ if(! function_exists('getPaginate')){
 
 if(!function_exists('dateTimeFormat')){
     function dateTimeFormat($datesTime){
-        return date('M d, Y h:i A', strtotime($datesTime));
+        return date('d-m-Y h:i A', strtotime($datesTime));
     }
 }
 
 if(!function_exists('dateFormat')){
     function dateFormat($dates){
-        return date('M d, Y', strtotime($dates));
+        return date('d-m-Y', strtotime($dates));
     }
 }
 

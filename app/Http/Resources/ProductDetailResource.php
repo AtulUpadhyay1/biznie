@@ -53,7 +53,7 @@ class ProductDetailResource extends JsonResource
             'variation'                     => MyCommodityProductVariationResource::collection($this->getStatePrice),
             'ex_price'                      => 0,
             'freight_price'                 => 0,
-            'default_variation'             => null,
+            'default_variation'             => [],
         ];
         if($this->getCommodityProduct){
             $data['min_order_qty'] = $this->getCommodityProduct->min_order_qty;
