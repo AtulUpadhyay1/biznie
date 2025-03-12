@@ -17,7 +17,7 @@
                         Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
                         {{ $enquiry_data->consignee_detail['address_line_two'] }}
                         {{ $enquiry_data->consignee_detail['city'] }}
-                        {{ $enquiry_data->consignee_detail['pin_code'] }}
+                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }}
                     </p>
                 </div>
             </div>
@@ -144,7 +144,7 @@
                 $packaging_arr = [];
                 foreach ($seller_commodity_product->packaging_type as $packaging_charge) {
                     $packaging_arr['name'] = getPackagingType($packaging_charge)->name;
-                    $packaging_arr['price'] = $seller_commodity_product->packaging_type_price[$packaging_charge];
+                    $packaging_arr['price'] = isset($seller_commodity_product->packaging_type_price[$packaging_charge]) ? $seller_commodity_product->packaging_type_price[$packaging_charge] : 0;
                     $data['total_charges'] += $packaging_arr['price'];
                     $data['packaging_charge'][] = $packaging_arr;
                 }
@@ -152,8 +152,8 @@
                 $other_charges_arr = [];
                 foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
                     $other_charges_arr['name'] = $charge_name;
-                    $other_charges_arr['price'] = $seller_commodity_product->charge_price[$charge_key];
-                    $other_charges_arr['operator'] = $seller_commodity_product->operator[$charge_key];
+                    $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : 0;
+                    $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : 0;
 
                     if ($other_charges_arr['operator'] == '+') {
                         $data['total_charges'] += $other_charges_arr['price'];
