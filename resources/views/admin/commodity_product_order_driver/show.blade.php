@@ -130,7 +130,7 @@
                                         </div>
                                         <div class="col-4">
                                             <div class="card text-center p-4">
-                                                <b>eBill: </b> <a href="{{ imageUrl($data->ebill) }}"
+                                                <b>E - Waybill: </b> <a href="{{ imageUrl($data->ebill) }}"
                                                     target="_blank"><img src="{{ imageUrl($data->ebill) }}"
                                                         onerror="this.onerror=null; this.src='{{ asset('admin_css/assets/images/others/placeholder.jpg') }}'"
                                                         alt="" height="100" width="150"></a>
