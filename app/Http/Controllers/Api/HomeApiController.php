@@ -9,8 +9,10 @@ use App\Models\IngotPrice;
 use App\Models\MarketNews;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 use App\Models\IngotPriceLocation;
 use App\Http\Controllers\Controller;
+use App\Models\SellerCommodityProduct;
 
 class HomeApiController extends Controller
 {
@@ -206,4 +208,44 @@ class HomeApiController extends Controller
         ],200);
     }
 
+    public function search(Request $request)
+    {
+        $request->validate([
+            'search_key' => 'required|string',
+        ]);
+        $search_key = $request->search_key;
+        $brand_list = Brand::where('name', 'like', '%'.$search_key.'%')
+            ->orderBy('name', 'ASC')
+            ->select('id', 'name')
+            ->get();
+
+        $market_news = MarketNews::where('title', 'like', '%'.$search_key.'%')
+            ->latest()
+            ->get(['id', 'title', 'slug']);
+
+        $category_list = ProductCategory::where('name', 'like', '%'.$search_key.'%')
+            ->orderBy('name', 'ASC')
+            ->select('id', 'name')
+            ->get();
+
+        $product_list = SellerCommodityProduct::where('name', 'like', '%'.$search_key.'%')
+            ->orWhereHas('getCategory', function ($query) use ($search_key) {
+            $query->where('name', 'like', '%'.$search_key.'%');
+            })
+            ->orWhereHas('getBrand', function ($query) use ($search_key) {
+                $query->where('name', 'like', '%'.$search_key.'%');
+            })
+            ->orderBy('name', 'ASC')
+            ->select('id', 'name', 'commodity_product_id')
+            ->get();
+
+        return response([
+            'success'       => true,
+            'brand_list'    => $brand_list,
+            'category_list' => $category_list,
+            'product_list'  => $product_list,
+            'market_news'   => $market_news,
+        ],200);
+
+    }
 }

@@ -17,6 +17,10 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('home', function () {
+    return redirect()->route('admin.dashboard');
+});
+
 Route::get('login', function () {
     return redirect()->route('admin.login');
 })->name('login');

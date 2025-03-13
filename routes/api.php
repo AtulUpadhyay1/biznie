@@ -48,6 +48,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     Route::get('view-market-news/{slug}', 'HomeApiController@viewMarketNews');
     Route::get('ingot-price', 'HomeApiController@ingotPrice');
 
+    // General Search
+    Route::get('general-search', 'HomeApiController@search');
+
     // Product List
     Route::get('product-list', 'ProductApiController@index');
     Route::get('commodity-product-list', 'ProductApiController@commodityProductList');
