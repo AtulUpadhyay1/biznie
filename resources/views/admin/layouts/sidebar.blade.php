@@ -186,14 +186,33 @@
                     </li>
                 </ul>
             </div>
+            <!--End of product -->
 
+            <!--Product Enquiry-->
             <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder']) ? 'active' : '' }}">
-                <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate>
+                <a class="nav-link" data-bs-toggle="collapse" href="#products_enquiry" role="button"
+                    aria-expanded="false" aria-controls="products_enquiry">
                     <i class="bi bi-journal-check"></i>
                     <span class="link-title">Product Enquiry</span>
+                    <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <!--End of product -->
+            <div class="collapse {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder']) ? 'show' : '' }}" id="products_enquiry">
+                <ul class="nav sub-menu">
+                    <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder']) ? 'active' : '' }}">
+                        <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate>
+                            Enquiry
+                        </a>
+                    </li>
+
+                    <li class="nav-item {{ isActiveRoute(['admin.general-enquiry.index']) ? 'active' : '' }}">
+                        <a href="{{route('admin.general-enquiry.index')}}" class="nav-link" wire:navigate>
+                            General Enquiry
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--End of Product Enquiry -->
 
             <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show', 'admin.commodity-product-order-driver.create', 'admin.commodity-product-order-driver.show', 'admin.commodity-product-order-driver.edit', 'admin.commodity-product-order.status', 'admin.commodity-product-order.history']) ? 'active' : ''}}">
                 <a href="{{route('admin.commodity-product-order.index')}}" class="nav-link" wire:navigate>

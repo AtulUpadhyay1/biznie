@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('general_enquiries', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('name')->nullable();
             $table->string('company_name')->nullable();

@@ -191,9 +191,9 @@ class ProductDetailResource extends JsonResource
         // });
         $data['is_bookmarked'] = false;
         $bookmark = BookmarkProduct::where('commodity_product_id', $this->commodity_product_id)
-                ->where('seller_commodity_product_id', $this->id)
-                ->where('user_id', auth()->id())
-                ->first();
+            ->where('seller_commodity_product_id', $this->id)
+            ->where('user_id', auth()->id())
+            ->first();
         if ($bookmark) {
             $data['is_bookmarked'] = true;
         }

@@ -27,6 +27,7 @@ class GeneralEnquiryApiController extends Controller
         $user = User::where('email', $request->email)->where('phone', $request->contact_number)->first();
 
         $data = new GeneralEnquiry;
+        $data->unique_id = 'GE-'.date('Ymd').'-'.rand(1111, 9999);
         $data->name = $request->name;
         $data->user_id = $user ? $user->id : null;
         $data->company_name = $request->company_name;
