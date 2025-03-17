@@ -55,7 +55,7 @@
             <div class="page-content">
                 {{ $slot }}
                 {{-- @yield('content') --}}
-                <livewire:Admin.Notification.NotificationModel />
+                {{-- <livewire:Admin.Notification.NotificationModel /> --}}
             </div>
 
             <footer
