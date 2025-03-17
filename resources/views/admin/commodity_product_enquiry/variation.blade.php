@@ -30,10 +30,16 @@
                             <div class="col-md-8 border-end border-danger">
                                 <div class="table-responsive mt-2">
                                     <table class="custom-table">
+                                        @php
+                                            $variation_value = 0;
+                                            foreach ($variations as $variation) {
+                                                $variation_value = count($variation->value);
+                                            }
+                                        @endphp
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Variant</th>
+                                                <th colspan="{{ $variation_value }}">Variant</th>
                                                 <th>Qty (Metric Ton)</th>
                                             </tr>
                                         </thead>
