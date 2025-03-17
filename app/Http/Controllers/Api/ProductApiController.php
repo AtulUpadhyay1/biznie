@@ -128,6 +128,15 @@ class ProductApiController extends Controller
         return SellerListByCommodityProductResource::collection($list);
     }
 
+    public function bookmarkList()
+    {
+        $product_ids = BookmarkProduct::where('user_id', auth()->id())->latest()->pluck('seller_commodity_product_id')->toArray();
+        $list = SellerCommodityProduct::whereIn('id', $product_ids)
+            ->with('getCommodityProduct')
+            ->paginate(getPaginate());
+        return SellerListByCommodityProductResource::collection($list);
+    }
+
     public function bookmark(Request $request)
     {
         $request->validate([
