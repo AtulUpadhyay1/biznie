@@ -37,9 +37,11 @@
                         </div>
                         <div class="col-6">
                             <p>
-                                <b>User: </b> {{ $data->getUser->name }} <br>
+                                <b>User: </b> {{ $data->getUser?->name }} <br>
+                                <b>Company Name: </b> {{ $data->getUser?->getUserDetail?->company_name ?? '--' }} <br>
+                                <b>GST: </b> {{ $data->getUser?->getUserDetail?->gst_number ?? '--' }} <br>
                                 <b>Origin City: </b> {{ $data->origin_city	}} <br>
-                                <b>Phone: </b> {{ $data->getUser->phone }} <br>
+                                <b>Phone: </b> {{ $data->getUser?->phone }} <br>
                             </p><br>
                             <p>
                                 <b>Consignee Detail</b> <br>

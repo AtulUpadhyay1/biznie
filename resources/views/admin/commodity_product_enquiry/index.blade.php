@@ -56,7 +56,10 @@
                                         <td>{{ $data->unique_id }}</td>
                                         <td>{{ $data->getBrand->name }}</td>
                                         <td>{{ $data->getCommodityProduct->name}}</td>
-                                        <td>{{ $data->getUser->name}}</td>
+                                        <td>
+                                            {{ $data->getUser?->getUserDetail?->company_name ?? '--' }}
+                                            <br><small>{{ $data->getUser->name }}</small>
+                                        </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td>
                                             {{ ucfirst($data->status) }}

@@ -53,8 +53,14 @@
                                         </td>
                                         <td>{{ $data->getBrand->name }}</td>
                                         <td>{{ $data->getCommodityProduct->name }}</td>
-                                        <td>{{ $data->getCustomer->name }}</td>
-                                        <td>{{ $data->getSeller->name }}</td>
+                                        <td>
+                                            {{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }}
+                                            <br><small>{{ $data->getCustomer->name }}</small>
+                                        </td>
+                                        <td>
+                                            {{ $data->getSeller?->getBusiness?->name ?? '--' }}
+                                            <br><small>{{ $data->getSeller->name }}</small>
+                                        </td>
                                         <td>{{ $data->getTransporter ? $data->getTransporter->name : 'NA' }}</td>
                                         <td>
                                             {{ ucfirst($data->status) }}

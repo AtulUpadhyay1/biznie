@@ -56,12 +56,15 @@
                         </div>
                         <div class="col-4 text-center">
                             <p>
-                                <b>Customer: </b> {{ $data->getCustomer->name }} <br>
-                                <b>Phone: </b> {{ $data->getCustomer->phone }} <br>
+                                <b>Company Name: </b> {{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }} <br>
+                                <b>User: </b> {{ $data->getCustomer?->name }} <br>
+                                <b>GST: </b> {{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }} <br>
+                                <b>Phone: </b> {{ $data->getCustomer?->phone }} <br>
                             </p>
                         </div>
                         <div class="col-4 text-end">
                             <p>
+                                <b>Business Name: </b> {{ $data->getSeller?->getBusiness?->name }} <br>
                                 <b>Seller: </b> {{ $data->getSeller->name }} <br>
                                 <b>Phone: </b> {{ $data->getSeller->phone }} <br>
                             </p>
