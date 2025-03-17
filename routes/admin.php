@@ -266,10 +266,13 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('ingot-price-location/create', AdminRoot\IngotPriceLocation\Create::class)->name('ingot_price_location.create');
         Route::get('ingot-price-location/edit/{id}', AdminRoot\IngotPriceLocation\Edit::class)->name('ingot_price_location.edit');
 
-
         // General Enquiry
         Route::get('general-enquiry', AdminRoot\GeneralEnquiry\Index::class)->name('general-enquiry.index');
 
+        // Contact Us
+        Route::get('contact-us', AdminRoot\ContactUs\Index::class)->name('contact-us.index');
+
+        //
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });

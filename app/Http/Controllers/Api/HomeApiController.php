@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Carbon\Carbon;
 use App\Models\Brand;
 use App\Models\Banner;
+use App\Models\ContactUs;
 use App\Models\IngotPrice;
 use App\Models\MarketNews;
 use App\Models\Testimonial;
@@ -247,5 +248,39 @@ class HomeApiController extends Controller
             'market_news'   => $market_news,
         ],200);
 
+    }
+
+    public function contactUs(Request $request)
+    {
+        $request->validate([
+            'name'      => 'required|string',
+            'email'     => 'required|email',
+            'phone'     => 'required|numeric',
+            'message'   => 'required|string',
+        ]);
+
+        try {
+
+            $data = new ContactUs;
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->phone = $request->phone;
+            $data->message = $request->message;
+            $data->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Your message has been sent successfully.'
+            ],200);
+
+        } catch (\Throwable $th) {
+
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
     }
 }

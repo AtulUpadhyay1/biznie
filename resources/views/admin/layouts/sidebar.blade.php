@@ -189,7 +189,7 @@
             <!--End of product -->
 
             <!--Product Enquiry-->
-            <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder']) ? 'active' : '' }}">
+            <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder', 'admin.general-enquiry.index', 'admin.contact-us.index']) ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#products_enquiry" role="button"
                     aria-expanded="false" aria-controls="products_enquiry">
                     <i class="bi bi-journal-check"></i>
@@ -197,8 +197,9 @@
                     <i class="bi bi-chevron-down link-arrow"></i>
                 </a>
             </li>
-            <div class="collapse {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder']) ? 'show' : '' }}" id="products_enquiry">
+            <div class="collapse {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder', 'admin.general-enquiry.index', 'admin.contact-us.index']) ? 'show' : '' }}" id="products_enquiry">
                 <ul class="nav sub-menu">
+
                     <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder']) ? 'active' : '' }}">
                         <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate>
                             Enquiry
@@ -208,6 +209,12 @@
                     <li class="nav-item {{ isActiveRoute(['admin.general-enquiry.index']) ? 'active' : '' }}">
                         <a href="{{route('admin.general-enquiry.index')}}" class="nav-link" wire:navigate>
                             General Enquiry
+                        </a>
+                    </li>
+
+                    <li class="nav-item {{ isActiveRoute(['admin.contact-us.index']) ? 'active' : '' }}">
+                        <a href="{{route('admin.contact-us.index')}}" class="nav-link" wire:navigate>
+                            Query
                         </a>
                     </li>
                 </ul>
