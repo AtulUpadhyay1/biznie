@@ -43,7 +43,7 @@
     @livewireStyles
 </head>
 
-<body>
+<body class="sidebar-folded">
     <div class="main-wrapper">
 
         @include('admin.layouts.sidebar')
