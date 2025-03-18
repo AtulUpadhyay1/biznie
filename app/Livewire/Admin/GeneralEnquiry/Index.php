@@ -11,7 +11,7 @@ class Index extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    public $page_title = 'Commodity Product Enquiry';
+    public $page_title = 'General Enquiry';
 
     public function render()
     {

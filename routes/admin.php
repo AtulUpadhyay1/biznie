@@ -268,6 +268,7 @@ Route::group(['as'=>'admin.'], function () {
 
         // General Enquiry
         Route::get('general-enquiry', AdminRoot\GeneralEnquiry\Index::class)->name('general-enquiry.index');
+        Route::get('general-enquiry/{id}', AdminRoot\GeneralEnquiry\Show::class)->name('general-enquiry.show');
 
         // Contact Us
         Route::get('contact-us', AdminRoot\ContactUs\Index::class)->name('contact-us.index');

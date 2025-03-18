@@ -46,7 +46,10 @@
                                         <td>{{ $data->unique_id }}</td>
                                         <td>{{ $data->getBrand?->name }}</td>
                                         <td>{{ $data->getSellerCommodityProduct?->name}}</td>
-                                        <td>{{ $data->getUser?->name }}</td>
+                                        <td>
+                                            {{ $data->company_name }}<br>
+                                            <small>{{ $data->name }}</small>
+                                        </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td>
                                             {{ ucfirst($data->status) }}
@@ -59,7 +62,7 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-dark"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn{{$data->id}}">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.general-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
 
                                             </div>
                                         </td>
