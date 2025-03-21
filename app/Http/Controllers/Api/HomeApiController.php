@@ -283,4 +283,27 @@ class HomeApiController extends Controller
 
         }
     }
+
+    public function brandList()
+    {
+        $brand_list = Brand::orderBy('name', 'ASC')->get(['id', 'name']);
+        return response([
+           'success'   => true,
+            'brand_list' => $brand_list
+        ],200);
+    }
+
+    public function sellerCommodityProductList($brand_id)
+    {
+        $product_list = SellerCommodityProduct::where('brand_id', $brand_id)
+            ->where('user_id', 1)
+            ->orderBy('name', 'ASC')
+            ->select('id', 'name', 'commodity_product_id')
+            ->get();
+
+        return response([
+            'success'   => true,
+            'product_list' => $product_list
+        ],200);
+    }
 }

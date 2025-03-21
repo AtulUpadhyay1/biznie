@@ -54,6 +54,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     // General Search
     Route::get('general-search', 'HomeApiController@search');
 
+    // Brand List
+    Route::get('brand-list', 'HomeApiController@brandList');
+
+    // Seller Commodity Product List
+    Route::get('seller-commodity-product-list/{brand_id}', 'HomeApiController@sellerCommodityProductList');
+
     // Product List
     Route::get('product-list', 'ProductApiController@index');
     Route::get('commodity-product-list', 'ProductApiController@commodityProductList');
