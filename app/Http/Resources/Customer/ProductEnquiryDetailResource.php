@@ -96,7 +96,7 @@ class ProductEnquiryDetailResource extends JsonResource
             $other_charges_arr = [];
             foreach ($seller_commodity_product->charge_name ?? [] as $charge_key => $charge_name) {
                 $other_charges_arr['name'] = $charge_name;
-                $$other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : 0;
+                $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : 0;
                 $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : "";
 
                 if($other_charges_arr['operator']){
@@ -112,7 +112,7 @@ class ProductEnquiryDetailResource extends JsonResource
                         $data['total_charges'] += $data['ex_price'] * ($other_charges_arr['price'] / 100);
                     }
                 }
-                
+
                 $data['other_charge'][] = $other_charges_arr;
             }
 
