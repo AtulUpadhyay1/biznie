@@ -150,7 +150,7 @@
                     <b>M/S {{ $order_detail->getSeller->name }}</b><br>
                     {{ $order_detail->billing_address['address_line_one'] }}, MOB<br>
                     NO {{ $order_detail->getSeller->phone }}<br>
-                    {{ $order_detail->billing_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }}, India<br>
+                    {{ $order_detail->billing_address['state'] }} - {{ isset($order_detail->billing_address['pin_code']) ? $order_detail->billing_address['pin_code'] : $order_detail->billing_address['pincode'] }}, India<br>
                     GSTIN/UIN : 09AGOPN3178Q1ZC<br>
                     State Name : {{ $order_detail->billing_address['state'] }}
                 </td>
