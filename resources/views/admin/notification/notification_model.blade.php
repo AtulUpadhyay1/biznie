@@ -22,7 +22,7 @@
                     <div class="modal-footer d-flex justify-content-center border-0">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             wire:click="markAsRead()">Dismiss</button>
-                        <a href="{{ route('admin.commodity-product-enquiry.index') }}" class="btn btn-primary">View
+                        <a href="{{ route('admin.commodity-product-enquiry.index') }}" class="btn btn-primary" wire:navigate>View
                             Enquiry</a>
                     </div>
                 </div>
