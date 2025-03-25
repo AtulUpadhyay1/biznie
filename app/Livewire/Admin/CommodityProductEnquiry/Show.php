@@ -46,7 +46,7 @@ class Show extends Component
             }
         }
 
-        $seller_ids = SellerCommodityProductStatePrice::where('commodity_product_id', $data->commodity_product_id)
+        $seller_ids = SellerCommodityProductStatePrice::where('user_id', '!=', $data->user_id)->where('commodity_product_id', $data->commodity_product_id)
             ->where('brand_id', $data->brand_id)
             ->where(function($query) use ($variation_arr) {
                 foreach ($variation_arr as $variation) {
