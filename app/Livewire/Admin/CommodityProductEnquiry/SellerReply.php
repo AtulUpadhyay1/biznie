@@ -6,8 +6,10 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
+use App\Models\SellerCommodityProduct;
 use App\Models\TransporterAddressPrice;
 use App\Models\TransporterProductEnquiry;
+use App\Models\SellerCommodityProductStatePrice;
 
 class SellerReply extends Component
 {
@@ -67,10 +69,26 @@ class SellerReply extends Component
         if($this->selected_enquiry_id){
             $this->set_enquiry_data_price = [];
             $this->set_enquiry_data = SellerProductEnquiry::with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->find($this->selected_enquiry_id);
+            $seller_commodity_product = SellerCommodityProduct::where('user_id', $this->set_enquiry_data->user_id)
+                ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
+                ->where('brand_id', $this->set_enquiry_data->brand_id)
+                ->first();
             foreach ($this->set_enquiry_data->value as $variation) {
-                $this->set_enquiry_data_price[] = $variation['price'];
+                $gauge_diff = SellerCommodityProductStatePrice::where('user_id', $this->set_enquiry_data->user_id)
+                    ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
+                    ->where('brand_id', $this->set_enquiry_data->brand_id)
+                    // ->where('state', $state)
+                    // ->where('city', $city)
+                    // ->whereJsonContains('value', $variation['value'])
+                    // ->where(function($query) use ($variation) {
+                    //     foreach ($variation['value'] as $value) {
+                    //         $query->whereJsonContains('value', $value['value']);
+                    //     }
+                    // })
+                    ->first();
+                $this->set_enquiry_data_price[] = $gauge_diff ? $gauge_diff->price : 0;
             }
-            $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? $this->set_enquiry_data->base_price : 0;
+            $this->set_enquiry_data_base_price = $seller_commodity_product->base_price ? $seller_commodity_product->base_price : 0;
             $this->transport_price = $this->set_enquiry_data->transport_price ? $this->set_enquiry_data->transport_price : 0;
             $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_enquiry_data->getSellerCommodityProduct->commission_amount;
         }
