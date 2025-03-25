@@ -29,6 +29,9 @@ Route::group(['as'=>'admin.'], function () {
     Route::group(['middleware' => 'auth:admin'], function () {
 
         Route::get('notification-read', [App\Http\Controllers\Admin\DashboardController::class, 'notificationRead'])->name('notification.read');
+        Route::post('save-fcm-token', [App\Http\Controllers\Admin\DashboardController::class, 'storeFcmToken'])->name('save-fcm-token');
+        Route::get('send-notification', [App\Http\Controllers\Admin\DashboardController::class, 'sendNotification'])->name('send-notification');
+
 
         // Admin Dashboard
         Route::get('dashboard', AdminRoot\DashboardLivewire::class)->name('dashboard');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Admin;
 use App\Models\Brand;
 use App\Models\UserOtp;
 use App\Models\Attribute;
@@ -145,6 +146,27 @@ if(! function_exists('sendNotification')){
             $data->data = $data;
             $data->is_read = 0;
             $data->save();
+        }
+    }
+}
+
+if(! function_exists('sendAdminNotification')){
+    function sendAdminNotification($title, $body)
+    {
+        $notificationArr = [
+            'title'             => $title,
+            'body'              => $body,
+        ];
+        $in_app_module = [
+            "title"          => $title,
+            "body"           => $body,
+            "type"           => 'notification',
+        ];
+        $admin_list = Admin::get();
+        foreach ($admin_list as $admin_data){
+            if($admin_data->fcm_token){
+                FireBaseManager::sendMessage($notificationArr, $in_app_module, $admin_data->fcm_token);
+            }
         }
     }
 }

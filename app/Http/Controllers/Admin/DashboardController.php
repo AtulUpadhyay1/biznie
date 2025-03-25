@@ -43,4 +43,27 @@ class DashboardController extends Controller
         }
         return redirect()->route('admin.dashboard')->with('success', 'Notification marked as read successfully.');
     }
+
+    public function storeFcmToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string'
+        ]);
+
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
+
+        $user->fcm_token = $request->fcm_token;
+        $user->save();
+
+        return response()->json(['message' => 'FCM Token saved successfully']);
+    }
+
+    public function sendNotification()
+    {
+        sendAdminNotification('Hi Admin', 'This is a test notification');
+        return 'notification sent successfully.';
+    }
 }

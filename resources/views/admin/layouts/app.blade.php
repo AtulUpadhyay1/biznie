@@ -40,6 +40,8 @@
 
     <script src="https://cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script type="module" src="{{ asset('firebase/app.js') }}"></script>
     @livewireStyles
 </head>
 
