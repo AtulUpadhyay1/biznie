@@ -241,7 +241,7 @@ class Show extends Component
 
                 $user = User::find($transporter_user_id);
 
-                $title = 'New Product Enquiry';
+                $title = 'Received New Product Enquiry';
                 $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
                 $type = 'product_enquiry';
                 $data_info = [
