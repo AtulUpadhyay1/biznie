@@ -14,6 +14,16 @@ class Notification extends Model
         'data'      => 'array',
     ];
 
+    protected $fillable = [
+        'user_id',
+        'title',
+        'body',
+        'type',
+        'data',
+        'is_read',
+        'is_admin_read'
+    ];
+
     public function getUser()
     {
         return $this->belongsTo(User::class);
