@@ -101,7 +101,7 @@ class ProductEnquiryApiController extends Controller
                 'unique_id'     => $data->unique_id,
             ];
             sendNotification(auth()->user(), $title, $body, $type, $data_info, true);
-            sendAdminNotification($title, $body);
+            sendAdminNotification('New Product Enquiry', 'You got a new product enquiry.');
 
             $enquiry_data = ProductEnquiry::with('getBrand', 'getCommodityProduct')->findOrFail($data->id);
             // Enquiry Send to Seller
