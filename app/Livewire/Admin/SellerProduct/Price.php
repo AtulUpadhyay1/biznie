@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\SellerProduct;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\SellerCommodityProduct;
+use App\Models\SellerCommodityProductHistory;
 
 class Price extends Component
 {
@@ -71,6 +72,13 @@ class Price extends Component
             $data->tcs              = $this->tcs;
             $data->charge_price     = $this->charge_price;
             $data->save();
+
+            $data_history               = new SellerCommodityProductHistory;
+            $data_history->user_id      = $this->user_id;
+            $data_history->commodity_product_id = $data->commodity_product_id;
+            $data_history->seller_commodity_product_id = $data->id;
+            $data_history->seller_commodity_product_detail = $data;
+            $data_history->save();
 
             $this->dispatch('alert',
                 type : 'success',

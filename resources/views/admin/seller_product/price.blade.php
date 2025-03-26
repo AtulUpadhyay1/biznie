@@ -57,7 +57,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <label for="tcs" class="form-label">TCS Charge</label>
-                                <input type="number" class="form-control @error('tcs') is-invalid @enderror" id="tcs" placeholder="Enter TCS Charge" wire:model="tcs">
+                                <input type="number" class="form-control @error('tcs') is-invalid @enderror" id="tcs" placeholder="Enter TCS Charge" wire:model="tcs" min="0" step="0.01">
                                 @error('tcs') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
