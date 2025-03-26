@@ -157,7 +157,7 @@ class OrderDetailResource extends JsonResource
 
         $data['ex_price']           = $data['final_variation_price'] + $data['tcs_amount'];
 
-        $data['for_price']          = $data['ex_price'] + $data['transport_price'];
+        $data['for_price']          = $data['ex_price'] + $data['transport_price'] * $data['total_quantity'];
         $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
 
         $quality_check_image_arr = [];
