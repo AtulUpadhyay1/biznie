@@ -16,7 +16,7 @@ class SellerReply extends Component
     public $page_title = 'View Seller Reply';
     public $hidden_id, $selected_enquiry_id, $list, $data, $set_enquiry_data, $set_enquiry_data_price = [], $set_enquiry_data_base_price, $transport_price = 0, $commission = 200;
 
-    public $product_enquiry_data, $base_price;
+    public $product_enquiry_data, $base_price, $selected_seller_commodity_product;
 
     public $transporter_list;
     public $transporter_enquiry, $transporter_price, $selected_transporter_id;
@@ -73,6 +73,7 @@ class SellerReply extends Component
                 ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
                 ->where('brand_id', $this->set_enquiry_data->brand_id)
                 ->first();
+            $this->selected_seller_commodity_product = $seller_commodity_product;
             foreach ($this->set_enquiry_data->value as $variation) {
                 $gauge_diff = SellerCommodityProductStatePrice::where('user_id', $this->set_enquiry_data->user_id)
                     ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
