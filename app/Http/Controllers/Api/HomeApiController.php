@@ -109,6 +109,10 @@ class HomeApiController extends Controller
             $month_list->push(Carbon::now()->startOfYear()->addMonths($i - 1)->format('m-Y'));
         }
 
+        $last_ingot_price = IngotPrice::where('location', $ingotLocation)
+            ->orderBy('updated_at', 'desc')
+            ->first();
+
         $monthly_price = [];
         foreach ($month_list as $month_data) {
             $month = explode('-', $month_data)[0];
@@ -122,7 +126,8 @@ class HomeApiController extends Controller
                 // ->pluck('price');
 
             // $average_price = round($ingot_prices->avg() ?? 0);
-            $average_price = $ingot_prices ? $ingot_prices->price : 0;
+            // $average_price = $ingot_prices ? $ingot_prices->price : 0;
+            $average_price = $ingot_prices ? $ingot_prices->price : ($last_ingot_price ? $last_ingot_price->price : 0);
 
             $monthly_price[] = [
                 'year' => Carbon::createFromFormat('m-Y', $month_data)->format('M'), // Jan, Feb, etc.
@@ -148,10 +153,12 @@ class HomeApiController extends Controller
                 ->first();
 
             // $average_price = round($ingot_prices->avg() ?? 0);
-            $average_price = $ingot_prices ? $ingot_prices->price : 0;
+            // $average_price = $ingot_prices ? $ingot_prices->price : 0;
+            $average_price = $ingot_prices ? $ingot_prices->price : ($last_ingot_price ? $last_ingot_price->price : 0);
+
 
             $weekly_price[] = [
-                'day' => Carbon::createFromFormat('d-Y', $week_data)->format('D'), // Mon, Tue, etc.
+                'day' => Carbon::createFromFormat('d-Y', $week_data)->format('D'),
                 'price' => (int)$average_price,
             ];
         }
@@ -165,7 +172,7 @@ class HomeApiController extends Controller
 
             $daily_price = [[
                 'time' => '12:00 AM',
-                'price' => 0,
+                'price' => $last_ingot_price ? $last_ingot_price->price : 0,
             ]];
 
         }
