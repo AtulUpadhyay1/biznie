@@ -213,6 +213,45 @@ class HomeApiController extends Controller
         ],200);
     }
 
+    public function ingotPriceHistory(Request $request)
+    {
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date'   => 'required|date|after_or_equal:from_date',
+        ]);
+
+        $ingotPriceLocation = IngotPriceLocation::orderBy('location', 'ASC')->get();
+        $defaultIngotPriceLocation = $ingotPriceLocation->where('is_default', 1)->first();
+
+        $ingotLocation = $request->ingot_location ?? ($defaultIngotPriceLocation ? $defaultIngotPriceLocation->location : $ingotPriceLocation->first()->location);
+        $ingotPriceType = $request->ingot_price_type ?? 'monthly';
+
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+
+        $list = IngotPrice::where('location', $ingotLocation)
+            ->whereDate('date_time', '>=', $from_date)
+            ->whereDate('date_time', '<=', $to_date)
+            ->orderBy('date_time', 'asc')
+            ->get()
+            ->groupBy(function ($item) {
+                return \Carbon\Carbon::parse($item->date_time)->toDateString();
+            })
+            ->map(function ($prices) {
+                return [
+                    'date'  => dateFormat($prices->first()->date_time),
+                    'open'  => formatIndianNumber($prices->first()->price),
+                    'high'  => formatIndianNumber($prices->max('price')),
+                    'low'   => formatIndianNumber($prices->min('price')),
+                    'close' => formatIndianNumber($prices->last()->price),
+                ];
+            })
+            ->values();
+
+
+        return $list;
+    }
+
     public function search(Request $request)
     {
         $request->validate([
