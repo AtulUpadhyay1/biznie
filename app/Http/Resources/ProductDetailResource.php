@@ -168,7 +168,7 @@ class ProductDetailResource extends JsonResource
                 });
 
                 $average_base_price = $filtered_records->avg(function ($history) {
-                    return isset($history->seller_commodity_product_detail['base_price']) ? $history->seller_commodity_product_detail['base_price'] : 0;
+                    return isset($history->seller_commodity_product_detail['base_price']) ? $history->seller_commodity_product_detail['base_price'] : $this->base_price;
                 });
 
                 return [$date => round($average_base_price)];
