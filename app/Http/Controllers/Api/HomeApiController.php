@@ -249,7 +249,10 @@ class HomeApiController extends Controller
             ->values();
 
 
-        return $list;
+        return response([
+            'success' => true,
+            'data'    => $list,
+        ], 200);
     }
 
     public function search(Request $request)
