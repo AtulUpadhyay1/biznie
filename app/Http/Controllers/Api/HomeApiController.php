@@ -110,7 +110,7 @@ class HomeApiController extends Controller
         }
 
         $last_ingot_price = IngotPrice::where('location', $ingotLocation)
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('date_time', 'desc')
             ->first();
 
         $monthly_price = [];
@@ -118,8 +118,8 @@ class HomeApiController extends Controller
             $month = explode('-', $month_data)[0];
             $year = explode('-', $month_data)[1];
 
-            $ingot_prices = IngotPrice::whereMonth('created_at', $month)
-                ->whereYear('created_at', $year)
+            $ingot_prices = IngotPrice::whereMonth('date_time', $month)
+                ->whereYear('date_time', $year)
                 ->where('location', $ingotLocation)
                 ->latest()
                 ->first();
@@ -145,8 +145,8 @@ class HomeApiController extends Controller
             $day = explode('-', $week_data)[0];
             $year = explode('-', $week_data)[1];
 
-            $ingot_prices = IngotPrice::whereDay('created_at', $day)
-                ->whereYear('created_at', $year)
+            $ingot_prices = IngotPrice::whereDay('date_time', $day)
+                ->whereYear('date_time', $year)
                 ->where('location', $ingotLocation)
                 // ->pluck('price');
                 ->latest()
@@ -165,7 +165,7 @@ class HomeApiController extends Controller
 
         $daily_price = [];
         $today_prices = IngotPrice::where('location', $ingotLocation)
-            ->whereDate('created_at', Carbon::today())
+            ->whereDate('date_time', Carbon::today())
             ->get();
 
         if($today_prices->count() == 0){
@@ -191,17 +191,14 @@ class HomeApiController extends Controller
             $price = $monthly_price;
         }
 
-        $last_ingot_price = IngotPrice::where('location', $ingotLocation)
-            ->orderBy('updated_at', 'desc')
-            ->first();
         if ($last_ingot_price) {
-            $last_update = dateTimeFormat($last_ingot_price->updated_at);
+            $last_update = dateTimeFormat($last_ingot_price->date_time);
         } else {
             $last_update = '';
         }
 
         $last_2_ingot_price = IngotPrice::where('location', $ingotLocation)
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('date_time', 'desc')
             ->limit(2)
             ->get()
             ->pluck('price');

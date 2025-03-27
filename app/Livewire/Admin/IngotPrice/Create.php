@@ -8,7 +8,7 @@ use App\Models\IngotPriceLocation;
 
 class Create extends Component
 {
-    public $hidden_id, $location, $price;
+    public $hidden_id, $location, $price, $date_time;
     public function render()
     {
         $location_list = IngotPriceLocation::orderBy('location', 'ASC')->get();
@@ -20,11 +20,13 @@ class Create extends Component
         $this->validate([
             'location'  => 'required',
             'price'     => 'required|numeric',
+            'date_time' => 'required'
         ]);
 
         $data = new IngotPrice;
         $data->location = $this->location;
         $data->price = $this->price;
+        $data->date_time = $this->date_time;
         $data->save();
 
         session()->flash('success', 'Ingot price created successfully !!');

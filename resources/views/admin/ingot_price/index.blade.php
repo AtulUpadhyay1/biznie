@@ -28,7 +28,7 @@
                                 <tr>
                                     <th>Location</th>
                                     <th>Price</th>
-                                    <th>Created At</th>
+                                    <th>Date & Time</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -37,7 +37,7 @@
                                     <tr>
                                         <td>{{ $data->location }}</td>
                                         <td>{{ $data->price }}</td>
-                                        <td>{{ $data->created_at }}</td>
+                                        <td>{{ $data->date_time }}</td>
                                         <td>
                                             <a type="button" id="ActionBtn_{{ $data->id }}"
                                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
