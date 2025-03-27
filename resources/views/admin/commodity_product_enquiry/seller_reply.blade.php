@@ -45,6 +45,8 @@
                             </p><br>
                             <p>
                                 <b>Consignee Address</b> <br>
+                                <b>Company: </b> {{ $data->consignee_detail['company_name'] }} <br>
+                                <b>Phone: </b> {{ isset($data->consignee_detail['phone_number']) ? $data->consignee_detail['phone_number'] : $data->consignee_detail['phone'] }} <br>
                                 <b>Pincode: </b> {{ isset($data->consignee_detail['pin_code']) ? $data->consignee_detail['pin_code'] : $data->consignee_detail['pincode'] }} <br>
                                 @isset($data->consignee_detail['address'])
                                     <b>Address: </b> {{ $data->consignee_detail['address'] }} <br>
@@ -54,6 +56,7 @@
                                 @endisset
                                 <b>City: </b> {{ $data->consignee_detail['city'] }} <br>
                                 <b>State: </b> {{ $data->consignee_detail['state'] }} <br>
+                                <b>Gst Number: </b> {{ $data->consignee_detail['gst'] }} <br>
                             </p>
                         </div>
 

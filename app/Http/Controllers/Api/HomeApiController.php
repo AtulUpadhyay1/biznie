@@ -158,7 +158,7 @@ class HomeApiController extends Controller
 
 
             $weekly_price[] = [
-                'day' => Carbon::createFromFormat('d-Y', $week_data)->format('D'),
+                'day' => Carbon::createFromFormat('d-Y', $week_data)->format('d-m-Y'),
                 'price' => (int)$average_price,
             ];
         }
