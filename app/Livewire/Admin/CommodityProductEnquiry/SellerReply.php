@@ -32,7 +32,7 @@ class SellerReply extends Component
         $status = ['Mark For Sell', 'replied', 'ordered'];
         $this->list = SellerProductEnquiry::where('product_enquiries_id', $this->hidden_id)
             ->with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('is_mark', 'DESC')
             ->get();
         foreach ($this->list as $data) {
             if($data->is_mark == 1){
@@ -89,7 +89,8 @@ class SellerReply extends Component
                     ->first();
                 $this->set_enquiry_data_price[] = $gauge_diff ? $gauge_diff->price : 0;
             }
-            $this->set_enquiry_data_base_price = $seller_commodity_product->base_price ? $seller_commodity_product->base_price : 0;
+            // $this->set_enquiry_data_base_price = $seller_commodity_product->base_price ? $seller_commodity_product->base_price : 0;
+            $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? $this->set_enquiry_data->base_price : 0;
             $this->transport_price = $this->set_enquiry_data->transport_price ? $this->set_enquiry_data->transport_price : 0;
             $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_enquiry_data->getSellerCommodityProduct->commission_amount;
         }
@@ -146,7 +147,7 @@ class SellerReply extends Component
                 $enquiry->save();
             }
 
-            SellerProductEnquiry::where('commodity_product_id', $this->hidden_id)->update(['is_mark' => 0]);
+            SellerProductEnquiry::where('product_enquiries_id', $this->hidden_id)->update(['is_mark' => 0]);
 
             $enquiry_data = SellerProductEnquiry::with('getUser', 'getCustomer')->find($this->selected_enquiry_id);
 

@@ -156,10 +156,17 @@
                                                                 ->first();
 
                                                             $defaul_ex_price = 0;
+                                                            $base_price = 0;
+                                                            if($seller_commodity_product->base_price != $list_data->base_price){
+                                                                $base_price = $list_data->base_price;
+                                                            }else{
+                                                                $base_price = $seller_commodity_product->base_price;
+                                                            }
+
                                                             $default_price = getDefaultCommodityProductVariationPrice($list_data->commodity_product_id, $list_data->brand_id, $state, $city);
                                                             if($default_price){
-                                                                $default_tax            = ($default_price + $seller_commodity_product->base_price) * $seller_commodity_product->gst / 100;
-                                                                $per_unit_price         = ($default_price + $seller_commodity_product->base_price) + $default_tax;
+                                                                $default_tax            = ($default_price + $base_price) * $seller_commodity_product->gst / 100;
+                                                                $per_unit_price         = ($default_price + $base_price) + $default_tax;
                                                                 $default_final_price    = $per_unit_price * 1;
                                                                 $defaul_ex_price        += $default_final_price;
                                                             }
@@ -169,7 +176,7 @@
                                                         <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
                                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $list_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $list_data->id }}">
                                                                 <b>{{ $list_data->getUser->getBusiness->name}} ({{ getSellerType($list_data->user_id) }}) </b>,
-                                                                <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($seller_commodity_product->base_price) }},
+                                                                <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($base_price) }},
                                                                 <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber($defaul_ex_price) }},
                                                                 @php
                                                                     $default_variation = getDefaultCommodityProductVariation($list_data->commodity_product_id, $list_data->brand_id, $state, $city)
