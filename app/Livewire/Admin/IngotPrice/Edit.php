@@ -8,7 +8,7 @@ use App\Models\IngotPriceLocation;
 
 class Edit extends Component
 {
-    public $hidden_id, $location, $price;
+    public $hidden_id, $location, $price, $date_time;
 
     public function mount($id)
     {
@@ -16,6 +16,7 @@ class Edit extends Component
         $data = IngotPrice::findOrFail($this->hidden_id);
         $this->location = $data->location;
         $this->price = $data->price;
+        $this->date_time = $data->date_time;
     }
 
     public function render()
