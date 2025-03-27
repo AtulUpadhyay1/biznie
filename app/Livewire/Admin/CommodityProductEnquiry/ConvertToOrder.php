@@ -49,12 +49,8 @@ class ConvertToOrder extends Component
         );
     }
 
-    public function enquiryToOrder()
+    public function verifyOtp()
     {
-        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry', 'getMarkedTransporterEnquiry', 'getMarkedSellerProductEnquiry.getUser')->find($this->hidden_id);
-        $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
-        $mark_transporter = $enquiry_data->getMarkedTransporterEnquiry;
-
         $checkOtp = UserOtp::where('phone', $mark_seller->getUser->phone)->where('otp', $this->otp)->first();
         if(!$checkOtp){
             $this->dispatch('alert',
@@ -64,6 +60,14 @@ class ConvertToOrder extends Component
             return ;
         }
         $checkOtp->delete();
+        $this->enquiryToOrder();
+    }
+
+    public function enquiryToOrder()
+    {
+        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry', 'getMarkedTransporterEnquiry', 'getMarkedSellerProductEnquiry.getUser')->find($this->hidden_id);
+        $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
+        $mark_transporter = $enquiry_data->getMarkedTransporterEnquiry;
 
         $customer = User::find($mark_seller->customer_user_id);
         $user_total_balance = $customer->cash_balance + $customer->credit_balance;

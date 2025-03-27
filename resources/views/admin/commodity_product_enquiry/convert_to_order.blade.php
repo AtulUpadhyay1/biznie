@@ -291,6 +291,7 @@
                         <textarea rows="5" placeholder="Write Your Message" class="form-control" wire:model="message"></textarea>
                         <div class="text-end">
                             {{-- <button class="btn btn-success floa-end mt-2" wire:click="enquiryToOrder()"> Confirm & Pay </button> --}}
+                            <button class="btn btn-info floa-end mt-2" wire:click="enquiryToOrder()"> Proceed Without OTP </button>
                             <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#otpVeryfiy" wire:click="sendOtp()">
                                 Generate OTP
                             </button>
@@ -316,7 +317,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-success btn-sm" wire:click="enquiryToOrder()">Verify</button>
+                                        <button type="button" class="btn btn-success btn-sm" wire:click="verifyOtp()">Verify</button>
                                     </div>
                                 </div>
                             </div>
