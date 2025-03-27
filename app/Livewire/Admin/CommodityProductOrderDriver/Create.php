@@ -32,7 +32,6 @@ class Create extends Component
             'name'                  => 'required',
             'phone'                 => 'required|numeric|digits:10',
             'alternate_phone_number'=> 'nullable|numeric|digits:10',
-            'tracking_number'       => 'required',
             'transporter_name'      => 'required',
             'vehicle_number'        => 'required',
             'transporter_phone_number'=> 'required|numeric|digits:10',

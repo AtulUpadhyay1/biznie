@@ -89,9 +89,23 @@
                                 <input type='file' id="driver_photo" class="form-control @error('driver_photo') is-invalid @enderror" wire:model="driver_photo">
                                 <label for="driver_photo">
                                     @if ($driver_photo)
-                                        <img src="{{ $driver_photo->temporaryUrl() }}" class="label-banner">
+                                        @php
+                                            $extension = $driver_photo->getClientOriginalExtension();
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $driver_photo->temporaryUrl() }}" class="label-banner">
+                                        @else
+                                            <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                        @endif
                                     @elseif ($show_driver_photo)
-                                        <img src="{{ $show_driver_photo }}" class="label-banner">
+                                        @php
+                                            $extension = pathinfo($show_driver_photo, PATHINFO_EXTENSION);
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $show_driver_photo }}" class="label-banner">
+                                        @else
+                                            <a href="{{ $show_driver_photo }}" target="_blank">View Attachment</a>
+                                        @endif
                                     @else
                                         <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                     @endif
@@ -106,9 +120,23 @@
                                 <input type='file' id="unloaded_vehicle_photo" class="form-control @error('unloaded_vehicle_photo') is-invalid @enderror" wire:model="unloaded_vehicle_photo">
                                 <label for="unloaded_vehicle_photo">
                                     @if ($unloaded_vehicle_photo)
-                                        <img src="{{ $unloaded_vehicle_photo->temporaryUrl() }}" class="label-banner">
+                                        @php
+                                            $extension = $unloaded_vehicle_photo->getClientOriginalExtension();
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $unloaded_vehicle_photo->temporaryUrl() }}" class="label-banner">
+                                        @else
+                                            <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                        @endif
                                     @elseif ($show_unloaded_vehicle_photo)
-                                        <img src="{{ $show_unloaded_vehicle_photo }}" class="label-banner">
+                                        @php
+                                            $extension = pathinfo($show_unloaded_vehicle_photo, PATHINFO_EXTENSION);
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $show_unloaded_vehicle_photo }}" class="label-banner">
+                                        @else
+                                            <a href="{{ $show_unloaded_vehicle_photo }}" target="_blank">View Attachment</a>
+                                        @endif
                                     @else
                                         <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                     @endif
@@ -123,9 +151,23 @@
                                 <input type='file' id="loaded_vehicle_photo" class="form-control @error('loaded_vehicle_photo') is-invalid @enderror" wire:model="loaded_vehicle_photo">
                                 <label for="loaded_vehicle_photo">
                                     @if ($loaded_vehicle_photo)
-                                        <img src="{{ $loaded_vehicle_photo->temporaryUrl() }}" class="label-banner">
+                                        @php
+                                            $extension = $loaded_vehicle_photo->getClientOriginalExtension();
+                                        @endphp
+                                        @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $loaded_vehicle_photo->temporaryUrl() }}" class="label-banner">
+                                        @else
+                                            <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                        @endif
                                     @elseif ($show_loaded_vehicle_photo)
-                                        <img src="{{ $show_loaded_vehicle_photo }}" class="label-banner">
+                                        @php
+                                            $extension = pathinfo($show_loaded_vehicle_photo, PATHINFO_EXTENSION);
+                                        @endphp
+                                        @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $show_loaded_vehicle_photo }}" class="label-banner">
+                                        @else
+                                            <a href="{{ $show_loaded_vehicle_photo }}" target="_blank">View Attachment</a>
+                                        @endif
                                     @else
                                         <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                     @endif
@@ -140,9 +182,23 @@
                                 <input type='file' id="driver_with_vehicle_photo" class="form-control @error('driver_with_vehicle_photo') is-invalid @enderror" wire:model="driver_with_vehicle_photo">
                                 <label for="driver_with_vehicle_photo">
                                     @if ($driver_with_vehicle_photo)
-                                        <img src="{{ $driver_with_vehicle_photo->temporaryUrl() }}" class="label-banner">
+                                        @php
+                                            $extension = $driver_with_vehicle_photo->getClientOriginalExtension();
+                                        @endphp
+                                        @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $driver_with_vehicle_photo->temporaryUrl() }}" class="label-banner">
+                                        @else
+                                            <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                        @endif
                                     @elseif ($show_driver_with_vehicle_photo)
-                                        <img src="{{ $show_driver_with_vehicle_photo }}" class="label-banner">
+                                        @php
+                                            $extension = pathinfo($show_driver_with_vehicle_photo, PATHINFO_EXTENSION);
+                                        @endphp
+                                        @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $show_driver_with_vehicle_photo }}" class="label-banner">
+                                        @else
+                                            <a href="{{ $show_driver_with_vehicle_photo }}" target="_blank">View Attachment</a>
+                                        @endif
                                     @else
                                         <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                     @endif
@@ -157,9 +213,23 @@
                                 <input type='file' id="invoice" class="form-control @error('invoice') is-invalid @enderror" wire:model="invoice">
                                 <label for="invoice">
                                     @if ($invoice)
-                                        <img src="{{ $invoice->temporaryUrl() }}" class="label-banner">
+                                        @php
+                                            $extension = strtolower($invoice->getClientOriginalExtension());
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $invoice->temporaryUrl() }}" class="label-banner">
+                                        @else
+                                            <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                        @endif
                                     @elseif ($show_invoice)
-                                        <img src="{{ $show_invoice }}" class="label-banner">
+                                        @php
+                                            $extension = strtolower(pathinfo($show_invoice, PATHINFO_EXTENSION));
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $show_invoice }}" class="label-banner">
+                                        @else
+                                            <a href="{{ $show_invoice }}" target="_blank">View Attachment</a>
+                                        @endif
                                     @else
                                         <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                     @endif
@@ -174,9 +244,23 @@
                                 <input type='file' id="ebill" class="form-control @error('ebill') is-invalid @enderror" wire:model="ebill">
                                 <label for="ebill">
                                     @if ($ebill)
-                                        <img src="{{ $ebill->temporaryUrl() }}" class="label-banner">
+                                        @php
+                                            $extension = strtolower($ebill->getClientOriginalExtension());
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $ebill->temporaryUrl() }}" class="label-banner">
+                                        @else
+                                            <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                        @endif
                                     @elseif ($show_ebill)
-                                        <img src="{{ $show_ebill }}" class="label-banner">
+                                        @php
+                                            $extension = strtolower(pathinfo($show_ebill, PATHINFO_EXTENSION));
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $show_ebill }}" class="label-banner">
+                                        @else
+                                            <a href="{{ $show_ebill }}" target="_blank">View Attachment</a>
+                                        @endif
                                     @else
                                         <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                     @endif
@@ -199,9 +283,23 @@
                                 <input type='file' id="transport_receipt" class="form-control @error('transport_receipt') is-invalid @enderror" wire:model="transport_receipt">
                                 <label for="transport_receipt">
                                     @if ($transport_receipt)
-                                        <img src="{{ $transport_receipt->temporaryUrl() }}" class="label-banner">
+                                        @php
+                                            $extension = strtolower($transport_receipt->getClientOriginalExtension());
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $transport_receipt->temporaryUrl() }}" class="label-banner">
+                                        @else
+                                            <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                        @endif
                                     @elseif ($show_transport_receipt)
-                                        <img src="{{ $show_transport_receipt }}" class="label-banner">
+                                        @php
+                                            $extension = strtolower(pathinfo($show_transport_receipt, PATHINFO_EXTENSION));
+                                        @endphp
+                                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                            <img src="{{ $show_transport_receipt }}" class="label-banner">
+                                        @else
+                                            <a href="{{ $show_transport_receipt }}" target="_blank">View Attachment</a>
+                                        @endif
                                     @else
                                         <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                     @endif
