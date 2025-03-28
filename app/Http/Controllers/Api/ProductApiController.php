@@ -80,7 +80,7 @@ class ProductApiController extends Controller
 
     public function show($id)
     {
-        try {
+        // try {
             // $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand', 'getSellerStatePrice')->findOrFail($id);
             $data = SellerCommodityProduct::with('getCommodityProduct', 'getBrand', 'getStatePrice')->findOrFail($id);
             $seller_product_list = SellerCommodityProduct::where('id', '!=', $id)->where('brand_id', $data->brand_id)->where('user_id', $data->user_id)->with('getBrand')->latest()->get();
@@ -91,13 +91,13 @@ class ProductApiController extends Controller
                 // 'seller_product_list' => AllSellerCommodityProductResource::collection($seller_product_list)
             ],200);
 
-        } catch (\Throwable $th) {
-            return response([
-                'success'   => false,
-                'message'   => 'Something went wrong. Please try again.',
-                'error'     => $th->getMessage()
-            ],500);
-        }
+        // } catch (\Throwable $th) {
+        //     return response([
+        //         'success'   => false,
+        //         'message'   => 'Something went wrong. Please try again.',
+        //         'error'     => $th->getMessage()
+        //     ],500);
+        // }
     }
 
     public function allSellerCommodityProductList()

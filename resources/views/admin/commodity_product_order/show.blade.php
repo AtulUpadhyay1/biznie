@@ -84,6 +84,15 @@
                             </p>
                         </div>
                     </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <p>
+                                <b>Total Amount:</b> {{ $data->total_amount }} <br>
+                                <b>Paid Amount:</b> {{ $data->paid_amount }} <br>
+                                <b>Remai Amount:</b> {{ $data->due_amount }} <br>
+                            </p>
+                        </div>
+                    </div>
 
                     <h5 class="my-3">Product Variation</h5>
 
