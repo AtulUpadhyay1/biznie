@@ -277,6 +277,7 @@ class HomeApiController extends Controller
 
         return response([
             'success' => true,
+            'location'=> $ingotPriceLocation->pluck('location'),
             'data'    => $list,
         ], 200);
     }

@@ -21,6 +21,7 @@ class ProductEnquiryDetailResource extends JsonResource
         $data = [
             'id'                => $this->id,
             'unique_id'         => $this->unique_id,
+            'order_id'          => $this->getCommodityProductOrder ? $this->getCommodityProductOrder->id : NULL,
             'brand'             => $this->getBrand ? [
                     'id'        => $this->getBrand->id,
                     'name'      => $this->getBrand->name
