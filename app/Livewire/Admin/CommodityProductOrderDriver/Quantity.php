@@ -33,7 +33,7 @@ class Quantity extends Component
     {
         foreach ($this->order_data->value as $key => $variation) {
             $this->validate([
-                'quantity.'.$key                  => 'required|numeric|regex:/^[0-9]*$/|min:0',
+                'quantity.'.$key                  => 'required|numeric|min:0',
             ],[
                 'quantity.' . $key . '.required' => 'Enter quantity.',
                 'quantity.' . $key . '.numeric'  => 'Quantity must be a number.',
