@@ -57,7 +57,7 @@ class ProductDetailResource extends JsonResource
         ];
         if($this->getCommodityProduct){
             $data['min_order_qty'] = $this->getCommodityProduct->min_order_qty;
-            $data['last_updated'] = dateTimeFormat($this->getCommodityProduct->updated_at);
+            $data['last_updated'] = dateTimeFormat($this->updated_at);
 
             $data['quality'] = $this->getCommodityProduct->quality;
             $data['quality_price'] = $this->getCommodityProduct->quality_price;
@@ -167,7 +167,7 @@ class ProductDetailResource extends JsonResource
                     return Carbon::parse($history->created_at)->format('d/m/y') === $date;
                 });
 
-                $average_base_price = $filtered_records->avg(function ($history) {
+                $average_base_price = $filtered_records->last(function ($history) {
                     return isset($history->seller_commodity_product_detail['base_price']) ? $history->seller_commodity_product_detail['base_price'] : $this->base_price;
                 });
 
