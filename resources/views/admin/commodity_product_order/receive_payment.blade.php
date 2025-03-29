@@ -85,6 +85,8 @@
                             </div>
                         @elseif ($mode == 'credit_wallet')
                             <div class="row">
+                                <h5>Credit Limit: ₹ {{ formatIndianNumber($data->getCustomer->assign_credit_balance ?? '0.00') }}</h5>
+                                <h5>Used Limit: ₹ {{ formatIndianNumber($data->getCustomer->assign_credit_balance - $data->getCustomer->credit_balance) }}</h5>
                                 <h5>Available Credit Wallet Balance: ₹ {{ formatIndianNumber($data->getCustomer->credit_balance ?? '0.00') }}</h5>
                                 <div class="col-md-6 mb-3">
                                     <label for="transaction_amount" class="form-label">Amount <span class="text-danger">*</span></label>

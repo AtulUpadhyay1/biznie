@@ -139,7 +139,6 @@ class ReceivePayment extends Component
             $credit_history->commodity_product_order_id = $this->hidden_id;
             $credit_history->amount            = $this->transaction_amount;
             $credit_history->description       = 'Amount debited for Order Id: '.$this->data->order_id;
-            $credit_history->mode              = 'online';
             $credit_history->status            = 'debit';
             $credit_history->transaction_status= 'Amount debited';
             $credit_history->save();
