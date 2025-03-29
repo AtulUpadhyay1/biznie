@@ -21,7 +21,8 @@ class ProfileApiController extends Controller
     {
         $this->validate($request, [
             'name'      => 'required',
-            'email'     => 'required|unique:users,email,'.auth()->id(),
+            'company_name' => 'required',
+            'email'     => 'nullable|unique:users,email,'.auth()->id(),
             'type'      => 'nullable|array'
         ]);
         $user           = auth()->user();

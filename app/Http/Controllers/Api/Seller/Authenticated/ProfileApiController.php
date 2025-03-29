@@ -20,7 +20,7 @@ class ProfileApiController extends Controller
     {
         $this->validate($request, [
             'user_name'         => 'required',
-            'email'             => 'required|unique:users,email,'.auth()->id(),
+            'email'             => 'nullable|unique:users,email,'.auth()->id(),
             'company_name'      => 'required',
             'seller_type'       => 'required|array|min:1',
             'seller_type.*'     => 'required|integer|min:1',
