@@ -173,6 +173,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product-order/print-invoice/{id}', AdminRoot\CommodityProductOrder\PrintInvoice::class)->name('commodity-product-order.printInvoice');
         Route::get('commodity-product-order/history/{id}', AdminRoot\CommodityProductOrder\History::class)->name('commodity-product-order.history');
 
+        // Commodity Product Order Payment
+        Route::get('commodity-product-order/payment/{id}', AdminRoot\CommodityProductOrder\ReceivePayment::class)->name('commodity-product-order.receive-payment');
+
         // Commodity Product Order Driver
         Route::get('commodity-product-order/driver/{order_id}', AdminRoot\CommodityProductOrderDriver\Index::class)->name('commodity-product-order-driver.index');
         Route::get('commodity-product-order/driver/create/{order_id}', AdminRoot\CommodityProductOrderDriver\Create::class)->name('commodity-product-order-driver.create');

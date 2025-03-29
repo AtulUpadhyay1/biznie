@@ -13,6 +13,14 @@
                         </div>
                         <div class="col-7 text-end">
                             {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
+                            <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-outline-primary btn-sm" title="Receive Paymet" wire:navigate>
+                                Receive Paymet
+                            </a>
+
+                            <a href="{{route('admin.commodity-product-order.show', $data->id)}}" class="btn btn-outline-info btn-sm" title="Send Paymet" wire:navigate>
+                                Send Paymet
+                            </a>
+
                             <a href="{{route('admin.commodity-product-order.show', $data->id)}}" class="btn btn-secondary btn-icon btn-sm" title="View" wire:navigate>
                                 <i class="bi bi-eye icon-sm"></i>
                             </a>
@@ -87,9 +95,9 @@
                     <div class="row mt-3">
                         <div class="col-6">
                             <p>
-                                <b>Total Amount:</b> {{ $data->total_amount }} <br>
-                                <b>Paid Amount:</b> {{ $data->paid_amount }} <br>
-                                <b>Remai Amount:</b> {{ $data->due_amount }} <br>
+                                <b>Total Amount:</b> ₹ {{ formatIndianNumber($data->total_amount) }} <br>
+                                <b>Paid Amount:</b> ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
+                                <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($data->due_amount) }} <br>
                             </p>
                         </div>
                     </div>
