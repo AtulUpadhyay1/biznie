@@ -102,6 +102,7 @@ class ReceivePayment extends Component
         $ledger->transaction_bank_name = $this->transaction_bank_name;
         $ledger->transaction_number = $this->transaction_number;
         $ledger->payment_method = $this->payment_method;
+        $ledger->payment_mode = ucwords(str_replace('_', ' ', $this->mode));
         $ledger->date_time = $this->date_time;
         $ledger->description = $this->description ?? 'Amount credited for Order Id: '.$this->data->order_id;
         if($this->file){
@@ -149,6 +150,6 @@ class ReceivePayment extends Component
         }
 
         session()->flash('success', 'Payment received successfully.');
-        return $this->redirectRoute('admin.commodity-product-order.receive-payment', $this->hidden_id, navigate: true);
+        return $this->redirectRoute('admin.commodity-product-order.ledger', $this->hidden_id, navigate: true);
     }
 }

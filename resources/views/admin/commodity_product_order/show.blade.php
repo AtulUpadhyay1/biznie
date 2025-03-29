@@ -1,7 +1,7 @@
 <div>
     @section('title', config('app.name') . ' | '.$page_title)
-    <x-loader />
     <div class="row">
+        <x-loader />
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -13,6 +13,10 @@
                         </div>
                         <div class="col-7 text-end">
                             {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
+                            <a href="{{route('admin.commodity-product-order.ledger', $data->id)}}" class="btn btn-warning btn-sm" title="Receive Paymet" wire:navigate>
+                                Ledger
+                            </a>
+
                             <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-outline-primary btn-sm" title="Receive Paymet" wire:navigate>
                                 Receive Paymet
                             </a>

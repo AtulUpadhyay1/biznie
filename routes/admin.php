@@ -176,6 +176,9 @@ Route::group(['as'=>'admin.'], function () {
         // Commodity Product Order Payment
         Route::get('commodity-product-order/payment/{id}', AdminRoot\CommodityProductOrder\ReceivePayment::class)->name('commodity-product-order.receive-payment');
 
+        // Commodity Product Order Payment History
+        Route::get('commodity-product-order/ledger/{id}', AdminRoot\CommodityProductOrder\Ledger::class)->name('commodity-product-order.ledger');
+
         // Commodity Product Order Driver
         Route::get('commodity-product-order/driver/{order_id}', AdminRoot\CommodityProductOrderDriver\Index::class)->name('commodity-product-order-driver.index');
         Route::get('commodity-product-order/driver/create/{order_id}', AdminRoot\CommodityProductOrderDriver\Create::class)->name('commodity-product-order-driver.create');

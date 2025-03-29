@@ -82,6 +82,9 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        <div class="mt-2">
+                            {{ $list->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
