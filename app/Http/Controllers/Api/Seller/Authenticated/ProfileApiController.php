@@ -49,12 +49,12 @@ class ProfileApiController extends Controller
         $seller_kyc->gst_type = $request->gst_type;
         $seller_kyc->gst_number = $request->gst_number;
         $seller_kyc->address  = $request->address;
-        $data->address_line_one = $request->address_line_one;
-        $data->address_line_two = $request->address_line_two;
-        $data->postal_code = $request->pin_code;
-        $data->city = $request->city;
-        $data->state = $request->state;
-        $data->country = $request->country;
+        $seller_kyc->address_line_one = $request->address_line_one;
+        $seller_kyc->address_line_two = $request->address_line_two;
+        $seller_kyc->postal_code = $request->pin_code;
+        $seller_kyc->city = $request->city;
+        $seller_kyc->state = $request->state;
+        $seller_kyc->country = $request->country;
         $seller_kyc->save();
 
         return response([
