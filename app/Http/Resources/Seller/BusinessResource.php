@@ -55,9 +55,11 @@ class BusinessResource extends JsonResource
             foreach($this->seller_type as $seller_type_id)
             {
                 $business_seller_type = SellerType::find($seller_type_id);
-                $business_seller_type_data['id'] = $business_seller_type->id;
-                $business_seller_type_data['name'] = $business_seller_type->name;
-                $business_seller_type_arr[] = $business_seller_type_data;
+                if ($business_seller_type){
+                    $business_seller_type_data['id'] = $business_seller_type->id;
+                    $business_seller_type_data['name'] = $business_seller_type->name;
+                    $business_seller_type_arr[] = $business_seller_type_data;
+                }
             }
             $data['seller_type'] = $business_seller_type_arr;
         }
