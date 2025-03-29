@@ -51,8 +51,7 @@
                                     <th>Id</th>
                                     <th>Detail</th>
                                     <th>Contact Info</th>
-                                    <th>Registration Date</th>
-                                    <th>Last Active</th>
+                                    <th>Balance Info</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -70,9 +69,14 @@
                                             <br>
                                             <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $data->email }}</span>
                                         </td>
-                                        <td>{{ dateFormat($data->created_at) }}</td>
-                                        <td>{{ lastActive($data->id) }}</td>
                                         <td>
+                                            <b>Cash Wallet: </b> ₹ {{ $data->cash_balance }} <br>
+                                            <b>Credit Wallet: </b> ₹ {{ formatIndianNumber($data->credit_balance) }} <br>
+                                            <b>Credit Limit:</b> ₹ {{ formatIndianNumber($data->assign_credit_balance) }} <br>
+                                        </td>
+                                        <td>
+                                            <b>Registration Date: </b> {{ dateFormat($data->created_at) }} <br>
+                                            <b>Last Active: </b>{{ lastActive($data->id) }} <br>
                                             {!! $data->status == 'active' ? '<span class="text-success fw-bolder"> Active </span>' : '<span class="text-danger fw-bolder"> Inactive </span>' !!}
                                         </td>
                                         <td class="text-center">
