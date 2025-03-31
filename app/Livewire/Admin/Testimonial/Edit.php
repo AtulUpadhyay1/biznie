@@ -12,7 +12,7 @@ class Edit extends Component
 
     use WithFileUploads;
 
-    public $hidden_id, $name, $designation, $message, $image, $showImage;
+    public $hidden_id, $name, $designation, $message, $image, $showImage, $characterCount = 0;
 
     public function mount($id)
     {
