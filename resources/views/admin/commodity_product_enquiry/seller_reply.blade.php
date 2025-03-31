@@ -364,7 +364,6 @@
                         <div class="modal fade bd-example-modal-lg" id="updatePrice" tabindex="-1" aria-labelledby="updatePriceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
                             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                 <div class="modal-content">
-                                    {{-- <x-loader /> --}}
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="updatePriceLabel">
                                             @if ($set_enquiry_data)
@@ -441,7 +440,7 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;">
+                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}">
                                                                 @if ($selected_transporter)
                                                                     Name : {{ $selected_transporter->getUser->name }} <br>
                                                                     Phone : {{ $selected_transporter->getUser->phone }} <br>
@@ -463,7 +462,13 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
+                                                            <td style="border-right: hidden;">
+                                                                <label for="seller_credit_days" class="form-label">Seller Credit Days</label>
+                                                            </td>
+                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
+                                                                <input type="number" class="form-control" id="seller_credit_days" placeholder="Enter Seller Credit Days" wire:model="seller_credit_days">
+                                                                @error('seller_credit_days') <small class="text-danger">{{ $message }}</small>@enderror
+                                                            </td>
                                                             <td style="border-right: hidden;">
                                                                 {{-- <label for="" class="form-label">Total Transport Price</label> --}}
                                                                 <label for="" class="form-label">Loading Charge</label>
@@ -474,7 +479,13 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
+                                                            <td style="border-right: hidden;">
+                                                                <label for="customer_credit_days" class="form-label">Buyer Credit Days</label>
+                                                            </td>
+                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
+                                                                <input type="number" class="form-control" id="customer_credit_days" placeholder="Enter Customer Credit Days" wire:model="customer_credit_days">
+                                                                @error('customer_credit_days') <small class="text-danger">{{ $message }}</small>@enderror
+                                                            </td>
                                                             <td style="border-right: hidden;">
                                                                 {{-- <label for="" class="form-label">Total Transport Price</label> --}}
                                                                 <label for="" class="form-label">Insurance Charge</label>
@@ -554,7 +565,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" wire:click="markSeller()">Update</button>
+                                        <button type="button" class="btn btn-primary" wire:click="markSeller()" wire:loading.attr="disabled">Update</button>
+                                        <span wire:loading wire:target="markSeller" class="text-muted">Updating...</span>
                                     </div>
                                 </div>
                             </div>

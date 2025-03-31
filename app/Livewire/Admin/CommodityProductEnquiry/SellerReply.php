@@ -21,6 +21,8 @@ class SellerReply extends Component
     public $transporter_list;
     public $transporter_enquiry, $transporter_price, $selected_transporter_id;
 
+    public $seller_credit_days = 0, $customer_credit_days = 0;
+
     public $active_tab = 'seller';
     protected $queryString = [
         'active_tab'        => ['except' => '']
@@ -68,7 +70,9 @@ class SellerReply extends Component
     {
         if($this->selected_enquiry_id){
             $this->set_enquiry_data_price = [];
-            $this->set_enquiry_data = SellerProductEnquiry::with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')->find($this->selected_enquiry_id);
+            $this->set_enquiry_data = SellerProductEnquiry::with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct', 'getUser')->find($this->selected_enquiry_id);
+            $this->seller_credit_days = $this->set_enquiry_data->seller_credit_days ?? $this->set_enquiry_data->getUser->credit_days;
+            $this->customer_credit_days = $this->set_enquiry_data->customer_credit_days ?? $this->set_enquiry_data->getCustomer->credit_days;
             $seller_commodity_product = SellerCommodityProduct::where('user_id', $this->set_enquiry_data->user_id)
                 ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
                 ->where('brand_id', $this->set_enquiry_data->brand_id)
@@ -163,6 +167,8 @@ class SellerReply extends Component
             $enquiry_data->commission = $this->commission;
             $enquiry_data->price = $this->set_enquiry_data_price;
             $enquiry_data->is_mark = 1;
+            $enquiry_data->seller_credit_days = $this->seller_credit_days;
+            $enquiry_data->customer_credit_days = $this->customer_credit_days;
             if($enquiry_data->history != "Mark For Sell"){
                 $enquiry_data->status = 'Mark For Sell';
                 $history = $enquiry_data->history;
