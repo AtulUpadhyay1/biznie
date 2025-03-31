@@ -49,6 +49,15 @@ class Show extends Component
         //     );
         //     return ;
         // }
+        if($this->status == 'Approved'){
+            if(CreditWalletRequest::where('user_id', $this->user_id)->where('status', 'Approved')->exists()){
+                $this->dispatch('alert',
+                    type : 'error',
+                    message : 'A request for this user has already been approved.',
+                );
+                return ;
+            }
+        }
 
         $credit_wallet_request = $this->data;
         $credit_wallet_request->user_id = $this->user_id;

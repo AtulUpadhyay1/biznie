@@ -20,12 +20,13 @@ class ProfileApiController extends Controller
     {
         $this->validate($request, [
             'user_name'         => 'required',
-            'email'             => 'nullable|unique:users,email,'.auth()->id(),
+            // 'email'             => 'nullable|unique:users,email,'.auth()->id(),
             'company_name'      => 'required',
             // 'seller_type'       => 'nullable|array|min:1',
             // 'seller_type.*'     => 'nullable|integer|min:1',
             // 'pan_number'        => 'nullable|unique:seller_kyc_details,pan_number,'.auth()->id(),
             // 'gst_number'        => 'required|unique:seller_kyc_details,gst_number,'.auth()->id(),
+            'gst_number'        => 'required',
             'address'           => 'nullable',
         ]);
 

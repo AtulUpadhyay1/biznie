@@ -15,7 +15,7 @@ class BecomeSellerApiController extends Controller
     {
         $this->validate($request, [
             'user_name'         => 'required',
-            'email'             => 'nullable|unique:users,email,'.auth()->id(),
+            // 'email'             => 'nullable|unique:users,email,'.auth()->id(),
             'company_name'      => 'required',
             // 'about'             => 'required',
             // 'category'          => 'required|array|min:1',
@@ -26,7 +26,7 @@ class BecomeSellerApiController extends Controller
             // 'seller_type.*'     => 'required|integer|min:1',
             // 'pan_number'        => 'required|unique:seller_kyc_details,identity_number',
             // 'gst_type'          => 'required',
-            'gst_number'        => 'required|unique:seller_kyc_details,gst_number',
+            'gst_number'        => 'required',
             // 'credit_duration'   => 'required|in:yes,no',
             // 'credit_duration_day'=> 'required_if:credit_duration,yes'
         ]);

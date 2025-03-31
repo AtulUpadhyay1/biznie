@@ -14,8 +14,8 @@ class BecomeTransporterApiController extends Controller
         $request->validate([
             'name'          => 'required',
             'phone'         => 'required|numeric|digits:10',
-            'gst_number'    => 'required',
-            'address'       => 'required',
+            // 'gst_number'    => 'required',
+            // 'address'       => 'required',
             'company_name'  => 'required',
         ]);
 

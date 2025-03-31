@@ -37,6 +37,14 @@ class Create extends Component
             'amount'                => 'nullable|min:1'
         ]);
 
+        if(CreditWalletRequest::where('user_id', $this->user_id)->where('status', 'Approved')->exists()){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'A request for this user has already been approved.',
+            );
+            return ;
+        }
+
         $check = CreditWalletRequest::where('user_id', $this->user_id)->where('status', 'Approved')->first();
         if($check){
             $this->dispatch('alert',
