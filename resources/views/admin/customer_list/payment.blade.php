@@ -18,10 +18,10 @@
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
                                 <label for="credit_availability" class="form-check-label me-1">Credit Availability</label>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input status_update" id="credit_availability" value="1" {{$data->credit_availability == 1 ? 'checked' : ''}}>
+                                    <input type="checkbox" class="form-check-input status_update" id="credit_availability" wire:model="credit_availability" value="1" {{$data->credit_availability == 1 ? 'checked' : ''}}>
                                 </div>
                                 <label for="credit_days" class="form-check-label me-1">Credit Days</label>
-                                <input type="number" class="form-control form-control-sm w-25 @error('credit_days') is-invalid @enderror" id="credit_days" wire:model.defer="credit_days" placeholder="Credit Days" min="0">
+                                <input type="number" class="form-control form-control-sm w-25 @error('credit_days') is-invalid @enderror" id="credit_days" wire:model="credit_days" placeholder="Credit Days" min="0">
                                 @error('credit_days')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
