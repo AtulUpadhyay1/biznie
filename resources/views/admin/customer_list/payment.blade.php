@@ -18,10 +18,13 @@
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
                                 <label for="credit_availability" class="form-check-label me-1">Credit Availability</label>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input status_update" id="credit_availability" {{$data->credit_availability == 1 ? 'checked' : ''}}>
+                                    <input type="checkbox" class="form-check-input status_update" id="credit_availability" value="1" {{$data->credit_availability == 1 ? 'checked' : ''}}>
                                 </div>
                                 <label for="credit_days" class="form-check-label me-1">Credit Days</label>
-                                <input type="number" class="form-control form-control-sm w-25" id="credit_days" wire:model.defer="credit_days" placeholder="Credit Days" min="0">
+                                <input type="number" class="form-control form-control-sm w-25 @error('credit_days') is-invalid @enderror" id="credit_days" wire:model.defer="credit_days" placeholder="Credit Days" min="0">
+                                @error('credit_days')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                                 <button class="btn btn-xs btn-success ms-2" wire:click="updateCreditAvailability()">Update</button>
                                 {{-- <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download-cloud btn-icon-prepend"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg>
@@ -65,7 +68,7 @@
                                     @foreach ($cash_transactions as $cash_transaction)
                                         <tr>
                                             <td>{{$cash_transaction->transaction_id}}</td>
-                                            <td><b>RS {{$cash_transaction->amount}}</b></td>
+                                            <td><b>₹ {{formatIndianNumber($cash_transaction->amount)}}</b></td>
                                             <td>{{ucfirst($cash_transaction->status)}}</td>
                                             <td>{{$cash_transaction->created_at}}</td>
                                         </tr>
@@ -75,7 +78,7 @@
                                     @foreach ($credit_transactions as $credit_transaction)
                                         <tr>
                                             <td>{{$credit_transaction->transaction_id}}</td>
-                                            <td><b>RS {{$credit_transaction->amount}}</b></td>
+                                            <td><b>₹ {{formatIndianNumber($credit_transaction->amount)}}</b></td>
                                             <td>{{ucfirst($credit_transaction->status)}}</td>
                                             <td>{{$credit_transaction->created_at}}</td>
                                         </tr>

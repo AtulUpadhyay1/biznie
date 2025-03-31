@@ -39,6 +39,9 @@ class Payments extends Component
 
     public function updateCreditAvailability()
     {
+        $this->validate([
+            'credit_days' => 'required|numeric|min:1',
+        ]);
         $user = $this->data;
         $user->credit_availability = $this->credit_availability;
         $user->credit_days = $this->credit_days;
