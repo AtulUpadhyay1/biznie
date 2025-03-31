@@ -14,7 +14,7 @@ class Show extends Component
 
     use WithFileUploads;
 
-    public $hidden_id, $data, $user_id, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0;
+    public $hidden_id, $data, $user_id, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0, $credit_days = 0;
 
     public function mount($id)
     {
@@ -26,6 +26,7 @@ class Show extends Component
         $this->notes = $this->data->notes;
         $this->description = $this->data->description;
         $this->amount = $this->data->getUser->assign_credit_balance;
+        $this->credit_days = $this->data->getUser->credit_days;
     }
 
     public function render()
@@ -38,7 +39,8 @@ class Show extends Component
         $this->validate([
             'document'              => 'nullable',
             'reference_number'      => 'required',
-            'amount'                => 'nullable|min:1'
+            'amount'                => 'nullable|min:1',
+            'credit_days'           => 'nullable|integer|min:1',
         ]);
 
         // $check = CreditWalletRequest::where('user_id', $this->user_id)->where('status', 'Approved')->first();
@@ -79,6 +81,7 @@ class Show extends Component
             $user = User::find($this->user_id);
             $user->credit_balance = $user->credit_balance + $this->amount;
             $user->assign_credit_balance = $this->amount;
+            $user->credit_days = $this->credit_days;
             $user->save();
 
             $history = new CreditWalletTransaction;

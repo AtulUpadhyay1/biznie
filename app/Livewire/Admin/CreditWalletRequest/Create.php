@@ -15,7 +15,7 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $user_id, $document_type_id, $document_type, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0;
+    public $user_id, $document_type_id, $document_type, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0, $credit_days = 0;
 
     public function render()
     {
@@ -34,7 +34,8 @@ class Create extends Component
         $this->validate([
             'user_id'               => 'required',
             'reference_number'      => 'required',
-            'amount'                => 'nullable|min:1'
+            'amount'                => 'nullable|min:1',
+            'credit_days'           => 'nullable|integer|min:1',
         ]);
 
         if(CreditWalletRequest::where('user_id', $this->user_id)->where('status', 'Approved')->exists()){
@@ -73,6 +74,8 @@ class Create extends Component
             $user = User::find($this->user_id);
             $user->credit_balance = $user->credit_balance + $this->amount;
             $user->assign_credit_balance = $this->amount;
+            $user->credit_availability = 1;
+            $user->credit_days = $this->credit_days;
             $user->save();
 
             $history = new CreditWalletTransaction;

@@ -67,6 +67,14 @@
                                         </div>
 
                                         <div class="mb-3">
+                                            <label class="form-label" for="credit_days">Credit Days</label>
+                                            <input type="number" id="credit_days" class="form-control @error('credit_days') is-invalid @enderror" wire:model="credit_days" placeholder="Enter Credit Balance" {{ $status != 'Approved' ? 'disabled' : '' }}>
+                                            @error('credit_days')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-3">
                                             <label class="form-label" for="notes">Notes</label>
                                             <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" cols="30" rows="1" placeholder="Enter notes" wire:model="notes"></textarea>
                                             @error('notes') <small class="text-danger">{{ $message }}</small>@enderror

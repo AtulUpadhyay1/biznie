@@ -34,7 +34,7 @@
                                 <div wire:ignore>
                                     <label for="document_type_id" class="form-label">Credit Wallet Document Type</label>
                                     <select class="form-select select2 @error('document_type_id') is-invalid @enderror" id="document_type_id" wire:model="document_type_id">
-                                        <option value="">Select User</option>
+                                        <option value="">Select Credit Wallet Document Type</option>
                                         @foreach ($type_list as $type_data)
                                             <option value="{{ $type_data->id }}">{{ $type_data->name }}</option>
                                         @endforeach
@@ -64,7 +64,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label" for="status">Status</label>
                                 <select class="form-select" id="status" wire:model.live="status">
                                     <option value="Pending">Pending</option>
@@ -80,6 +80,14 @@
                                 <label class="form-label" for="amount">Add Credit Balance</label>
                                 <input type="number" id="amount" class="form-control @error('amount') is-invalid @enderror" wire:model="amount" placeholder="Enter Credit Balance" {{ $status != 'Approved' ? 'disabled' : '' }}>
                                 @error('amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="credit_days">Credit Days</label>
+                                <input type="number" id="credit_days" class="form-control @error('credit_days') is-invalid @enderror" wire:model="credit_days" placeholder="Enter Credit Balance" {{ $status != 'Approved' ? 'disabled' : '' }}>
+                                @error('credit_days')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>

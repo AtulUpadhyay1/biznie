@@ -13,7 +13,7 @@ class Payments extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    public $data, $mode;
+    public $data, $mode, $credit_availability = 0, $credit_days = 0;
 
     protected $queryString = [
         'mode'    => ['except' => ''],
@@ -22,6 +22,8 @@ class Payments extends Component
     public function mount($id)
     {
         $this->data = User::find($id);
+        $this->credit_availability = $this->data->credit_availability;
+        $this->credit_days = $this->data->credit_days;
         if(!$this->mode){
             $this->mode = 'cashwallet';
             return $this->redirectRoute('admin.customer-payment-list', ['id' => $id, 'mode' => 'cashwallet'], navigate: true);
@@ -38,7 +40,8 @@ class Payments extends Component
     public function updateCreditAvailability()
     {
         $user = $this->data;
-        $user->credit_availability = $user->credit_availability ? 0 : 1;
+        $user->credit_availability = $this->credit_availability;
+        $user->credit_days = $this->credit_days;
         $user->save();
         $this->dispatch('alert',
             type : 'success',
