@@ -60,6 +60,13 @@ class CreditWalletApiController extends Controller
             ],400);
         }
 
+        if(CreditWalletRequest::where('user_id', $this->user_id)->where('status', 'Approved')->exists()){
+            return response([
+               'success'   => false,
+               'message'   => 'A request has already been submitted and approved.',
+            ],400);
+        }
+
         $credit_wallet_request = new CreditWalletRequest;
         $credit_wallet_request->user_id = auth()->id();
         // $credit_wallet_request->document = $request->documents;
