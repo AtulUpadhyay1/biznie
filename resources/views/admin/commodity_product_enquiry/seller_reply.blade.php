@@ -565,8 +565,10 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" wire:click="markSeller()" wire:loading.attr="disabled">Update</button>
-                                        <span wire:loading wire:target="markSeller" class="text-muted">Updating...</span>
+                                        <button type="button" class="btn btn-primary" wire:click="markSeller()" wire:loading.attr="disabled">
+                                            <span wire:loading.remove>Update</span>
+                                            <span wire:loading wire:target="markSeller">Updating...</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
