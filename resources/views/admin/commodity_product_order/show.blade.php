@@ -391,9 +391,23 @@
                                                         <input type="file" id="eBill_file" class="form-control @error('eBill_file') is-invalid @enderror" wire:model="eBill_file">
                                                         <label for="eBill_file">
                                                             @if ($eBill_file)
-                                                                <img src="{{ $eBill_file->temporaryUrl() }}" class="label-banner">
+                                                                @php
+                                                                    $extension = strtolower($eBill_file->getClientOriginalExtension());
+                                                                @endphp
+                                                                @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                                    <img src="{{ $eBill_file->temporaryUrl() }}" class="label-banner">
+                                                                @else
+                                                                    <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                                                @endif
                                                             @elseif ($driver->ebill)
-                                                                <img src="{{ imageUrl($driver->ebill) }}" class="label-banner">
+                                                                @php
+                                                                    $extension = strtolower(pathinfo(imageUrl($driver->ebill), PATHINFO_EXTENSION));
+                                                                @endphp
+                                                                @if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                                    <img src="{{ imageUrl($driver->ebill) }}" class="label-banner">
+                                                                @else
+                                                                    <a href="{{ imageUrl($driver->ebill) }}" target="_blank">View Attachment</a>
+                                                                @endif
                                                             @else
                                                                 <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                                             @endif
