@@ -17,7 +17,7 @@ class Status extends Component
     public function mount($id)
     {
         $this->hidden_id = $id;
-        $this->data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getProductEnquiry')->findOrFail($this->hidden_id);
+        $this->data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getProductEnquiry', 'getSellerProductEnquiry')->findOrFail($this->hidden_id);
         $this->status = $this->data->status;
     }
 
@@ -35,6 +35,16 @@ class Status extends Component
             $history = $this->data->history;
             $history[] = ['status' => 'Order ' .ucwords($this->status). ' By Admin', 'created_at' => Carbon::now()];
             $this->data->history = $history;
+
+            if($this->status == 'dispatched'){
+                $seller_product_enquiry = $this->data->getSellerProductEnquiry;
+                if ($seller_product_enquiry?->seller_credit_days && $seller_product_enquiry?->customer_credit_days) {
+                    if (is_null($this->data->seller_credit_due_date) && is_null($this->data->customer_credit_due_date)) {
+                        $this->data->seller_credit_due_date = Carbon::now()->addDays($seller_product_enquiry->seller_credit_days)->toDateString();
+                        $this->data->customer_credit_due_date = Carbon::now()->addDays($seller_product_enquiry->customer_credit_days)->toDateString();
+                    }
+                }
+            }
             $this->data->save();
 
             if($this->status == 'cancel') {

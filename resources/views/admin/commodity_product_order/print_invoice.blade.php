@@ -176,11 +176,11 @@
             <tr>
                 <td colspan="3" rowspan="3" class="a b-top">Buyer (Bill to)<br>
                     <b>M/S {{ $order_detail->getCustomer->name }}</b><br>
-                    {{ $order_detail->delivery_address['address_line_one'] }}, MOB<br>
+                    {{ $order_detail->consignee_detail['address_line_one'] }}, MOB<br>
                     NO {{ $order_detail->getCustomer->phone }}<br>
-                    {{ $order_detail->delivery_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }}, India<br>
+                    {{ $order_detail->consignee_detail['state'] }} - {{ $order_detail->billing_address['pincode'] }}, India<br>
                     GSTIN/UIN : 09AGOPN3178Q1ZC<br>
-                    State Name : {{ $order_detail->delivery_address['state'] }}, Code : 09
+                    State Name : {{ $order_detail->consignee_detail['state'] }}, Code : 09
                 </td>
                 <td rowspan="3" colspan="2" style="border-top:1px solid #fff;"></td>
             </tr>
@@ -337,7 +337,7 @@
                     <b>M/S {{ $order_detail->getSeller->name }}</b><br>
                     {{ $order_detail->billing_address['address_line_one'] }}, MOB<br>
                     NO {{ $order_detail->getSeller->phone }}<br>
-                    {{ $order_detail->billing_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }}, India<br>
+                    {{ $order_detail->billing_address['state'] }} - {{ $order_detail->billing_address['pincode'] }}, India<br>
                     GSTIN/UIN : 09AGOPN3178Q1ZC<br>
                     State Name : {{ $order_detail->billing_address['state'] }}
                 </td>
@@ -363,11 +363,11 @@
             <tr>
                 <td colspan="3" rowspan="3" class="a b-top">Buyer (Bill to)<br>
                     <b>M/S {{ $order_detail->getCustomer->name }}</b><br>
-                    {{ $order_detail->delivery_address['address_line_one'] }}, MOB<br>
+                    {{ $order_detail->consignee_detail['address_line_one'] }}, MOB<br>
                     NO {{ $order_detail->getCustomer->phone }}<br>
-                    {{ $order_detail->delivery_address['state'] }} - {{ $order_detail->billing_address['pin_code'] }}, India<br>
+                    {{ $order_detail->consignee_detail['state'] }} - {{ $order_detail->billing_address['pincode'] }}, India<br>
                     GSTIN/UIN : 09AGOPN3178Q1ZC<br>
-                    State Name : {{ $order_detail->delivery_address['state'] }}, Code : 09
+                    State Name : {{ $order_detail->consignee_detail['state'] }}, Code : 09
                 </td>
                 <td rowspan="3" colspan="2" style="border-top:1px solid #fff;"></td>
             </tr>
