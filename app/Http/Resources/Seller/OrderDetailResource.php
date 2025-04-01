@@ -92,6 +92,8 @@ class OrderDetailResource extends JsonResource
             'quality_check_certificate'     => $this->quality_check_certificate ? imageUrl($this->quality_check_certificate) : null,
             'insurance_certificate'         => $this->insurance_certificate ? imageUrl($this->insurance_certificate) : null,
             'other'                         => $this->other ? imageUrl($this->other) : null,
+            'seller_credit_due_date'        => $this->seller_credit_due_date,
+            'customer_credit_due_date'      => $this->customer_credit_due_date,
             'driver_list'                   => $this->getDrivers ? CommodityProductOrderDriverResource::collection($this->getDrivers) : [],
         ];
 
