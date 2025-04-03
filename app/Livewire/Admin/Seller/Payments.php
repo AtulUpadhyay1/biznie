@@ -14,6 +14,7 @@ class Payments extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $data, $mode, $credit_availability = 0, $credit_days = 0;
+    public $amount = 0, $payment_method = 'cash', $description, $notes;
 
     protected $queryString = [
         'mode'    => ['except' => ''],
@@ -50,5 +51,72 @@ class Payments extends Component
             type : 'success',
             message : 'Credit availability updated successfully.',
         );
+    }
+
+    public function addCashWalletBalanace()
+    {
+        $this->validate([
+            'amount' =>'required|numeric|min:1',
+        ]);
+        $user = $this->data;
+        $user->cash_balance += $this->amount;
+        $user->save();
+
+        $transaction = new CashWalletTransaction;
+        $transaction->user_id = $this->data->id;
+        $transaction->amount = $this->amount;
+        $transaction->mode = $this->payment_method;
+        $transaction->description = $this->description;
+        $transaction->notes = $this->notes;
+        $transaction->status = 'credit';
+        $transaction->transaction_status = 'Fund added by admin';
+        $transaction->save();
+
+        $transaction->transaction_id = 'TX-'.date('Ymd').$transaction->id.$transaction->user_id.rand(111, 999);
+        $transaction->save();
+
+        session()->flash('success', 'Cash wallet balance added successfully.');
+        return $this->redirectRoute('admin.seller.payments', ['id' => $this->data->id, 'mode' => $this->mode], navigate: true);
+    }
+
+    public function addCreditWalletBalanace()
+    {
+        $this->validate([
+            'amount' =>'required|numeric|min:1',
+        ]);
+        $user = $this->data;
+        if($user->assign_credit_balance < $this->amount){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'You can not add more than assigned credit balance.',
+            );
+            return ;
+        }
+
+        $used_credit_balance = $user->assign_credit_balance - $user->credit_balance;
+        if($used_credit_balance < $this->amount){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'You can not add more than available credit balance.',
+            );
+            return ;
+        }
+        $user->credit_balance += $this->amount;
+        $user->save();
+
+        $history = new CreditWalletTransaction;
+        $history->user_id           = $this->data->id;
+        $history->amount            = $this->amount;
+        $history->description       = $this->description;
+        $history->notes             = $this->notes;
+        $history->status            = 'credit';
+        $history->transaction_status= 'Credit added by admin';
+        $history->save();
+
+        $history->transaction_id    = 'TX-'.date('Ymd').$history->id.$history->user_id.rand(111, 999);
+        $history->save();
+
+        session()->flash('success', 'Credit wallet balance added successfully.');
+        return $this->redirectRoute('admin.seller.payments', ['id' => $this->data->id, 'mode' => 'creditwallet'], navigate: true);
     }
 }

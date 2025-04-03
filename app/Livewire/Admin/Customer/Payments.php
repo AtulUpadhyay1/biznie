@@ -100,7 +100,9 @@ class Payments extends Component
             );
             return ;
         }
-        if($user->credit_balance > $this->amount){
+
+        $used_credit_balance = $user->assign_credit_balance - $user->credit_balance;
+        if($used_credit_balance < $this->amount){
             $this->dispatch('alert',
                 type : 'error',
                 message : 'You can not add more than available credit balance.',
