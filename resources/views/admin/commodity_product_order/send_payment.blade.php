@@ -129,6 +129,16 @@
                                 <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" wire:model="file">
                                 @error('file') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                                <select class="form-control @error('status') is-invalid @enderror" id="status" wire:model="status">
+                                    <option value="">Select Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="success">Success</option>
+                                </select>
+                                @error('status') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer text-end">
