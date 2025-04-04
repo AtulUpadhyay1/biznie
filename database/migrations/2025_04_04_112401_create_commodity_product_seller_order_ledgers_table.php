@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('payment_mode')->nullable();
             $table->string('date_time')->nullable();
             $table->string('file')->nullable();
+            $table->string('status')->nullable()->default('success');
             $table->softDeletes();
             $table->timestamps();
         });

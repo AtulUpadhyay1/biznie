@@ -6,15 +6,19 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-5 card-title">
+                        <div class="col-4 card-title">
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
                             <span class="badge rounded-pill border {{$data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }} </span>
                         </div>
-                        <div class="col-7 text-end">
+                        <div class="col-8 text-end">
                             {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
                             <a href="{{route('admin.commodity-product-order.ledger', $data->id)}}" class="btn btn-warning btn-sm" title="Receive Paymet" wire:navigate>
                                 Ledger
+                            </a>
+
+                            <a href="{{route('admin.commodity-product-order.sellerLedger', $data->id)}}" class="btn btn-info btn-sm" title="Receive Paymet" wire:navigate>
+                                Seller Ledger
                             </a>
 
                             <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-outline-primary btn-sm" title="Receive Paymet" wire:navigate>
