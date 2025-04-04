@@ -12,6 +12,7 @@ use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
 use App\Models\CreditWalletTransaction;
 use App\Models\CommodityProductOrderLedger;
+use App\Models\CommodityProductSellerOrderLedger;
 
 class ConvertToOrder extends Component
 {
@@ -154,6 +155,15 @@ class ConvertToOrder extends Component
         $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $this->token_amount;
         $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
         $credit_ledger->save();
+
+        $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
+        $seller_credit_ledger->order_id             = $order->id;
+        $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $seller_credit_ledger->type                 = 'credit';
+        $seller_credit_ledger->amount               = $this->total_amount;
+        $seller_credit_ledger->remaining_balance    = $this->total_amount;
+        $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
+        $seller_credit_ledger->save();
 
         if($customer->cash_balance > $this->token_amount){
 

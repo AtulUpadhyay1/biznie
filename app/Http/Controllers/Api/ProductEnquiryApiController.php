@@ -17,6 +17,7 @@ use App\Models\TransporterAddressPrice;
 use App\Models\TransporterProductEnquiry;
 use App\Models\CommodityProductOrderLedger;
 use App\Models\SellerCommodityProductStatePrice;
+use App\Models\CommodityProductSellerOrderLedger;
 use App\Http\Resources\Customer\ProductEnquiryResource;
 use App\Http\Resources\Customer\ProductEnquiryDetailResource;
 
@@ -387,6 +388,15 @@ class ProductEnquiryApiController extends Controller
         $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $request->token_amount;
         $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
         $credit_ledger->save();
+
+        $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
+        $seller_credit_ledger->order_id             = $order->id;
+        $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $seller_credit_ledger->type                 = 'credit';
+        $seller_credit_ledger->amount               = $request->total_amount;
+        $seller_credit_ledger->remaining_balance    = $request->total_amount;
+        $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
+        $seller_credit_ledger->save();
 
         if($customer->cash_balance > $request->token_amount){
 
