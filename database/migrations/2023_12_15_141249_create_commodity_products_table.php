@@ -24,12 +24,12 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->longText('packaging_type')->nullable();
             $table->longText('packaging_type_price')->nullable();
-            $table->double('base_price', 15, 2)->default(0);
-            $table->double('loading_charge', 15, 2)->default(0);
-            $table->double('insurance_charge', 15, 2)->default(0);
-            $table->double('quality_charge', 15, 2)->default(0);
-            $table->double('gst', 15, 2)->default(0);
-            $table->double('tcs', 15, 2)->default(0);
+            $table->double('base_price', 15, 2)->default(0)->nullable();
+            $table->double('loading_charge', 15, 2)->default(0)->nullable();
+            $table->double('insurance_charge', 15, 2)->default(0)->nullable();
+            $table->double('quality_charge', 15, 2)->default(0)->nullable();
+            $table->double('gst', 15, 2)->default(0)->nullable();
+            $table->double('tcs', 15, 2)->default(0)->nullable();
             $table->longText('charge_name')->nullable();
             $table->longText('charge_price')->nullable();
             $table->longText('operator')->nullable();
