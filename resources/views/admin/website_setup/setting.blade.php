@@ -46,11 +46,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-xl-4 col-sm-6">
+                                <label for="seller_enquiry_reply_time" class="form-label">Seller Enquiry Reply Time (Min)
+                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="Time in minutes for the seller to reply to an enquiry.">
+                                        <i class="bi bi-info-circle"></i>
+                                    </span>
+                                </label>
+                                <input type="number" class="form-control" placeholder="Seller Enquiry Reply Time (Min)" id="seller_enquiry_reply_time" wire:model="value.seller_enquiry_reply_time">
+                            </div>
+                        </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="minimum_balance_for_enquiry" class="form-label">Minimum Balance For Enquiry
-                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="Minimum Balance For Enquiry">
+                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="The minimum balance required to make an enquiry.">
                                         <i class="bi bi-info-circle"></i>
                                     </span>
                                 </label>
@@ -60,7 +70,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <label for="order_token_amount" class="form-label">Order Token Amount (%)
-                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="Order Token Amount (%)">
+                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="The percentage of the order amount required as a token.">
                                         <i class="bi bi-info-circle"></i>
                                     </span>
                                 </label>

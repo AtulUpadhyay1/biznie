@@ -13,6 +13,7 @@ class Setting extends Component
     public function render()
     {
         $this->value['enquiry_send_to_seller'] = websiteSetupValue('enquiry_send_to_seller');
+        $this->value['seller_enquiry_reply_time'] = websiteSetupValue('seller_enquiry_reply_time');
         $this->value['minimum_balance_for_enquiry'] = websiteSetupValue('minimum_balance_for_enquiry');
         $this->value['order_token_amount'] = websiteSetupValue('order_token_amount');
         $this->value['customer_quality_check_visibility'] = websiteSetupValue('customer_quality_check_visibility');
