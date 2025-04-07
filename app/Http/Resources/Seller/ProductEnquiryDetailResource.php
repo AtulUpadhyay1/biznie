@@ -73,6 +73,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'required_booking_amount' => 0,
             'is_mark'           => false,
             'status'            => $this->status,
+            'created_at'        => dateTimeFormat($this->created_at),
         ];
 
         $seller_commodity_product = $this->getSellerCommodityProduct;

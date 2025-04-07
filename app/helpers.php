@@ -18,7 +18,8 @@ use App\Models\CommodityProductStatePrice;
 
 if (!function_exists('websiteSetupValue')) {
     function websiteSetupValue($key){
-        return WebsiteSetup::where('key', $key)->first() ? WebsiteSetup::where('key', $key)->first()->value : "";
+        $setup = WebsiteSetup::where('key', $key)->first();
+        return $setup ? $setup->value : "";
     }
 }
 

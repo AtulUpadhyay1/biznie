@@ -42,7 +42,8 @@ class ProductEnquiryApiController extends Controller
         return response([
             'success'   => true,
             'data'      => new ProductEnquiryDetailResource($data),
-            'bidding_list' => $bidding_list
+            'bidding_list' => $bidding_list,
+            'reply_time' => websiteSetupValue('seller_enquiry_reply_time'),
         ],200);
     }
 
