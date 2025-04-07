@@ -20,7 +20,23 @@ class LoginResource extends JsonResource
             'type'  => $this->type,
             'phone' => $this->phone,
             'email' => $this->email,
+            'company_name' => null,
         ];
+        if($this->type == 'seller'){
+            if($this->getBusiness){
+                $data['company_name'] = $this->getBusiness->name;
+            }
+        }
+        if($this->type == 'transporter'){
+            if($this->getTransporterDetail){
+                $data['company_name'] = $this->getTransporterDetail->company_name;
+            }
+        }
+        if($this->type == 'customer'){
+            if($this->getUserDetail){
+                $data['company_name'] = $this->getUserDetail->company_name;
+            }
+        }
         return $data;
     }
 }
