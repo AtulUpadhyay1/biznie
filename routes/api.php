@@ -185,6 +185,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::get('product-enquiry', 'Authenticated\ProductEnquiryApiController@index');
         Route::get('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@show');
         Route::post('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@update');
+        Route::get('product-enquiry/{id}/bidding-list', 'Authenticated\ProductEnquiryApiController@biddingList');
 
         // Order
         Route::get('order', 'Authenticated\OrderApiController@index');
