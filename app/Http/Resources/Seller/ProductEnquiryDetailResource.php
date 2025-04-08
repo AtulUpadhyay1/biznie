@@ -74,6 +74,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'is_mark'           => false,
             'status'            => $this->status,
             'created_at'        => dateTimeFormat($this->created_at),
+            'credit_days'       => $this->seller_credit_days ? $this->seller_credit_days : auth()->user()->credit_days,
         ];
 
         $seller_commodity_product = $this->getSellerCommodityProduct;

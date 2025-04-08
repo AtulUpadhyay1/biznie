@@ -74,6 +74,8 @@ class ProductEnquiryDetailResource extends JsonResource
             'required_booking_amount' => 0,
             'is_mark'           => false,
             'status'            => $this->status,
+            'created_at'        => dateTimeFormat($this->created_at),
+            'credit_days'       => $this->customer_credit_days ? $this->customer_credit_days : auth()->user()->credit_days,
         ];
         $markedSeller = $this->getMarkedSellerProductEnquiry;
         if($markedSeller){
