@@ -64,6 +64,7 @@ class ProductEnquiryApiController extends Controller
             ->select(['base_price', 'user_id'])
             ->get()
             ->map(function ($item) {
+                $item->is_my_price = $item->user_id == auth()->id();
                 unset($item->user_id);
                 return $item;
             });
