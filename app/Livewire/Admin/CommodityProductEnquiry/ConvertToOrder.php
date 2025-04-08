@@ -52,6 +52,8 @@ class ConvertToOrder extends Component
 
     public function verifyOtp()
     {
+        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry', 'getMarkedTransporterEnquiry', 'getMarkedSellerProductEnquiry.getUser')->find($this->hidden_id);
+        $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
         $checkOtp = UserOtp::where('phone', $mark_seller->getUser->phone)->where('otp', $this->otp)->first();
         if(!$checkOtp){
             $this->dispatch('alert',

@@ -1,6 +1,7 @@
 <div>
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
+        <x-loader />
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-header">
@@ -291,9 +292,13 @@
                         <textarea rows="5" placeholder="Write Your Message" class="form-control" wire:model="message"></textarea>
                         <div class="text-end">
                             {{-- <button class="btn btn-success floa-end mt-2" wire:click="enquiryToOrder()"> Confirm & Pay </button> --}}
-                            <button class="btn btn-info floa-end mt-2" wire:click="enquiryToOrder()"> Proceed Without OTP </button>
-                            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#otpVeryfiy" wire:click="sendOtp()">
-                                Generate OTP
+                            <button class="btn btn-info floa-end mt-2" wire:click="enquiryToOrder()" wire:loading.attr="disabled">
+                                <span wire:loading.remove>Proceed Without OTP</span>
+                                <span wire:loading wire:target="enquiryToOrder">Processing your request...</span>
+                            </button>
+                            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#otpVeryfiy" wire:click="sendOtp()" wire:loading.attr="disabled">
+                                <span wire:loading.remove>Generate OTP</span>
+                                <span wire:loading wire:target="sendOtp">Sending OTP...</span>
                             </button>
                         </div>
 
@@ -317,7 +322,10 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-success btn-sm" wire:click="verifyOtp()">Verify</button>
+                                        <button type="button" class="btn btn-success btn-sm" wire:click="verifyOtp()" wire:loading.attr="disabled">
+                                            <span wire:loading.remove>Verify</span>
+                                            <span wire:loading wire:target="verifyOtp">Verifying...</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
