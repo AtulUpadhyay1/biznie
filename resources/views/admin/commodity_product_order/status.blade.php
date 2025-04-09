@@ -15,30 +15,7 @@
                             <a href="{{route('admin.commodity-product-order.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                         <div class="col-12 text-center">
-                            {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
-                            <div class="btn-group mb-3 mb-md-0" role="group" aria-label="Basic example">
-                                <a href="{{route('admin.commodity-product-order.ledger', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-file-earmark-ruled icon-sm"></i>  Buyer Ledger
-                                </a>
-                                <a href="{{route('admin.commodity-product-order.sellerLedger', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-file-ruled icon-sm"></i> Seller Ledger
-                                </a>
-                                <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-credit-card-2-front icon-sm"></i> Receive Payment
-                                </a>
-                                <a href="{{route('admin.commodity-product-order.send-payment', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-credit-card icon-sm"></i> Send Payment
-                                </a>
-                                <a href="{{route('admin.commodity-product-order.show', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-eye icon-sm"></i> View
-                                </a>
-                                <a href="{{route('admin.commodity-product-order.status', $data->id)}}" class="btn btn-sm btn-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-device-ssd icon-sm"></i> Update Status
-                                </a>
-                                <a href="{{route('admin.commodity-product-order.history', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-clock-history icon-sm"></i> History
-                                </a>
-                            </div>
+                            @include('admin.commodity_product_order.menu', ['is_active' => 'status'])
                         </div>
 
                     </div>
