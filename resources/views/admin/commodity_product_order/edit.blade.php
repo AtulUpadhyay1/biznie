@@ -1,0 +1,130 @@
+<div>
+    @section('title', config('app.name') . ' | ' . $page_title)
+    <div class="row">
+        <x-loader />
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-6 card-title">
+                            <h4>{{ $page_title }}</h4>
+                            <small> ( {{ $data->order_id }} ) </small>
+                            <span
+                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }}
+                            </span>
+                        </div>
+                        <div class="col-6 text-end">
+                            <a href="{{ route('admin.commodity-product-order.index') }}"
+                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
+                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
+                        </div>
+                        <div class="col-12 text-center">
+                            @include('admin.commodity_product_order.menu', ['is_active' => 'edit'])
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <p>
+                                <b>Product: </b> {{ $data->getCommodityProduct->name }} <br>
+                                <b>Brand: </b> {{ $data->getBrand->name }} <br>
+                                <b>Purpose: </b> {{ $data->purpose }} <br>
+                            </p>
+                        </div>
+                        <div class="col-4 text-center">
+                            <p>
+                                <b>Company Name: </b> {{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }}
+                                <br>
+                                <b>User: </b> {{ $data->getCustomer?->name }} <br>
+                                <b>GST: </b> {{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }} <br>
+                                <b>Phone: </b> {{ $data->getCustomer?->phone }} <br>
+                            </p>
+                        </div>
+                        <div class="col-4 text-end">
+                            <p>
+                                <b>Business Name: </b> {{ $data->getSeller?->getBusiness?->name }} <br>
+                                <b>Seller: </b> {{ $data->getSeller->name }} <br>
+                                <b>Phone: </b> {{ $data->getSeller->phone }} <br>
+                            </p>
+                            @if ($data->getTransporter)
+                                <br>
+                                <p>
+                                    <b>Transporter: </b> {{ $data->getTransporter->name }} <br>
+                                    <b>Phone: </b> {{ $data->getTransporter->phone }} <br>
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive mt-3">
+                                <table class="custom-table">
+                                    @php
+                                        $variation_value = 0;
+                                        foreach ($variations as $variation) {
+                                            $variation_value = count($variation->value);
+                                        }
+                                    @endphp
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th colspan="{{ $variation_value }}">Variant</th>
+                                            <th>Qty (Metric Ton)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach ($variations as $variation)
+                                            <tr>
+                                                <th>
+                                                    <div class="form-check mb-3">
+                                                        <input type="checkbox" class="form-check-input"
+                                                            id="check_{{ $loop->iteration }}"
+                                                            value="{{ $variation->id }}"
+                                                            wire:model.live="variation_id">
+                                                        <label class="form-check-label"
+                                                            for="check_{{ $loop->iteration }}">
+                                                            <span class="badge bg-danger">{{ $loop->iteration }}</span>
+                                                        </label>
+
+                                                    </div>
+                                                </th>
+                                                @foreach ($variation->value as $value)
+                                                    @php
+                                                        $unit_name = "";
+                                                        $unit_short_name = "";
+                                                        if($variation->getSellerCommodityProduct && $variation->getSellerCommodityProduct->commodity_product_id){
+                                                            $commodity = App\Models\CommodityProduct::find($variation->getSellerCommodityProduct->commodity_product_id);
+                                                            if($commodity && $commodity->unit){
+                                                                $unit_name = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->name : '';
+                                                                $unit_short_name = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->short_name : '';
+                                                            }
+                                                        }
+                                                    @endphp
+
+                                                    <td>{{ $value['name'] }} : {{ $value['value'] }} {{ $unit_short_name }}</td>
+                                                @endforeach
+
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        placeholder="Enter Qty"
+                                                        wire:model="variation_quantity.{{ $variation->id }}"
+                                                        @if (!in_array($variation->id, $variation_id)) disabled @endif>
+                                                    {{-- @error('uploaded_variation.' . getAttribute($attribute)->name) <small class="text-danger">{{ $message }}</small>@enderror --}}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="text-end mt-2">
+                            <button type="button" class="btn btn-sm btn-success" wire:click="update()">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -172,6 +172,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product-order/status/{id}', AdminRoot\CommodityProductOrder\Status::class)->name('commodity-product-order.status');
         Route::get('commodity-product-order/print-invoice/{id}', AdminRoot\CommodityProductOrder\PrintInvoice::class)->name('commodity-product-order.printInvoice');
         Route::get('commodity-product-order/history/{id}', AdminRoot\CommodityProductOrder\History::class)->name('commodity-product-order.history');
+        Route::get('commodity-product-order/edit/{id}', AdminRoot\CommodityProductOrder\Edit::class)->name('commodity-product-order.edit');
 
         // Commodity Product Order Payment
         Route::get('commodity-product-order/payment/{id}', AdminRoot\CommodityProductOrder\ReceivePayment::class)->name('commodity-product-order.receive-payment');
