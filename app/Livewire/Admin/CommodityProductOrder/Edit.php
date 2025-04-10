@@ -5,12 +5,13 @@ namespace App\Livewire\Admin\CommodityProductOrder;
 use Livewire\Component;
 use App\Models\CommodityProduct;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductOrderHistory;
 use App\Models\SellerCommodityProductStatePrice;
 
 class Edit extends Component
 {
     public $page_title = 'Edit Order';
-    public $hidden_id, $variation_id = [], $variation_quantity = [];
+    public $hidden_id, $variation_id = [], $variation_quantity = [], $update_for = 'quantity';
 
     public function mount($id)
     {
@@ -37,6 +38,11 @@ class Edit extends Component
         ]);
 
         $data = CommodityProductOrder::findOrFail($this->hidden_id);
+
+        $data_history = new CommodityProductOrderHistory;
+        $data_history->commodity_product_order_id = $this->hidden_id;
+        $data_history->old_value = $data->value;
+
         $variation_arr = [];
         foreach ($this->variation_id as $key => $variation_id) {
             $variation = SellerCommodityProductStatePrice::with('getSellerCommodityProduct')->find($variation_id);
@@ -70,7 +76,13 @@ class Edit extends Component
         }
 
         $data->value = $variation_arr;
+        $data->update_for = $this->update_for;
         $data->save();
+
+        $data_history->new_value = $data->value;
+        $data_history->updated_by = auth()->id();
+        $data_history->update_for = $this->update_for;
+        $data_history->save();
 
         session()->flash('success', 'Order updated successfully.');
         return redirect()->route('admin.commodity-product-order.show', $this->hidden_id);

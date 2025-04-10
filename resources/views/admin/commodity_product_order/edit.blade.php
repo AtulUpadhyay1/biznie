@@ -57,8 +57,66 @@
                         </div>
                     </div>
                     <div class="row">
+                        <h5 class="my-3">Product Variation</h5>
+
+                        <div class="table-responsive">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        @foreach ($data->value[0]['value'] as $variation_heading)
+                                            <th>{{ $variation_heading['name'] }}</th>
+                                        @endforeach
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data->value as $variation)
+
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            @foreach ($variation['value'] as $value)
+                                                <td>{{ $value['value'] }}</td>
+                                            @endforeach
+                                            <td>{{ $variation['quantity'] }}</td>
+                                        </tr>
+
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="col-md-12">
                             <div class="table-responsive mt-3">
+                                <div class="row my-3">
+                                    <div class="col-6">
+                                        <h5>Update Product Variation</h5>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="update_for" id="quantity"
+                                                    value="quantity" wire:model="update_for">
+                                                <label class="form-check-label" for="quantity">
+                                                    Quantity
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="update_for" id="variant"
+                                                    value="variant" wire:model="update_for">
+                                                <label class="form-check-label" for="variant">
+                                                    Variant
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="update_for" id="both"
+                                                    value="both" wire:model="update_for">
+                                                <label class="form-check-label" for="both">
+                                                    Both
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="custom-table">
                                     @php
                                         $variation_value = 0;
