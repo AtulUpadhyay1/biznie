@@ -104,7 +104,7 @@
                                                 <input type="radio" class="form-check-input" name="update_for" id="variant"
                                                     value="variant" wire:model="update_for">
                                                 <label class="form-check-label" for="variant">
-                                                    Variant
+                                                    Size
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline">
