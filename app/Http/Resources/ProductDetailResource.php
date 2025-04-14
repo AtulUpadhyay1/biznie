@@ -50,7 +50,7 @@ class ProductDetailResource extends JsonResource
             'order_amount_type'             => $this->order_amount_type,
             'required_order_amount'         => $this->required_order_amount,
             'charts'                        => [],
-            'charges'                       => [],
+            'other_charges'                 => [],
             'variation'                     => MyCommodityProductVariationResource::collection($this->getStatePrice),
             'ex_price'                      => 0,
             'freight_price'                 => 0,
@@ -161,9 +161,10 @@ class ProductDetailResource extends JsonResource
 
         $commodityProduct = $this->getCommodityProduct;
         $extra_charges = 0;
+        $other_charges = [];
         foreach ($commodityProduct->charge_name as $charge_key => $charge_name) {
             $other_charges_arr['name'] = $charge_name;
-            $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : 0;
+            $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : "0";
             $other_charges_arr['operator'] = isset($commodityProduct->operator[$charge_key]) ? $commodityProduct->operator[$charge_key] : "";
 
             if($other_charges_arr['operator']){
@@ -179,7 +180,9 @@ class ProductDetailResource extends JsonResource
                     $extra_charges += 0;
                 }
             }
+            $other_charges[] = $other_charges_arr;
         }
+        $data['other_charges'] = $other_charges;
 
         $base_price = $this->base_price;
         $gauge_diff = $default_variation_price;
