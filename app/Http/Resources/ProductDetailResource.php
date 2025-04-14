@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\PackagingType;
 use App\Models\BookmarkProduct;
 use App\Models\TransporterDetail;
 use Illuminate\Support\Facades\DB;
@@ -54,6 +55,7 @@ class ProductDetailResource extends JsonResource
             'ex_price'                      => 0,
             'freight_price'                 => 0,
             'default_variation'             => [],
+            'packaging_charge'              => [],
         ];
         if($this->getCommodityProduct){
             $data['min_order_qty'] = $this->getCommodityProduct->min_order_qty;
@@ -90,6 +92,7 @@ class ProductDetailResource extends JsonResource
             }
         }
 
+        $default_variation_price = 0;
         $default_variation = CommodityProductVariation::where('commodity_product_id', $this->commodity_product_id)
             ->where('is_default', 1)
             ->first();
@@ -116,39 +119,78 @@ class ProductDetailResource extends JsonResource
                 ->where('commodity_product_variation_id', $default_variation->id)
                 ->where('brand_id', $this->brand_id)
                 ->first();
+                $default_variation_price = $state_price ? $state_price->price : 0;
+                // if($state_price){
+                //     $commodityProduct = $this->getCommodityProduct;
+                //     $ex_price = $state_price->price + $this->base_price + $commodityProduct->loading_charge + $commodityProduct->insurance_charge + $commodityProduct->quality_charge;
+                //     $extra_charges = 0;
+                //     foreach ($commodityProduct->charge_name as $charge_key => $charge_name) {
+                //         $other_charges_arr['name'] = $charge_name;
+                //         $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : 0;
+                //         $other_charges_arr['operator'] = isset($commodityProduct->operator[$charge_key]) ? $commodityProduct->operator[$charge_key] : "";
 
-                if($state_price){
-                    $commodityProduct = $this->getCommodityProduct;
-                    $ex_price = $state_price->price + $this->base_price + $commodityProduct->loading_charge + $commodityProduct->insurance_charge + $commodityProduct->quality_charge;
-                    $extra_charges = 0;
-                    foreach ($commodityProduct->charge_name as $charge_key => $charge_name) {
-                        $other_charges_arr['name'] = $charge_name;
-                        $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : 0;
-                        $other_charges_arr['operator'] = isset($commodityProduct->operator[$charge_key]) ? $commodityProduct->operator[$charge_key] : "";
+                //         if($other_charges_arr['operator']){
+                //             if($other_charges_arr['operator'] == "+"){
+                //                 $extra_charges += $other_charges_arr['price'];
+                //             }elseif($other_charges_arr['operator'] == "-"){
+                //                 $extra_charges -= $other_charges_arr['price'];
+                //             }elseif($other_charges_arr['operator'] == "*"){
+                //                 $extra_charges += $ex_price * $other_charges_arr['price'];
+                //             }elseif($other_charges_arr['operator'] == "/"){
+                //                 $extra_charges += $ex_price / $other_charges_arr['price'];
+                //             }elseif($other_charges_arr['operator'] == "%"){
+                //                 $extra_charges += $ex_price * ($other_charges_arr['price'] / 100);
+                //             }
+                //         }
+                //     }
 
-                        if($other_charges_arr['operator']){
-                            if($other_charges_arr['operator'] == "+"){
-                                $extra_charges += $other_charges_arr['price'];
-                            }elseif($other_charges_arr['operator'] == "-"){
-                                $extra_charges -= $other_charges_arr['price'];
-                            }elseif($other_charges_arr['operator'] == "*"){
-                                $extra_charges += $ex_price * $other_charges_arr['price'];
-                            }elseif($other_charges_arr['operator'] == "/"){
-                                $extra_charges += $ex_price / $other_charges_arr['price'];
-                            }elseif($other_charges_arr['operator'] == "%"){
-                                $extra_charges += $ex_price * ($other_charges_arr['price'] / 100);
-                            }
-                        }
-                    }
+                //     $tax_amount = ($ex_price + $extra_charges) * $commodityProduct->gst / 100;
 
-                    $tax_amount = ($ex_price + $extra_charges) * $commodityProduct->gst / 100;
-
-                    $data['ex_price'] = round($ex_price + $extra_charges + $tax_amount);
-                }
+                //     $data['ex_price'] = round($ex_price + $extra_charges + $tax_amount);
+                // }
 
             }
 
         }
+
+        $data['default_variation_price'] = $default_variation_price;
+        $data['loading_charge'] = $this->loading_charge;
+        $data['insurance_charge'] = $this->insurance_charge;
+        $data['quality_charge'] = $this->quality_charge;
+        $data['gst'] = $this->gst;
+
+        $commodityProduct = $this->getCommodityProduct;
+        $extra_charges = 0;
+        foreach ($commodityProduct->charge_name as $charge_key => $charge_name) {
+            $other_charges_arr['name'] = $charge_name;
+            $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : 0;
+            $other_charges_arr['operator'] = isset($commodityProduct->operator[$charge_key]) ? $commodityProduct->operator[$charge_key] : "";
+
+            if($other_charges_arr['operator']){
+                if($other_charges_arr['operator'] == "+"){
+                    $extra_charges += $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "-"){
+                    $extra_charges -= $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "*"){
+                    $extra_charges += 0;
+                }elseif($other_charges_arr['operator'] == "/"){
+                    $extra_charges += 0;
+                }elseif($other_charges_arr['operator'] == "%"){
+                    $extra_charges += 0;
+                }
+            }
+        }
+
+        $base_price = $this->base_price;
+        $gauge_diff = $default_variation_price;
+        $all_charges = $this->loading_charge + $this->insurance_charge + $this->quality_charge + $extra_charges;
+        $total_amount = $base_price + $gauge_diff + $all_charges;
+        $tax_amount = round($total_amount * $this->gst / 100);
+        $ex_price = $total_amount + $tax_amount;
+        $data['total_charges'] = $all_charges;
+        $data['total_amount'] = $total_amount;
+        $data['tax_amount'] = $tax_amount;
+        $data['ex_price'] = $ex_price;
 
         $thirty_dates = collect();
         for ($i = 29; $i >= 0; $i--) {
@@ -161,29 +203,41 @@ class ProductDetailResource extends JsonResource
             ->where('created_at', '>=', Carbon::now()->subDays(30))
             ->get();
 
-            $last_thirty_days_calls = $thirty_dates->mapWithKeys(function ($date) use ($price_history) {
+        $last_thirty_days_calls = $thirty_dates->mapWithKeys(function ($date) use ($price_history) {
 
-                $filtered_records = $price_history->filter(function ($history) use ($date) {
-                    return Carbon::parse($history->created_at)->format('d/m/y') === $date;
-                });
-
-                // $average_base_price = $filtered_records->avg(function ($history) {
-                //     return isset($history->seller_commodity_product_detail['base_price']) ? $history->seller_commodity_product_detail['base_price'] : $this->base_price;
-                // });
-
-                // return [$date => round($average_base_price)];
-
-                $average_base_price = $filtered_records->last();
-
-                return [$date => round(isset($average_base_price->seller_commodity_product_detail['base_price']) ? $average_base_price->seller_commodity_product_detail['base_price'] : $this->base_price)];
+            $filtered_records = $price_history->filter(function ($history) use ($date) {
+                return Carbon::parse($history->created_at)->format('d/m/y') === $date;
             });
 
+            // $average_base_price = $filtered_records->avg(function ($history) {
+            //     return isset($history->seller_commodity_product_detail['base_price']) ? $history->seller_commodity_product_detail['base_price'] : $this->base_price;
+            // });
+
+            // return [$date => round($average_base_price)];
+
+            $average_base_price = $filtered_records->last();
+
+            return [$date => round(isset($average_base_price->seller_commodity_product_detail['base_price']) ? $average_base_price->seller_commodity_product_detail['base_price'] : $this->base_price)];
+        });
+        $packagin_arr = [];
+        if($this->packaging_type && count($this->packaging_type) > 0){
+            foreach ($this->packaging_type as $key => $type_id) {
+                $packagin_type = PackagingType::find($type_id);
+                if($packagin_type){
+                    $packagin_data['id'] = $packagin_type->id;
+                    $packagin_data['name'] = $packagin_type->name;
+                    $packagin_data['charge'] = $this->packaging_type_price ? ($this->packaging_type_price && isset($this->packaging_type_price[$packagin_type->id]) ? $this->packaging_type_price[$packagin_type->id] : 0) : 0;
+                    $packagin_arr[] = $packagin_data;
+                }
+            }
+        }
+        // Sort array by charge in ascending order
+        usort($packagin_arr, function ($a, $b) {
+            return (float)$a['charge'] <=> (float)$b['charge'];
+        });
+        $data['packaging_charge'] = $packagin_arr;
+
         $data['price_history'] = $last_thirty_days_calls;
-        $data['test'] = [
-            $this->user_id,
-            $this->commodity_product_id,
-            $this->id,
-        ];
         $data['product_delivery_info'] = websiteSetupValue('product_delivery_info');
         $data['product_terms_condition'] = websiteSetupValue('product_terms_condition');
 
