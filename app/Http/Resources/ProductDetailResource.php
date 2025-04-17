@@ -159,13 +159,12 @@ class ProductDetailResource extends JsonResource
         $data['quality_charge'] = $this->quality_charge;
         $data['gst'] = $this->gst;
 
-        $commodityProduct = $this->getCommodityProduct;
         $extra_charges = 0;
         $other_charges = [];
-        foreach ($commodityProduct->charge_name as $charge_key => $charge_name) {
+        foreach ($this->charge_name as $charge_key => $charge_name) {
             $other_charges_arr['name'] = $charge_name;
-            $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : "0";
-            $other_charges_arr['operator'] = isset($commodityProduct->operator[$charge_key]) ? $commodityProduct->operator[$charge_key] : "";
+            $other_charges_arr['price'] = isset($this->charge_price[$charge_key]) ? $this->charge_price[$charge_key] : "0";
+            $other_charges_arr['operator'] = isset($this->operator[$charge_key]) ? $this->operator[$charge_key] : "";
 
             if($other_charges_arr['operator']){
                 if($other_charges_arr['operator'] == "+"){
