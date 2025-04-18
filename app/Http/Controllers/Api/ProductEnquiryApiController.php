@@ -12,6 +12,7 @@ use App\Models\SellerProductEnquiry;
 use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
 use App\Models\ProductEnquiryHistory;
+use App\Models\SellerCommodityProduct;
 use App\Models\CreditWalletTransaction;
 use App\Models\TransporterAddressPrice;
 use App\Models\TransporterProductEnquiry;
@@ -71,6 +72,8 @@ class ProductEnquiryApiController extends Controller
             $data->billing_address      = $request->billing_address;
             $data->delivery_address     = $request->delivery_address;
             $data->consignee_detail     = $request->consignee_detail;
+            $data->quality              = $request->quality;
+            $data->packaging_charge     = $request->packaging_charge;
             $data->purpose              = $request->purpose;
             $data->description          = $request->description;
             $data->price                = $request->price;
@@ -136,7 +139,7 @@ class ProductEnquiryApiController extends Controller
                 // }));
 
                 foreach ($seller_ids as $user_id) {
-                    $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where(function($query) use ($variation_arr){
+                    $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('commodity_product_id', $enquiry_data->commodity_product_id)->where('brand_id', $enquiry_data->brand_id)->where(function($query) use ($variation_arr){
                         foreach ($variation_arr as $variation) {
                             $query->orWhereJsonContains('value', $variation);
                         }
@@ -156,7 +159,7 @@ class ProductEnquiryApiController extends Controller
                         }
                         $new_variation_arr[] = $enquiry_variations;
                     }
-
+                    $seller_commodity_products = SellerCommodityProduct::where('user_id', $user_id)->where('commodity_product_id', $enquiry_data->commodity_product_id)->where('brand_id', $enquiry_data->brand_id)->first();
                     $data = SellerProductEnquiry::where('user_id', $user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
                     if(!$data){
                         $data                   = new SellerProductEnquiry;
@@ -169,6 +172,8 @@ class ProductEnquiryApiController extends Controller
                     $data->unique_id            = $enquiry_data->unique_id;
                     $data->origin_city          = $enquiry_data->origin_city;
                     $data->value                = $new_variation_arr;
+                    $data->quality              = $request->quality;
+                    $data->packaging_charge     = $request->packaging_charge;
                     $data->billing_address      = $enquiry_data->billing_address;
                     $data->delivery_address     = $enquiry_data->delivery_address;
                     $data->consignee_detail     = $enquiry_data->consignee_detail;
@@ -176,8 +181,8 @@ class ProductEnquiryApiController extends Controller
                     $data->description          = $enquiry_data->description;
                     $data->message              = $enquiry_data->message;
                     $data->price                = $price_arr;
-                    $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
-                    $data->loading_address      = $product_state_prices[0]->getSellerCommodityProduct->loading_address;
+                    $data->base_price           = $seller_commodity_products->base_price ?? 0;
+                    $data->loading_address      = $seller_commodity_products->loading_address;
                     $data->status               = $data->status ?? 'pending';
                     if(!$data->history){
                         $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
