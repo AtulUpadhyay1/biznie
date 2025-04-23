@@ -204,19 +204,24 @@
                                                         <h2 class="accordion-header" id="heading_{{ $list_data->id }}">
                                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ $list_data->id }}" aria-expanded="false" aria-controls="collapse_{{ $list_data->id }}">
                                                                 <b>{{ $list_data->getUser->getBusiness->name}} ({{ getSellerType($list_data->user_id) }}) </b>,
-                                                                <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($base_price) }},
-                                                                <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber($defaul_ex_price) }},
                                                                 @php
                                                                     $default_variation = getDefaultCommodityProductVariation($list_data->commodity_product_id, $list_data->brand_id, $state, $city)
                                                                 @endphp
                                                                 @if($default_variation)
                                                                     @foreach ($default_variation->value as $default_variations)
-                                                                        {{ $default_variations['name'] }}: {{ $default_variations['value'] }}
+                                                                        <b class="ms-1">{{ $default_variations['name'] }}:</b> {{ $default_variations['value'] }}
                                                                         @if($default_variation->getCommodityProduct->unit && $default_variation->getCommodityProduct->unit[$default_variations['name']])
                                                                             ({{getProductUnit($default_variation->getCommodityProduct->unit[$default_variations['name']])->short_name}})
-                                                                        @endif
+                                                                        @endif ,
                                                                     @endforeach
                                                                 @endif
+                                                                <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($base_price) }},
+                                                                <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber($defaul_ex_price) }}
+                                                                <b class="ms-1">
+                                                                    <span title="View Calculation" data-bs-toggle="modal" data-bs-target="#updateBasePrice_{{ $list_data->id }}">
+                                                                        <i class="bi bi-info-circle text-danger"></i>
+                                                                    </span>
+                                                                </b>
                                                                 @if ($repliedStatus)
                                                                     <b class="ms-1">Status: </b><span class="badge bg-success">{{ $repliedStatus['status'] }}</span>
                                                                     <span class="ms-1">{{ \Carbon\Carbon::parse($repliedStatus['created_at'])->format('d-m-Y H:i:s') }}</span>
@@ -380,6 +385,47 @@
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal fade" id="updateBasePrice_{{ $list_data->id }}" tabindex="-1" aria-labelledby="updateBasePriceLable_{{ $list_data->id }}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="updateBasePriceLable_{{ $list_data->id }}">Calculation</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>
+                                                                    <b>Base Price:</b> ₹ {{ formatIndianNumber($list_data->base_price) }} <br>
+                                                                    @if ($default_price > 0)
+                                                                        <b>Guage Difference:</b> + ₹ {{ formatIndianNumber($default_price) }} <br>
+                                                                    @endif
+                                                                    @if ($loading_charge > 0)
+                                                                        <b>Loading Charge:</b> + ₹ {{ formatIndianNumber($loading_charge) }} <br>
+                                                                    @endif
+
+                                                                    @if($insurance_charge > 0)
+                                                                        <b>Insurance Charge:</b> + ₹ {{ formatIndianNumber($insurance_charge) }} <br>
+                                                                    @endif
+
+                                                                    @foreach ($other_charges as $other_charge)
+                                                                        @if($other_charge['price'] > 0)
+                                                                            <b>{{ $other_charge['name'] }}:</b> {{ $other_charge['operator'] }} ₹ {{ formatIndianNumber($other_charge['price']) }}<br>
+                                                                        @endif
+                                                                    @endforeach
+                                                                    @php
+                                                                        $total_cal = $list_data->base_price + $default_price + $loading_charge + $insurance_charge + $extra_charges;
+                                                                    @endphp
+                                                                    <br>
+                                                                    <b>Total:</b> ₹ {{ formatIndianNumber($total_cal) }}<br>
+                                                                    <b>GST:</b> + {{ $gst }} % <br>
+                                                                    <span class="text-success">
+                                                                        <b>Ex Price:</b> ₹ {{ formatIndianNumber($defaul_ex_price) }} <br>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
