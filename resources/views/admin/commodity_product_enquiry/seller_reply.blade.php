@@ -164,12 +164,40 @@
                                                             }
 
                                                             $default_price = getDefaultCommodityProductVariationPrice($list_data->commodity_product_id, $list_data->brand_id, $state, $city);
-                                                            if($default_price){
-                                                                $default_tax            = ($default_price + $base_price) * $seller_commodity_product->gst / 100;
-                                                                $per_unit_price         = ($default_price + $base_price) + $default_tax;
-                                                                $default_final_price    = $per_unit_price * 1;
-                                                                $defaul_ex_price        += $default_final_price;
+                                                            $loading_charge = $seller_commodity_product->loading_charge;
+                                                            $insurance_charge = $seller_commodity_product->insurance_charge;
+                                                            $quality_charge = $seller_commodity_product->quality_charge;
+                                                            $gst = $seller_commodity_product->gst;
+
+                                                            $extra_charges = 0;
+                                                            $other_charges = [];
+                                                            foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
+                                                                $other_charges_arr['name'] = $charge_name;
+                                                                $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : "0";
+                                                                $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : "";
+
+                                                                if($other_charges_arr['operator']){
+                                                                    if($other_charges_arr['operator'] == "+"){
+                                                                        $extra_charges += $other_charges_arr['price'];
+                                                                    }elseif($other_charges_arr['operator'] == "-"){
+                                                                        $extra_charges -= $other_charges_arr['price'];
+                                                                    }elseif($other_charges_arr['operator'] == "*"){
+                                                                        $extra_charges += 0;
+                                                                    }elseif($other_charges_arr['operator'] == "/"){
+                                                                        $extra_charges += 0;
+                                                                    }elseif($other_charges_arr['operator'] == "%"){
+                                                                        $extra_charges += 0;
+                                                                    }
+                                                                }
+                                                                $other_charges[] = $other_charges_arr;
                                                             }
+
+
+                                                            $gauge_diff = $default_price;
+                                                            $all_charges = $loading_charge + $insurance_charge + $quality_charge + $extra_charges;
+                                                            $total_amount = $base_price + $gauge_diff + $all_charges;
+                                                            $tax_amount = round($total_amount * $gst / 100);
+                                                            $defaul_ex_price = $total_amount + $tax_amount;
                                                             // $gst_amount         += $tax;
 
                                                         @endphp
@@ -301,27 +329,52 @@
 
                                                                         <tr>
                                                                             <td>{{$loop->iteration}}</td>
+                                                                            @php
+                                                                                $variation_arr = [];
+                                                                                $total_quantity = 0;
+                                                                                $ex_price = 0;
+                                                                                $quality_price = $list_data->quality && isset($list_data->quality['price']) ? $list_data->quality['price'] : "0";
+                                                                                $packaging_charge_price = $list_data->packaging_charge && isset($list_data->packaging_charge['charge']) ? $list_data->packaging_charge['charge'] : "0";
+                                                                                $all_charges = $loading_charge + $insurance_charge + $quality_charge + $quality_price + $packaging_charge_price + $extra_charges;
+                                                                            @endphp
                                                                             @foreach ($variation['value'] as $value)
+                                                                                @php
+                                                                                    $variation_data_arr['id'] = $value['id'];
+                                                                                    $variation_data_arr['name'] = $value['name'];
+                                                                                    $variation_data_arr['value'] = $value['value'];
+                                                                                    $variation_arr[] = $variation_data_arr;
+                                                                                    $quantity = $variation['quantity'];
+
+                                                                                    $gauge_diff = App\Models\SellerCommodityProductStatePrice::where('user_id', $list_data->user_id)
+                                                                                    ->where('commodity_product_id', $list_data->commodity_product_id)
+                                                                                    ->where('brand_id', $list_data->brand_id)
+                                                                                    ->where('state', $state)
+                                                                                    ->where('city', $city)
+                                                                                    // ->whereJsonContains('value', $variation['value'])
+                                                                                    ->where(function($query) use ($variation_arr) {
+                                                                                        foreach ($variation_arr as $variation) {
+                                                                                            $query->whereJsonContains('value', $variation);
+                                                                                        }
+                                                                                    })
+                                                                                    ->first();
+
+                                                                                    if ($gauge_diff) {
+                                                                                        $price = $gauge_diff->price;
+                                                                                        $per_unit_price = $gauge_diff->price + $base_price + $all_charges;
+                                                                                        $tax = round(($per_unit_price) * $gst / 100);
+                                                                                        $per_unit_price += $tax;
+                                                                                        $final_price = $per_unit_price * $quantity;
+                                                                                        $total_quantity         += $quantity;
+                                                                                        $ex_price += $final_price;
+                                                                                    }
+
+                                                                                @endphp
                                                                                 <td>{{ $value['value'] }}</td>
                                                                             @endforeach
                                                                             <td>{{ $variation['quantity'] }}</td>
-                                                                            @php
-                                                                                $gauge_diff = App\Models\SellerCommodityProductStatePrice::where('user_id', $list_data->user_id)
-                                                                                    ->where('commodity_product_id', $list_data->commodity_product_id)
-                                                                                    ->where('brand_id', $list_data->brand_id)
-                                                                                    // ->where('state', $state)
-                                                                                    // ->where('city', $city)
-                                                                                    // ->whereJsonContains('value', $variation['value'])
-                                                                                    // ->where(function($query) use ($variation) {
-                                                                                    //     foreach ($variation['value'] as $value) {
-                                                                                    //         $query->whereJsonContains('value', $value['value']);
-                                                                                    //     }
-                                                                                    // })
-                                                                                    ->first();
-                                                                            @endphp
                                                                             <td>₹ {{ $gauge_diff->price }}</td>
                                                                             {{-- <td>₹ {{ formatIndianNumber($final_variation_price) }}</td> --}}
-                                                                            <td>₹ {{ formatIndianNumber($final_variation_price + $list_data->base_price) }}</td>
+                                                                            <td>₹ {{ formatIndianNumber($ex_price) }}</td>
                                                                         </tr>
 
                                                                     @endforeach
