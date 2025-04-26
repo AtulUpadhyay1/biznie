@@ -218,7 +218,7 @@
                                                                 <b class="ms-1">Base Price</b> : ₹ {{ formatIndianNumber($base_price) }},
                                                                 <b class="ms-1">Ex Price</b> : ₹ {{ formatIndianNumber($defaul_ex_price) }}
                                                                 <b class="ms-1">
-                                                                    <span title="View Calculation" data-bs-toggle="modal" data-bs-target="#updateBasePrice_{{ $list_data->id }}">
+                                                                    <span title="View Calculation" data-bs-toggle="modal" data-bs-target="#viewCaculation_{{ $list_data->id }}">
                                                                         <i class="bi bi-info-circle text-danger"></i>
                                                                     </span>
                                                                 </b>
@@ -349,8 +349,11 @@
                                                                                     $variation_data_arr['value'] = $value['value'];
                                                                                     $variation_arr[] = $variation_data_arr;
                                                                                     $quantity = $variation['quantity'];
-
-                                                                                    $gauge_diff = App\Models\SellerCommodityProductStatePrice::where('user_id', $list_data->user_id)
+                                                                                @endphp
+                                                                                <td>{{ $value['value'] }}</td>
+                                                                            @endforeach
+                                                                            @php
+                                                                                $gauge_diff = App\Models\SellerCommodityProductStatePrice::where('user_id', $list_data->user_id)
                                                                                     ->where('commodity_product_id', $list_data->commodity_product_id)
                                                                                     ->where('brand_id', $list_data->brand_id)
                                                                                     ->where('state', $state)
@@ -361,21 +364,18 @@
                                                                                             $query->whereJsonContains('value', $variation);
                                                                                         }
                                                                                     })
-                                                                                    ->first();
+                                                                                ->first();
 
-                                                                                    if ($gauge_diff) {
-                                                                                        $price = $gauge_diff->price;
-                                                                                        $per_unit_price = $gauge_diff->price + $base_price + $all_charges;
-                                                                                        $tax = round(($per_unit_price) * $gst / 100);
-                                                                                        $per_unit_price += $tax;
-                                                                                        $final_price = $per_unit_price * $quantity;
-                                                                                        $total_quantity         += $quantity;
-                                                                                        $ex_price += $final_price;
-                                                                                    }
-
-                                                                                @endphp
-                                                                                <td>{{ $value['value'] }}</td>
-                                                                            @endforeach
+                                                                                if ($gauge_diff) {
+                                                                                    $price = $gauge_diff->price;
+                                                                                    $per_unit_price = $gauge_diff->price + $base_price + $all_charges;
+                                                                                    $tax = round(($per_unit_price) * $gst / 100);
+                                                                                    $per_unit_price += $tax;
+                                                                                    $final_price = $per_unit_price * $quantity;
+                                                                                    $total_quantity         += $quantity;
+                                                                                    $ex_price += $final_price;
+                                                                                }
+                                                                            @endphp
                                                                             <td>{{ $variation['quantity'] }}</td>
                                                                             <td>₹ {{ $gauge_diff->price }}</td>
                                                                             {{-- <td>₹ {{ formatIndianNumber($final_variation_price) }}</td> --}}
@@ -389,11 +389,11 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="modal fade" id="updateBasePrice_{{ $list_data->id }}" tabindex="-1" aria-labelledby="updateBasePriceLable_{{ $list_data->id }}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
+                                                <div class="modal fade" id="viewCaculation_{{ $list_data->id }}" tabindex="-1" aria-labelledby="viewCaculationLable_{{ $list_data->id }}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="updateBasePriceLable_{{ $list_data->id }}">Calculation</h5>
+                                                                <h5 class="modal-title" id="viewCaculationLable_{{ $list_data->id }}">Calculation</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
                                                             </div>
                                                             <div class="modal-body">
@@ -468,8 +468,8 @@
                                             @if ($set_enquiry_data)
                                                 <b>{{ $set_enquiry_data->getUser->name}} ({{ getSellerType($set_enquiry_data->user_id) }})</b>,
                                                 <b>Brand</b> : {{ $set_enquiry_data->getBrand->name }},
-                                                <b>State</b> : {{ $set_enquiry_data->getSellerCommodityProduct->getStatePrice[0]->state }},
-                                                <b>City</b> : {{ $set_enquiry_data->getSellerCommodityProduct->getStatePrice[0]->city }}
+                                                <b>State</b> : {{ $selected_seller_commodity_product->getStatePrice[0]->state }},
+                                                <b>City</b> : {{ $selected_seller_commodity_product->getStatePrice[0]->city }}
                                             @else
                                                 <b>Loading...</b>
                                             @endif
@@ -509,12 +509,17 @@
                                                                 </td>
                                                                 <td>
                                                                     @php
-                                                                        $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0);
-                                                                        $total_variation_price += $variation_price;
+                                                                        // $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0) + $all_charges;
+                                                                        // $total_variation_price += $variation_price;
 
-                                                                        // $total_transport_price +=  $variation['quantity'] * $transport_price;
+                                                                        $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0) + $all_charges;
+                                                                        $tax = round(($variation_price) * $selected_seller_commodity_product->gst / 100);
+                                                                        $variation_price += $tax;
+                                                                        $final_price = $variation_price * $variation['quantity'];
+                                                                        $total_variation_price += $final_price;
+                                                                        $total_transport_price +=  $variation['quantity'] * $transport_price;
                                                                     @endphp
-                                                                    ₹ {{ formatIndianNumber($variation_price) }}
+                                                                    ₹ {{ formatIndianNumber($total_variation_price) }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -551,7 +556,7 @@
                                                             </td>
                                                             <td style="border-right: hidden;">
                                                                 <label for="commission" class="form-label">Commission <br>
-                                                                    ({{ ucfirst($set_enquiry_data->getSellerCommodityProduct->commission_type) }})
+                                                                    ({{ ucfirst($selected_seller_commodity_product->commission_type) }})
                                                                 </label>
                                                             </td>
                                                             <td colspan="2">
@@ -651,7 +656,9 @@
                                                                 {{-- ₹ {{ formatIndianNumber($total_transport_price) }}
                                                                 <br> --}}
                                                                 @php
-                                                                    $total_variation_price += $commission != "" ? $commission : 0;
+                                                                    if($selected_seller_commodity_product->commission_type != 'include'){
+                                                                        $total_variation_price += $commission != "" ? $commission : 0;
+                                                                    }
                                                                     $total_variation_price += $transport_price != "" ? $transport_price : 0;
                                                                 @endphp
                                                                 ₹ {{ formatIndianNumber($total_variation_price) }}

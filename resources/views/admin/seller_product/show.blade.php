@@ -24,7 +24,7 @@
                                 $packaging_type = \App\Models\PackagingType::find($packaging_type_id);
                             @endphp
                             @if ($packaging_type)
-                                {{ $packaging_type->name }} : ₹ {{ formatIndianNumber($data->packaging_type_price[$packaging_type_id]) }}<br>
+                                {{ $packaging_type->name }} : ₹ {{ isset($data->packaging_type_price[$packaging_type_id]) ? formatIndianNumber($data->packaging_type_price[$packaging_type_id]) : 0 }}<br>
                             @endif
                         @endforeach
                         <b>Base Price: </b> ₹ {{ formatIndianNumber($data->base_price) }}<br>

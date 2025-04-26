@@ -69,6 +69,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'gst_amount'        => 0,
             'tcs_amount'        => 0,
             'total_charges'     => 0,
+            'commission_type'   => '',
             'commission'        => 0,
             'final_variation_price' => 0,
             'ex_price'          => 0,
@@ -86,6 +87,7 @@ class ProductEnquiryDetailResource extends JsonResource
             // $data['variation']  = $markedSeller->value;
             $data['base_price'] = $markedSeller->base_price;
             $data['transport_price'] = $markedSeller->transport_price;
+            $data['commission_type'] = $markedSeller->commission_type;
             $data['commission'] = $markedSeller->commission;
             $data['is_mark']    = $markedSeller->is_mark ? true : false;
 
@@ -133,8 +135,10 @@ class ProductEnquiryDetailResource extends JsonResource
             }
 
             foreach($markedSeller->value as $variation){
-                $variation['tax']               = ($variation['price'] + $data['base_price']) * $seller_commodity_product->gst / 100;
-                $variation['per_unit_price']    = ($variation['price'] + $data['base_price']) + $variation['tax'] + $data['total_charges'];
+
+                $variation['total_price']       = ($variation['price'] + $data['base_price']) + $data['total_charges'] + $seller_commodity_product->loading_charge + $seller_commodity_product->insurance_charge;
+                $variation['tax']               = round(($variation['total_price']) * $seller_commodity_product->gst / 100);
+                $variation['per_unit_price']    = $variation['total_price'] + $variation['tax'];
                 $variation['final_price']       = $variation['per_unit_price'] * $variation['quantity'];
                 $data['variation'][]            = $variation;
                 $data['total_quantity']         += $variation['quantity'];

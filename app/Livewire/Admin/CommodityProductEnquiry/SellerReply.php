@@ -14,7 +14,7 @@ use App\Models\SellerCommodityProductStatePrice;
 class SellerReply extends Component
 {
     public $page_title = 'View Seller Reply';
-    public $hidden_id, $selected_enquiry_id, $list, $data, $set_enquiry_data, $set_enquiry_data_price = [], $set_enquiry_data_base_price, $transport_price = 0, $commission = 200;
+    public $hidden_id, $selected_enquiry_id, $list, $data, $set_enquiry_data, $set_seller_commodity_product, $set_enquiry_data_price = [], $set_enquiry_data_base_price, $transport_price = 0, $commission = 200;
 
     public $product_enquiry_data, $base_price, $selected_seller_commodity_product;
 
@@ -71,6 +71,10 @@ class SellerReply extends Component
         if($this->selected_enquiry_id){
             $this->set_enquiry_data_price = [];
             $this->set_enquiry_data = SellerProductEnquiry::with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct', 'getUser')->find($this->selected_enquiry_id);
+            $this->set_seller_commodity_product = SellerCommodityProduct::where('user_id', $this->set_enquiry_data->user_id)
+                ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
+                ->where('brand_id', $this->set_enquiry_data->brand_id)
+                ->first();
             $this->seller_credit_days = $this->set_enquiry_data->seller_credit_days ?? $this->set_enquiry_data->getUser->credit_days;
             $this->customer_credit_days = $this->set_enquiry_data->customer_credit_days ?? $this->set_enquiry_data->getCustomer->credit_days;
             $seller_commodity_product = SellerCommodityProduct::where('user_id', $this->set_enquiry_data->user_id)
@@ -96,7 +100,7 @@ class SellerReply extends Component
             // $this->set_enquiry_data_base_price = $seller_commodity_product->base_price ? $seller_commodity_product->base_price : 0;
             $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? $this->set_enquiry_data->base_price : 0;
             $this->transport_price = $this->set_enquiry_data->transport_price ? $this->set_enquiry_data->transport_price : 0;
-            $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_enquiry_data->getSellerCommodityProduct->commission_amount;
+            $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_seller_commodity_product->commission_amount;
         }
     }
 
@@ -164,6 +168,7 @@ class SellerReply extends Component
             $enquiry_data->value = $new_variation_arr;
             $enquiry_data->base_price = $this->set_enquiry_data_base_price;
             $enquiry_data->transport_price = $this->transport_price;
+            $enquiry_data->commission_type = $this->set_seller_commodity_product->commission_type;
             $enquiry_data->commission = $this->commission;
             $enquiry_data->price = $this->set_enquiry_data_price;
             $enquiry_data->is_mark = 1;

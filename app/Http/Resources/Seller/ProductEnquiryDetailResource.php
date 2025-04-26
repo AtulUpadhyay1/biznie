@@ -69,6 +69,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'gst_amount'        => 0,
             'tcs_amount'        => 0,
             'total_charges'     => 0,
+            'commission_type'   => $this->commission_type,
             'commission'        => 0,
             'final_variation_price' => 0,
             'ex_price'          => 0,
@@ -131,7 +132,7 @@ class ProductEnquiryDetailResource extends JsonResource
             $variation_arr[] = $variation;
         }
         $data['variation'] = $variation_arr;
-
+        $data['commission'] = $this->commission;
         // $seller_commodity_product   = SellerCommodityProduct::where('user_id', $this->user_id)->where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();
 
         // if($seller_commodity_product){
