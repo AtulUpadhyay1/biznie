@@ -88,7 +88,7 @@ class ProductEnquiryDetailResource extends JsonResource
             $data['base_price'] = $markedSeller->base_price;
             $data['transport_price'] = $markedSeller->transport_price;
             $data['commission_type'] = $markedSeller->commission_type;
-            $data['commission'] = $markedSeller->commission;
+            $data['commission'] = (int)$markedSeller->commission;
             $data['is_mark']    = $markedSeller->is_mark ? true : false;
 
             $seller_commodity_product   = SellerCommodityProduct::where('user_id', $markedSeller->user_id)->where('commodity_product_id', $markedSeller->commodity_product_id)->where('brand_id', $markedSeller->brand_id)->first();
