@@ -493,7 +493,7 @@
                                                             @endforeach
                                                             <th>Quantity</th>
                                                             <th>Gauge Diff.</th>
-                                                            <th>Final Price</th>
+                                                            <th>EX Price</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

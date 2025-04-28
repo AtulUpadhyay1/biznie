@@ -82,18 +82,28 @@ class SellerReply extends Component
                 ->where('brand_id', $this->set_enquiry_data->brand_id)
                 ->first();
             $this->selected_seller_commodity_product = $seller_commodity_product;
+            $address = $this->set_enquiry_data->loading_address[0];
+            $city = isset($address['city']) ? $address['city'] : '';
+            $state = isset($address['state']) ? $address['state'] : '';
             foreach ($this->set_enquiry_data->value as $variation) {
+                $variation_arr = [];
+                foreach ($variation['value'] as $value) {
+                    $variation_data_arr['id'] = $value['id'];
+                    $variation_data_arr['name'] = $value['name'];
+                    $variation_data_arr['value'] = $value['value'];
+                    $variation_arr[] = $variation_data_arr;
+                }
                 $gauge_diff = SellerCommodityProductStatePrice::where('user_id', $this->set_enquiry_data->user_id)
                     ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
                     ->where('brand_id', $this->set_enquiry_data->brand_id)
-                    // ->where('state', $state)
-                    // ->where('city', $city)
+                    ->where('state', $state)
+                    ->where('city', $city)
                     // ->whereJsonContains('value', $variation['value'])
-                    // ->where(function($query) use ($variation) {
-                    //     foreach ($variation['value'] as $value) {
-                    //         $query->whereJsonContains('value', $value['value']);
-                    //     }
-                    // })
+                    ->where(function($query) use ($variation_arr) {
+                        foreach ($variation_arr as $variation) {
+                            $query->whereJsonContains('value', $variation);
+                        }
+                    })
                     ->first();
                 $this->set_enquiry_data_price[] = $gauge_diff ? $gauge_diff->price : 0;
             }
