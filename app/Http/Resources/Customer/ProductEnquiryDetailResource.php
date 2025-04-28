@@ -102,6 +102,8 @@ class ProductEnquiryDetailResource extends JsonResource
             }
 
             $other_charges_arr = [];
+            $extra_charges = 0;
+
             foreach ($seller_commodity_product->charge_name ?? [] as $charge_key => $charge_name) {
                 $other_charges_arr['name'] = $charge_name;
                 $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : 0;
@@ -109,15 +111,15 @@ class ProductEnquiryDetailResource extends JsonResource
 
                 if($other_charges_arr['operator']){
                     if($other_charges_arr['operator'] == "+"){
-                        $data['total_charges'] += $other_charges_arr['price'];
+                        $extra_charges += $other_charges_arr['price'];
                     }elseif($other_charges_arr['operator'] == "-"){
-                        $data['total_charges'] -= $other_charges_arr['price'];
+                        $extra_charges -= $other_charges_arr['price'];
                     }elseif($other_charges_arr['operator'] == "*"){
-                        $data['total_charges'] += $data['ex_price'] * $other_charges_arr['price'];
+                        $extra_charges += 0;
                     }elseif($other_charges_arr['operator'] == "/"){
-                        $data['total_charges'] += $data['ex_price'] / $other_charges_arr['price'];
+                        $extra_charges += 0;
                     }elseif($other_charges_arr['operator'] == "%"){
-                        $data['total_charges'] += $data['ex_price'] * ($other_charges_arr['price'] / 100);
+                        $extra_charges += 0;
                     }
                 }
 
@@ -136,7 +138,7 @@ class ProductEnquiryDetailResource extends JsonResource
 
             foreach($markedSeller->value as $variation){
 
-                $variation['total_price']       = ($variation['price'] + $data['base_price']) + $data['total_charges'] + $seller_commodity_product->loading_charge + $seller_commodity_product->insurance_charge;
+                $variation['total_price']       = ($variation['price'] + $data['base_price']) + $extra_charges + $seller_commodity_product->loading_charge + $seller_commodity_product->insurance_charge;
                 $variation['tax']               = round(($variation['total_price']) * $seller_commodity_product->gst / 100);
                 $variation['per_unit_price']    = $variation['total_price'] + $variation['tax'];
                 $variation['final_price']       = $variation['per_unit_price'] * $variation['quantity'];
