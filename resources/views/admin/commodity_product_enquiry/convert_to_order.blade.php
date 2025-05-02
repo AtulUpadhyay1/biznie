@@ -231,6 +231,19 @@
                             Basic Price : ₹ {{ $data['base_price'] + $data['commission'] }} / Metric Ton <br>
                             Freight : ₹ {{ $data['transport_price'] }} / Metric Ton
                         </p> <br>
+                        @if($data['selected_quality'])
+                            <p>
+                                Quality:
+                                {{ $data['selected_quality']['name'] }} : ₹ {{ $data['selected_quality']['price'] }} <br>
+                            </p>
+                        @endif
+                        @if($data['selected_packaging_charge'])
+                            <p>
+                                Packaging:
+                                {{ $data['selected_packaging_charge']['name'] }} : ₹ {{ $data['selected_packaging_charge']['charge'] }} <br>
+                            </p>
+                            <br>
+                        @endif
                         @foreach ($data['variation'] as $variation)
                             <p>
                                 @foreach ($variation['value'] as $value)
