@@ -534,7 +534,7 @@
                                                                     ₹ {{ formatIndianNumber($variation_price) }}
                                                                 </td>
                                                                 <td>
-                                                                    ₹ {{ formatIndianNumber($total_variation_price) }}
+                                                                    ₹ {{ formatIndianNumber($final_price) }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
