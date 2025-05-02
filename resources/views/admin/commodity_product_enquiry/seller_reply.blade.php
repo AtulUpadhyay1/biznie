@@ -523,13 +523,16 @@
                                                                     @php
                                                                         // $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0) + $all_charges;
                                                                         // $total_variation_price += $variation_price;
-
                                                                         $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0) + $all_charges;
+                                                                        if($selected_seller_commodity_product->commission_type == 'exclude'){
+                                                                            $variation_price += $commission != "" ? $commission : 0;
+                                                                        }
                                                                         $tax = round(($variation_price) * $selected_seller_commodity_product->gst / 100);
                                                                         $variation_price += $tax;
                                                                         $final_price = $variation_price * $variation['quantity'];
                                                                         $total_variation_price += $final_price;
                                                                         $total_transport_price +=  $variation['quantity'] * $transport_price;
+                                                                        $total_quantity += $variation['quantity'];
                                                                     @endphp
                                                                     ₹ {{ formatIndianNumber($variation_price) }}
                                                                 </td>
@@ -591,7 +594,7 @@
                                                                 @endif
                                                             </td>
                                                             <th style="border-right: hidden;">
-                                                                <label for="commission" class="form-label">Commission <br>
+                                                                <label for="commission" class="form-label">Commission / MT<br>
                                                                     ({{ ucfirst($selected_seller_commodity_product->commission_type) }})
                                                                 </label>
                                                             </th>
@@ -697,12 +700,6 @@
                                                             <td colspan="3">
                                                                 {{-- ₹ {{ formatIndianNumber($total_transport_price) }}
                                                                 <br> --}}
-                                                                @php
-                                                                    if($selected_seller_commodity_product->commission_type != 'include'){
-                                                                        $total_variation_price += $commission != "" ? $commission : 0;
-                                                                    }
-                                                                    $total_variation_price += $transport_price != "" ? $transport_price : 0;
-                                                                @endphp
                                                                 ₹ {{ formatIndianNumber($total_variation_price) }}
                                                             </td>
                                                         </tr>
@@ -714,7 +711,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                         <button type="button" class="btn btn-primary" wire:click="markSeller()" wire:loading.attr="disabled">
-                                            <span wire:loading.remove>Update</span>
+                                            <span wire:loading.remove wire:target="markSeller">Update</span>
                                             <span wire:loading wire:target="markSeller">Updating...</span>
                                         </button>
                                     </div>
