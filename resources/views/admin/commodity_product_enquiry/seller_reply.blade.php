@@ -543,18 +543,18 @@
                                                                 <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}" style="border-right: hidden;"></td>
                                                                 @if($set_enquiry_data->quality)
                                                                     <th>
-                                                                        <label for="" class="form-label">{{ $set_enquiry_data->quality['name'] }}</label>
+                                                                        <label for="" class="form-label">Quality</label>
                                                                     </th>
                                                                     <td>
-                                                                        ₹ {{ formatIndianNumber($set_enquiry_data->quality['price']) }}
+                                                                        {{ $set_enquiry_data->quality['name'] }}: ₹ {{ formatIndianNumber($set_enquiry_data->quality['price']) }}
                                                                     </td>
                                                                 @endif
                                                                 @if($set_enquiry_data->packaging_charge)
                                                                     <th>
-                                                                        <label for="" class="form-label">{{ $set_enquiry_data->packaging_charge['name'] }}</label>
+                                                                        <label for="" class="form-label">Packaging</label>
                                                                     </th>
                                                                     <td>
-                                                                        ₹ {{ formatIndianNumber($set_enquiry_data->packaging_charge['charge']) }}
+                                                                        {{ $set_enquiry_data->packaging_charge['name'] }}: ₹ {{ formatIndianNumber($set_enquiry_data->packaging_charge['charge']) }}
                                                                     </td>
                                                                 @endif
                                                             </tr>
