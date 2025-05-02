@@ -40,7 +40,6 @@
                                 <b>User: </b> {{ $data->getCustomer->name }} <br>
                                 <b>Company Name: </b> {{ $data->getCustomer->getUserDetail ? $data->getCustomer->getUserDetail->company_name : '--' }} <br>
                                 <b>GST: </b> {{ $data->getCustomer->getUserDetail ? $data->getCustomer->getUserDetail->gst_number : '--' }} <br>
-                                <b>Origin City: </b> {{ $data->origin_city	}} <br>
                                 <b>Phone: </b> {{ $data->getCustomer->phone }} <br>
                             </p><br>
                             <p>
@@ -259,6 +258,18 @@
                                                                     @endif
                                                                 </div>
                                                             @endforeach
+                                                            @if($list_data->quality)
+                                                                <div class="col-md-6 mt-3">
+                                                                    <b>Quality: </b> {{ $list_data->quality['name'] }} <br>
+                                                                    <b>Price: </b> ₹ {{ formatIndianNumber($list_data->quality['price']) }} <br>
+                                                                </div>
+                                                            @endif
+                                                            @if($list_data->packaging_charge)
+                                                                <div class="col-md-6 mt-3">
+                                                                    <b>Packaging Charge: </b> {{ $list_data->packaging_charge['name'] }} <br>
+                                                                    <b>Price: </b> ₹ {{ formatIndianNumber($list_data->packaging_charge['charge']) }} <br>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                         <div class="table-responsive mt-3">
                                                             <table class="custom-table">
@@ -274,8 +285,8 @@
                                                                         @endforeach
                                                                         <th>Quantity (MT)</th>
                                                                         <th>Gauge Diff.</th>
-                                                                        {{-- <th>EX Price</th> --}}
                                                                         <th>EX Price</th>
+                                                                        <th>Ex Price x Qty</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -378,7 +389,7 @@
                                                                             @endphp
                                                                             <td>{{ $variation['quantity'] }}</td>
                                                                             <td>₹ {{ $gauge_diff->price }}</td>
-                                                                            {{-- <td>₹ {{ formatIndianNumber($final_variation_price) }}</td> --}}
+                                                                            <td>₹ {{ formatIndianNumber($per_unit_price) }} / MT</td>
                                                                             <td>₹ {{ formatIndianNumber($ex_price) }}</td>
                                                                         </tr>
 
@@ -460,8 +471,8 @@
                             $total_variation_price = 0;
                             $total_transport_price = 0;
                         @endphp
-                        <div class="modal fade bd-example-modal-lg" id="updatePrice" tabindex="-1" aria-labelledby="updatePriceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
-                            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal fade bd-example-modal-xl" id="updatePrice" tabindex="-1" aria-labelledby="updatePriceLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
+                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="updatePriceLabel">
@@ -491,9 +502,10 @@
                                                                     @endif
                                                                 </th>
                                                             @endforeach
-                                                            <th>Quantity</th>
+                                                            <th>Quantity (MT)</th>
                                                             <th>Gauge Diff.</th>
                                                             <th>EX Price</th>
+                                                            <th>Ex Price x Qty</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -519,24 +531,48 @@
                                                                         $total_variation_price += $final_price;
                                                                         $total_transport_price +=  $variation['quantity'] * $transport_price;
                                                                     @endphp
+                                                                    ₹ {{ formatIndianNumber($variation_price) }}
+                                                                </td>
+                                                                <td>
                                                                     ₹ {{ formatIndianNumber($total_variation_price) }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
+                                                        @if($set_enquiry_data->quality || $set_enquiry_data->packaging_charge)
+                                                            <tr>
+                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}" style="border-right: hidden;"></td>
+                                                                @if($set_enquiry_data->quality)
+                                                                    <th>
+                                                                        <label for="" class="form-label">{{ $set_enquiry_data->quality['name'] }}</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        ₹ {{ formatIndianNumber($set_enquiry_data->quality['price']) }}
+                                                                    </td>
+                                                                @endif
+                                                                @if($set_enquiry_data->packaging_charge)
+                                                                    <th>
+                                                                        <label for="" class="form-label">{{ $set_enquiry_data->packaging_charge['name'] }}</label>
+                                                                    </th>
+                                                                    <td>
+                                                                        ₹ {{ formatIndianNumber($set_enquiry_data->packaging_charge['charge']) }}
+                                                                    </td>
+                                                                @endif
+                                                            </tr>
+                                                        @endif
                                                         <tr>
-                                                            <td style="border-right: hidden;">
+                                                            <th style="border-right: hidden;">
                                                                 <label for="transport_price" class="form-label">Transport Price</label>
-                                                            </td>
+                                                            </th>
                                                             <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
                                                                 <input type="number" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model.live="transport_price">
                                                                 @error('transport_price') <small class="text-danger">{{ $message }}</small>@enderror
 
                                                             </td>
 
-                                                            <td style="border-right: hidden;">
+                                                            <th style="border-right: hidden;">
                                                                 <label for="base_price" class="form-label">Base Price</label>
-                                                            </td>
-                                                            <td colspan="2">
+                                                            </th>
+                                                            <td colspan="3">
                                                                 <input type="number" class="form-control" id="base_price" placeholder="Enter Base Price" wire:model.live="set_enquiry_data_base_price">
                                                                 @error('set_enquiry_data_base_price') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
@@ -554,105 +590,111 @@
                                                                     <a href="{{route('admin.commodity-product-enquiry.sellerReply', $hidden_id)}}?active_tab=transporter" wire:navigate>Select Transpoter</a>
                                                                 @endif
                                                             </td>
-                                                            <td style="border-right: hidden;">
+                                                            <th style="border-right: hidden;">
                                                                 <label for="commission" class="form-label">Commission <br>
                                                                     ({{ ucfirst($selected_seller_commodity_product->commission_type) }})
                                                                 </label>
-                                                            </td>
-                                                            <td colspan="2">
+                                                            </th>
+                                                            <td colspan="3">
                                                                 <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model.live="commission">
                                                                 @error('commission') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
                                                         </tr>
 
                                                         <tr>
-                                                            <td style="border-right: hidden;">
+                                                            <th style="border-right: hidden;">
                                                                 <label for="seller_credit_days" class="form-label">Seller Credit Days</label>
-                                                            </td>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
+                                                            </th>
+                                                            <td colspan="{{ $selected_seller_commodity_product->loading_charge > 0 ? count($set_enquiry_data->value[0]['value']) : count($set_enquiry_data->value[0]['value']) + 1 }}">
                                                                 <input type="number" class="form-control" id="seller_credit_days" placeholder="Enter Seller Credit Days" wire:model="seller_credit_days">
                                                                 @error('seller_credit_days') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
-                                                            <td style="border-right: hidden;">
-                                                                {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                <label for="" class="form-label">Loading Charge</label>
-                                                            </td>
-                                                            <td colspan="2">
-                                                                ₹ {{ formatIndianNumber($selected_seller_commodity_product->loading_charge) }}
-                                                            </td>
+                                                            @if ($selected_seller_commodity_product->loading_charge > 0)
+                                                                <th style="border-right: hidden;">
+                                                                    {{-- <label for="" class="form-label">Total Transport Price</label> --}}
+                                                                    <label for="" class="form-label">Loading Charge</label>
+                                                                </th>
+                                                                <td colspan="3">
+                                                                    ₹ {{ formatIndianNumber($selected_seller_commodity_product->loading_charge) }}
+                                                                </td>
+                                                            @endif
                                                         </tr>
 
                                                         <tr>
-                                                            <td style="border-right: hidden;">
+                                                            <th style="border-right: hidden;">
                                                                 <label for="customer_credit_days" class="form-label">Buyer Credit Days</label>
-                                                            </td>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
+                                                            </th>
+                                                            <td colspan="{{ $selected_seller_commodity_product->insurance_charge > 0 ? count($set_enquiry_data->value[0]['value']) : count($set_enquiry_data->value[0]['value']) + 1 }}">
                                                                 <input type="number" class="form-control" id="customer_credit_days" placeholder="Enter Customer Credit Days" wire:model="customer_credit_days">
                                                                 @error('customer_credit_days') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
-                                                            <td style="border-right: hidden;">
-                                                                {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                <label for="" class="form-label">Insurance Charge</label>
-                                                            </td>
-                                                            <td colspan="2">
-                                                                ₹ {{ formatIndianNumber($selected_seller_commodity_product->insurance_charge) }}
-                                                            </td>
+                                                            @if($selected_seller_commodity_product->insurance_charge > 0)
+                                                                <th style="border-right: hidden;">
+                                                                    {{-- <label for="" class="form-label">Total Transport Price</label> --}}
+                                                                    <label for="" class="form-label">Insurance Charge</label>
+                                                                </th>
+                                                                <td colspan="3">
+                                                                    ₹ {{ formatIndianNumber($selected_seller_commodity_product->insurance_charge) }}
+                                                                </td>
+                                                            @endif
                                                         </tr>
-
-                                                        <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
-                                                            <td style="border-right: hidden;">
-                                                                {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                <label for="" class="form-label">Quality Charge</label>
-                                                            </td>
-                                                            <td colspan="2">
-                                                                ₹ {{ formatIndianNumber($selected_seller_commodity_product->quality_charge) }}
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
-                                                            <td style="border-right: hidden;">
-                                                                {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                <label for="" class="form-label">GST Charge</label>
-                                                            </td>
-                                                            <td colspan="2">
-                                                                ₹ {{ formatIndianNumber($selected_seller_commodity_product->gst) }}
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
-                                                            <td style="border-right: hidden;">
-                                                                {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                <label for="" class="form-label">TCS Charge</label>
-                                                            </td>
-                                                            <td colspan="2">
-                                                                ₹ {{ formatIndianNumber($selected_seller_commodity_product->tcs) }}
-                                                            </td>
-                                                        </tr>
-
-                                                        @foreach ($selected_seller_commodity_product->charge_name as $charge_key => $charge_name)
+                                                        @if ($selected_seller_commodity_product->quality_charge > 0)
                                                             <tr>
                                                                 <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
-                                                                <td style="border-right: hidden;">
+                                                                <th style="border-right: hidden;">
                                                                     {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                    <label for="" class="form-label">{{ $charge_name }}</label>
-                                                                </td>
-                                                                <td colspan="2">
-                                                                    {{ $selected_seller_commodity_product->operator[$charge_key] }} {{ $selected_seller_commodity_product->charge_price[$charge_key] }}
+                                                                    <label for="" class="form-label">Quality Charge</label>
+                                                                </th>
+                                                                <td colspan="3">
+                                                                    ₹ {{ formatIndianNumber($selected_seller_commodity_product->quality_charge) }}
                                                                 </td>
                                                             </tr>
-
+                                                        @endif
+                                                        @foreach ($selected_seller_commodity_product->charge_name as $charge_key => $charge_name)
+                                                            @if($selected_seller_commodity_product->charge_price[$charge_key] > 0)
+                                                                <tr>
+                                                                    <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
+                                                                    <th style="border-right: hidden;">
+                                                                        {{-- <label for="" class="form-label">Total Transport Price</label> --}}
+                                                                        <label for="" class="form-label">{{ $charge_name }}</label>
+                                                                    </th>
+                                                                    <td colspan="3">
+                                                                        {{ $selected_seller_commodity_product->operator[$charge_key] }} {{ $selected_seller_commodity_product->charge_price[$charge_key] }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
                                                         @endforeach
-
+                                                        @if ($selected_seller_commodity_product->gst)
+                                                            <tr>
+                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
+                                                                <th style="border-right: hidden;">
+                                                                    {{-- <label for="" class="form-label">Total Transport Price</label> --}}
+                                                                    <label for="" class="form-label">GST Charge</label>
+                                                                </th>
+                                                                <td colspan="3">
+                                                                    ₹ {{ formatIndianNumber($selected_seller_commodity_product->gst) }}
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                        @if ($selected_seller_commodity_product->tcs > 0)
+                                                            <tr>
+                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
+                                                                <th style="border-right: hidden;">
+                                                                    {{-- <label for="" class="form-label">Total Transport Price</label> --}}
+                                                                    <label for="" class="form-label">TCS Charge</label>
+                                                                </th>
+                                                                <td colspan="3">
+                                                                    ₹ {{ formatIndianNumber($selected_seller_commodity_product->tcs) }}
+                                                                </td>
+                                                            </tr>
+                                                        @endif
                                                         <tr>
                                                             <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
-                                                            <td style="border-right: hidden;">
+                                                            <th style="border-right: hidden;">
                                                                 {{-- <label for="" class="form-label">Total Transport Price</label> --}}
                                                                 <label for="" class="form-label">Total</label>
-                                                            </td>
-                                                            <td colspan="2">
+                                                            </th>
+                                                            <td colspan="3">
                                                                 {{-- ₹ {{ formatIndianNumber($total_transport_price) }}
                                                                 <br> --}}
                                                                 @php
