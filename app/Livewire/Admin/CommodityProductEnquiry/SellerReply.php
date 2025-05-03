@@ -16,7 +16,7 @@ class SellerReply extends Component
     public $page_title = 'View Seller Reply';
     public $hidden_id, $selected_enquiry_id, $list, $data, $set_enquiry_data, $set_seller_commodity_product, $set_enquiry_data_price = [], $set_enquiry_data_base_price, $transport_price = 0, $commission = 200;
 
-    public $product_enquiry_data, $base_price, $selected_seller_commodity_product;
+    public $product_enquiry_data, $base_price, $selected_seller_commodity_product, $is_editable_commission = true;
 
     public $transporter_list;
     public $transporter_enquiry, $transporter_price, $selected_transporter_id;
@@ -82,6 +82,7 @@ class SellerReply extends Component
                 ->where('brand_id', $this->set_enquiry_data->brand_id)
                 ->first();
             $this->selected_seller_commodity_product = $seller_commodity_product;
+            $this->is_editable_commission = $seller_commodity_product->commission_type == 'include';
             $address = $this->set_enquiry_data->loading_address[0];
             $city = isset($address['city']) ? $address['city'] : '';
             $state = isset($address['state']) ? $address['state'] : '';

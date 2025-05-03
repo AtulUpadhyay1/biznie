@@ -599,7 +599,17 @@
                                                                 </label>
                                                             </th>
                                                             <td colspan="3">
-                                                                <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model.live="commission">
+                                                                <div class="input-group flatpickr">
+                                                                    <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model.live="commission" {{ $is_editable_commission ? 'readonly' : '' }}>
+                                                                    @if ($selected_seller_commodity_product->commission_type == 'include')
+                                                                        <span class="input-group-text input-group-addon">
+                                                                            <div class="form-check form-switch">
+                                                                                <input type="checkbox" class="form-check-input" id="commission_editable" wire:model.live="is_editable_commission">
+                                                                                <label class="form-check-label" for="commission_editable"></label>
+                                                                            </div>
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
                                                                 @error('commission') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
                                                         </tr>
