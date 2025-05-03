@@ -138,6 +138,9 @@
                 $data['commission_type'] = $markedSeller->commission_type;
                 $data['commission'] = (int)$markedSeller->commission;
                 $data['is_mark']    = $markedSeller->is_mark ? true : false;
+                if($data['commission_type'] == 'exclude'){
+                    $data['base_price'] += $data['commission'];
+                }
 
                 $seller_commodity_product   = App\Models\SellerCommodityProduct::where('user_id', $markedSeller->user_id)->where('commodity_product_id', $markedSeller->commodity_product_id)->where('brand_id', $markedSeller->brand_id)->first();
 
@@ -208,9 +211,9 @@
 
                 $data['for_price']          = $data['ex_price'] + $data['transport_price'] * $data['total_quantity'];
                 $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
-                if($data['commission_type'] == 'exclude'){
-                    $data['final_variation_price'] += $data['commission'];
-                }
+                // if($data['commission_type'] == 'exclude'){
+                //     $data['final_variation_price'] += $data['commission'];
+                // }
                 // $data['status']     = $enquiry_data->getMarkedSellerProductEnquiry->status;
             }else{
                 $data['variation']   = $enquiry_data->variation;
@@ -228,7 +231,7 @@
                     </div>
                     <div class="card-body">
                         <p>
-                            Basic Price : ₹ {{ $data['base_price'] + $data['commission'] }} / Metric Ton <br>
+                            Basic Price : ₹ {{ $data['base_price'] }} / Metric Ton <br>
                             Freight : ₹ {{ $data['transport_price'] }} / Metric Ton
                         </p> <br>
                         @if($data['selected_quality'])
