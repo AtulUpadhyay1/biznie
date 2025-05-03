@@ -90,6 +90,9 @@ class ProductEnquiryDetailResource extends JsonResource
             $data['commission_type'] = $markedSeller->commission_type;
             $data['commission'] = (int)$markedSeller->commission;
             $data['is_mark']    = $markedSeller->is_mark ? true : false;
+            if($data['commission_type'] == 'exclude'){
+                $data['base_price'] += $data['commission'];
+            }
 
             $seller_commodity_product   = SellerCommodityProduct::where('user_id', $markedSeller->user_id)->where('commodity_product_id', $markedSeller->commodity_product_id)->where('brand_id', $markedSeller->brand_id)->first();
 
