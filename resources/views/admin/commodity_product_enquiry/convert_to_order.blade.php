@@ -2,14 +2,14 @@
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <x-loader />
-        <div class="col-md-4 mb-3">
+        <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
                         <h5>Request For Quotation</h5>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-3">
                     <p>
                         Enquiry Id : {{ $enquiry_data->unique_id }} <br>
                         Category : {{ $enquiry_data->getCommodityProduct->getCategory->name }} <br>
@@ -24,35 +24,35 @@
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
                         <h5>Buyer (Bill to)</h5>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-3">
                     <p>
-                        Name : {{ $enquiry_data->getUser->name }} <br>
+                        Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
                         Address : {{ $enquiry_data->billing_address['address_line_one'] }}
                         {{ $enquiry_data->billing_address['address_line_two'] }}
                         {{ $enquiry_data->billing_address['city'] }} <br>
                         Pincode : {{ isset($enquiry_data->billing_address['pin_code']) ? $enquiry_data->billing_address['pin_code'] : $enquiry_data->billing_address['pincode'] }} <br>
-                        GSTIN/UIN : 78945613212546VN <br>
+                        GSTIN/UIN : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
                         Phone : {{ $enquiry_data->getUser->phone }}
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
                         <h5>Consignee (Ship to)</h5>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-3">
                     <p>
                         Phone : {{ isset($enquiry_data->consignee_detail['phone_number']) ? $enquiry_data->consignee_detail['phone_number'] : $enquiry_data->consignee_detail['phone'] }} <br>
                         GST Number : {{ $enquiry_data->consignee_detail['gst'] }} <br>
@@ -65,6 +65,31 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h5>Seller Details</h5>
+                    </div>
+                </div>
+                <div class="card-body p-3">
+                    @php
+                        $seller = $enquiry_data->getMarkedSellerProductEnquiry->getUser;
+                        $sellerDetail = $seller->getSellerKycDetail;
+                    @endphp
+                    <p>
+                        Name : {{ $seller->name }} ({{$seller->getBusiness->name}})<br>
+                        Address : {{ $sellerDetail->address }}
+                        {{ $sellerDetail->city }}, {{ $sellerDetail->state }} <br>
+                        Pincode : {{ $sellerDetail->postal_code }} <br>
+                        GSTIN/UIN : {{ $sellerDetail->gst_number }} <br>
+                        Phone : {{ $seller->phone }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
         @php
             $data = [
                 'id'                => $enquiry_data->id,
