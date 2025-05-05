@@ -18,7 +18,9 @@
                         Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
                         {{ $enquiry_data->consignee_detail['address_line_two'] }}
                         {{ $enquiry_data->consignee_detail['city'] }}
-                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }}
+                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }} <br>
+                        Purpose : {{ $enquiry_data->purpose }} <br>
+                        Description : {{ $enquiry_data->description }}
                     </p>
                 </div>
             </div>
@@ -33,13 +35,14 @@
                 </div>
                 <div class="card-body p-3">
                     <p>
-                        Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
-                        Address : {{ $enquiry_data->billing_address['address_line_one'] }}
-                        {{ $enquiry_data->billing_address['address_line_two'] }}
-                        {{ $enquiry_data->billing_address['city'] }} <br>
-                        Pincode : {{ isset($enquiry_data->billing_address['pin_code']) ? $enquiry_data->billing_address['pin_code'] : $enquiry_data->billing_address['pincode'] }} <br>
-                        GSTIN/UIN : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                        Phone : {{ $enquiry_data->getUser->phone }}
+                        Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
+                        Phone : {{ $enquiry_data->getUser->phone }} <br>
+                        GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
+                        Pincode : {{ $enquiry_data->billing_address['pincode'] }} <br>
+                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
+                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
+                        City : {{ $enquiry_data->billing_address['city'] }} <br>
+                        State : {{ $enquiry_data->billing_address['state'] }}
                     </p>
                 </div>
             </div>
@@ -54,13 +57,14 @@
                 </div>
                 <div class="card-body p-3">
                     <p>
-                        Phone : {{ isset($enquiry_data->consignee_detail['phone_number']) ? $enquiry_data->consignee_detail['phone_number'] : $enquiry_data->consignee_detail['phone'] }} <br>
-                        GST Number : {{ $enquiry_data->consignee_detail['gst'] }} <br>
-                        Company : {{ $enquiry_data->consignee_detail['company_name'] }} <br>
-                        Address : {{ $enquiry_data->consignee_detail['address_line_one'] }}
-                        {{ $enquiry_data->consignee_detail['address_line_two'] }}
-                        {{ $enquiry_data->consignee_detail['city'] }} {{ $enquiry_data->consignee_detail['state'] }} <br>
-                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }}
+                        Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
+                        Phone : {{ $enquiry_data->getUser->phone }} <br>
+                        GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
+                        Pincode : {{ $enquiry_data->billing_address['pincode'] }} <br>
+                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
+                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
+                        City : {{ $enquiry_data->billing_address['city'] }} <br>
+                        State : {{ $enquiry_data->billing_address['state'] }}
                     </p>
                 </div>
             </div>
@@ -80,11 +84,13 @@
                     @endphp
                     <p>
                         Name : {{ $seller->name }} ({{$seller->getBusiness->name}})<br>
-                        Address : {{ $sellerDetail->address }}
-                        {{ $sellerDetail->city }}, {{ $sellerDetail->state }} <br>
+                        Phone : {{ $seller->phone }} <br>
+                        GST : {{ $sellerDetail->gst_number }} <br>
                         Pincode : {{ $sellerDetail->postal_code }} <br>
-                        GSTIN/UIN : {{ $sellerDetail->gst_number }} <br>
-                        Phone : {{ $seller->phone }}
+                        Address Line One : {{ $sellerDetail->address_line_one }} <br>
+                        Address Line Two : {{ $sellerDetail->address_line_two }} <br>
+                        City : {{ $sellerDetail->city }} <br>
+                        State : {{ $sellerDetail->state }}
                     </p>
                 </div>
             </div>
