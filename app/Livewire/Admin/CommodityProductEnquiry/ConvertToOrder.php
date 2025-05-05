@@ -27,7 +27,8 @@ class ConvertToOrder extends Component
     public function render()
     {
         $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($this->hidden_id);
-        return view('admin.commodity_product_enquiry.convert_to_order', compact('enquiry_data'));
+        $seller_enquiry_data = $enquiry_data->getMarkedSellerProductEnquiry;
+        return view('admin.commodity_product_enquiry.convert_to_order', compact('enquiry_data', 'seller_enquiry_data'));
     }
 
     public function setAmount($token_amount, $total_amount)
