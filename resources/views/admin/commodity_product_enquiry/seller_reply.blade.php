@@ -523,6 +523,7 @@
                                                                     @php
                                                                         // $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0) + $all_charges;
                                                                         // $total_variation_price += $variation_price;
+                                                                        $transport_price = $transport_price != '' ? $transport_price : 0;
                                                                         $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0) + $all_charges;
                                                                         if($selected_seller_commodity_product->commission_type == 'exclude'){
                                                                             $variation_price += $commission != "" ? $commission : 0;

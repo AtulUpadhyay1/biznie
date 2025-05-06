@@ -17,7 +17,7 @@ use App\Models\CommodityProductSellerOrderLedger;
 class ConvertToOrder extends Component
 {
     public $page_title = 'Conver To Order';
-    public $hidden_id, $token_amount, $total_amount, $message, $otp;
+    public $hidden_id, $required_booking_amount, $token_amount, $total_amount, $freight_token_amount, $calculated_amount, $message, $otp, $total_ex_factory_amount, $total_freight_amount, $gst;
 
     public function mount($id)
     {
@@ -31,11 +31,24 @@ class ConvertToOrder extends Component
         return view('admin.commodity_product_enquiry.convert_to_order', compact('enquiry_data', 'seller_enquiry_data'));
     }
 
-    public function setAmount($token_amount, $total_amount)
+    public function setAmount($required_booking_amount, $total_amount, $token_amount, $freight_token_amount, $total_ex_factory_amount, $total_freight_amount, $gst)
     {
-        $this->token_amount = $token_amount;
+        $this->required_booking_amount = $required_booking_amount;
         $this->total_amount = $total_amount;
-        // dd([$this->token_amount, $this->total_amount]);
+        $this->token_amount = $token_amount;
+        $this->freight_token_amount = $freight_token_amount;
+        $this->total_ex_factory_amount = $total_ex_factory_amount;
+        $this->total_freight_amount = $total_freight_amount;
+        $this->gst = $gst;
+        $this->calculateAmount();
+        // dd([$this->required_booking_amount, $this->total_amount, $this->token_amount, $this->freight_token_amount]);
+    }
+
+    public function calculateAmount()
+    {
+        $this->token_amount = $this->token_amount != '' ? $this->token_amount : 0;
+        $this->freight_token_amount = $this->freight_token_amount != '' ? $this->freight_token_amount : 0;
+        $this->calculated_amount = $this->token_amount + $this->freight_token_amount;
     }
 
     public function sendOtp()
@@ -72,7 +85,6 @@ class ConvertToOrder extends Component
         $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry', 'getMarkedTransporterEnquiry', 'getMarkedSellerProductEnquiry.getUser')->find($this->hidden_id);
         $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
         $mark_transporter = $enquiry_data->getMarkedTransporterEnquiry;
-
         $customer = User::find($mark_seller->customer_user_id);
         $user_total_balance = $customer->cash_balance + $customer->credit_balance;
 
@@ -126,12 +138,17 @@ class ConvertToOrder extends Component
         $order->message                     = $mark_seller->message;
         $order->price                       = $mark_seller->price;
         $order->base_price                  = $mark_seller->base_price;
+        $order->total_ex_factory_amount     = $this->total_ex_factory_amount;
+        $order->total_freight_amount        = $this->total_freight_amount;
         $order->token_amount                = $this->token_amount;
+        $order->freight_token_amount        = $this->freight_token_amount;
         $order->transport_price             = $mark_seller->transport_price;
         $order->commission                  = $mark_seller->commission;
+        $order->commission_type             = $mark_seller->commission_type;
+        $order->gst                         = $this->gst;
         $order->total_amount                = $this->total_amount;
-        $order->paid_amount                 = $this->token_amount;
-        $order->due_amount                  = $this->total_amount - $this->token_amount;
+        $order->paid_amount                 = $this->calculated_amount;
+        $order->due_amount                  = $this->total_amount - $this->calculated_amount;
         $order->loading_address             = $mark_seller->loading_address;
         $order->delivery_by                 = $mark_seller->delivery_by;
         $order->status                      = 'pending';
@@ -150,14 +167,31 @@ class ConvertToOrder extends Component
         $debit_ledger->description          = 'Amount debited for Order Id: '.$order->order_id;
         $debit_ledger->save();
 
-        $credit_ledger                       = new CommodityProductOrderLedger;
-        $credit_ledger->order_id             = $order->id;
-        $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $credit_ledger->type                 = 'credit';
-        $credit_ledger->amount               = $this->token_amount;
-        $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $this->token_amount;
-        $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
-        $credit_ledger->save();
+        if($this->token_amount > 0){
+            $credit_ledger                       = new CommodityProductOrderLedger;
+            $credit_ledger->order_id             = $order->id;
+            $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+            $credit_ledger->type                 = 'credit';
+            $credit_ledger->amount               = $this->token_amount;
+            $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $this->token_amount;
+            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . 'for product token.';
+            $credit_ledger->save();
+        }
+
+        if($this->freight_token_amount > 0){
+
+            $ledger = isset($credit_ledger) ? $credit_ledger : $debit_ledger;
+            $remaining_balance = $ledger->remaining_balance - $this->freight_token_amount;
+
+            $freight_credit_ledger                       = new CommodityProductOrderLedger;
+            $freight_credit_ledger->order_id             = $order->id;
+            $freight_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+            $freight_credit_ledger->type                 = 'credit';
+            $freight_credit_ledger->amount               = $this->freight_token_amount;
+            $freight_credit_ledger->remaining_balance    = $remaining_balance;
+            $freight_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . 'for freight token.';
+            $freight_credit_ledger->save();
+        }
 
         $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
         $seller_credit_ledger->order_id             = $order->id;

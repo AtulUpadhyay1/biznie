@@ -498,25 +498,25 @@
                     </div>
                     <div class="card-body">
                         <p><span class="text-danger">Credit Days : </span> {{ $data['credit_days'] }} Days</p>
-                        <p><span class="text-danger">Basic Price : </span> ₹ {{ $data['base_price'] }} </p>
-                        <p><span class="text-danger">Ex-Factory Price : </span> {{ formatIndianNumber($data['final_variation_price']) }}</p>
+                        <p><span class="text-danger">Basic Price : </span> ₹ {{ formatIndianNumber($data['base_price']) }} </p>
+                        <p><span class="text-danger">Ex-Factory Price : </span> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p>
                         <p><span class="text-danger">Total Quantity : </span> {{ $data['total_quantity'] }} Metric Ton</p>
-                        <p><span class="text-danger">Total Ex-Factory Price : </span> {{ formatIndianNumber($data['final_variation_price']) }}</p>
+                        <p><span class="text-danger">Total Ex-Factory Price : </span> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p>
                         @if ($data['commission_type'] == 'exclude')
-                            <p><span class="text-danger">Commission (Excluded) : </span> {{ formatIndianNumber($data['commission']) }}</p>
+                            <p><span class="text-danger">Commission (Excluded) : </span> ₹ {{ formatIndianNumber($data['commission']) }}</p>
                         @endif
                         <small class="text-success">Rate included - loading charges, insurance charges, Packaging charges, Quality inspection charges, TCS & GST </small>
                         <hr>
 
-                        <p><span class="text-danger">Freight : </span> {{ $data['transport_price'] }}/Metric Ton</p>
-                        <p><span class="text-danger">Total Freight : </span> {{ $data['total_quantity'] * $data['transport_price'] }}</p>
+                        <p><span class="text-danger">Freight : </span> ₹ {{ formatIndianNumber($data['transport_price']) }}/Metric Ton</p>
+                        <p><span class="text-danger">Total Freight : </span> ₹ {{ formatIndianNumber($data['total_quantity'] * $data['transport_price']) }}</p>
                         <small class="text-success">
                             Freight May Change +/- 100. <br>
                             (Freight Depends On Demand & Supply of Trucks On Loading Day)
                         </small>
                         <hr>
 
-                        <p><span class="text-danger">Total Amount Payable (Ex-Factory+Freight) : </span> {{ formatIndianNumber($data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price'])) }}</p>
+                        <p><span class="text-danger">Total Amount Payable (Ex-Factory+Freight) : </span> ₹ {{ formatIndianNumber($data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price'])) }}</p>
                         <small class="text-danger fw-bold">Disclaimer</small> <br>
                         <small class="text-success fw-bold">The invoice amount will be updated after the goods are loaded and the final quantity is confirmed.</small>
                     </div>
@@ -532,14 +532,14 @@
                     </div>
                     <div class="card-body">
                         <p><span class="text-danger">Credit Days : </span> {{ $seller_enq_data['credit_days'] }} Days</p>
-                        <p><span class="text-danger">Basic Price : </span> {{ formatIndianNumber($seller_enq_data['base_price']) }}</p>
+                        <p><span class="text-danger">Basic Price : </span> ₹ {{ formatIndianNumber($seller_enq_data['base_price']) }}</p>
                         <p><span class="text-danger">Total Quantity : </span> {{ $seller_enq_data['total_quantity'] }} MT</p>
-                        <p><span class="text-danger">Total Ex-Factory Price : </span> {{ formatIndianNumber($seller_enq_data['ex_price']) }}</p>
+                        <p><span class="text-danger">Total Ex-Factory Price : </span> ₹ {{ formatIndianNumber($seller_enq_data['ex_price']) }}</p>
                         @if ($seller_enq_data['commission_type'] == 'include')
                             @php
                                 $commission = $seller_enq_data['commission'] * ($seller_enq_data['total_quantity'] + $seller_enq_data['gst'] / 100)
                             @endphp
-                            <p><span class="text-danger">Commission (Included) : </span> {{ formatIndianNumber($commission) }} ({{ $seller_enq_data['commission'] }} / MT) ({{ $seller_enq_data['gst'] }}% GST)</p>
+                            <p><span class="text-danger">Commission (Included) : </span> ₹ {{ formatIndianNumber($commission) }} ({{ $seller_enq_data['commission'] }} / MT) ({{ $seller_enq_data['gst'] }}% GST)</p>
                         @endif
                         <small class="text-success">Rate included - loading charges, insurance charges, packaging charges, quality inspection charges & GST. TCS may apply (If applicable).
                             <br>
@@ -569,15 +569,33 @@
                         </ol>
                         {{-- <input type="text" name="token_amount" value="{{ $data['required_booking_amount'] }}">
                         <input type="text" name="total_amount" value="{{ $data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price']) }}"> --}}
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="token_amount" class="form-label">Product Amount</label>
+                                <input type="number" class="form-control" id="token_amount" wire:model="token_amount" wire:keyup="calculateAmount()" wire:change="calculateAmount()">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="freight_token_amount" class="form-label">Freight Amount</label>
+                                <input type="number" class="form-control" id="freight_token_amount" wire:model="freight_token_amount" wire:keyup="calculateAmount()" wire:change="calculateAmount()">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="calculated_amount" class="form-label">Total Amount:</label>
+                                <input type="number" class="form-control" id="calculated_amount" value="{{$token_amount + $freight_token_amount}}" wire:model.live="calculated_amount" disabled>
+                            </div>
+                        </div>
+
                         <textarea rows="5" placeholder="Write Your Message" class="form-control" wire:model="message"></textarea>
                         <div class="text-end">
                             {{-- <button class="btn btn-success floa-end mt-2" wire:click="enquiryToOrder()"> Confirm & Pay </button> --}}
                             <button class="btn btn-info floa-end mt-2" wire:click="enquiryToOrder()" wire:loading.attr="disabled">
-                                <span wire:loading.remove>Proceed Without OTP</span>
+                                <span wire:loading.remove wire:target="enquiryToOrder">Proceed Without OTP</span>
                                 <span wire:loading wire:target="enquiryToOrder">Processing your request...</span>
                             </button>
                             <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#otpVeryfiy" wire:click="sendOtp()" wire:loading.attr="disabled">
-                                <span wire:loading.remove>Generate OTP</span>
+                                <span wire:loading.remove wire:target="enquiryToOrder">Generate OTP</span>
                                 <span wire:loading wire:target="sendOtp">Sending OTP...</span>
                             </button>
                         </div>
@@ -618,7 +636,15 @@
     @push('scripts')
         <script>
             $(document).ready(function () {
-                @this.setAmount({{ $data['required_booking_amount'] }}, {{ $data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price']) }});
+                @this.setAmount(
+                    {{ $data['required_booking_amount'] }},
+                    {{ $data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price']) }},
+                    {{ $data['final_variation_price'] * 30 / 100 }},
+                    {{ ($data['total_quantity'] * $data['transport_price']) * 30 / 100 }},
+                    {{ $data['final_variation_price'] }},
+                    {{ $data['total_quantity'] * $data['transport_price'] }},
+                    {{ $seller_enq_data['gst'] }}
+                );
             });
         </script>
 
