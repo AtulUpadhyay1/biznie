@@ -12,7 +12,7 @@ class SellerLedger extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    public $page_title = 'View Order Ledger';
+    public $page_title = 'View Seller Ledger';
     public $hidden_id;
 
     public function mount($id)
@@ -23,7 +23,7 @@ class SellerLedger extends Component
     public function render()
     {
         $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')->findOrFail($this->hidden_id);
-        $this->page_title = 'View Order Ledger '. $data->getProductEnquiry->unique_id;
+        $this->page_title = 'View Seller Ledger '. $data->getProductEnquiry->unique_id;
         $ledgers = CommodityProductSellerOrderLedger::where('order_id', $this->hidden_id)
             ->orderBy('id', 'DESC')
             ->paginate(getPaginate());
