@@ -564,7 +564,7 @@
                                                         @endif
                                                         <tr>
                                                             <th style="border-right: hidden;">
-                                                                <label for="transport_price" class="form-label">Transport Price</label>
+                                                                <label for="transport_price" class="form-label">Transport Price / MT</label>
                                                             </th>
                                                             <td colspan="{{ count($set_enquiry_data->value[0]['value']) }}">
                                                                 <input type="number" class="form-control" id="transport_price" placeholder="Enter Transport Price" wire:model.live="transport_price">
@@ -599,7 +599,7 @@
                                                                 </label>
                                                             </th>
                                                             <td colspan="3">
-                                                                <div class="input-group flatpickr">
+                                                                <div class="input-group">
                                                                     <input type="number" class="form-control" id="commission" placeholder="Enter Commission Price" wire:model.live="commission" {{ $is_editable_commission ? 'readonly' : '' }}>
                                                                     @if ($selected_seller_commodity_product->commission_type == 'include')
                                                                         <span class="input-group-text input-group-addon">
