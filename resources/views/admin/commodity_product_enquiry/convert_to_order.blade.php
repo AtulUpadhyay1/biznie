@@ -251,13 +251,131 @@
             }
         @endphp
 
+        @php
+            $seller_enq_data = [
+                'id'                => $seller_enquiry_data->id,
+                'unique_id'         => $seller_enquiry_data->unique_id,
+                'order_id'          => $seller_enquiry_data->getCommodityProductOrder ? $seller_enquiry_data->getCommodityProductOrder->id : NULL,
+                'brand'             => $seller_enquiry_data->getBrand ? [
+                        'id'        => $seller_enquiry_data->getBrand->id,
+                        'name'      => $seller_enquiry_data->getBrand->name
+                    ] : [],
+                'unit'              => $seller_enquiry_data->getSellerCommodityProduct->getUnit ? [
+                        'id'        => $seller_enquiry_data->getSellerCommodityProduct->getUnit->id,
+                        'name'      => $seller_enquiry_data->getSellerCommodityProduct->getUnit->name
+                    ] : [],
+                'commodity_product' => $seller_enquiry_data->getSellerCommodityProduct ? [
+                        'id'        => $seller_enquiry_data->getSellerCommodityProduct->id,
+                        'name'      => $seller_enquiry_data->getSellerCommodityProduct->name,
+                        'thumbnail' => $seller_enquiry_data->getSellerCommodityProduct->thumbnail ? imageUrl($seller_enquiry_data->getSellerCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
+
+                        'category'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory ? [
+                            'id'    => $seller_enquiry_data->getSellerCommodityProduct->getCategory->id,
+                            'name'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory->name,
+
+                        ] : [],
+
+                    ] : [],
+
+                'origin_city'       => $seller_enquiry_data->origin_city,
+                'variation'         => [],
+                'billing_address'   => $seller_enquiry_data->billing_address,
+                'delivery_address'  => $seller_enquiry_data->delivery_address,
+                'consignee_detail'  => $seller_enquiry_data->consignee_detail,
+                'purpose'           => $seller_enquiry_data->purpose,
+                'description'       => $seller_enquiry_data->description,
+                'message'           => $seller_enquiry_data->message,
+                'delivery_by'       => $seller_enquiry_data->delivery_by,
+                'selected_quality'           => $seller_enquiry_data->quality,
+                'selected_packaging_charge'  => $seller_enquiry_data->packaging_charge,
+                'loading_address'   => $seller_enquiry_data->loading_address,
+                // 'price'             => $seller_enquiry_data->price,
+                'packaging_charge'  => [],
+                'other_charge'      => [],
+                'other_quantity_charge'    => [],
+                'total_quantity'    => 0,
+                'base_price'        => $seller_enquiry_data->base_price,
+                'loading_charge'    => 0,
+                'insurance_charge'  => 0,
+                'quality_charge'    => 0,
+                'gst'               => 0,
+                'tcs'               => 0,
+                'gst_amount'        => 0,
+                'tcs_amount'        => 0,
+                'total_charges'     => 0,
+                'commission_type'   => $seller_enquiry_data->commission_type,
+                'commission'        => 0,
+                'final_variation_price' => 0,
+                'ex_price'          => 0,
+                'transport_price'   => 0,
+                'for_price'         => 0,
+                'required_booking_amount' => 0,
+                'is_mark'           => false,
+                'status'            => $seller_enquiry_data->status,
+                'created_at'        => dateTimeFormat($seller_enquiry_data->created_at),
+                'credit_days'       => $seller_enquiry_data->seller_credit_days ? $seller_enquiry_data->seller_credit_days : auth()->user()->credit_days,
+            ];
+
+            $seller_commodity_product   = App\Models\SellerCommodityProduct::where('user_id', $seller_enquiry_data->user_id)->where('commodity_product_id', $seller_enquiry_data->commodity_product_id)->where('brand_id', $seller_enquiry_data->brand_id)->first();
+            $seller_enq_data['loading_charge'] = $seller_commodity_product->loading_charge;
+            $seller_enq_data['insurance_charge'] = $seller_commodity_product->insurance_charge;
+            $seller_enq_data['quality_charge'] = $seller_commodity_product->quality_charge;
+            $seller_enq_data['gst'] = $seller_commodity_product->gst;
+
+            $extra_charges = 0;
+            $other_charges = [];
+            foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
+                $other_charges_arr['name'] = $charge_name;
+                $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : "0";
+                $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : "";
+
+                if($other_charges_arr['operator']){
+                    if($other_charges_arr['operator'] == "+"){
+                        $extra_charges += $other_charges_arr['price'];
+                    }elseif($other_charges_arr['operator'] == "-"){
+                        $extra_charges -= $other_charges_arr['price'];
+                    }elseif($other_charges_arr['operator'] == "*"){
+                        $extra_charges += 0;
+                    }elseif($other_charges_arr['operator'] == "/"){
+                        $extra_charges += 0;
+                    }elseif($other_charges_arr['operator'] == "%"){
+                        $extra_charges += 0;
+                    }
+                }
+                $other_charges[] = $other_charges_arr;
+            }
+            $seller_enq_data['other_charges'] = $other_charges;
+
+            $seller_enq_data['quality_price'] = $seller_enquiry_data->quality && isset($seller_enquiry_data->quality['price']) ? $seller_enquiry_data->quality['price'] : "0";
+            $seller_enq_data['packaging_charge_price'] = $seller_enquiry_data->packaging_charge && isset($seller_enquiry_data->packaging_charge['charge']) ? $seller_enquiry_data->packaging_charge['charge'] : "0";
+            $all_charges = $seller_enq_data['loading_charge'] + $seller_enq_data['insurance_charge'] + $seller_enq_data['quality_charge'] + $seller_enq_data['quality_price'] + $seller_enq_data['packaging_charge_price'] + $extra_charges;
+
+            $selected_variations = $seller_enquiry_data->value;
+            $variation_arr = [];
+            foreach ($selected_variations as $variation) {
+                $get_state_price = App\Models\SellerCommodityProductStatePrice::find($variation['id']);
+                if ($get_state_price) {
+                    $variation['price'] = $get_state_price->price;
+                    $variation['per_unit_price'] = $get_state_price->price + $seller_enquiry_data->base_price + $all_charges;
+                    $variation['tax'] = round(($variation['per_unit_price']) * $seller_enq_data['gst'] / 100);
+                    $variation['per_unit_price'] += $variation['tax'];
+                    $variation['final_price'] = $variation['per_unit_price'] * $variation['quantity'];
+                    $seller_enq_data['total_quantity']         += $variation['quantity'];
+                    $seller_enq_data['ex_price'] += $variation['final_price'];
+                }
+                $variation_arr[] = $variation;
+            }
+            $seller_enq_data['variation'] = $variation_arr;
+            $seller_enq_data['commission'] = $seller_enquiry_data->commission;
+        @endphp
+
         @if ($markedSeller)
 
-            <div class="col-md-12 mb-3">
+            <div class="col-md-6 mb-3">
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">
-                            <h5>Requirement</h5>
+                            <h5>Product Pricing For Buyer</h5>
                         </div>
                     </div>
                     <div class="card-body">
@@ -278,21 +396,98 @@
                             </p>
                             <br>
                         @endif
-                        @foreach ($data['variation'] as $variation)
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Requirements</th>
+                                    <th>Ex Price</th>
+                                    <th>Ex Price x Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data['variation'] as $variation)
+                                    <tr>
+                                        <td>
+                                            @foreach ($variation['value'] as $value)
+                                                {{ $value['value'] }} {{ $value['unit']['short_name'] }}@if (!$loop->last),@endif
+                                            @endforeach
+                                            - {{ $variation['quantity'] }} MT
+                                        </td>
+                                        <td>₹ {{ formatIndianNumber($variation['per_unit_price']) }} / MT</td>
+                                        <td>₹ {{ formatIndianNumber($variation['final_price']) }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h5>Product Pricing For Seller</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Basic Price : ₹ {{ $seller_enq_data['base_price'] }} / Metric Ton <br>
+                            Freight : ₹ {{ $data['transport_price'] }} / Metric Ton
+                        </p> <br>
+                        @if($data['selected_quality'])
+                            <p>
+                                Quality:
+                                {{ $data['selected_quality']['name'] }} : ₹ {{ $data['selected_quality']['price'] }} <br>
+                            </p>
+                        @endif
+                        @if($data['selected_packaging_charge'])
+                            <p>
+                                Packaging:
+                                {{ $data['selected_packaging_charge']['name'] }} : ₹ {{ $data['selected_packaging_charge']['charge'] }} <br>
+                            </p>
+                            <br>
+                        @endif
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Requirements</th>
+                                    <th>Ex Price</th>
+                                    <th>Ex Price x Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($seller_enq_data['variation'] as $variation)
+                                    <tr>
+                                        <td>
+                                            @foreach ($variation['value'] as $value)
+                                                {{ $value['value'] }} {{ $value['unit']['short_name'] }}@if (!$loop->last),@endif
+                                            @endforeach
+                                            - {{ $variation['quantity'] }} MT
+                                        </td>
+                                        <td>₹ {{ formatIndianNumber($variation['per_unit_price']) }} / MT</td>
+                                        <td>₹ {{ formatIndianNumber($variation['final_price']) }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                        {{-- @foreach ($seller_enq_data['variation'] as $variation)
                             <p>
                                 @foreach ($variation['value'] as $value)
                                     Size : {{ $value['value'] }} {{ $value['unit']['short_name'] }} <br>
                                 @endforeach
                                 Quantity : {{ $variation['quantity'] }} MT <br>
-                                Ex-Factory Price : {{ $variation['per_unit_price'] }} Metric Ton <br>
+                                Ex-Factory Price : {{ formatIndianNumber($variation['per_unit_price']) }} Metric Ton <br>
                                 For Price : {{ formatIndianNumber($variation['per_unit_price'] + $data['transport_price']) }} Metric Ton
                                 <br>
                                 <span class="text-danger">Ex-Price x Qty : {{ formatIndianNumber($variation['final_price']) }}</span>
                             </p> <br>
-                        @endforeach
+                        @endforeach --}}
                     </div>
                 </div>
             </div>
+
 
             <div class="col-md-6 mb-3">
                 <div class="card">
@@ -327,125 +522,6 @@
                     </div>
                 </div>
             </div>
-
-            @php
-                $seller_enq_data = [
-                    'id'                => $seller_enquiry_data->id,
-                    'unique_id'         => $seller_enquiry_data->unique_id,
-                    'order_id'          => $seller_enquiry_data->getCommodityProductOrder ? $seller_enquiry_data->getCommodityProductOrder->id : NULL,
-                    'brand'             => $seller_enquiry_data->getBrand ? [
-                            'id'        => $seller_enquiry_data->getBrand->id,
-                            'name'      => $seller_enquiry_data->getBrand->name
-                        ] : [],
-                    'unit'              => $seller_enquiry_data->getSellerCommodityProduct->getUnit ? [
-                            'id'        => $seller_enquiry_data->getSellerCommodityProduct->getUnit->id,
-                            'name'      => $seller_enquiry_data->getSellerCommodityProduct->getUnit->name
-                        ] : [],
-                    'commodity_product' => $seller_enquiry_data->getSellerCommodityProduct ? [
-                            'id'        => $seller_enquiry_data->getSellerCommodityProduct->id,
-                            'name'      => $seller_enquiry_data->getSellerCommodityProduct->name,
-                            'thumbnail' => $seller_enquiry_data->getSellerCommodityProduct->thumbnail ? imageUrl($seller_enquiry_data->getSellerCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
-
-                            'category'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory ? [
-                                'id'    => $seller_enquiry_data->getSellerCommodityProduct->getCategory->id,
-                                'name'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory->name,
-
-                            ] : [],
-
-                        ] : [],
-
-                    'origin_city'       => $seller_enquiry_data->origin_city,
-                    'variation'         => [],
-                    'billing_address'   => $seller_enquiry_data->billing_address,
-                    'delivery_address'  => $seller_enquiry_data->delivery_address,
-                    'consignee_detail'  => $seller_enquiry_data->consignee_detail,
-                    'purpose'           => $seller_enquiry_data->purpose,
-                    'description'       => $seller_enquiry_data->description,
-                    'message'           => $seller_enquiry_data->message,
-                    'delivery_by'       => $seller_enquiry_data->delivery_by,
-                    'selected_quality'           => $seller_enquiry_data->quality,
-                    'selected_packaging_charge'  => $seller_enquiry_data->packaging_charge,
-                    'loading_address'   => $seller_enquiry_data->loading_address,
-                    // 'price'             => $seller_enquiry_data->price,
-                    'packaging_charge'  => [],
-                    'other_charge'      => [],
-                    'other_quantity_charge'    => [],
-                    'total_quantity'    => 0,
-                    'base_price'        => $seller_enquiry_data->base_price,
-                    'loading_charge'    => 0,
-                    'insurance_charge'  => 0,
-                    'quality_charge'    => 0,
-                    'gst'               => 0,
-                    'tcs'               => 0,
-                    'gst_amount'        => 0,
-                    'tcs_amount'        => 0,
-                    'total_charges'     => 0,
-                    'commission_type'   => $seller_enquiry_data->commission_type,
-                    'commission'        => 0,
-                    'final_variation_price' => 0,
-                    'ex_price'          => 0,
-                    'transport_price'   => 0,
-                    'for_price'         => 0,
-                    'required_booking_amount' => 0,
-                    'is_mark'           => false,
-                    'status'            => $seller_enquiry_data->status,
-                    'created_at'        => dateTimeFormat($seller_enquiry_data->created_at),
-                    'credit_days'       => $seller_enquiry_data->seller_credit_days ? $seller_enquiry_data->seller_credit_days : auth()->user()->credit_days,
-                ];
-
-                $seller_commodity_product   = App\Models\SellerCommodityProduct::where('user_id', $seller_enquiry_data->user_id)->where('commodity_product_id', $seller_enquiry_data->commodity_product_id)->where('brand_id', $seller_enquiry_data->brand_id)->first();
-                $seller_enq_data['loading_charge'] = $seller_commodity_product->loading_charge;
-                $seller_enq_data['insurance_charge'] = $seller_commodity_product->insurance_charge;
-                $seller_enq_data['quality_charge'] = $seller_commodity_product->quality_charge;
-                $seller_enq_data['gst'] = $seller_commodity_product->gst;
-
-                $extra_charges = 0;
-                $other_charges = [];
-                foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
-                    $other_charges_arr['name'] = $charge_name;
-                    $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : "0";
-                    $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : "";
-
-                    if($other_charges_arr['operator']){
-                        if($other_charges_arr['operator'] == "+"){
-                            $extra_charges += $other_charges_arr['price'];
-                        }elseif($other_charges_arr['operator'] == "-"){
-                            $extra_charges -= $other_charges_arr['price'];
-                        }elseif($other_charges_arr['operator'] == "*"){
-                            $extra_charges += 0;
-                        }elseif($other_charges_arr['operator'] == "/"){
-                            $extra_charges += 0;
-                        }elseif($other_charges_arr['operator'] == "%"){
-                            $extra_charges += 0;
-                        }
-                    }
-                    $other_charges[] = $other_charges_arr;
-                }
-                $seller_enq_data['other_charges'] = $other_charges;
-
-                $seller_enq_data['quality_price'] = $seller_enquiry_data->quality && isset($seller_enquiry_data->quality['price']) ? $seller_enquiry_data->quality['price'] : "0";
-                $seller_enq_data['packaging_charge_price'] = $seller_enquiry_data->packaging_charge && isset($seller_enquiry_data->packaging_charge['charge']) ? $seller_enquiry_data->packaging_charge['charge'] : "0";
-                $all_charges = $seller_enq_data['loading_charge'] + $seller_enq_data['insurance_charge'] + $seller_enq_data['quality_charge'] + $seller_enq_data['quality_price'] + $seller_enq_data['packaging_charge_price'] + $extra_charges;
-
-                $selected_variations = $seller_enquiry_data->value;
-                $variation_arr = [];
-                foreach ($selected_variations as $variation) {
-                    $get_state_price = App\Models\SellerCommodityProductStatePrice::find($variation['id']);
-                    if ($get_state_price) {
-                        $variation['price'] = $get_state_price->price;
-                        $variation['per_unit_price'] = $get_state_price->price + $seller_enquiry_data->base_price + $all_charges;
-                        $variation['tax'] = round(($variation['per_unit_price']) * $seller_enq_data['gst'] / 100);
-                        $variation['per_unit_price'] += $variation['tax'];
-                        $variation['final_price'] = $variation['per_unit_price'] * $variation['quantity'];
-                        $seller_enq_data['total_quantity']         += $variation['quantity'];
-                        $seller_enq_data['ex_price'] += $variation['final_price'];
-                    }
-                    $variation_arr[] = $variation;
-                }
-                $seller_enq_data['variation'] = $variation_arr;
-                $seller_enq_data['commission'] = $seller_enquiry_data->commission;
-
-            @endphp
 
             <div class="col-md-6 mb-3">
                 <div class="card">
