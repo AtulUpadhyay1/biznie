@@ -388,7 +388,7 @@
                                                                                 }
                                                                             @endphp
                                                                             <td>{{ $variation['quantity'] }}</td>
-                                                                            <td>₹ {{ $gauge_diff->price }}</td>
+                                                                            <td>₹ {{ $gauge_diff ? $gauge_diff->price : 0 }}</td>
                                                                             <td>₹ {{ formatIndianNumber($per_unit_price) }} / MT</td>
                                                                             <td>₹ {{ formatIndianNumber($ex_price) }}</td>
                                                                         </tr>
