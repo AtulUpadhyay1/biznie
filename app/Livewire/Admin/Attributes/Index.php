@@ -10,9 +10,14 @@ class Index extends Component
 {
     public $page_title = 'Attribute List';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = Attribute::latest()->get();
+        $list = Attribute::search($this->search)->latest()->get();
         return view('admin.attributes.index', compact('list'));
     }
 
