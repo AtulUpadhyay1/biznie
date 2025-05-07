@@ -13,9 +13,14 @@ class Index extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = Testimonial::latest()->paginate(getPaginate());
+        $list = Testimonial::search($this->search)->latest()->paginate(getPaginate());
         return view('admin.testimonial.index', compact('list'));
     }
 
