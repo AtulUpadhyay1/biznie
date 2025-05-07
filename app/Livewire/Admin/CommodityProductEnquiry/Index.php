@@ -15,10 +15,15 @@ class Index extends Component
 
     public $page_title = 'Commodity Product Enquiry';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
         $total = ProductEnquiry::count();
-        $list = ProductEnquiry::latest()->with('getBrand', 'getCommodityProduct', 'getUser', 'getCommodityProductOrder')->paginate(getPaginate());
+        $list = ProductEnquiry::search($this->search)->latest()->with('getBrand', 'getCommodityProduct', 'getUser', 'getCommodityProductOrder')->paginate(getPaginate());
         $this->markAsRead();
         return view('admin.commodity_product_enquiry.index', compact('total', 'list'));
     }

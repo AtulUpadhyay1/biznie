@@ -13,9 +13,14 @@ class Index extends Component
 
     public $page_title = 'General Enquiry';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = GeneralEnquiry::with('getBrand', 'getSellerCommodityProduct', 'getUser')->latest()->paginate(getPaginate());
+        $list = GeneralEnquiry::search($this->search)->with('getBrand', 'getSellerCommodityProduct', 'getUser')->latest()->paginate(getPaginate());
         return view('admin.general_enquiry.index', compact('list'));
     }
 }

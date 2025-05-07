@@ -13,13 +13,12 @@
 
                         <div class="col-6">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <form class="custom-search-bar me-3 mb-2 mb-md-0">
+                                <div class="custom-search-bar">
                                     <div class="input-group">
-                                        <span class="input-group-text"> <i data-feather="search"></i></span>
-                                        <input type="text" class="form-control" placeholder="Search here...">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
                                     </div>
-                                </form>
-
+                                </div>
                             </div>
                         </div>
                     </div>
