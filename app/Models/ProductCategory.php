@@ -14,6 +14,17 @@ class ProductCategory extends Model
         'attributes' => 'array',
     ];
 
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
+        });
+    }
+
     public static function getSellerCategory()
     {
         return ProductCategory::whereIn('business_category_id', auth()->user()->getBusiness->category)->where('status', 1);

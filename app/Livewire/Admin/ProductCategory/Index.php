@@ -12,9 +12,14 @@ class Index extends Component
 {
     use WithFileUploads;
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = ProductCategory::latest()->get();
+        $list = ProductCategory::search($this->search)->latest()->get();
         return view('admin.product_category.index', compact('list'), ['page_title' => 'Product Category']);
     }
 

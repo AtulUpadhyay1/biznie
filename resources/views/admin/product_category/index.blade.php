@@ -10,12 +10,12 @@
                         </div>
                         <div class="col-6">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <form class="custom-search-bar me-3 mb-2 mb-md-0">
+                                <div class="custom-search-bar me-3">
                                     <div class="input-group">
-                                        <span class="input-group-text"> <i data-feather="search"></i></span>
-                                        <input type="text" class="form-control" placeholder="Search here...">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
                                     </div>
-                                </form>
+                                </div>
                                 <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="add" href="{{route('admin.create-product-category')}}" wire:navigate>
                                     <i class="bi bi-plus-lg btn-icon-prepend"></i>
                                     Add Product Category
