@@ -13,9 +13,14 @@ class Index extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = Banner::orderBy('created_at','desc')->paginate(getPaginate());
+        $list = Banner::search($this->search)->orderBy('created_at','desc')->paginate(getPaginate());
         return view('admin.banner.index', compact('list'));
     }
 

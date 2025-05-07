@@ -13,9 +13,14 @@ class Index extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = MarketNews::latest()->paginate(getPaginate());
+        $list = MarketNews::search($this->search)->latest()->paginate(getPaginate());
         return view('admin.market_news.index', compact('list'));
     }
 
