@@ -15,7 +15,7 @@ class Index extends Component
 
     public function render()
     {
-        $list = CreditWalletRequest::with('getUser')->latest()->paginate(getPaginate());
+        $list = CreditWalletRequest::with('getUser', 'getUser.getUserDetail')->latest()->paginate(getPaginate());
         return view('admin.credit_wallet_request.index', compact('list'));
     }
 }

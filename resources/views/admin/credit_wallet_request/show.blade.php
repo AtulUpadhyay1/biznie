@@ -102,6 +102,7 @@
                                     <h5>User Details</h5>
                                 </div>
                                 <div class="card-body">
+                                    <p><b>Company Name : </b> {{ $data->getUser?->getUserDetail?->company_name }}</p>
                                     <p><b>Name : </b> {{ $data->getUser->name }} ({{ $data->getUser->type }})</p>
                                     <p><b>Phone : </b> {{ $data->getUser->phone }}</p>
                                     <div class="d-flex mt-2">

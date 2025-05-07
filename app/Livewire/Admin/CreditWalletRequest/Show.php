@@ -19,7 +19,7 @@ class Show extends Component
     public function mount($id)
     {
         $this->hidden_id = $id;
-        $this->data = CreditWalletRequest::with('getUser')->findOrFail($this->hidden_id);
+        $this->data = CreditWalletRequest::with('getUser', 'getUser.getUserDetail')->findOrFail($this->hidden_id);
         $this->user_id = $this->data->user_id;
         $this->reference_number = $this->data->reference_number;
         $this->status = $this->data->status;

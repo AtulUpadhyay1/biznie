@@ -31,6 +31,7 @@
                                     <tr>
                                         <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
                                         <td>
+                                            <b>Company Name: </b>{{ $data->getUser?->getUserDetail?->company_name }} <br>
                                             <b>Name: </b>{{ $data->getUser->name }} <br>
                                             <b>Phone: </b>{{ $data->getUser->phone }} <br>
                                         </td>
