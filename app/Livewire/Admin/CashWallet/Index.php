@@ -14,8 +14,8 @@ class Index extends Component
 
     public function render()
     {
-        $user_list = User::where('status', 'active')->orderBy('name', 'asc')->get();
-        $user_detail = User::find($this->user_id);
+        $user_list = User::with('getUserDetail')->where('status', 'active')->orderBy('name', 'asc')->get();
+        $user_detail = User::with('getUserDetail')->find($this->user_id);
         $latest_transactions = CashWalletTransaction::where('user_id', $this->user_id)->latest()->take(10)->get();
         return view('admin.cash_wallet.index', compact('user_list', 'user_detail', 'latest_transactions'));
     }

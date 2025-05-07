@@ -30,7 +30,7 @@
                                                 <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
                                                     <option value="">Select User</option>
                                                     @foreach ($user_list as $user_data)
-                                                        <option value="{{ $user_data->id }}">{{ $user_data->name }} ( {{ $user_data->phone }} )</option>
+                                                        <option value="{{ $user_data->id }}"> {{ $user_data?->getUserDetail?->company_name }} ({{ $user_data->name }} - ( {{ $user_data->phone }} ))</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -104,6 +104,7 @@
                                 </div>
                                 <div class="card-body">
                                     @if ($user_detail)
+                                        <p><b>Company Name : </b> {{ $user_detail?->getUserDetail?->company_name }}</p>
                                         <p><b>Name : </b> {{ $user_detail->name }} ({{ $user_detail->type }})</p>
                                         <p><b>Phone : </b> {{ $user_detail->phone }}</p>
                                         <div class="d-flex mt-2">
