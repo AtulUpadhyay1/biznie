@@ -13,9 +13,14 @@ class Index extends Component
 {
     use WithFileUploads;
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = ProductSubCategory::latest()->get();
+        $list = ProductSubCategory::search($this->search)->latest()->get();
         return view('admin.product_sub_category.index', compact('list'), ['page_title' => 'Product Sub Category']);
     }
 
