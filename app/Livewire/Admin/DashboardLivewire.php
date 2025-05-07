@@ -20,25 +20,25 @@ class DashboardLivewire extends Component
         $total_brand = Brand::count();
         $total_enquiry = ProductEnquiry::count();
         $total_order = CommodityProductOrder::count();
+        $total_commodity_product = CommodityProduct::where('status', 'active')->count();
+
+        $today = today();
+        $today_enquiry = ProductEnquiry::whereDate('created_at', $today)->count();
+        $today_order = CommodityProductOrder::whereDate('created_at', $today)->count();
+        $today_order_amount = CommodityProductOrder::whereDate('created_at', $today)->sum('total_amount');
 
         $last_7_days_customer = [];
-        for ($i = 0; $i < 7; $i++) {
-            $date = Carbon::now()->subDays($i)->format('Y-m-d');
-            $count = User::where('type', 'seller')->whereDate('created_at', $date)->count();
-            $last_7_days_customer[] = ['date' => $date, 'count' => $count];
-        }
-
         $last_7_days_seller = [];
+
         for ($i = 0; $i < 7; $i++) {
             $date = Carbon::now()->subDays($i)->format('Y-m-d');
-            $count = User::where('type', 'seller')->whereDate('created_at', $date)->count();
-            $last_7_days_seller[] = ['date' => $date, 'count' => $count];
-        }
 
-        $today_enquiry = ProductEnquiry::whereDate('created_at', today())->count();
-        $today_order = CommodityProductOrder::whereDate('created_at', today())->count();
-        $today_order_amount = CommodityProductOrder::whereDate('created_at', today())->sum('total_amount');
-        $total_commodity_product = CommodityProduct::where('status', 'active')->count();
+            $customer_count = User::where('type', 'customer')->whereDate('created_at', $date)->count();
+            $seller_count = User::where('type', 'seller')->whereDate('created_at', $date)->count();
+
+            $last_7_days_customer[] = ['date' => $date, 'count' => $customer_count];
+            $last_7_days_seller[] = ['date' => $date, 'count' => $seller_count];
+        }
 
         return view('admin.dashboard', compact(
             'total_customer',
