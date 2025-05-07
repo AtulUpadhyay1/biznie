@@ -10,6 +10,17 @@ class PackagingType extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
+        });
+    }
+
     public static function active()
     {
         return PackagingType::where('status', 1);

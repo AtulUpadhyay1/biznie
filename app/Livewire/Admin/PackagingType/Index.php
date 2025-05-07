@@ -10,9 +10,14 @@ class Index extends Component
 {
     public $page_title = 'Packaging Type';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = PackagingType::latest()->get();
+        $list = PackagingType::search($this->search)->latest()->get();
         return view('admin.packaging_type.index', compact('list'));
     }
 
