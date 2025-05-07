@@ -30,6 +30,20 @@ class CommodityProduct extends Model
         'packaging_type_price'  => 'array',
     ];
 
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+            ->orWhereHas('getCategory', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+        });
+    }
+
     public static function active()
     {
         return CommodityProduct::where('status', 'active');

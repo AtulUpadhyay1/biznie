@@ -13,9 +13,14 @@ class Index extends Component
 
     public $page_title = 'Commodity Product';
 
+    public $search;
+    protected $queryString = [
+        'search'        => ['except' => '']
+    ];
+
     public function render()
     {
-        $list = CommodityProduct::latest()->with('getCategory')->paginate(getPaginate());
+        $list = CommodityProduct::search($this->search)->latest()->with('getCategory')->paginate(getPaginate());
         $total = $list->total();
         return view('admin.commodity_product.index', compact('total', 'list'));
     }
