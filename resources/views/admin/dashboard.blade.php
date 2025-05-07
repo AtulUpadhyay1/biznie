@@ -24,103 +24,131 @@
     </div>
 
     <div class="row">
-        <div class="col-md-2 mb-3">
+        <div class="col-md-4 mb-3">
             <a class="text-dark" href="{{ route('admin.customer-list') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
                         <div class="d-flex justify-content-between align-items-baseline">
                             <h6 class="card-title mb-0">Total Buyers</h6>
                         </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">{{ $total_customer }}</h3>
-                            </div>
-                        </div>
+                        <h3 class="mb-2">{{ $total_customer }}</h3>
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="col-md-2 mb-3">
+        <div class="col-md-4 mb-3">
             <a class="text-dark" href="{{ route('admin.seller.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
                         <div class="d-flex justify-content-between align-items-baseline">
                             <h6 class="card-title mb-0">Total Sellers</h6>
                         </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">{{ $total_seller }}</h3>
-                            </div>
-                        </div>
+                        <h3 class="mb-2">{{ $total_seller }}</h3>
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="col-md-2 mb-3">
+        <div class="col-md-4 mb-3">
             <a class="text-dark" href="{{ route('admin.transporter.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
                         <div class="d-flex justify-content-between align-items-baseline">
                             <h6 class="card-title mb-0">Total Transporters</h6>
                         </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">{{ $total_transporter }}</h3>
-                            </div>
-                        </div>
+                        <h3 class="mb-2">{{ $total_transporter }}</h3>
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="col-md-2 mb-3">
+        <div class="col-md-4 mb-3">
             <a class="text-dark" href="{{ route('admin.brand') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
                         <div class="d-flex justify-content-between align-items-baseline">
                             <h6 class="card-title mb-0">Total Brand</h6>
                         </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">{{ $total_brand }}</h3>
-                            </div>
-                        </div>
+                        <h3 class="mb-2">{{ $total_brand }}</h3>
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="col-md-2 mb-3">
+        <div class="col-md-4 mb-3">
             <a class="text-dark" href="{{ route('admin.commodity-product-enquiry.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
                         <div class="d-flex justify-content-between align-items-baseline">
                             <h6 class="card-title mb-0">Total Enquiry</h6>
                         </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">{{ $total_enquiry }}</h3>
-                            </div>
-                        </div>
+                        <h3 class="mb-2">{{ $total_enquiry }}</h3>
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="col-md-2 mb-3">
+        <div class="col-md-4 mb-3">
             <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
                         <div class="d-flex justify-content-between align-items-baseline">
                             <h6 class="card-title mb-0">Total Order</h6>
                         </div>
-                        <div class="row">
-                            <div class="col-6 col-md-12 col-xl-5">
-                                <h3 class="mb-2">{{ $total_order }}</h3>
-                            </div>
+                        <h3 class="mb-2">{{ $total_order }}</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Today Enquiry</h6>
                         </div>
+                        <h3 class="mb-2">{{ $today_enquiry }}</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Today Orders</h6>
+                        </div>
+                        <h3 class="mb-2">{{ $today_order }}</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Today Orders Amount</h6>
+                        </div>
+                        <h3 class="mb-2">{{ formatIndianNumber($today_order_amount) }}</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <a class="text-dark" href="{{ route('admin.commodity-product.index') }}" wire:navigate>
+                <div class="card border border-danger">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-baseline">
+                            <h6 class="card-title mb-0">Total Commodity Product</h6>
+                        </div>
+                        <h3 class="mb-2">{{ formatIndianNumber($total_commodity_product) }}</h3>
                     </div>
                 </div>
             </a>

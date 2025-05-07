@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Brand;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
+use App\Models\CommodityProduct;
 use App\Models\CommodityProductOrder;
 
 class DashboardLivewire extends Component
@@ -34,6 +35,11 @@ class DashboardLivewire extends Component
             $last_7_days_seller[] = ['date' => $date, 'count' => $count];
         }
 
+        $today_enquiry = ProductEnquiry::whereDate('created_at', today())->count();
+        $today_order = CommodityProductOrder::whereDate('created_at', today())->count();
+        $today_order_amount = CommodityProductOrder::whereDate('created_at', today())->sum('total_amount');
+        $total_commodity_product = CommodityProduct::where('status', 'active')->count();
+
         return view('admin.dashboard', compact(
             'total_customer',
             'total_seller',
@@ -42,7 +48,11 @@ class DashboardLivewire extends Component
             'total_enquiry',
             'total_order',
             'last_7_days_customer',
-            'last_7_days_seller'
+            'last_7_days_seller',
+            'today_enquiry',
+            'today_order',
+            'today_order_amount',
+            'total_commodity_product'
         ), ['page_title' => 'Admin Dashboard']);
     }
 
