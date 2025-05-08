@@ -70,7 +70,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <label for="order_amount_type" class="form-label">Order Amount Type <span class="text-danger">*</span></label>
-                                <select class="form-select @error('order_amount_type') is-invalid @enderror" id="order_amount_type" wire:model="order_amount_type">
+                                <select class="form-select @error('order_amount_type') is-invalid @enderror" id="order_amount_type" wire:model.live="order_amount_type">
                                     <option value="percent">Percent</option>
                                     <option value="flat">Flat</option>
                                 </select>
@@ -78,8 +78,11 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="required_order_amount" class="form-label">Required Order Amount <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('required_order_amount') is-invalid @enderror" id="required_order_amount" placeholder="Enter product min order qty" wire:model="required_order_amount">
+                                <label for="required_order_amount" class="form-label">Required Order Amount (/MT)<span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="{{ $order_amount_type == 'percent' ? 'bi bi-percent' : 'bi bi-currency-rupee'}}"></i></span>
+                                    <input type="number" class="form-control @error('required_order_amount') is-invalid @enderror" id="required_order_amount" placeholder="Enter product min order qty" wire:model="required_order_amount" @if($order_amount_type == 'percent') step="0.01" max="100" @endif>
+                                </div>
                                 @error('required_order_amount') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
