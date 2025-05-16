@@ -6,6 +6,7 @@ use PDF;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Models\ProductEnquiry;
 use App\Models\CommodityProductOrder;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CommodityProductOrderDriver;
@@ -27,7 +28,9 @@ class Show extends Component
         $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')->findOrFail($this->hidden_id);
         $this->page_title = 'View Order '. $data->getProductEnquiry->unique_id;
         $this->vehicle_notes = $data->vehicle_notes;
-        return view('admin.commodity_product_order.show', compact('data'));
+        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($data->product_enquiries_id);
+        $seller_enquiry_data = $enquiry_data->getMarkedSellerProductEnquiry;
+        return view('admin.commodity_product_order.show', compact('data', 'enquiry_data', 'seller_enquiry_data'));
     }
 
     public function invoicePrint()
