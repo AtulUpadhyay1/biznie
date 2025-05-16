@@ -1,5 +1,277 @@
 <div>
     @section('title', config('app.name') . ' | ' . $page_title)
+    @php
+        $data = [
+            'id'                => $enquiry_data->id,
+            'unique_id'         => $enquiry_data->unique_id,
+            'order_id'          => $enquiry_data->getCommodityProductOrder ? $enquiry_data->getCommodityProductOrder->id : NULL,
+            'brand'             => $enquiry_data->getBrand ? [
+                'id'            => $enquiry_data->getBrand->id,
+                'name'          => $enquiry_data->getBrand->name
+            ] : [],
+            'unit'              => $enquiry_data->getCommodityProduct->getUnit ? [
+                'id'            => $enquiry_data->getCommodityProduct->getUnit->id,
+                'name'          => $enquiry_data->getCommodityProduct->getUnit->name
+            ] : [],
+            'commodity_product' => $enquiry_data->getCommodityProduct ? [
+                'id'        => $enquiry_data->getCommodityProduct->id,
+                'name'      => $enquiry_data->getCommodityProduct->name,
+                'thumbnail' => $enquiry_data->getCommodityProduct->thumbnail ? imageUrl($enquiry_data->getCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
+
+                'category'  => $enquiry_data->getCommodityProduct->getCategory ? [
+                    'id'    => $enquiry_data->getCommodityProduct->getCategory->id,
+                    'name'  => $enquiry_data->getCommodityProduct->getCategory->name,
+
+                ] : [],
+
+            ] : [],
+
+            'origin_city'       => $enquiry_data->origin_city,
+            'variation'         => [],
+            'selected_quality'           => $enquiry_data->quality,
+            'selected_packaging_charge'  => $enquiry_data->packaging_charge,
+            'unit_price'        => $enquiry_data->unit_price,
+            'billing_address'   => $enquiry_data->billing_address,
+            'delivery_address'  => $enquiry_data->delivery_address,
+            'consignee_detail'  => $enquiry_data->consignee_detail,
+            'purpose'           => $enquiry_data->purpose,
+            'description'       => $enquiry_data->description,
+            'message'           => $enquiry_data->message,
+            // 'price'             => $enquiry_data->price,
+            'packaging_charge'  => [],
+            'other_charge'      => [],
+            'other_quantity_charge'    => [],
+            'transporter_detail' => [],
+            'total_quantity'    => 0,
+            'base_price'        => 0,
+            'loading_charge'    => 0,
+            'insurance_charge'  => 0,
+            'quality_charge'    => 0,
+            'gst'               => 0,
+            'tcs'               => 0,
+            'gst_amount'        => 0,
+            'tcs_amount'        => 0,
+            'total_charges'     => 0,
+            'commission_type'   => '',
+            'commission'        => 0,
+            'final_variation_price' => 0,
+            'ex_price'          => 0,
+            'transport_price'   => 0,
+            'for_price'         => 0,
+            'required_booking_amount' => 0,
+            'is_mark'           => false,
+            'status'            => $enquiry_data->status,
+            'created_at'        => dateTimeFormat($enquiry_data->created_at),
+            'credit_days'       => $enquiry_data->getUser->credit_days,
+        ];
+        $markedSeller = $enquiry_data->getMarkedSellerProductEnquiry;
+        if($markedSeller){
+            $data['credit_days'] = $markedSeller->customer_credit_days ? $markedSeller->customer_credit_days : $enquiry_data->getUser->credit_days;
+            // $data['variation']  = $markedSeller->value;
+            $data['base_price'] = $markedSeller->base_price;
+            $data['transport_price'] = $markedSeller->transport_price;
+            $data['commission_type'] = $markedSeller->commission_type;
+            $data['commission'] = (int)$markedSeller->commission;
+            $data['is_mark']    = $markedSeller->is_mark ? true : false;
+            if($data['commission_type'] == 'exclude'){
+                $data['base_price'] += $data['commission'];
+            }
+
+            $seller_commodity_product   = App\Models\SellerCommodityProduct::where('user_id', $markedSeller->user_id)->where('commodity_product_id', $markedSeller->commodity_product_id)->where('brand_id', $markedSeller->brand_id)->first();
+
+            $packaging_arr = [];
+            foreach ($seller_commodity_product->packaging_type ?? [] as $packaging_charge) {
+                $packaging_arr['name'] = getPackagingType($packaging_charge)->name;
+                $packaging_arr['price'] = isset($seller_commodity_product->packaging_type_price[$packaging_charge]) ? $seller_commodity_product->packaging_type_price[$packaging_charge] : 0;
+                $data['total_charges'] += $packaging_arr['price'];
+                $data['packaging_charge'][] = $packaging_arr;
+            }
+
+            $other_charges_arr = [];
+            $extra_charges = 0;
+
+            foreach ($seller_commodity_product->charge_name ?? [] as $charge_key => $charge_name) {
+                $other_charges_arr['name'] = $charge_name;
+                $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : 0;
+                $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : "";
+
+                if($other_charges_arr['operator']){
+                    if($other_charges_arr['operator'] == "+"){
+                        $extra_charges += $other_charges_arr['price'];
+                    }elseif($other_charges_arr['operator'] == "-"){
+                        $extra_charges -= $other_charges_arr['price'];
+                    }elseif($other_charges_arr['operator'] == "*"){
+                        $extra_charges += 0;
+                    }elseif($other_charges_arr['operator'] == "/"){
+                        $extra_charges += 0;
+                    }elseif($other_charges_arr['operator'] == "%"){
+                        $extra_charges += 0;
+                    }
+                }
+
+                $data['other_charge'][] = $other_charges_arr;
+            }
+
+            if($seller_commodity_product && $seller_commodity_product->is_quality){
+                $other_quantity_charge_arr = [];
+                foreach ($seller_commodity_product->quality ?? [] as $quality_key => $quality) {
+                    $other_quantity_charge_arr['name']          = $quality;
+                    $other_quantity_charge_arr['quality_price'] = $seller_commodity_product->quality_price[$quality_key];
+                    $data['total_charges'] += $other_quantity_charge_arr['quality_price'];
+                    $data['other_quantity_charge'][] = $other_quantity_charge_arr;
+                }
+            }
+
+            foreach($markedSeller->value as $variation){
+
+                $variation['total_price']       = ($variation['price'] + $data['base_price']) + $extra_charges + $seller_commodity_product->loading_charge + $seller_commodity_product->insurance_charge;
+                $variation['tax']               = round(($variation['total_price']) * $seller_commodity_product->gst / 100);
+                $variation['per_unit_price']    = $variation['total_price'] + $variation['tax'];
+                $variation['final_price']       = $variation['per_unit_price'] * $variation['quantity'];
+                $data['variation'][]            = $variation;
+                $data['total_quantity']         += $variation['quantity'];
+                $data['final_variation_price']  += $variation['final_price'];
+                $data['gst_amount']             += $variation['tax'];
+            }
+
+            $data['loading_charge']     = $seller_commodity_product->loading_charge;
+            $data['insurance_charge']   = $seller_commodity_product->insurance_charge;
+            $data['quality_charge']     = $seller_commodity_product->quality_charge ?? 0;
+            $data['gst']                = $seller_commodity_product->gst;
+            $data['tcs']                = $seller_commodity_product->tcs;
+
+            $data['tcs_amount']         = $data['final_variation_price']*$data['tcs_amount']/100;
+
+            $data['ex_price']           = $data['final_variation_price'] + $data['tcs_amount'];
+
+            $data['for_price']          = $data['ex_price'] + $data['transport_price'] * $data['total_quantity'];
+            $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
+            // if($data['commission_type'] == 'exclude'){
+            //     $data['final_variation_price'] += $data['commission'];
+            // }
+            // $data['status']     = $enquiry_data->getMarkedSellerProductEnquiry->status;
+        }else{
+            $data['variation']   = $enquiry_data->variation;
+        }
+    @endphp
+
+    @php
+        $seller_enq_data = [
+            'id'                => $seller_enquiry_data->id,
+            'unique_id'         => $seller_enquiry_data->unique_id,
+            'order_id'          => $seller_enquiry_data->getCommodityProductOrder ? $seller_enquiry_data->getCommodityProductOrder->id : NULL,
+            'brand'             => $seller_enquiry_data->getBrand ? [
+                    'id'        => $seller_enquiry_data->getBrand->id,
+                    'name'      => $seller_enquiry_data->getBrand->name
+                ] : [],
+            'unit'              => $seller_enquiry_data->getSellerCommodityProduct->getUnit ? [
+                    'id'        => $seller_enquiry_data->getSellerCommodityProduct->getUnit->id,
+                    'name'      => $seller_enquiry_data->getSellerCommodityProduct->getUnit->name
+                ] : [],
+            'commodity_product' => $seller_enquiry_data->getSellerCommodityProduct ? [
+                    'id'        => $seller_enquiry_data->getSellerCommodityProduct->id,
+                    'name'      => $seller_enquiry_data->getSellerCommodityProduct->name,
+                    'thumbnail' => $seller_enquiry_data->getSellerCommodityProduct->thumbnail ? imageUrl($seller_enquiry_data->getSellerCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
+
+                    'category'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory ? [
+                        'id'    => $seller_enquiry_data->getSellerCommodityProduct->getCategory->id,
+                        'name'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory->name,
+
+                    ] : [],
+
+                ] : [],
+
+            'origin_city'       => $seller_enquiry_data->origin_city,
+            'variation'         => [],
+            'billing_address'   => $seller_enquiry_data->billing_address,
+            'delivery_address'  => $seller_enquiry_data->delivery_address,
+            'consignee_detail'  => $seller_enquiry_data->consignee_detail,
+            'purpose'           => $seller_enquiry_data->purpose,
+            'description'       => $seller_enquiry_data->description,
+            'message'           => $seller_enquiry_data->message,
+            'delivery_by'       => $seller_enquiry_data->delivery_by,
+            'selected_quality'           => $seller_enquiry_data->quality,
+            'selected_packaging_charge'  => $seller_enquiry_data->packaging_charge,
+            'loading_address'   => $seller_enquiry_data->loading_address,
+            // 'price'             => $seller_enquiry_data->price,
+            'packaging_charge'  => [],
+            'other_charge'      => [],
+            'other_quantity_charge'    => [],
+            'total_quantity'    => 0,
+            'base_price'        => $seller_enquiry_data->base_price,
+            'loading_charge'    => 0,
+            'insurance_charge'  => 0,
+            'quality_charge'    => 0,
+            'gst'               => 0,
+            'tcs'               => 0,
+            'gst_amount'        => 0,
+            'tcs_amount'        => 0,
+            'total_charges'     => 0,
+            'commission_type'   => $seller_enquiry_data->commission_type,
+            'commission'        => 0,
+            'final_variation_price' => 0,
+            'ex_price'          => 0,
+            'transport_price'   => 0,
+            'for_price'         => 0,
+            'required_booking_amount' => 0,
+            'is_mark'           => false,
+            'status'            => $seller_enquiry_data->status,
+            'created_at'        => dateTimeFormat($seller_enquiry_data->created_at),
+            'credit_days'       => $seller_enquiry_data->seller_credit_days ? $seller_enquiry_data->seller_credit_days : auth()->user()->credit_days,
+        ];
+
+        $seller_commodity_product   = App\Models\SellerCommodityProduct::where('user_id', $seller_enquiry_data->user_id)->where('commodity_product_id', $seller_enquiry_data->commodity_product_id)->where('brand_id', $seller_enquiry_data->brand_id)->first();
+        $seller_enq_data['loading_charge'] = $seller_commodity_product->loading_charge;
+        $seller_enq_data['insurance_charge'] = $seller_commodity_product->insurance_charge;
+        $seller_enq_data['quality_charge'] = $seller_commodity_product->quality_charge;
+        $seller_enq_data['gst'] = $seller_commodity_product->gst;
+
+        $extra_charges = 0;
+        $other_charges = [];
+        foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
+            $other_charges_arr['name'] = $charge_name;
+            $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : "0";
+            $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : "";
+
+            if($other_charges_arr['operator']){
+                if($other_charges_arr['operator'] == "+"){
+                    $extra_charges += $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "-"){
+                    $extra_charges -= $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "*"){
+                    $extra_charges += 0;
+                }elseif($other_charges_arr['operator'] == "/"){
+                    $extra_charges += 0;
+                }elseif($other_charges_arr['operator'] == "%"){
+                    $extra_charges += 0;
+                }
+            }
+            $other_charges[] = $other_charges_arr;
+        }
+        $seller_enq_data['other_charges'] = $other_charges;
+
+        $seller_enq_data['quality_price'] = $seller_enquiry_data->quality && isset($seller_enquiry_data->quality['price']) ? $seller_enquiry_data->quality['price'] : "0";
+        $seller_enq_data['packaging_charge_price'] = $seller_enquiry_data->packaging_charge && isset($seller_enquiry_data->packaging_charge['charge']) ? $seller_enquiry_data->packaging_charge['charge'] : "0";
+        $all_charges = $seller_enq_data['loading_charge'] + $seller_enq_data['insurance_charge'] + $seller_enq_data['quality_charge'] + $seller_enq_data['quality_price'] + $seller_enq_data['packaging_charge_price'] + $extra_charges;
+
+        $selected_variations = $seller_enquiry_data->value;
+        $variation_arr = [];
+        foreach ($selected_variations as $variation) {
+            $get_state_price = App\Models\SellerCommodityProductStatePrice::find($variation['id']);
+            if ($get_state_price) {
+                $variation['price'] = $get_state_price->price;
+                $variation['per_unit_price'] = $get_state_price->price + $seller_enquiry_data->base_price + $all_charges;
+                $variation['tax'] = round(($variation['per_unit_price']) * $seller_enq_data['gst'] / 100);
+                $variation['per_unit_price'] += $variation['tax'];
+                $variation['final_price'] = $variation['per_unit_price'] * $variation['quantity'];
+                $seller_enq_data['total_quantity']         += $variation['quantity'];
+                $seller_enq_data['ex_price'] += $variation['final_price'];
+            }
+            $variation_arr[] = $variation;
+        }
+        $seller_enq_data['variation'] = $variation_arr;
+        $seller_enq_data['commission'] = $seller_enquiry_data->commission;
+    @endphp
     <div class="row">
         <x-loader />
         <div class="col-md-6 mb-3">
@@ -64,7 +336,8 @@
                         Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
                         Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
                         City : {{ $enquiry_data->billing_address['city'] }} <br>
-                        State : {{ $enquiry_data->billing_address['state'] }}
+                        State : {{ $enquiry_data->billing_address['state'] }} <br>
+                        Credit Days : {{ $data['credit_days'] }} Days <br>
                     </p>
                 </div>
             </div>
@@ -90,284 +363,12 @@
                         Address Line One : {{ $sellerDetail->address_line_one }} <br>
                         Address Line Two : {{ $sellerDetail->address_line_two }} <br>
                         City : {{ $sellerDetail->city }} <br>
-                        State : {{ $sellerDetail->state }}
+                        State : {{ $sellerDetail->state }} <br>
+                        Credit Days : {{ $seller_enq_data['credit_days'] }} Days <br>
                     </p>
                 </div>
             </div>
         </div>
-
-        @php
-            $data = [
-                'id'                => $enquiry_data->id,
-                'unique_id'         => $enquiry_data->unique_id,
-                'order_id'          => $enquiry_data->getCommodityProductOrder ? $enquiry_data->getCommodityProductOrder->id : NULL,
-                'brand'             => $enquiry_data->getBrand ? [
-                    'id'            => $enquiry_data->getBrand->id,
-                    'name'          => $enquiry_data->getBrand->name
-                ] : [],
-                'unit'              => $enquiry_data->getCommodityProduct->getUnit ? [
-                    'id'            => $enquiry_data->getCommodityProduct->getUnit->id,
-                    'name'          => $enquiry_data->getCommodityProduct->getUnit->name
-                ] : [],
-                'commodity_product' => $enquiry_data->getCommodityProduct ? [
-                    'id'        => $enquiry_data->getCommodityProduct->id,
-                    'name'      => $enquiry_data->getCommodityProduct->name,
-                    'thumbnail' => $enquiry_data->getCommodityProduct->thumbnail ? imageUrl($enquiry_data->getCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
-
-                    'category'  => $enquiry_data->getCommodityProduct->getCategory ? [
-                        'id'    => $enquiry_data->getCommodityProduct->getCategory->id,
-                        'name'  => $enquiry_data->getCommodityProduct->getCategory->name,
-
-                    ] : [],
-
-                ] : [],
-
-                'origin_city'       => $enquiry_data->origin_city,
-                'variation'         => [],
-                'selected_quality'           => $enquiry_data->quality,
-                'selected_packaging_charge'  => $enquiry_data->packaging_charge,
-                'unit_price'        => $enquiry_data->unit_price,
-                'billing_address'   => $enquiry_data->billing_address,
-                'delivery_address'  => $enquiry_data->delivery_address,
-                'consignee_detail'  => $enquiry_data->consignee_detail,
-                'purpose'           => $enquiry_data->purpose,
-                'description'       => $enquiry_data->description,
-                'message'           => $enquiry_data->message,
-                // 'price'             => $enquiry_data->price,
-                'packaging_charge'  => [],
-                'other_charge'      => [],
-                'other_quantity_charge'    => [],
-                'transporter_detail' => [],
-                'total_quantity'    => 0,
-                'base_price'        => 0,
-                'loading_charge'    => 0,
-                'insurance_charge'  => 0,
-                'quality_charge'    => 0,
-                'gst'               => 0,
-                'tcs'               => 0,
-                'gst_amount'        => 0,
-                'tcs_amount'        => 0,
-                'total_charges'     => 0,
-                'commission_type'   => '',
-                'commission'        => 0,
-                'final_variation_price' => 0,
-                'ex_price'          => 0,
-                'transport_price'   => 0,
-                'for_price'         => 0,
-                'required_booking_amount' => 0,
-                'is_mark'           => false,
-                'status'            => $enquiry_data->status,
-                'created_at'        => dateTimeFormat($enquiry_data->created_at),
-                'credit_days'       => $enquiry_data->customer_credit_days ? $enquiry_data->customer_credit_days : $enquiry_data->getUser->credit_days,
-            ];
-            $markedSeller = $enquiry_data->getMarkedSellerProductEnquiry;
-            if($markedSeller){
-
-                // $data['variation']  = $markedSeller->value;
-                $data['base_price'] = $markedSeller->base_price;
-                $data['transport_price'] = $markedSeller->transport_price;
-                $data['commission_type'] = $markedSeller->commission_type;
-                $data['commission'] = (int)$markedSeller->commission;
-                $data['is_mark']    = $markedSeller->is_mark ? true : false;
-                if($data['commission_type'] == 'exclude'){
-                    $data['base_price'] += $data['commission'];
-                }
-
-                $seller_commodity_product   = App\Models\SellerCommodityProduct::where('user_id', $markedSeller->user_id)->where('commodity_product_id', $markedSeller->commodity_product_id)->where('brand_id', $markedSeller->brand_id)->first();
-
-                $packaging_arr = [];
-                foreach ($seller_commodity_product->packaging_type ?? [] as $packaging_charge) {
-                    $packaging_arr['name'] = getPackagingType($packaging_charge)->name;
-                    $packaging_arr['price'] = isset($seller_commodity_product->packaging_type_price[$packaging_charge]) ? $seller_commodity_product->packaging_type_price[$packaging_charge] : 0;
-                    $data['total_charges'] += $packaging_arr['price'];
-                    $data['packaging_charge'][] = $packaging_arr;
-                }
-
-                $other_charges_arr = [];
-                $extra_charges = 0;
-
-                foreach ($seller_commodity_product->charge_name ?? [] as $charge_key => $charge_name) {
-                    $other_charges_arr['name'] = $charge_name;
-                    $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : 0;
-                    $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : "";
-
-                    if($other_charges_arr['operator']){
-                        if($other_charges_arr['operator'] == "+"){
-                            $extra_charges += $other_charges_arr['price'];
-                        }elseif($other_charges_arr['operator'] == "-"){
-                            $extra_charges -= $other_charges_arr['price'];
-                        }elseif($other_charges_arr['operator'] == "*"){
-                            $extra_charges += 0;
-                        }elseif($other_charges_arr['operator'] == "/"){
-                            $extra_charges += 0;
-                        }elseif($other_charges_arr['operator'] == "%"){
-                            $extra_charges += 0;
-                        }
-                    }
-
-                    $data['other_charge'][] = $other_charges_arr;
-                }
-
-                if($seller_commodity_product && $seller_commodity_product->is_quality){
-                    $other_quantity_charge_arr = [];
-                    foreach ($seller_commodity_product->quality ?? [] as $quality_key => $quality) {
-                        $other_quantity_charge_arr['name']          = $quality;
-                        $other_quantity_charge_arr['quality_price'] = $seller_commodity_product->quality_price[$quality_key];
-                        $data['total_charges'] += $other_quantity_charge_arr['quality_price'];
-                        $data['other_quantity_charge'][] = $other_quantity_charge_arr;
-                    }
-                }
-
-                foreach($markedSeller->value as $variation){
-
-                    $variation['total_price']       = ($variation['price'] + $data['base_price']) + $extra_charges + $seller_commodity_product->loading_charge + $seller_commodity_product->insurance_charge;
-                    $variation['tax']               = round(($variation['total_price']) * $seller_commodity_product->gst / 100);
-                    $variation['per_unit_price']    = $variation['total_price'] + $variation['tax'];
-                    $variation['final_price']       = $variation['per_unit_price'] * $variation['quantity'];
-                    $data['variation'][]            = $variation;
-                    $data['total_quantity']         += $variation['quantity'];
-                    $data['final_variation_price']  += $variation['final_price'];
-                    $data['gst_amount']             += $variation['tax'];
-                }
-
-                $data['loading_charge']     = $seller_commodity_product->loading_charge;
-                $data['insurance_charge']   = $seller_commodity_product->insurance_charge;
-                $data['quality_charge']     = $seller_commodity_product->quality_charge ?? 0;
-                $data['gst']                = $seller_commodity_product->gst;
-                $data['tcs']                = $seller_commodity_product->tcs;
-
-                $data['tcs_amount']         = $data['final_variation_price']*$data['tcs_amount']/100;
-
-                $data['ex_price']           = $data['final_variation_price'] + $data['tcs_amount'];
-
-                $data['for_price']          = $data['ex_price'] + $data['transport_price'] * $data['total_quantity'];
-                $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
-                // if($data['commission_type'] == 'exclude'){
-                //     $data['final_variation_price'] += $data['commission'];
-                // }
-                // $data['status']     = $enquiry_data->getMarkedSellerProductEnquiry->status;
-            }else{
-                $data['variation']   = $enquiry_data->variation;
-            }
-        @endphp
-
-        @php
-            $seller_enq_data = [
-                'id'                => $seller_enquiry_data->id,
-                'unique_id'         => $seller_enquiry_data->unique_id,
-                'order_id'          => $seller_enquiry_data->getCommodityProductOrder ? $seller_enquiry_data->getCommodityProductOrder->id : NULL,
-                'brand'             => $seller_enquiry_data->getBrand ? [
-                        'id'        => $seller_enquiry_data->getBrand->id,
-                        'name'      => $seller_enquiry_data->getBrand->name
-                    ] : [],
-                'unit'              => $seller_enquiry_data->getSellerCommodityProduct->getUnit ? [
-                        'id'        => $seller_enquiry_data->getSellerCommodityProduct->getUnit->id,
-                        'name'      => $seller_enquiry_data->getSellerCommodityProduct->getUnit->name
-                    ] : [],
-                'commodity_product' => $seller_enquiry_data->getSellerCommodityProduct ? [
-                        'id'        => $seller_enquiry_data->getSellerCommodityProduct->id,
-                        'name'      => $seller_enquiry_data->getSellerCommodityProduct->name,
-                        'thumbnail' => $seller_enquiry_data->getSellerCommodityProduct->thumbnail ? imageUrl($seller_enquiry_data->getSellerCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
-
-                        'category'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory ? [
-                            'id'    => $seller_enquiry_data->getSellerCommodityProduct->getCategory->id,
-                            'name'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory->name,
-
-                        ] : [],
-
-                    ] : [],
-
-                'origin_city'       => $seller_enquiry_data->origin_city,
-                'variation'         => [],
-                'billing_address'   => $seller_enquiry_data->billing_address,
-                'delivery_address'  => $seller_enquiry_data->delivery_address,
-                'consignee_detail'  => $seller_enquiry_data->consignee_detail,
-                'purpose'           => $seller_enquiry_data->purpose,
-                'description'       => $seller_enquiry_data->description,
-                'message'           => $seller_enquiry_data->message,
-                'delivery_by'       => $seller_enquiry_data->delivery_by,
-                'selected_quality'           => $seller_enquiry_data->quality,
-                'selected_packaging_charge'  => $seller_enquiry_data->packaging_charge,
-                'loading_address'   => $seller_enquiry_data->loading_address,
-                // 'price'             => $seller_enquiry_data->price,
-                'packaging_charge'  => [],
-                'other_charge'      => [],
-                'other_quantity_charge'    => [],
-                'total_quantity'    => 0,
-                'base_price'        => $seller_enquiry_data->base_price,
-                'loading_charge'    => 0,
-                'insurance_charge'  => 0,
-                'quality_charge'    => 0,
-                'gst'               => 0,
-                'tcs'               => 0,
-                'gst_amount'        => 0,
-                'tcs_amount'        => 0,
-                'total_charges'     => 0,
-                'commission_type'   => $seller_enquiry_data->commission_type,
-                'commission'        => 0,
-                'final_variation_price' => 0,
-                'ex_price'          => 0,
-                'transport_price'   => 0,
-                'for_price'         => 0,
-                'required_booking_amount' => 0,
-                'is_mark'           => false,
-                'status'            => $seller_enquiry_data->status,
-                'created_at'        => dateTimeFormat($seller_enquiry_data->created_at),
-                'credit_days'       => $seller_enquiry_data->seller_credit_days ? $seller_enquiry_data->seller_credit_days : auth()->user()->credit_days,
-            ];
-
-            $seller_commodity_product   = App\Models\SellerCommodityProduct::where('user_id', $seller_enquiry_data->user_id)->where('commodity_product_id', $seller_enquiry_data->commodity_product_id)->where('brand_id', $seller_enquiry_data->brand_id)->first();
-            $seller_enq_data['loading_charge'] = $seller_commodity_product->loading_charge;
-            $seller_enq_data['insurance_charge'] = $seller_commodity_product->insurance_charge;
-            $seller_enq_data['quality_charge'] = $seller_commodity_product->quality_charge;
-            $seller_enq_data['gst'] = $seller_commodity_product->gst;
-
-            $extra_charges = 0;
-            $other_charges = [];
-            foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
-                $other_charges_arr['name'] = $charge_name;
-                $other_charges_arr['price'] = isset($seller_commodity_product->charge_price[$charge_key]) ? $seller_commodity_product->charge_price[$charge_key] : "0";
-                $other_charges_arr['operator'] = isset($seller_commodity_product->operator[$charge_key]) ? $seller_commodity_product->operator[$charge_key] : "";
-
-                if($other_charges_arr['operator']){
-                    if($other_charges_arr['operator'] == "+"){
-                        $extra_charges += $other_charges_arr['price'];
-                    }elseif($other_charges_arr['operator'] == "-"){
-                        $extra_charges -= $other_charges_arr['price'];
-                    }elseif($other_charges_arr['operator'] == "*"){
-                        $extra_charges += 0;
-                    }elseif($other_charges_arr['operator'] == "/"){
-                        $extra_charges += 0;
-                    }elseif($other_charges_arr['operator'] == "%"){
-                        $extra_charges += 0;
-                    }
-                }
-                $other_charges[] = $other_charges_arr;
-            }
-            $seller_enq_data['other_charges'] = $other_charges;
-
-            $seller_enq_data['quality_price'] = $seller_enquiry_data->quality && isset($seller_enquiry_data->quality['price']) ? $seller_enquiry_data->quality['price'] : "0";
-            $seller_enq_data['packaging_charge_price'] = $seller_enquiry_data->packaging_charge && isset($seller_enquiry_data->packaging_charge['charge']) ? $seller_enquiry_data->packaging_charge['charge'] : "0";
-            $all_charges = $seller_enq_data['loading_charge'] + $seller_enq_data['insurance_charge'] + $seller_enq_data['quality_charge'] + $seller_enq_data['quality_price'] + $seller_enq_data['packaging_charge_price'] + $extra_charges;
-
-            $selected_variations = $seller_enquiry_data->value;
-            $variation_arr = [];
-            foreach ($selected_variations as $variation) {
-                $get_state_price = App\Models\SellerCommodityProductStatePrice::find($variation['id']);
-                if ($get_state_price) {
-                    $variation['price'] = $get_state_price->price;
-                    $variation['per_unit_price'] = $get_state_price->price + $seller_enquiry_data->base_price + $all_charges;
-                    $variation['tax'] = round(($variation['per_unit_price']) * $seller_enq_data['gst'] / 100);
-                    $variation['per_unit_price'] += $variation['tax'];
-                    $variation['final_price'] = $variation['per_unit_price'] * $variation['quantity'];
-                    $seller_enq_data['total_quantity']         += $variation['quantity'];
-                    $seller_enq_data['ex_price'] += $variation['final_price'];
-                }
-                $variation_arr[] = $variation;
-            }
-            $seller_enq_data['variation'] = $variation_arr;
-            $seller_enq_data['commission'] = $seller_enquiry_data->commission;
-        @endphp
 
         @if ($markedSeller)
 
