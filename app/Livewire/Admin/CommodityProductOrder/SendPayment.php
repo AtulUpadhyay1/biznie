@@ -22,7 +22,20 @@ class SendPayment extends Component
 
     public function render()
     {
-        return view('admin.commodity_product_order.send_payment');
+        $paid_amount = CommodityProductSellerOrderLedger::where('order_id', $this->hidden_id)
+            ->where('type', 'debit')
+            ->sum('amount');
+        $remaining_balance = CommodityProductSellerOrderLedger::where('order_id', $this->hidden_id)
+            ->orderBy('id', 'DESC')
+            ->first();
+        if($remaining_balance){
+            $remaining_balance = $remaining_balance->remaining_balance;
+        } else {
+            $remaining_balance = 0;
+        }
+
+        $total_amoount = $remaining_balance + $paid_amount;
+        return view('admin.commodity_product_order.send_payment', compact('total_amoount', 'paid_amount', 'remaining_balance'));
     }
 
     public function save()

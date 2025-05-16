@@ -25,17 +25,17 @@
                         <div class="row">
                             <div class="col-6 mb-3">
                                 <p>
-                                    <b>Company Name: </b> {{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }} <br>
-                                    <b>User: </b> {{ $data->getCustomer?->name }} <br>
-                                    <b>GST: </b> {{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }} <br>
-                                    <b>Phone: </b> {{ $data->getCustomer?->phone }} <br>
+                                    <b>Company Name: </b> {{ $data->getSeller?->getBusiness?->name ?? '--' }} <br>
+                                    <b>User: </b> {{ $data->getSeller?->name }} <br>
+                                    <b>GST: </b> {{ $data->getSeller?->getUserDetail?->gst_number ?? '--' }} <br>
+                                    <b>Phone: </b> {{ $data->getSeller?->phone }} <br>
                                 </p>
                             </div>
                             <div class="col-6 mb-3">
                                 <p>
-                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($data->total_amount) }} <br>
-                                    <b>Paid Amount:</b> ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
-                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($data->due_amount) }} <br>
+                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($total_amoount) }} <br>
+                                    <b>Paid Amount:</b> ₹ {{ formatIndianNumber($paid_amount) }} <br>
+                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($remaining_balance) }} <br>
                                 </p>
                             </div>
                         </div>
