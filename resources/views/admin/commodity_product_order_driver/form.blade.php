@@ -76,13 +76,13 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3 mb-3">
+                            {{-- <div class="col-md-3 mb-3">
                                 <label class="form-label" for="advance_amount">Advance Amount</label>
                                 <input type="number" id="advance_amount" class="form-control @error('advance_amount') is-invalid @enderror" wire:model="advance_amount" placeholder="Enter Advance Amount">
                                 @error('advance_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-3 mb-3">
                                 <label class="form-label" for="driver_photo">Driver Photo</label>

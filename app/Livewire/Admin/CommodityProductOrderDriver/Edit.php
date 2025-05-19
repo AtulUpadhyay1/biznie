@@ -52,7 +52,7 @@ class Edit extends Component
             'transporter_name'      => 'required',
             'vehicle_number'        => 'required',
             'transporter_phone_number'=> 'required|numeric|digits:10',
-            'advance_amount'        => 'required|numeric',
+            // 'advance_amount'        => 'required|numeric',
         ]);
 
         $data = CommodityProductOrderDriver::findOrFail($this->hidden_id);
