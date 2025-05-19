@@ -33,7 +33,7 @@ class CommodityProductOrderDriverResource extends JsonResource
             'transporter_name'              => $this->transporter_name,
             'transporter_phone_number'      => $this->transporter_phone_number,
             'advance_amount'                => $this->advance_amount,
-            'final_quantity_by_seller'      => $this->final_quantity_by_seller,
+            'final_quantity_by_seller'      => $this->final_quantity_by_seller ? array_sum($this->final_quantity_by_seller) : 0,
             'final_quantity_by_customer'    => $this->final_quantity_by_customer,
         ];
 
