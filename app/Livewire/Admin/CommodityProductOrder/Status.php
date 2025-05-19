@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\CommodityProductOrder;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\UserOtp;
 use Livewire\Component;
 use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
@@ -12,7 +13,7 @@ use App\Models\CreditWalletTransaction;
 class Status extends Component
 {
     public $page_title = 'Order Status';
-    public $hidden_id, $data, $status, $cancel_reason, $cancel_reason_text;
+    public $hidden_id, $data, $status, $cancel_reason, $cancel_reason_text, $otp;
 
     public function mount($id)
     {
@@ -25,6 +26,37 @@ class Status extends Component
     {
         $this->page_title = 'Order Status For - '. $this->data->getProductEnquiry->unique_id;
         return view('admin.commodity_product_order.status');
+    }
+
+    public function sendOtp()
+    {
+        $phone = $this->data->getCustomer?->phone;
+        sendOtp($phone);
+        $this->dispatch('alert',
+            type : 'success',
+            message : 'OTP sent successfully. Please enter the OTP to proceed.',
+        );
+    }
+
+    public function verifyOtp()
+    {
+        $phone = $this->data->getCustomer?->phone;
+
+        $checkOtp = UserOtp::where('phone', $phone)->where('otp', $this->otp)->first();
+        if(!$checkOtp){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Please enter a valid OTP.',
+            );
+            return ;
+        }
+        $checkOtp->delete();
+        $this->dispatch('alert',
+            type : 'success',
+            message : 'OTP verified successfully.',
+        );
+
+        $this->updateStatus();
     }
 
     public function updateStatus()
@@ -93,10 +125,13 @@ class Status extends Component
 
             }
 
-            $this->dispatch('alert',
-                type : 'success',
-                message : 'Status updated successfully.',
-            );
+            // $this->dispatch('alert',
+            //     type : 'success',
+            //     message : 'Status updated successfully.',
+            // );
+
+            session()->flash('success', 'Status updated successfully.');
+            return $this->redirectRoute('admin.commodity-product-order.status', $this->hidden_id, navigate: true);
 
         } catch (\Throwable $th) {
             $this->dispatch('alert',

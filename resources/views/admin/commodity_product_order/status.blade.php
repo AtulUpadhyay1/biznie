@@ -211,17 +211,108 @@
         </div>
     </div>
 
+    <div class="modal fade" id="otpVeryfiy" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="otpVeryfiyLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="otpVeryfiyLabel">OTP Verification</h5>
+                    {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                </div>
+                <div class="modal-body">
+                    <label for="otp">Otp Send On {{ $data->getCustomer?->phone }}</label>
+                    <input type="number" class="form-control" id="otp" placeholder="Enter OTP" wire:model="otp">
+                    <div class="text-end">
+                        <small id="resend-otp" class="d-none" wire:click="sendOtp()">
+                            <a href="javascript:;" onclick="restartTimer()">Resend OTP</a>
+                        </small>
+                        <small id="timer"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="" class="btn btn-danger btn-sm" wire:navigate>Close</a>
+                    <button type="button" class="btn btn-success btn-sm" wire:click="verifyOtp()" wire:loading.attr="disabled">
+                        <span wire:loading.remove wire:target="verifyOtp">Verify</span>
+                        <span wire:loading wire:target="verifyOtp">Verifying...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
         <script>
-            $(document).ready(function() {
-                $('#status').change(function() {
-                    let status = $(this).val();
-                    if(status != 'cancel'){
-                        @this.updateStatus();
-                    }else{
-                        $('#orderCancel').modal('show');
+            document.addEventListener('livewire:navigated', function() {
+                const statusSelect = document.getElementById('status');
+                if (statusSelect) {
+                    statusSelect.addEventListener('change', function() {
+                        const status = this.value;
+                        if (status === 'cancel') {
+                            $('#orderCancel').modal('show');
+                        } else if (status === 'delivered') {
+                            Swal.fire({
+                                title: "Are you sure you want to mark this order as delivered?",
+                                text: "Select 'Proceed Without OTP' to proceed without OTP or 'Generate OTP' to send OTP.",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonText: "Proceed Without OTP",
+                                cancelButtonText: "Generate OTP",
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    @this.updateStatus();
+                                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                    @this.sendOtp();
+                                    $('#otpVeryfiy').modal('show');
+                                }
+                            });
+                        } else {
+                            @this.updateStatus();
+                        }
+                    });
+                }
+            });
+
+            // Also trigger on initial load
+            document.addEventListener('DOMContentLoaded', function() {
+                Livewire.dispatch('navigated');
+            });
+        </script>
+
+        <script>
+            const modalElement = document.getElementById('otpVeryfiy');
+            const resendOtpElement = document.getElementById('resend-otp');
+            const timerElement = document.getElementById('timer');
+            let timer;
+
+            function startTimer(seconds) {
+                let remaining = seconds;
+                resendOtpElement.classList.add('d-none');
+
+                clearInterval(timer);
+                timer = setInterval(() => {
+                    if (remaining > 0) {
+                        timerElement.textContent = `Resend OTP in ${remaining--} seconds`;
+                    } else {
+                        clearInterval(timer);
+                        timerElement.textContent = '';
+                        resendOtpElement.classList.remove('d-none');
                     }
-                });
+                }, 1000);
+            }
+
+            function restartTimer() {
+                startTimer(60);
+            }
+
+            modalElement.addEventListener('shown.bs.modal', function () {
+                startTimer(60);
+            });
+
+            modalElement.addEventListener('hidden.bs.modal', function () {
+                clearInterval(timer);
+                timerElement.textContent = '';
+                resendOtpElement.classList.add('d-none');
             });
         </script>
     @endpush
