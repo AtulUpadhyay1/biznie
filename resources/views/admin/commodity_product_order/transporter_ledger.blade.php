@@ -87,9 +87,9 @@
                                             @endif
                                             @if ($data->getDrivers)
                                                 <hr>
+                                                <b>Vehicle No : </b> {{ $data->getDrivers->vehicle_number }} <br>
                                                 <b>Driver Name : </b> {{ $data->getDrivers->name }} <br>
                                                 <b>Driver Phone : </b> {{ $data->getDrivers->phone }} <br>
-                                                <b>Driver Vehicle No : </b> {{ $data->getDrivers->vehicle_number }} <br>
                                             @endif
                                         </td>
                                     </tr>
@@ -148,11 +148,11 @@
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label" for="driver_id">Driver <span class="text-danger">*</span></label>
+                        <label class="form-label" for="driver_id">Vehicle <span class="text-danger">*</span></label>
                         <select class="form-select @error('driver_id') is-invalid @enderror" id="driver_id" wire:model="driver_id">
-                            <option value="">Select Driver</option>
+                            <option value="">Select Vehicle</option>
                             @foreach ($driver_list ?? [] as $driver)
-                                <option value="{{ $driver->id }}">{{ $driver->name }} ({{ $driver->phone }})</option>
+                                <option value="{{ $driver->id }}">{{ $driver->vehicle_number }}</option>
                             @endforeach
                         </select>
                         @error('driver_id') <small class="text-danger">{{ $message }}</small>@enderror
