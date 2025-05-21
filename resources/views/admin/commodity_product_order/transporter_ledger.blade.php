@@ -85,6 +85,12 @@
                                                 <b>File: </b>
                                                 <a href="{{ asset('storage/'.$data->file) }}" target="_blank">View</a> <br>
                                             @endif
+                                            @if ($data->getDrivers)
+                                                <hr>
+                                                <b>Driver Name : </b> {{ $data->getDrivers->name }} <br>
+                                                <b>Driver Phone : </b> {{ $data->getDrivers->phone }} <br>
+                                                <b>Driver Vehicle No : </b> {{ $data->getDrivers->vehicle_number }} <br>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty
@@ -141,7 +147,16 @@
                             </label>
                         </div>
                     </div>
-
+                    <div class="mb-2">
+                        <label class="form-label" for="driver_id">Driver <span class="text-danger">*</span></label>
+                        <select class="form-select @error('driver_id') is-invalid @enderror" id="driver_id" wire:model="driver_id">
+                            <option value="">Select Driver</option>
+                            @foreach ($driver_list ?? [] as $driver)
+                                <option value="{{ $driver->id }}">{{ $driver->name }} ({{ $driver->phone }})</option>
+                            @endforeach
+                        </select>
+                        @error('driver_id') <small class="text-danger">{{ $message }}</small>@enderror
+                    </div>
                     <div class="mb-2">
                         <label class="form-label" for="amount">Amount <span class="text-danger">*</span></label>
                         <input type="number" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="Enter amount" wire:model="amount">
@@ -156,7 +171,7 @@
 
                     <div class="mb-2">
                         <label class="form-label" for="file">File</label>
-                        <input type="file" class="form-control @error('file') is-invalid @enderror" wire:model="file">
+                        <input type="file" id="file" class="form-control @error('file') is-invalid @enderror" wire:model="file">
                         @error('file') <small class="text-danger">{{ $message }}</small>@enderror
                     </div>
                 </div>

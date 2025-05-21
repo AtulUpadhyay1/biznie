@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductOrderDriver;
 use App\Models\CommodityProductSellerOrderLedger;
 use App\Models\CommodityProductTransporterOrderLedger;
 
@@ -16,7 +17,7 @@ class TransporterLedger extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $page_title = 'View Transporter Ledger';
-    public $hidden_id, $data, $added_by = 'seller', $payment_method = 'cash', $amount, $file;
+    public $hidden_id, $data, $added_by = 'seller', $payment_method = 'cash', $amount, $file, $driver_id;
 
     public function mount($id)
     {
@@ -28,12 +29,12 @@ class TransporterLedger extends Component
         $this->data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')->findOrFail($this->hidden_id);
         $this->page_title = 'View Transporter Ledger '. $this->data->getProductEnquiry->unique_id;
         $ledgers = CommodityProductTransporterOrderLedger::where('order_id', $this->hidden_id)
+            ->with('getDrivers')
             ->orderBy('id', 'DESC')
             ->paginate(getPaginate());
-
+        $driver_list = CommodityProductOrderDriver::where('order_id', $this->hidden_id)->get();
         $total_paid = CommodityProductTransporterOrderLedger::where('order_id', $this->hidden_id)->sum('amount');
-
-        return view('admin.commodity_product_order.transporter_ledger', compact('ledgers', 'total_paid'));
+        return view('admin.commodity_product_order.transporter_ledger', compact('ledgers', 'total_paid', 'driver_list'));
     }
 
     function save()
@@ -48,7 +49,8 @@ class TransporterLedger extends Component
         }
 
         $this->validate([
-            'amount'    => 'required|numeric'
+            'amount'    => 'required|numeric',
+            'driver_id' => 'required|exists:commodity_product_order_drivers,id',
         ]);
 
         if($this->amount > $order->total_freight_amount){
@@ -89,6 +91,7 @@ class TransporterLedger extends Component
 
         $ledger                       = new CommodityProductTransporterOrderLedger;
         $ledger->order_id             = $order->id;
+        $ledger->driver_id            = $this->driver_id;
         $ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
         $ledger->type                 = 'credit';
         $ledger->amount               = $this->amount;
@@ -103,6 +106,10 @@ class TransporterLedger extends Component
         $ledger->added_by = $this->added_by;
         $ledger->added_by_id = auth()->id();
         $ledger->save();
+
+        $driver_data = CommodityProductOrderDriver::where('order_id', $this->hidden_id)->find($this->driver_id);
+        $driver_data->advance_amount += $this->amount;
+        $driver_data->save();
 
         if($ledger->added_by == 'seller'){
 

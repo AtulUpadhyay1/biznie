@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class CommodityProductTransporterOrderLedger extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public function getDrivers()
+    {
+        return $this->belongsTo(CommodityProductOrderDriver::class, 'driver_id');
+    }
 }
