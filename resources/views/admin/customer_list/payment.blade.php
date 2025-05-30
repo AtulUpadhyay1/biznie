@@ -69,6 +69,7 @@
                                     <th>Amount</th>
                                     <th>Status</th>
                                     <th>Date</th>
+                                    <th>Description</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,6 +88,7 @@
                                                 @endif
                                             </td>
                                             <td>{{$cash_transaction->created_at}}</td>
+                                            <td>{{$cash_transaction->description}}</td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -105,6 +107,7 @@
                                                 @endif
                                             </td>
                                             <td>{{$credit_transaction->created_at}}</td>
+                                            <td>{{$credit_transaction->description}}</td>
                                         </tr>
                                     @endforeach
                                 @endif
