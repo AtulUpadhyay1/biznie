@@ -30,16 +30,16 @@ class Ledger extends Component
             ->orderBy('id', 'DESC')
             ->paginate(getPaginate());
 
-        $this->total_credit_wallet = CreditWalletTransaction::where('commodity_product_order_id', $this->hidden_id)
+        $creditWalletSums = CreditWalletTransaction::where('commodity_product_order_id', $this->hidden_id)
             ->where('user_id', $this->data->customer_user_id)
-            ->where('status', 'debit')
-            ->sum('amount');
+            ->selectRaw("
+            SUM(CASE WHEN status = 'debit' THEN amount ELSE 0 END) as total_debit,
+            SUM(CASE WHEN status = 'credit' THEN amount ELSE 0 END) as total_credit
+            ")
+            ->first();
 
-
-        $this->total_pay_credit_wallet = CreditWalletTransaction::where('commodity_product_order_id', $this->hidden_id)
-            ->where('user_id', $this->data->customer_user_id)
-            ->where('status', 'credit')
-            ->sum('amount');
+        $this->total_credit_wallet = $creditWalletSums->total_debit ?? 0;
+        $this->total_pay_credit_wallet = $creditWalletSums->total_credit ?? 0;
 
         $this->due_credit_wallet = $this->total_credit_wallet - $this->total_pay_credit_wallet;
 
