@@ -27,6 +27,10 @@ class Ledger extends Component
         $ledgers = CommodityProductOrderLedger::where('order_id', $this->hidden_id)
             ->orderBy('id', 'DESC')
             ->paginate(getPaginate());
-        return view('admin.commodity_product_order.ledger', compact('data', 'ledgers'));
+        $total_credit_wallet = CommodityProductOrderLedger::where('order_id', $this->hidden_id)
+            ->where('payment_mode', 'Credit Wallet')
+            ->sum('amount');
+
+        return view('admin.commodity_product_order.ledger', compact('data', 'ledgers', 'total_credit_wallet'));
     }
 }

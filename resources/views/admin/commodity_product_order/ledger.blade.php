@@ -22,6 +22,16 @@
                 </div>
 
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Total Used Credit Wallet : ₹ {{ $total_credit_wallet }}</h6>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button type="button" class="btn btn-info btn-xs mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Add Credit Balance
+                            </button>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="custom-table">
                             <thead>
