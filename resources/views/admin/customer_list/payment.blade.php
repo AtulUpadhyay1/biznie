@@ -56,7 +56,7 @@
                         </a>
                         @if ($mode == 'creditwallet')
                             <br>
-                            <button class="btn btn-xs btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#addBalance">Add Balance</button>
+                            {{-- <button class="btn btn-xs btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#addBalance">Add Balance</button> --}}
                         @endif
                     </div>
                 </div>
@@ -77,7 +77,15 @@
                                         <tr>
                                             <td>{{$cash_transaction->transaction_id}}</td>
                                             <td><b>₹ {{formatIndianNumber($cash_transaction->amount)}}</b></td>
-                                            <td>{{ucfirst($cash_transaction->status)}}</td>
+                                            <td>
+                                                @if(strtolower($cash_transaction->status) == 'credit')
+                                                    <span class="badge bg-success">Credit</span>
+                                                @elseif(strtolower($cash_transaction->status) == 'debit')
+                                                    <span class="badge bg-danger">Debit</span>
+                                                @else
+                                                    <span class="badge bg-secondary">{{ ucfirst($cash_transaction->status) }}</span>
+                                                @endif
+                                            </td>
                                             <td>{{$cash_transaction->created_at}}</td>
                                         </tr>
                                     @endforeach
@@ -87,7 +95,15 @@
                                         <tr>
                                             <td>{{$credit_transaction->transaction_id}}</td>
                                             <td><b>₹ {{formatIndianNumber($credit_transaction->amount)}}</b></td>
-                                            <td>{{ucfirst($credit_transaction->status)}}</td>
+                                            <td>
+                                                @if(strtolower($credit_transaction->status) == 'credit')
+                                                    <span class="badge bg-success">Credit</span>
+                                                @elseif(strtolower($credit_transaction->status) == 'debit')
+                                                    <span class="badge bg-danger">Debit</span>
+                                                @else
+                                                    <span class="badge bg-secondary">{{ ucfirst($credit_transaction->status) }}</span>
+                                                @endif
+                                            </td>
                                             <td>{{$credit_transaction->created_at}}</td>
                                         </tr>
                                     @endforeach
