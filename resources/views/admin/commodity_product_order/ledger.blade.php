@@ -24,10 +24,10 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>Total Used Credit Wallet : ₹ {{ $total_credit_wallet }}</h6>
+                            <h6>Total Used Credit Balance : ₹ {{ $total_credit_wallet }} | Total Paid Credit Balance: ₹ {{ $total_pay_credit_wallet }}</h6>
                         </div>
                         <div class="col-md-6 text-end">
-                            <button type="button" class="btn btn-info btn-xs mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <button class="btn btn-xs btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#addBalance">
                                 Add Credit Balance
                             </button>
                         </div>
@@ -95,6 +95,59 @@
                             {{ $ledgers->links() }}
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addBalance" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addBalanceLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBalanceLabel">Add Balance In Credit Wallet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Amount <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="amount" placeholder="Enter amount" wire:model="amount" required>
+                        @error('amount') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="mode" class="form-label">Mode</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="mode" id="mode_cash" value="cash" wire:model="payment_method" required>
+                                <label class="form-check-label" for="mode_cash">Cash</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="mode" id="mode_online" value="online" wire:model="payment_method">
+                                <label class="form-check-label" for="mode_online">Online</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="mode" id="mode_cheque" value="cheque" wire:model="payment_method">
+                                <label class="form-check-label" for="mode_cheque">Cheque</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="mode" id="mode_other" value="other" wire:model="payment_method">
+                                <label class="form-check-label" for="mode_other">Other</label>
+                            </div>
+                        </div>
+                        @error('mode') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                    {{-- <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="1" placeholder="Enter description" wire:model="description"></textarea>
+                        @error('description') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div> --}}
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" rows="1" placeholder="Enter notes" wire:model="notes"></textarea>
+                        @error('notes') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-xs btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-xs btn-primary" wire:click="addCreditWalletBalanace()">Add Balance</button>
                 </div>
             </div>
         </div>
