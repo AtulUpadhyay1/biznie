@@ -98,7 +98,8 @@ class Show extends Component
             'chart.required' => 'Please select a chart file.'
         ]);
         $data = CommodityProductState::findOrFail($state_price_id);
-        if(count($data->chart) == 3){
+
+        if($data->chart && count($data->chart) == 3){
             $this->dispatch('alert',
                 type : 'error',
                 message : 'You can upload only 3 chart files !!',

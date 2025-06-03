@@ -336,21 +336,23 @@
                                                             <label for="chart_{{$state_variation->id}}">
                                                                 @if ($chart)
                                                                     <img src="{{ $chart->temporaryUrl() }}" class="img-thumbnail" alt="Upload File" class="mt-2">
-                                                                    @if ($chart->temporaryUrl())
-                                                                        {{$this->chartStatePrice($state_variation->id)}}
-                                                                    @endif
                                                                 @else
-                                                                    <img src="{{ asset('common/images/upload.png') }}" class="img-thumbnail" alt="Upload File" class="mt-2">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img src="{{ asset('common/images/upload.png') }}" class="img-thumbnail" alt="Upload File" class="mt-2" wire:loading.remove>
+                                                                        <span class="text-danger h5" wire:loading>Uploading...</span>
+                                                                    </div>
                                                                 @endif
                                                             </label>
                                                         </div>
                                                         @error('chart') <small class="text-danger">{{ $message }}</small>@enderror
 
-                                                        <div class="col-md-12 mb-3">
+                                                        <div class="row">
                                                             @if ($state_variation->chart)
                                                                 @foreach ($state_variation->chart ?? [] as $chart_image)
-                                                                    <img src="{{ imageUrl($chart_image) }}" class="img-thumbnail" alt="Upload File" class="mt-2" height="150" width="150">
-                                                                    <button class="btn" type="button" wire:click="removeChart({{$state_variation->id}}, {{$chart_image}})"><i class="bi bi-x-circle"></i></button>
+                                                                    <div class="col-md-4 mb-3">
+                                                                        <span wire:click="removeChart({{$state_variation->id}}, {{$chart_image}})" class="text-danger cls-btn"><i class="bi bi-x-circle"></i></span>
+                                                                        <img src="{{ imageUrl($chart_image) }}" class="img-thumbnail" alt="Upload File" class="mt-2" height="150" width="150">
+                                                                    </div>
                                                                 @endforeach
                                                             @endif
                                                         </div>
@@ -359,7 +361,14 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" form="chartFormModal_{{$state_variation->id}}">Close</button>
-                                                {{-- <button type="submit" class="btn btn-primary" form="chartFormModal_{{$state_variation->id}}">Upload</button> --}}
+                                                <button type="submit" class="btn btn-primary" form="chartFormModal_{{$state_variation->id}}">
+                                                    <span wire:loading.remove>
+                                                        Upload
+                                                    </span>
+                                                    <span wire:loading wire.loading.attr="disabled">
+                                                        Uploading...
+                                                    </span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
