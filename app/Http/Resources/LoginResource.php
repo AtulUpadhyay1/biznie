@@ -21,10 +21,14 @@ class LoginResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'company_name' => null,
+            'kyc_status' => null,
         ];
         if($this->type == 'seller'){
             if($this->getBusiness){
                 $data['company_name'] = $this->getBusiness->name;
+            }
+            if($this->getSellerKycDetail){
+                $data['kyc_status'] = $this->getSellerKycDetail->status;
             }
         }
         if($this->type == 'transporter'){
