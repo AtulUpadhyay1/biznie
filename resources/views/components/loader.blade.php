@@ -1,79 +1,136 @@
 <style>
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 100vw;
-        background-color: rgba(0, 0, 0, 0.2); /* semi-transparent overlay */
-        z-index: 9999; /* Make sure it's above everything */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        pointer-events: all; /* prevent interaction below */
-    }
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.28);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    pointer-events: all;
+  }
 
-    .loading {
-        --speed-of-animation: 0.9s;
-        --gap: 6px;
-        --first-color: #4c86f9;
-        --second-color: #49a84c;
-        --third-color: #f6bb02;
-        --fourth-color: #f6bb02;
-        --fifth-color: #2196f3;
-        display: flex;
-        gap: var(--gap);
-        background: #33333338;
-        border-radius: 10px;
-        padding: 20px;
-        pointer-events: none; /* allow events to pass through to overlay */
-    }
+  .loader-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
 
-    .loading span {
-        width: 4px;
-        height: 50px;
-        background: var(--first-color);
-        animation: scale var(--speed-of-animation) ease-in-out infinite;
-    }
+  /* Rings base style */
+  .ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: transparent;
+    border-top-color: #8A0707;
+    border-bottom-color: #E01111;
+    box-shadow: 0 0 12px rgba(234, 17, 17, 0.6);
+    transform-origin: center;
+    transform: translate(-50%, -50%);
+  }
 
-    .loading span:nth-child(2) {
-        background: var(--second-color);
-        animation-delay: -0.8s;
-    }
+  /* Outer ring */
+  .ring.outer {
+    width: 100px;
+    height: 100px;
+    border-width: 5px;
+    animation: spinClockwise 4.5s linear infinite;
+  }
 
-    .loading span:nth-child(3) {
-        background: var(--third-color);
-        animation-delay: -0.7s;
-    }
+  /* Middle ring */
+  .ring.middle {
+    width: 72px;
+    height: 72px;
+    border-width: 6px;
+    border-top-color: #B30A0A;
+    border-bottom-color: #C71010;
+    box-shadow: 0 0 10px rgba(179, 10, 10, 0.7);
+    animation: spinCounterClockwise 3.2s linear infinite;
+  }
 
-    .loading span:nth-child(4) {
-        background: var(--fourth-color);
-        animation-delay: -0.6s;
-    }
+  /* Inner ring */
+  .ring.inner {
+    width: 45px;
+    height: 45px;
+    border-width: 7px;
+    border-top-color: #8A0707;
+    border-bottom-color: #AA0B0B;
+    box-shadow: 0 0 8px rgba(138, 7, 7, 0.8);
+    animation: spinClockwise 2.1s linear infinite;
+  }
 
-    .loading span:nth-child(5) {
-        background: var(--fifth-color);
-        animation-delay: -0.5s;
-    }
+  /* Center dot */
+  .center-dot {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 16px;
+    height: 16px;
+    background-color: #8A0707;
+    border-radius: 50%;
+    box-shadow:
+      0 0 10px #8A0707,
+      0 0 20px #E01111;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
 
-    @keyframes scale {
-        0%, 40%, 100% {
-            transform: scaleY(0.05);
-        }
-        20% {
-            transform: scaleY(1);
-        }
+  /* Ripple effect ring */
+  .ripple-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2.5px solid #E01111;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+    animation: ripplePulse 2.5s ease-out infinite;
+    z-index: 9;
+  }
+
+  .ripple-ring:nth-child(2) {
+    animation-delay: 1.3s;
+  }
+
+  @keyframes spinClockwise {
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
     }
+  }
+
+  @keyframes spinCounterClockwise {
+    100% {
+      transform: translate(-50%, -50%) rotate(-360deg);
+    }
+  }
+
+  @keyframes ripplePulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.7;
+    }
+    80% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(3.5);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(3.5);
+    }
+  }
 </style>
 
 <div wire:loading>
-    <div class="loading-overlay">
-        <div class="loading">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+  <div class="loading-overlay" aria-label="Loading animation" role="status" aria-live="polite">
+    <div class="loader-container" aria-hidden="true">
+      <div class="ring outer"></div>
+      <div class="ring middle"></div>
+      <div class="ring inner"></div>
+      <div class="center-dot"></div>
+      <div class="ripple-ring"></div>
+      <div class="ripple-ring"></div>
     </div>
+  </div>
 </div>
