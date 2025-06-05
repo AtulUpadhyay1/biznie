@@ -46,7 +46,15 @@ class Create extends Component
         $packaging_type_list = PackagingType::active()->orderBy('name', 'asc')->get();
         $attribute_list = Attribute::active()->get();
 
-        $this->packaging_type_name = PackagingType::whereIn('id', $this->packaging_type)->pluck('name');
+        $packaging_type_ids = $this->packaging_type;
+
+        $packagingTypes = PackagingType::whereIn('id', $packaging_type_ids)
+            ->get(['id', 'name'])
+            ->keyBy('id');
+
+        $this->packaging_type_name = collect($packaging_type_ids)
+            ->map(fn($packaging_type_ids) => optional($packagingTypes->get($packaging_type_ids))->name)
+            ->filter();
 
         return view('admin.commodity_product.form', compact('category_list', 'brand_list', 'unit_list', 'packaging_type_list', 'attribute_list'));
     }

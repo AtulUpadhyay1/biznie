@@ -157,13 +157,16 @@
                                 @error('attribute') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <div wire:ignore>
-                                    <label for="packaging_type" class="form-label">Packaging Type <span class="text-danger">*</span></label>
-                                    <select class="form-select select2 @error('packaging_type') is-invalid @enderror" id="packaging_type" wire:model="packaging_type" data-placeholder="Select packaging type" multiple>
-                                        @foreach ($packaging_type_list as $packaging_type_data)
-                                            <option value="{{ $packaging_type_data->id }}">{{ $packaging_type_data->name }}</option>
-                                        @endforeach
-                                    </select>
+                                <label for="packaging_type" class="form-label">Packaging Type <span class="text-danger">*</span></label>
+                                <div class="d-flex flex-wrap">
+                                    @foreach ($packaging_type_list as $packaging_type_data)
+                                        <div class="form-check me-3 mb-2">
+                                            <input class="form-check-input" type="checkbox" id="packaging_type_{{ $packaging_type_data->id }}" value="{{ $packaging_type_data->id }}" wire:model.live="packaging_type">
+                                            <label class="form-check-label" for="packaging_type_{{ $packaging_type_data->id }}">
+                                                {{ $packaging_type_data->name }}
+                                            </label>
+                                        </div>
+                                    @endforeach
                                 </div>
                                 @error('packaging_type') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
