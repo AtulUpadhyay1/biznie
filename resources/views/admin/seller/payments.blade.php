@@ -69,6 +69,7 @@
                                     <th>Amount</th>
                                     <th>Status</th>
                                     <th>Date</th>
+                                    <th>Description / Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,8 +78,23 @@
                                         <tr>
                                             <td>{{$cash_transaction->transaction_id}}</td>
                                             <td><b>₹ {{formatIndianNumber($cash_transaction->amount)}}</b></td>
-                                            <td>{{ucfirst($cash_transaction->status)}}</td>
+                                            <td>
+                                                @if(strtolower($cash_transaction->status) == 'credit')
+                                                    <span class="badge bg-success text-white">Credit</span>
+                                                @elseif(strtolower($cash_transaction->status) == 'debit')
+                                                    <span class="badge bg-danger text-white">Debit</span>
+                                                @else
+                                                    <span class="badge bg-secondary text-white">{{ ucfirst($cash_transaction->status) }}</span>
+                                                @endif
+                                            </td>
                                             <td>{{$cash_transaction->created_at}}</td>
+                                            <td>
+                                                <b>Description : </b>{{$cash_transaction->description}}
+                                                @if ($cash_transaction->notes)
+                                                    <br>
+                                                    <b>Notes : </b>{{$cash_transaction->notes}}
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -87,8 +103,26 @@
                                         <tr>
                                             <td>{{$credit_transaction->transaction_id}}</td>
                                             <td><b>₹ {{formatIndianNumber($credit_transaction->amount)}}</b></td>
-                                            <td>{{ucfirst($credit_transaction->status)}}</td>
+                                            <td>
+                                                @if(strtolower($credit_transaction->status) == 'credit')
+                                                    <span class="badge bg-success text-white">Credit</span>
+                                                @elseif(strtolower($credit_transaction->status) == 'debit')
+                                                    <span class="badge bg-danger text-white">Debit</span>
+                                                @else
+                                                    <span class="badge bg-secondary text-white">{{ ucfirst($credit_transaction->status) }}</span>
+                                                @endif
+                                            </td>
                                             <td>{{$credit_transaction->created_at}}</td>
+                                            <td>
+                                                {{$credit_transaction->description}}
+
+                                                <b>Description : </b>{{$credit_transaction->description}}
+                                                @if ($credit_transaction->notes)
+                                                    <br>
+                                                    <b>Notes : </b>{{$credit_transaction->notes}}
+                                                @endif
+
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
