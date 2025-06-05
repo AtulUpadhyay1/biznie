@@ -1,4 +1,18 @@
 <style>
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.2); /* semi-transparent overlay */
+        z-index: 9999; /* Make sure it's above everything */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: all; /* prevent interaction below */
+    }
+
     .loading {
         --speed-of-animation: 0.9s;
         --gap: 6px;
@@ -8,17 +22,11 @@
         --fourth-color: #f6bb02;
         --fifth-color: #2196f3;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100px;
-        gap: 6px;
-        height: 100px;
-        position: fixed;
-        z-index: 25;
-        left: 50%;
-        top: 50%;
+        gap: var(--gap);
         background: #33333338;
         border-radius: 10px;
+        padding: 20px;
+        pointer-events: none; /* allow events to pass through to overlay */
     }
 
     .loading span {
@@ -49,24 +57,23 @@
     }
 
     @keyframes scale {
-
-        0%,
-        40%,
-        100% {
+        0%, 40%, 100% {
             transform: scaleY(0.05);
         }
-
         20% {
             transform: scaleY(1);
         }
     }
 </style>
+
 <div wire:loading>
-    <div class="loading">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="loading-overlay">
+        <div class="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
 </div>
