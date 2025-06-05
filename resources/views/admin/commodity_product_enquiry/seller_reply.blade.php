@@ -686,7 +686,7 @@
                                                                     <label for="" class="form-label">GST Charge</label>
                                                                 </th>
                                                                 <td colspan="3">
-                                                                    ₹ {{ formatIndianNumber($selected_seller_commodity_product->gst) }}
+                                                                    ₹ {{ formatIndianNumber($selected_seller_commodity_product->gst) }} %
                                                                 </td>
                                                             </tr>
                                                         @endif
