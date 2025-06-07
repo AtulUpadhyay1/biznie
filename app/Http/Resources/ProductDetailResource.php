@@ -79,7 +79,7 @@ class ProductDetailResource extends JsonResource
                 $data['freight_price'] = (int) $transporter_address_price->min_price;
             }
         }
-        $product_state = CommodityProductState::where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->where('city', $this->city)->first();
+        $product_state = CommodityProductState::where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();
         if ($product_state && $product_state->chart) {
             foreach ($product_state->chart ?? [] as $chart) {
                 $data['charts'][] = imageUrl($chart);
