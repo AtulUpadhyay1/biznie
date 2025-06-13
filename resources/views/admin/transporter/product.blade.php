@@ -26,7 +26,7 @@
                                             <div class="col-md-3 mb-3">
                                                 <div class="card">
                                                     <input type="checkbox" class="form-check-input" id="product_{{$commodity_data->id}}" wire:model="commodity_product" value="{{$commodity_data->id}}" style="position: absolute;">
-                                                    <img src="{{ imageUrl($commodity_data->photo) }}" class="card-img-top" onerror="this.onerror=null; this.src='{{ asset('admin_css/no-photo.png') }}'">
+                                                    <img src="{{ imageUrl($commodity_data->thumbnail) }}" class="card-img-top" onerror="this.onerror=null; this.src='{{ asset('admin_css/no-photo.png') }}'">
                                                     <div class="card-body">
                                                         <p><b>Name : </b>{{ $commodity_data->name }}</p>
                                                         <p><b>Category : </b>{{ $commodity_data->getCategory->name }}</p>
