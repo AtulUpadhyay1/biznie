@@ -21,6 +21,7 @@
                                 <b>Product: </b> {{ $data->getCommodityProduct->name }} <br>
                                 <b>Brand: </b> {{ $data->getBrand->name }} <br>
                                 <b>Purpose: </b> {{ $data->purpose }} <br>
+                                <b>Message: </b> {{ $data->message ?? '---' }} <br>
                             </p><br>
                             <p>
                                 <b>Billing Address</b> <br>
