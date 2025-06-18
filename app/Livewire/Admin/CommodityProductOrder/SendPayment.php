@@ -71,7 +71,7 @@ class SendPayment extends Component
             return;
         }
 
-        if($ledgers->remaining_balance <= $this->transaction_amount){
+        if($ledgers->remaining_balance < $this->transaction_amount){
             $this->dispatch('alert',
                 type: 'error',
                 message: 'Transaction amount must be less than or equal to remaining balance.',
