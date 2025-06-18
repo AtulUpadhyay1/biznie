@@ -584,12 +584,12 @@
                         <div class="col-6 text-end">
                             <p>
                                 @if($data->seller_credit_due_date)
-                                    <b>Seller Credit Due Date:</b> {{ $data->seller_credit_due_date }} <br>
+                                    <b>Seller Credit Due Date:</b> {{ dateFormat($data->seller_credit_due_date) }} <br>
                                     ({{ \Carbon\Carbon::parse($data->seller_credit_due_date)->diffInDays(now()) + 1 }} day{{ \Carbon\Carbon::parse($data->seller_credit_due_date)->diffInDays(now()) + 1 > 1 ? 's' : '' }} left)
                                 @endif
                                 <br>
                                 @if($data->customer_credit_due_date)
-                                    <b>Customer Credit Due Date:</b> {{ $data->customer_credit_due_date }} <br>
+                                    <b>Customer Credit Due Date:</b> {{ dateFormat($data->customer_credit_due_date) }} <br>
                                     ({{ \Carbon\Carbon::parse($data->customer_credit_due_date)->diffInDays(now()) + 1 }} day{{ \Carbon\Carbon::parse($data->customer_credit_due_date)->diffInDays(now()) + 1 > 1 ?'s' : '' }} left)
                                 @endif
                             </p>
