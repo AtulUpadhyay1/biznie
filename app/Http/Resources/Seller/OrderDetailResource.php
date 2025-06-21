@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Seller;
 
 use Illuminate\Http\Request;
+use App\Models\ProductEnquiry;
 use App\Models\SellerCommodityProduct;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\CommodityProductOrderDriverResource;
@@ -67,6 +68,7 @@ class OrderDetailResource extends JsonResource
             'tcs_amount'        => 0,
             'total_charges'     => 0,
             'commission'        => $this->commission,
+            'commission_type'   => '',
             'total_amount'      => $this->total_amount,
             'paid_amount'       => $this->paid_amount,
             'due_amount'        => $this->due_amount,
@@ -100,6 +102,10 @@ class OrderDetailResource extends JsonResource
 
         $seller_commodity_product   = SellerCommodityProduct::where('user_id', $this->seller_user_id)->where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();
 
+        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($this->product_enquiries_id);
+        $seller_enquiry_data = $enquiry_data->getMarkedSellerProductEnquiry;
+        $data['commission_type'] = $seller_enquiry_data->commission_type;
+
         $packaging_arr = [];
         foreach ($seller_commodity_product->packaging_type as $packaging_charge) {
             $packaging_arr['name'] = getPackagingType($packaging_charge)->name;
@@ -120,11 +126,11 @@ class OrderDetailResource extends JsonResource
                 }elseif($other_charges_arr['operator'] == "-"){
                     $data['total_charges'] -= $other_charges_arr['price'];
                 }elseif($other_charges_arr['operator'] == "*"){
-                    $data['total_charges'] += $data['ex_price'] * $other_charges_arr['price'];
+                    $data['total_charges'] += 0;
                 }elseif($other_charges_arr['operator'] == "/"){
-                    $data['total_charges'] += $data['ex_price'] / $other_charges_arr['price'];
+                    $data['total_charges'] += 0;
                 }elseif($other_charges_arr['operator'] == "%"){
-                    $data['total_charges'] += $data['ex_price'] * ($other_charges_arr['price'] / 100);
+                    $data['total_charges'] += 0;
                 }
             }
             $data['other_charge'][] = $other_charges_arr;
@@ -148,6 +154,10 @@ class OrderDetailResource extends JsonResource
             $data['total_quantity']         += $variation['quantity'];
             $data['final_variation_price']  += $variation['final_price'];
             $data['gst_amount']             += $variation['tax'];
+        }
+
+        if($data['commission_type'] == 'include'){
+            $data['commission'] = $seller_enquiry_data->commission * ($data['total_quantity'] + $data['gst'] / 100);
         }
 
         $data['loading_charge']     = $seller_commodity_product->loading_charge;
