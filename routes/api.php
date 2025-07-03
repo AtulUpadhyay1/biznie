@@ -194,6 +194,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::post('update-quality-check', 'Authenticated\OrderApiController@qualityCheck');
         Route::post('update-invoice', 'Authenticated\OrderApiController@updateInvoice');
         Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity');
+        Route::get('order-ledger/{id}', 'Authenticated\OrderApiController@ledger');
 
         Route::post('driver', 'Authenticated\DriverApiController@store');
         Route::put('driver/{id}', 'Authenticated\DriverApiController@update');

@@ -11,6 +11,7 @@ use App\Models\CommodityProductOrder;
 use App\Models\CreditWalletTransaction;
 use App\Models\CommodityProductOrderDriver;
 use App\Http\Resources\Seller\OrderResource;
+use App\Models\CommodityProductSellerOrderLedger;
 use App\Http\Resources\Seller\OrderDetailResource;
 
 class OrderApiController extends Controller
@@ -177,6 +178,31 @@ class OrderApiController extends Controller
         return response([
             'success'   => true,
             'message'   => 'Order status updated successfully.',
+        ],200);
+    }
+
+    public function ledger($id)
+    {
+        $ledgers = CommodityProductSellerOrderLedger::where('order_id', $id)
+            ->orderByDesc('id')
+            ->select('id', 'transaction_id', 'type', 'amount', 'remaining_balance', 'description', 'transaction_account_name', 'transaction_account_number', 'transaction_bank_name', 'transaction_number', 'payment_method', 'payment_mode', 'date_time', 'file', 'status', 'created_at')
+            ->paginate(getPaginate());
+
+        $ledgers->getCollection()->transform(function ($ledger) {
+            $ledger->date_time = dateTimeFormat($ledger->date_time ?? $ledger->created_at);
+            $ledger->file = $ledger->file ? asset('storage/' . $ledger->file) : null;
+            return $ledger;
+        });
+
+        if(!$ledgers){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid given id.',
+            ],404);
+        }
+        return response([
+            'success'   => true,
+            'data'      => $ledgers
         ],200);
     }
 }
