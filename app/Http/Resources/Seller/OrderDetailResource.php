@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Models\SellerCommodityProduct;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\CommodityProductSellerOrderLedger;
 use App\Http\Resources\CommodityProductOrderDriverResource;
 
 class OrderDetailResource extends JsonResource
@@ -183,6 +184,13 @@ class OrderDetailResource extends JsonResource
 
             $data['quality_check_image']=$quality_check_image_arr;
         }
+
+        $paid_amout = CommodityProductSellerOrderLedger::where('order_id', $this->id)
+            ->where('type', 'debit')
+            ->sum('amount');
+
+        $data['paid_amount'] = $paid_amout;
+        $data['due_amount'] = $data['total_amount'] - $data['paid_amount'];
 
         return $data;
     }
