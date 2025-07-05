@@ -163,6 +163,8 @@
                                                                 $base_price = $seller_commodity_product->base_price;
                                                             }
 
+                                                            $state = $state ? $state : $list_data->getSellerCommodityProduct->getStatePrice[0]->state;
+                                                            $city = $city ? $city : $list_data->getSellerCommodityProduct->getStatePrice[0]->city;
                                                             $default_price = getDefaultCommodityProductVariationPrice($list_data->commodity_product_id, $list_data->brand_id, $state, $city);
                                                             $loading_charge = $seller_commodity_product->loading_charge;
                                                             $insurance_charge = $seller_commodity_product->insurance_charge;
@@ -410,6 +412,7 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p>
+                                                                    {{$list_data->commodity_product_id }}, {{$list_data->brand_id}}, {{$state}} , {{$city}}
                                                                     <b>Base Price:</b> ₹ {{ formatIndianNumber($list_data->base_price) }} <br>
                                                                     @if ($default_price > 0)
                                                                         <b>Guage Difference:</b> + ₹ {{ formatIndianNumber($default_price) }} <br>
