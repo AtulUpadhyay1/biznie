@@ -145,7 +145,17 @@
             $data['ex_price']           = $data['final_variation_price'] + $data['tcs_amount'];
 
             $data['for_price']          = $data['ex_price'] + $data['transport_price'] * $data['total_quantity'];
+
             $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
+            if($enquiry_data->getCommodityProduct->order_amount_type == 'flat'){
+                $data['required_booking_amount'] = $enquiry_data->getCommodityProduct->required_order_amount ? $enquiry_data->getCommodityProduct->required_order_amount * $data['total_quantity']: 0;
+            }
+            
+            if($enquiry_data->getCommodityProduct->order_amount_type == 'percent'){
+                $data['required_booking_amount'] = $data['for_price'] * $enquiry_data->getCommodityProduct->required_order_amount / 100;
+            }
+
+            // dd($enquiry_data->getCommodityProduct->order_amount_type, $enquiry_data->getCommodityProduct->required_order_amount);
             // if($data['commission_type'] == 'exclude'){
             //     $data['final_variation_price'] += $data['commission'];
             // }
@@ -640,7 +650,7 @@
                 @this.setAmount(
                     {{ $data['required_booking_amount'] }},
                     {{ $data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price']) }},
-                    {{ $data['final_variation_price'] * 30 / 100 }},
+                    {{ $data['required_booking_amount'] }},
                     {{ ($data['total_quantity'] * $data['transport_price']) * 30 / 100 }},
                     {{ $data['final_variation_price'] }},
                     {{ $data['total_quantity'] * $data['transport_price'] }},
