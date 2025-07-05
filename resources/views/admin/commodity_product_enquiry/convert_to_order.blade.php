@@ -500,7 +500,7 @@
                     <div class="card-body">
                         <p><span class="text-danger">Credit Days : </span> {{ $data['credit_days'] }} Days</p>
                         <p><span class="text-danger">Basic Price : </span> ₹ {{ formatIndianNumber($data['base_price']) }} </p>
-                        <p><span class="text-danger">Ex-Factory Price : </span> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p>
+                        {{-- <p><span class="text-danger">Ex-Factory Price : </span> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p> --}}
                         <p><span class="text-danger">Total Quantity : </span> {{ $data['total_quantity'] }} Metric Ton</p>
                         <p><span class="text-danger">Total Ex-Factory Price : </span> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p>
                         @if ($data['commission_type'] == 'exclude')
