@@ -28,6 +28,7 @@ class CommodityProductOrderDriverResource extends JsonResource
             'tracking_number'               => $this->tracking_number,
             'invoice'                       => imageUrl($this->invoice),
             'ebill'                         => imageUrl($this->ebill),
+            'ebill_expiry_date'             => $this->ebill_expiry_date ? dateFormat($this->ebill_expiry_date) : null,
             'transport_receipt'             => imageUrl($this->transport_receipt),
             'alternate_phone_number'        => $this->alternate_phone_number,
             'transporter_name'              => $this->transporter_name,
