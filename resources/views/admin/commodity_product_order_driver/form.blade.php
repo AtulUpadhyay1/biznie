@@ -208,7 +208,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3 mb-3">
+                            {{-- <div class="col-md-3 mb-3">
                                 <label class="form-label" for="invoice">Invoice</label>
                                 <input type='file' id="invoice" class="form-control @error('invoice') is-invalid @enderror" wire:model="invoice">
                                 <label for="invoice">
@@ -237,7 +237,7 @@
                                 @error('invoice')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-3 mb-3">
                                 <label class="form-label" for="ebill">E - Waybill</label>

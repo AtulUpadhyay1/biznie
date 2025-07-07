@@ -3,13 +3,16 @@
 namespace App\Livewire\Admin\CommodityProductOrderDriver;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Models\CommodityProductOrder;
 use App\Models\CommodityProductOrderDriver;
 
 class Quantity extends Component
 {
+    use WithFileUploads;
     public $page_title = 'Update Vehicle Quantity';
     public $hidden_id, $order_id, $driver_data, $order_data, $quantity = [];
+    public $invoice, $show_invoice, $amount;
 
     public function mount($order_id, $id)
     {
@@ -18,7 +21,8 @@ class Quantity extends Component
 
         $this->driver_data = CommodityProductOrderDriver::findOrFail($this->hidden_id);
         $this->order_data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getProductEnquiry')->findOrFail($this->order_id);
-
+        $this->show_invoice = imageUrl($this->driver_data->invoice);
+        $this->amount = $this->driver_data->amount;
         foreach ($this->order_data->value as $key => $variation){
             $this->quantity[$key] = $this->driver_data->final_quantity_by_seller ? $this->driver_data->final_quantity_by_seller[$key] : 0;
         }
@@ -43,9 +47,11 @@ class Quantity extends Component
         }
 
         $this->driver_data->final_quantity_by_seller = $this->quantity;
+        $this->driver_data->invoice     = $this->invoice ? imageUpload($this->invoice, 'driver_detail', $this->driver_data->invoice) : $this->driver_data->invoice;
+        $this->driver_data->amount      = $this->amount;
         $this->driver_data->save();
 
-        session()->flash('success', 'Quantity updated successfully !!');
-        return $this->redirectRoute('admin.commodity-product-order-driver.quantity', [$this->order_id, $this->hidden_id] ,navigate: true);
+        session()->flash('success', 'Data updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', [$this->order_id] ,navigate: true);
     }
 }

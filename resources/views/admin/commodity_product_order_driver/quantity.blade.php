@@ -26,7 +26,45 @@
                     <p><span class="fw-bold text-danger">Alternate Number </span> : {{ $driver_data->alternate_phone_number }} </p>
                     <p><span class="fw-bold text-danger">Transporter Name </span> : {{ $driver_data->transporter_name }} </p>
                     <p><span class="fw-bold text-danger">Transporter Number </span> : {{ $driver_data->transporter_phone_number }} </p>
-
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="invoice">Invoice</label>
+                            <input type='file' id="invoice" class="form-control @error('invoice') is-invalid @enderror" wire:model="invoice">
+                            <label for="invoice">
+                                @if ($invoice)
+                                    @php
+                                        $extension = strtolower($invoice->getClientOriginalExtension());
+                                    @endphp
+                                    @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                        <img src="{{ $invoice->temporaryUrl() }}" class="label-banner">
+                                    @else
+                                        <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                    @endif
+                                @elseif ($show_invoice)
+                                    @php
+                                        $extension = strtolower(pathinfo($show_invoice, PATHINFO_EXTENSION));
+                                    @endphp
+                                    @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                        <img src="{{ $show_invoice }}" class="label-banner">
+                                    @else
+                                        <a href="{{ $show_invoice }}" target="_blank">View Attachment</a>
+                                    @endif
+                                @else
+                                    <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                @endif
+                            </label>
+                            @error('invoice')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="invoice">Amount</label>
+                            <input type="number" class="form-control @error('amount') is-invalid @enderror" placeholder="Enter Amount" wire:model="amount">
+                            @error('amount') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                    </div>
+                    <hr>
                     <div class="table-responsive mt-3">
                         <table class="custom-table">
                             <tbody>

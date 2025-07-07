@@ -661,7 +661,48 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card mt-2">
+
+                    <div class="row mt-3">
+                        <div class="col-md-12 mb-2">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div class="card-title mb-0">
+                                        <h5 class="mb-0">Invoice List</h5>
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="custom-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Invoice</th>
+                                                    <th>Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($data->getDrivers as $driver_data)
+                                                    <tr>
+                                                        <td>{{ $loop->index+1 }}</td>
+                                                        <td>
+                                                            <b>Vehicle Number: </b>{{ $driver_data->vehicle_number }} <br>
+                                                            <a href="{{ imageUrl($driver_data->invoice) }}" target="_blank">Invoice File <i class="bi bi-download"></i></a>
+                                                        </td>
+                                                        <td>
+                                                            {{ formatIndianNumber($driver_data->amount) }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-3">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
@@ -702,6 +743,11 @@
                                                 <div class="mt-1">
                                                     <label class="tx-11 fw-bolder mb-0 text-uppercase">Total Quantity:</label>
                                                     <p class="text-muted">{{$driver->final_quantity_by_seller ? array_sum($driver->final_quantity_by_seller) : 0}}</p>
+                                                </div>
+
+                                                <div class="mt-1">
+                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Amount:</label>
+                                                    <p class="text-muted">{{ formatIndianNumber($driver->amount) ?? 0 }}</p>
                                                 </div>
 
                                                 <div class="mt-1">
@@ -749,7 +795,7 @@
                                                 </button>
 
                                                 <a href="{{route('admin.commodity-product-order-driver.quantity', [$data->id, $driver->id])}}" class="btn btn-secondary btn-xs btn-icon-text m-1" title="View" wire:navigate>
-                                                    <i class="bi bi-clipboard2-data btn-icon-prepend"></i> Update Quantity
+                                                    <i class="bi bi-clipboard2-data btn-icon-prepend"></i> Update Quantity / Invoice
                                                 </a>
 
                                             </div>
