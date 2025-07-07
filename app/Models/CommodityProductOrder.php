@@ -20,6 +20,7 @@ class CommodityProductOrder extends Model
         'quality_check_image'   => 'array',
         'history'           => 'array',
         'consignee_detail'  => 'array',
+        'all_invoices'     => 'array'
     ];
 
     public function scopeSearch($query, $search)

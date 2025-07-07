@@ -669,7 +669,11 @@
                                     <div class="card-title mb-0">
                                         <h5 class="mb-0">Invoice List</h5>
                                     </div>
-                                    
+                                    @if($data->getDrivers->sum('amount') == 0)
+                                        <button type="button" class="btn btn-secondary btn-xs btn-icon-text" data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                                            <i class="bi bi-receipt-cutoff btn-icon-prepend"></i>Add Invoice
+                                        </button>
+                                    @endif
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -682,18 +686,36 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($data->getDrivers as $driver_data)
+                                                @if ($data->getDrivers->sum('amount') > 0)
+                                                    @foreach ($data->getDrivers as $driver_data)
+                                                        <tr>
+                                                            <td>{{ $loop->index+1 }}</td>
+                                                            <td>
+                                                                <b>Vehicle Number: </b>{{ $driver_data->vehicle_number }} <br>
+                                                                <a href="{{ imageUrl($driver_data->invoice) }}" target="_blank">Invoice File <i class="bi bi-download"></i></a>
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ formatIndianNumber($driver_data->amount) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @elseif ($data->all_invoices && count($data->all_invoices) > 0)
+                                                    @foreach ($data->all_invoices as $invoice)
+                                                        <tr>
+                                                            <td>{{ $loop->index+1 }}</td>
+                                                            <td>
+                                                                <a href="{{ imageUrl($invoice['file']) }}" target="_blank">{{ $invoice['name'] }} <i class="bi bi-download"></i></a>
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ formatIndianNumber($invoice['amount']) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
                                                     <tr>
-                                                        <td>{{ $loop->index+1 }}</td>
-                                                        <td>
-                                                            <b>Vehicle Number: </b>{{ $driver_data->vehicle_number }} <br>
-                                                            <a href="{{ imageUrl($driver_data->invoice) }}" target="_blank">Invoice File <i class="bi bi-download"></i></a>
-                                                        </td>
-                                                        <td>
-                                                            {{ formatIndianNumber($driver_data->amount) }}
-                                                        </td>
+                                                        <td colspan="3" class="text-center">No Invoices Found</td>
                                                     </tr>
-                                                @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -924,6 +946,47 @@
                     </div>
                     <div class="modal-body">
                         <textarea class="form-control" cols="30" rows="10" placeholder="Enter Vehicle Notes..." wire:model="vehicle_notes"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="invoiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="notesModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form wire:submit.prevent="uploadInvoice()">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="invoiceModalLabel">Invoice / Amount</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="invoice_name">Invoice Name</label>
+                                <input type="text" id="invoice_name" class="form-control @error('invoice_name') is-invalid @enderror" wire:model="invoice_name" placeholder="Enter Invoice Name">
+                                @error('invoice_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="invoice_file">Invoice</label>
+                                <input type="file" id="invoice_file" class="form-control @error('invoice_file') is-invalid @enderror" wire:model="invoice_file" placeholder="Enter Invoice Name">
+                                @error('invoice_file')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="invoice_amount">Invoice Amount</label>
+                                <input type="number" id="invoice_amount" class="form-control @error('invoice_amount') is-invalid @enderror" wire:model="invoice_amount" placeholder="Enter Invoice Amount">
+                                @error('invoice_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>

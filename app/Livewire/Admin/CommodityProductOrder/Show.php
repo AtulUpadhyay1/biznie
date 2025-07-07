@@ -17,6 +17,7 @@ class Show extends Component
     use WithFileUploads;
     public $page_title = 'View Order';
     public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file, $vehicle_notes;
+    public $invoice_name, $invoice_file, $invoice_amount;
 
     public function mount($id)
     {
@@ -281,6 +282,36 @@ class Show extends Component
         $data->save();
 
         session()->flash('success', 'Vehicle notes updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
+    }
+
+    public function uploadInvoice()
+    {
+        $this->validate([
+            'invoice_name'  => 'required',
+            'invoice_file'  => 'required',
+            'invoice_amount'=> 'required'
+        ]);
+        $data = CommodityProductOrder::find($this->hidden_id);
+        if (!$data) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Invalid id given. Please try again.'
+            ]);
+            return false;
+        }
+        $invoice_arr = $data->all_invoices ?? [];
+        $invoice_data = [
+            'uuid'      => \Str::uuid()->toString(),
+            'name'      => $this->invoice_name,
+            'file'      => imageUpload($this->invoice_file, 'invoice_file'),
+            'amount'    => $this->invoice_amount ?? 0
+        ];
+
+        $invoice_arr[] = $invoice_data;
+        $data->all_invoices = $invoice_arr;
+        $data->save();
+        session()->flash('success', 'Invoice updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
 }
