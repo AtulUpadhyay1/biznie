@@ -97,6 +97,7 @@ class OrderDetailResource extends JsonResource
             'other'                         => $this->other ? imageUrl($this->other) : null,
             'seller_credit_due_date'        => $this->seller_credit_due_date,
             'customer_credit_due_date'      => $this->customer_credit_due_date,
+            'credit_days'                   => $this->getSellerProductEnquiry->seller_credit_days,
             'update_for'                    => $this->update_for,
             'driver_list'                   => $this->getDrivers ? CommodityProductOrderDriverResource::collection($this->getDrivers) : [],
         ];
