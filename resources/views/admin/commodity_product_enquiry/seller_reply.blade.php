@@ -412,7 +412,6 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p>
-                                                                    {{$list_data->commodity_product_id }}, {{$list_data->brand_id}}, {{$state}} , {{$city}}
                                                                     <b>Base Price:</b> ₹ {{ formatIndianNumber($list_data->base_price) }} <br>
                                                                     @if ($default_price > 0)
                                                                         <b>Guage Difference:</b> + ₹ {{ formatIndianNumber($default_price) }} <br>
