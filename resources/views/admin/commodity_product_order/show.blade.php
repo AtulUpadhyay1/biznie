@@ -667,7 +667,7 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <div class="card-title mb-0">
-                                        <h5 class="mb-0">Invoice List</h5>
+                                        <h5 class="mb-0">Buyer Invoice List</h5>
                                     </div>
                                     @if($data->getDrivers->sum('amount') == 0)
                                         <button type="button" class="btn btn-secondary btn-xs btn-icon-text" data-bs-toggle="modal" data-bs-target="#invoiceModal">
@@ -725,6 +725,117 @@
                                                     @endforeach
                                                 @elseif ($data->all_invoices && count($data->all_invoices) > 0)
                                                     @foreach ($data->all_invoices as $invoice)
+                                                        <tr>
+                                                            <td>{{ $loop->index+1 }}</td>
+                                                            <td>
+                                                                <a href="{{ imageUrl($invoice['invoice_file']) }}" target="_blank">
+                                                                    {{ $invoice['name'] }} <i class="bi bi-download"></i>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                @if ($invoice['ebill'])
+                                                                    <a href="{{ imageUrl($invoice['ebill']) }}" target="_blank">E-Bill <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if ($invoice['ebill_expiry_date'])
+                                                                    {{ dateFormat($invoice['ebill_expiry_date']) }}
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if ($invoice['transport_receipt'])
+                                                                    <a href="{{ imageUrl($invoice['transport_receipt']) }}" target="_blank">Transport Receipt <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ formatIndianNumber($invoice['amount']) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="15" class="text-center">No Invoices Found</td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12 mb-2">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div class="card-title mb-0">
+                                        <h5 class="mb-0">Seller Invoice List</h5>
+                                    </div>
+                                    @if($data->getDrivers->sum('amount') == 0)
+                                        <button type="button" class="btn btn-secondary btn-xs btn-icon-text" data-bs-toggle="modal" data-bs-target="#sellerInvoiceModal">
+                                            <i class="bi bi-receipt-cutoff btn-icon-prepend"></i>Add Invoice
+                                        </button>
+                                    @endif
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="custom-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Invoice</th>
+                                                    <th>E - Waybill</th>
+                                                    <th>E - Waybill Expiry Date</th>
+                                                    <th>Transport Receipt</th>
+                                                    <th>Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($data->getDrivers->sum('amount') > 0)
+                                                    @foreach ($data->getDrivers as $driver_data)
+                                                        @if($driver_data->seller_invoices && count($driver_data->seller_invoices) > 0)
+                                                            <tr>
+                                                                <td>{{ $loop->index+1 }}</td>
+                                                                <td>
+                                                                    <b>Vehicle Number: </b>{{ $driver_data->vehicle_number }} <br>
+                                                                    <a href="{{ imageUrl($driver_data->invoice) }}" target="_blank">Invoice File <i class="bi bi-download"></i></a>
+                                                                </td>
+                                                                <td>
+                                                                    @if ($driver_data->ebill)
+                                                                        <a href="{{ imageUrl($driver_data->ebill) }}" target="_blank">E-Bill <i class="bi bi-download"></i></a>
+                                                                    @else
+                                                                        <span class="text-muted">Not Available</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if ($driver_data->ebill_expiry_date)
+                                                                        {{ dateFormat($driver_data->ebill_expiry_date) }}
+                                                                    @else
+                                                                        <span class="text-muted">Not Available</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if ($driver_data->transport_receipt)
+                                                                        <a href="{{ imageUrl($driver_data->transport_receipt) }}" target="_blank">Transport Receipt <i class="bi bi-download"></i></a>
+                                                                    @else
+                                                                        <span class="text-muted">Not Available</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    ₹ {{ formatIndianNumber($driver_data->amount) }}
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+                                                @elseif ($data->seller_invoices && count($data->seller_invoices) > 0)
+                                                    @foreach ($data->seller_invoices as $invoice)
                                                         <tr>
                                                             <td>{{ $loop->index+1 }}</td>
                                                             <td>
@@ -1003,7 +1114,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="invoiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="notesModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="invoiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <form wire:submit.prevent="uploadInvoice()">
@@ -1053,6 +1164,70 @@
                                 <label class="form-label" for="transport_receipt">Transport Receipt</label>
                                 <input type='file' id="transport_receipt" class="form-control @error('transport_receipt') is-invalid @enderror" wire:model="transport_receipt">
                                 @error('transport_receipt')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="sellerInvoiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sellerInvoiceModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form wire:submit.prevent="sellerUploadInvoice()">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="sellerInvoiceModalLabel">Seller Invoice / Amount</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="seller_invoice_name">Invoice Name</label>
+                                <input type="text" id="seller_invoice_name" class="form-control @error('seller_invoice_name') is-invalid @enderror" wire:model="seller_invoice_name" placeholder="Enter Invoice Name">
+                                @error('seller_invoice_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="seller_invoice_file">Invoice</label>
+                                <input type="file" id="seller_invoice_file" class="form-control @error('seller_invoice_file') is-invalid @enderror" wire:model="seller_invoice_file" placeholder="Enter Invoice Name">
+                                @error('seller_invoice_file')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="seller_invoice_amount">Invoice Amount</label>
+                                <input type="number" id="seller_invoice_amount" class="form-control @error('seller_invoice_amount') is-invalid @enderror" wire:model="seller_invoice_amount" placeholder="Enter Invoice Amount">
+                                @error('seller_invoice_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="seller_ebill">E - Waybill</label>
+                                <input type='file' id="seller_ebill" class="form-control @error('seller_ebill') is-invalid @enderror" wire:model="seller_ebill">
+                                @error('seller_ebill')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="seller_ebill_expiry_date">E - Waybill Expiry Date</label>
+                                <input type='date' id="seller_ebill_expiry_date" class="form-control @error('seller_ebill_expiry_date') is-invalid @enderror" wire:model="seller_ebill_expiry_date">
+                                @error('seller_ebill_expiry_date')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="seller_transport_receipt">Transport Receipt</label>
+                                <input type='file' id="seller_transport_receipt" class="form-control @error('seller_transport_receipt') is-invalid @enderror" wire:model="seller_transport_receipt">
+                                @error('seller_transport_receipt')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>

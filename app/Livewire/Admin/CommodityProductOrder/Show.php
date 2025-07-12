@@ -18,6 +18,7 @@ class Show extends Component
     public $page_title = 'View Order';
     public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file, $vehicle_notes;
     public $invoice_name, $invoice_file, $invoice_amount, $ebill, $ebill_expiry_date, $transport_receipt;
+    public $seller_invoice_name, $seller_invoice_file, $seller_invoice_amount, $seller_ebill, $seller_ebill_expiry_date, $seller_transport_receipt;
 
     public function mount($id)
     {
@@ -316,6 +317,40 @@ class Show extends Component
         $data->all_invoices = $invoice_arr;
         $data->save();
         session()->flash('success', 'Invoice updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
+    }
+
+    public function sellerUploadInvoice()
+    {
+        $this->validate([
+            'seller_invoice_name'  => 'required',
+            'seller_invoice_file'  => 'required',
+            'seller_invoice_amount'=> 'required'
+        ]);
+        $data = CommodityProductOrder::find($this->hidden_id);
+        if (!$data) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Invalid id given. Please try again.'
+            ]);
+            return false;
+        }
+        $invoice_arr = $data->seller_invoices ?? [];
+        $invoice_data = [
+            'uuid'              => \Str::uuid()->toString(),
+            'name'              => $this->seller_invoice_name,
+            'invoice_file'      => imageUpload($this->seller_invoice_file, 'seller_invoice_file'),
+            'ebill'             => $this->seller_ebill ? imageUpload($this->seller_ebill, 'seller_ebill') : NULL,
+            'ebill_expiry_date' => $this->seller_ebill_expiry_date,
+            'transport_receipt' => $this->seller_transport_receipt ? imageUpload($this->seller_transport_receipt, 'seller_transport_receipt') : NULL,
+            'amount'            => $this->seller_invoice_amount ?? 0,
+            'created_at'        => Carbon::now()
+        ];
+
+        $invoice_arr[] = $invoice_data;
+        $data->seller_invoices = $invoice_arr;
+        $data->save();
+        session()->flash('success', 'Seller invoice updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
 }

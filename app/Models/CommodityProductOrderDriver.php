@@ -13,5 +13,6 @@ class CommodityProductOrderDriver extends Model
     protected $casts = [
         'final_quantity_by_seller'      => 'array',
         'final_quantity_by_customer'    => 'array',
+        'seller_invoices'               => 'array',
     ];
 }
