@@ -12,7 +12,7 @@ class Quantity extends Component
     use WithFileUploads;
     public $page_title = 'Update Vehicle Quantity';
     public $hidden_id, $order_id, $driver_data, $order_data, $quantity = [];
-    public $invoice, $show_invoice, $amount;
+    public $invoice, $show_invoice, $amount, $ebill, $ebill_expiry_date, $transport_receipt, $show_ebill, $show_transport_receipt;
 
     public function mount($order_id, $id)
     {
@@ -23,6 +23,9 @@ class Quantity extends Component
         $this->order_data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getProductEnquiry')->findOrFail($this->order_id);
         $this->show_invoice = imageUrl($this->driver_data->invoice);
         $this->amount = $this->driver_data->amount;
+        $this->show_ebill = imageUrl($this->driver_data->ebill);
+        $this->ebill_expiry_date = $this->driver_data->ebill_expiry_date;
+        $this->show_transport_receipt = imageUrl($this->driver_data->transport_receipt);
         foreach ($this->order_data->value as $key => $variation){
             $this->quantity[$key] = $this->driver_data->final_quantity_by_seller ? $this->driver_data->final_quantity_by_seller[$key] : 0;
         }

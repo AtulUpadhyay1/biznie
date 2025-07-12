@@ -17,7 +17,7 @@ class Show extends Component
     use WithFileUploads;
     public $page_title = 'View Order';
     public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file, $vehicle_notes;
-    public $invoice_name, $invoice_file, $invoice_amount;
+    public $invoice_name, $invoice_file, $invoice_amount, $ebill, $ebill_expiry_date, $transport_receipt;
 
     public function mount($id)
     {
@@ -302,10 +302,14 @@ class Show extends Component
         }
         $invoice_arr = $data->all_invoices ?? [];
         $invoice_data = [
-            'uuid'      => \Str::uuid()->toString(),
-            'name'      => $this->invoice_name,
-            'file'      => imageUpload($this->invoice_file, 'invoice_file'),
-            'amount'    => $this->invoice_amount ?? 0
+            'uuid'              => \Str::uuid()->toString(),
+            'name'              => $this->invoice_name,
+            'invoice_file'      => imageUpload($this->invoice_file, 'invoice_file'),
+            'ebill'             => $this->ebill ? imageUpload($this->ebill, 'ebill') : NULL,
+            'ebill_expiry_date' => $this->ebill_expiry_date,
+            'transport_receipt' => $this->transport_receipt ? imageUpload($this->transport_receipt, 'transport_receipt') : NULL,
+            'amount'            => $this->invoice_amount ?? 0,
+            'created_at'        => Carbon::now()
         ];
 
         $invoice_arr[] = $invoice_data;

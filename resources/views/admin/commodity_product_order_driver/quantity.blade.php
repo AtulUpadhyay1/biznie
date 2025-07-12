@@ -63,6 +63,77 @@
                             <input type="number" class="form-control @error('amount') is-invalid @enderror" placeholder="Enter Amount" wire:model="amount">
                             @error('amount') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label" for="ebill">E - Waybill</label>
+                            <input type='file' id="ebill" class="form-control @error('ebill') is-invalid @enderror" wire:model="ebill">
+                            <label for="ebill">
+                                @if ($ebill)
+                                    @php
+                                        $extension = strtolower($ebill->getClientOriginalExtension());
+                                    @endphp
+                                    @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                        <img src="{{ $ebill->temporaryUrl() }}" class="label-banner">
+                                    @else
+                                        <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                    @endif
+                                @elseif ($show_ebill)
+                                    @php
+                                        $extension = strtolower(pathinfo($show_ebill, PATHINFO_EXTENSION));
+                                    @endphp
+                                    @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                        <img src="{{ $show_ebill }}" class="label-banner">
+                                    @else
+                                        <a href="{{ $show_ebill }}" target="_blank">View Attachment</a>
+                                    @endif
+                                @else
+                                    <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                @endif
+                            </label>
+                            @error('ebill')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label" for="ebill_expiry_date">E - Waybill Expiry Date</label>
+                            <input type='date' id="ebill_expiry_date" class="form-control @error('ebill_expiry_date') is-invalid @enderror" wire:model="ebill_expiry_date">
+                            @error('ebill_expiry_date')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label" for="transport_receipt">Transport Receipt</label>
+                            <input type='file' id="transport_receipt" class="form-control @error('transport_receipt') is-invalid @enderror" wire:model="transport_receipt">
+                            <label for="transport_receipt">
+                                @if ($transport_receipt)
+                                    @php
+                                        $extension = strtolower($transport_receipt->getClientOriginalExtension());
+                                    @endphp
+                                    @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                        <img src="{{ $transport_receipt->temporaryUrl() }}" class="label-banner">
+                                    @else
+                                        <span class="text-warning">Preview not available for {{ $extension }} files.</span>
+                                    @endif
+                                @elseif ($show_transport_receipt)
+                                    @php
+                                        $extension = strtolower(pathinfo($show_transport_receipt, PATHINFO_EXTENSION));
+                                    @endphp
+                                    @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                        <img src="{{ $show_transport_receipt }}" class="label-banner">
+                                    @else
+                                        <a href="{{ $show_transport_receipt }}" target="_blank">View Attachment</a>
+                                    @endif
+                                @else
+                                    <img class="label-thumbnail" src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                @endif
+                            </label>
+                            @error('transport_receipt')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
                     </div>
                     <hr>
                     <div class="table-responsive mt-3">

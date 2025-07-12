@@ -682,6 +682,9 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Invoice</th>
+                                                    <th>E - Waybill</th>
+                                                    <th>E - Waybill Expiry Date</th>
+                                                    <th>Transport Receipt</th>
                                                     <th>Amount</th>
                                                 </tr>
                                             </thead>
@@ -695,6 +698,27 @@
                                                                 <a href="{{ imageUrl($driver_data->invoice) }}" target="_blank">Invoice File <i class="bi bi-download"></i></a>
                                                             </td>
                                                             <td>
+                                                                @if ($driver_data->ebill)
+                                                                    <a href="{{ imageUrl($driver_data->ebill) }}" target="_blank">E-Bill <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if ($driver_data->ebill_expiry_date)
+                                                                    {{ dateFormat($driver_data->ebill_expiry_date) }}
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if ($driver_data->transport_receipt)
+                                                                    <a href="{{ imageUrl($driver_data->transport_receipt) }}" target="_blank">Transport Receipt <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
                                                                 ₹ {{ formatIndianNumber($driver_data->amount) }}
                                                             </td>
                                                         </tr>
@@ -704,7 +728,30 @@
                                                         <tr>
                                                             <td>{{ $loop->index+1 }}</td>
                                                             <td>
-                                                                <a href="{{ imageUrl($invoice['file']) }}" target="_blank">{{ $invoice['name'] }} <i class="bi bi-download"></i></a>
+                                                                <a href="{{ imageUrl($invoice['invoice_file']) }}" target="_blank">
+                                                                    {{ $invoice['name'] }} <i class="bi bi-download"></i>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                @if ($invoice['ebill'])
+                                                                    <a href="{{ imageUrl($invoice['ebill']) }}" target="_blank">E-Bill <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if ($invoice['ebill_expiry_date'])
+                                                                    {{ dateFormat($invoice['ebill_expiry_date']) }}
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if ($invoice['transport_receipt'])
+                                                                    <a href="{{ imageUrl($invoice['transport_receipt']) }}" target="_blank">Transport Receipt <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
                                                             </td>
                                                             <td>
                                                                 ₹ {{ formatIndianNumber($invoice['amount']) }}
@@ -713,7 +760,7 @@
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td colspan="3" class="text-center">No Invoices Found</td>
+                                                        <td colspan="15" class="text-center">No Invoices Found</td>
                                                     </tr>
                                                 @endif
                                             </tbody>
@@ -983,6 +1030,29 @@
                                 <label class="form-label" for="invoice_amount">Invoice Amount</label>
                                 <input type="number" id="invoice_amount" class="form-control @error('invoice_amount') is-invalid @enderror" wire:model="invoice_amount" placeholder="Enter Invoice Amount">
                                 @error('invoice_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="ebill">E - Waybill</label>
+                                <input type='file' id="ebill" class="form-control @error('ebill') is-invalid @enderror" wire:model="ebill">
+                                @error('ebill')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="ebill_expiry_date">E - Waybill Expiry Date</label>
+                                <input type='date' id="ebill_expiry_date" class="form-control @error('ebill_expiry_date') is-invalid @enderror" wire:model="ebill_expiry_date">
+                                @error('ebill_expiry_date')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="transport_receipt">Transport Receipt</label>
+                                <input type='file' id="transport_receipt" class="form-control @error('transport_receipt') is-invalid @enderror" wire:model="transport_receipt">
+                                @error('transport_receipt')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
