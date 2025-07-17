@@ -800,36 +800,39 @@
                                             <tbody>
                                                 @if ($data->getDrivers->sum('amount') > 0)
                                                     @foreach ($data->getDrivers as $driver_data)
-                                                        @if($driver_data->seller_invoices && count($driver_data->seller_invoices) > 0)
+                                                        @if($driver_data->seller_invoices)
+                                                            @php
+                                                                $seller_invoices = $driver_data->seller_invoices;
+                                                            @endphp
                                                             <tr>
                                                                 <td>{{ $loop->index+1 }}</td>
                                                                 <td>
                                                                     <b>Vehicle Number: </b>{{ $driver_data->vehicle_number }} <br>
-                                                                    <a href="{{ imageUrl($driver_data->invoice) }}" target="_blank">Invoice File <i class="bi bi-download"></i></a>
+                                                                    <a href="{{ imageUrl($seller_invoices['invoice']) }}" target="_blank">Invoice File <i class="bi bi-download"></i></a>
                                                                 </td>
                                                                 <td>
-                                                                    @if ($driver_data->ebill)
-                                                                        <a href="{{ imageUrl($driver_data->ebill) }}" target="_blank">E-Bill <i class="bi bi-download"></i></a>
+                                                                    @if ($seller_invoices['ebill'])
+                                                                        <a href="{{ imageUrl($seller_invoices['ebill']) }}" target="_blank">E-Bill <i class="bi bi-download"></i></a>
                                                                     @else
                                                                         <span class="text-muted">Not Available</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    @if ($driver_data->ebill_expiry_date)
-                                                                        {{ dateFormat($driver_data->ebill_expiry_date) }}
+                                                                    @if ($seller_invoices['ebill_expiry_date'])
+                                                                        {{ dateFormat($seller_invoices['ebill_expiry_date']) }}
                                                                     @else
                                                                         <span class="text-muted">Not Available</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    @if ($driver_data->transport_receipt)
-                                                                        <a href="{{ imageUrl($driver_data->transport_receipt) }}" target="_blank">Transport Receipt <i class="bi bi-download"></i></a>
+                                                                    @if ($seller_invoices['transport_receipt'])
+                                                                        <a href="{{ imageUrl($seller_invoices['transport_receipt']) }}" target="_blank">Transport Receipt <i class="bi bi-download"></i></a>
                                                                     @else
                                                                         <span class="text-muted">Not Available</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    ₹ {{ formatIndianNumber($driver_data->amount) }}
+                                                                    ₹ {{ formatIndianNumber($seller_invoices['amount']) }}
                                                                 </td>
                                                             </tr>
                                                         @endif
