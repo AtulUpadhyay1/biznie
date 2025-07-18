@@ -686,6 +686,10 @@
                                                     <th>E - Waybill Expiry Date</th>
                                                     <th>Transport Receipt</th>
                                                     <th>Amount</th>
+                                                    <th>Debit Note</th>
+                                                    <th>Debit Note Amount</th>
+                                                    <th>Credit Note</th>
+                                                    <th>Credit Note Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -756,6 +760,26 @@
                                                             <td>
                                                                 ₹ {{ formatIndianNumber($invoice['amount']) }}
                                                             </td>
+                                                            <td>
+                                                                @if (isset($invoice['debit_note']))
+                                                                    <a href="{{ imageUrl($invoice['debit_note']) }}" target="_blank">Debit Note <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ isset($invoice['debit_note_amount']) ? formatIndianNumber($invoice['debit_note_amount']) : '--' }}
+                                                            </td>
+                                                            <td>
+                                                                @if (isset($invoice['credit_note']))
+                                                                    <a href="{{ imageUrl($invoice['credit_note']) }}" target="_blank">Credit Note <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ isset($invoice['credit_note_amount']) ? formatIndianNumber($invoice['credit_note_amount']) : '--' }}
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @else
@@ -795,6 +819,10 @@
                                                     <th>E - Waybill Expiry Date</th>
                                                     <th>Transport Receipt</th>
                                                     <th>Amount</th>
+                                                    <th>Debit Note</th>
+                                                    <th>Debit Note Amount</th>
+                                                    <th>Credit Note</th>
+                                                    <th>Credit Note Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -834,6 +862,26 @@
                                                                 <td>
                                                                     ₹ {{ formatIndianNumber($seller_invoices['amount']) }}
                                                                 </td>
+                                                                <td>
+                                                                    @if (isset($seller_invoices['debit_note']))
+                                                                        <a href="{{ imageUrl($seller_invoices['debit_note']) }}" target="_blank">Debit Note <i class="bi bi-download"></i></a>
+                                                                    @else
+                                                                        <span class="text-muted">Not Available</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    ₹ {{ isset($seller_invoices['debit_note_amount']) ? formatIndianNumber($seller_invoices['debit_note_amount']) : '--' }}
+                                                                </td>
+                                                                <td>
+                                                                    @if (isset($seller_invoices['credit_note']))
+                                                                        <a href="{{ imageUrl($seller_invoices['credit_note']) }}" target="_blank">Credit Note <i class="bi bi-download"></i></a>
+                                                                    @else
+                                                                        <span class="text-muted">Not Available</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    ₹ {{ isset($seller_invoices['credit_note_amount']) ? formatIndianNumber($seller_invoices['credit_note_amount']) : '--' }}
+                                                                </td>
                                                             </tr>
                                                         @endif
                                                     @endforeach
@@ -869,6 +917,26 @@
                                                             </td>
                                                             <td>
                                                                 ₹ {{ formatIndianNumber($invoice['amount']) }}
+                                                            </td>
+                                                            <td>
+                                                                @if (isset($invoice['debit_note']))
+                                                                    <a href="{{ imageUrl($invoice['debit_note']) }}" target="_blank">Debit Note <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ isset($invoice['debit_note_amount']) ? formatIndianNumber($invoice['debit_note_amount']) : '--' }}
+                                                            </td>
+                                                            <td>
+                                                                @if (isset($invoice['credit_note']))
+                                                                    <a href="{{ imageUrl($invoice['credit_note']) }}" target="_blank">Credit Note <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ isset($invoice['credit_note_amount']) ? formatIndianNumber($invoice['credit_note_amount']) : '--' }}
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -1170,6 +1238,38 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="debit_note">Debit Note</label>
+                                <input type='file' id="debit_note" class="form-control @error('debit_note') is-invalid @enderror" wire:model="debit_note">
+                                @error('debit_note')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="debit_note_amount">Debit Note Amount</label>
+                                <input type="number" id="debit_note_amount" class="form-control @error('debit_note_amount') is-invalid @enderror" wire:model="debit_note_amount" placeholder="Enter Debit Note Amount">
+                                @error('debit_note_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="credit_note">Credit Note</label>
+                                <input type='file' id="credit_note" class="form-control @error('credit_note') is-invalid @enderror" wire:model="credit_note">
+                                @error('credit_note')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="credit_note_amount">Credit Note Amount</label>
+                                <input type="number" id="credit_note_amount" class="form-control @error('credit_note_amount') is-invalid @enderror" wire:model="credit_note_amount" placeholder="Enter Credit Note Amount">
+                                @error('credit_note_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -1234,6 +1334,39 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="seller_debit_note">Debit Note</label>
+                                <input type='file' id="seller_debit_note" class="form-control @error('seller_debit_note') is-invalid @enderror" wire:model="seller_debit_note">
+                                @error('seller_debit_note')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="seller_debit_note_amount">Debit Note Amount</label>
+                                <input type="number" id="seller_debit_note_amount" class="form-control @error('seller_debit_note_amount') is-invalid @enderror" wire:model="seller_debit_note_amount" placeholder="Enter Debit Note Amount">
+                                @error('debit_note_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="seller_credit_note">Credit Note</label>
+                                <input type='file' id="seller_credit_note" class="form-control @error('seller_credit_note') is-invalid @enderror" wire:model="seller_credit_note">
+                                @error('seller_credit_note')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="seller_credit_note_amount">Credit Note Amount</label>
+                                <input type="number" id="seller_credit_note_amount" class="form-control @error('seller_credit_note_amount') is-invalid @enderror" wire:model="seller_credit_note_amount" placeholder="Enter Credit Note Amount">
+                                @error('seller_credit_note_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">

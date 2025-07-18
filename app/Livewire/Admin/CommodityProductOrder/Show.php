@@ -17,8 +17,8 @@ class Show extends Component
     use WithFileUploads;
     public $page_title = 'View Order';
     public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file, $vehicle_notes;
-    public $invoice_name, $invoice_file, $invoice_amount, $ebill, $ebill_expiry_date, $transport_receipt;
-    public $seller_invoice_name, $seller_invoice_file, $seller_invoice_amount, $seller_ebill, $seller_ebill_expiry_date, $seller_transport_receipt;
+    public $invoice_name, $invoice_file, $invoice_amount, $ebill, $ebill_expiry_date, $transport_receipt, $debit_note, $debit_note_amount, $credit_note, $credit_note_amount;
+    public $seller_invoice_name, $seller_invoice_file, $seller_invoice_amount, $seller_ebill, $seller_ebill_expiry_date, $seller_transport_receipt, $seller_debit_note, $seller_debit_note_amount, $seller_credit_note, $seller_credit_note_amount;
 
     public function mount($id)
     {
@@ -310,6 +310,10 @@ class Show extends Component
             'ebill_expiry_date' => $this->ebill_expiry_date,
             'transport_receipt' => $this->transport_receipt ? imageUpload($this->transport_receipt, 'transport_receipt') : NULL,
             'amount'            => $this->invoice_amount ?? 0,
+            'debit_note'        => $this->debit_note ? imageUpload($this->debit_note, 'debit_note') : NULL,
+            'debit_note_amount' => $this->debit_note_amount ?? 0,
+            'credit_note'       => $this->credit_note ? imageUpload($this->credit_note, 'credit_note') : NULL,
+            'credit_note_amount'=> $this->credit_note_amount ?? 0,
             'created_at'        => Carbon::now()
         ];
 
@@ -344,6 +348,10 @@ class Show extends Component
             'ebill_expiry_date' => $this->seller_ebill_expiry_date,
             'transport_receipt' => $this->seller_transport_receipt ? imageUpload($this->seller_transport_receipt, 'seller_transport_receipt') : NULL,
             'amount'            => $this->seller_invoice_amount ?? 0,
+            'debit_note'        => $this->seller_debit_note ? imageUpload($this->seller_debit_note, 'seller_debit_note') : NULL,
+            'debit_note_amount' => $this->seller_debit_note_amount ?? 0,
+            'credit_note'       => $this->seller_credit_note ? imageUpload($this->seller_credit_note, 'seller_credit_note') : NULL,
+            'credit_note_amount'=> $this->seller_credit_note_amount ?? 0,
             'created_at'        => Carbon::now()
         ];
 
