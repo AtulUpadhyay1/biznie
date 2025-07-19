@@ -725,6 +725,26 @@
                                                             <td>
                                                                 ₹ {{ formatIndianNumber($driver_data->amount) }}
                                                             </td>
+                                                            <td>
+                                                                @if ($driver_data->debit_note)
+                                                                    <a href="{{ imageUrl($driver_data->debit_note) }}" target="_blank">Debit Note <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ $driver_data->debit_note_amount ? formatIndianNumber($driver_data->debit_note_amount) : '--' }}
+                                                            </td>
+                                                            <td>
+                                                                @if ($driver_data->credit_note)
+                                                                    <a href="{{ imageUrl($driver_data->credit_note) }}" target="_blank">Credit Note <i class="bi bi-download"></i></a>
+                                                                @else
+                                                                    <span class="text-muted">Not Available</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                ₹ {{ $driver_data->credit_note_amount ? formatIndianNumber($driver_data->credit_note_amount) : '--' }}
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @elseif ($data->all_invoices && count($data->all_invoices) > 0)

@@ -91,7 +91,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label" for="ebill">E - Waybill</label>
                                     <input type='file' id="ebill"
                                         class="form-control @error('ebill') is-invalid @enderror" wire:model="ebill">
@@ -125,7 +125,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label" for="ebill_expiry_date">E - Waybill Expiry Date</label>
                                     <input type='date' id="ebill_expiry_date"
                                         class="form-control @error('ebill_expiry_date') is-invalid @enderror"
@@ -135,7 +135,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label" for="transport_receipt">Transport Receipt</label>
                                     <input type='file' id="transport_receipt"
                                         class="form-control @error('transport_receipt') is-invalid @enderror"
@@ -176,6 +176,93 @@
                                     @enderror
                                 </div>
 
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="credit_note">Credit Note</label>
+                                    <input type='file' id="credit_note"
+                                        class="form-control @error('credit_note') is-invalid @enderror"
+                                        wire:model="credit_note">
+                                    <label for="credit_note">
+                                        @if ($credit_note)
+                                            @php
+                                                $extension = strtolower($credit_note->getClientOriginalExtension());
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                                <img src="{{ $credit_note->temporaryUrl() }}" class="label-banner">
+                                            @else
+                                                <span class="text-warning">Preview not available for {{ $extension }}
+                                                    files.</span>
+                                            @endif
+                                        @elseif ($show_credit_note)
+                                            @php
+                                                $extension = strtolower(pathinfo($show_credit_note, PATHINFO_EXTENSION));
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                                <img src="{{ $show_credit_note }}" class="label-banner">
+                                            @else
+                                                <a href="{{ $show_credit_note }}" target="_blank">View Attachment</a>
+                                            @endif
+                                        @else
+                                            <img class="label-thumbnail"
+                                                src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                        @endif
+                                    </label>
+                                    @error('credit_note')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="credit_note_amount">Credit Note Amount</label>
+                                    <input type="number" class="form-control @error('credit_note_amount') is-invalid @enderror"
+                                        placeholder="Enter Credit Note Amount" wire:model="credit_note_amount">
+                                    @error('credit_note_amount')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="debit_note">Debit Note</label>
+                                    <input type='file' id="debit_note"
+                                        class="form-control @error('debit_note') is-invalid @enderror"
+                                        wire:model="debit_note">
+                                    <label for="debit_note">
+                                        @if ($debit_note)
+                                            @php
+                                                $extension = strtolower($debit_note->getClientOriginalExtension());
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                                <img src="{{ $debit_note->temporaryUrl() }}" class="label-banner">
+                                            @else
+                                                <span class="text-warning">Preview not available for {{ $extension }}
+                                                    files.</span>
+                                            @endif
+                                        @elseif ($show_debit_note)
+                                            @php
+                                                $extension = strtolower(pathinfo($show_debit_note, PATHINFO_EXTENSION));
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                                <img src="{{ $show_debit_note }}" class="label-banner">
+                                            @else
+                                                <a href="{{ $show_debit_note }}" target="_blank">View Attachment</a>
+                                            @endif
+                                        @else
+                                            <img class="label-thumbnail"
+                                                src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                        @endif
+                                    </label>
+                                    @error('debit_note')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="debit_note_amount">Debit Note Amount</label>
+                                    <input type="number" class="form-control @error('debit_note_amount') is-invalid @enderror"
+                                        placeholder="Enter Debit Note Amount" wire:model="debit_note_amount">
+                                    @error('debit_note_amount')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane fade @if($active_tab === 'seller') show active @endif" id="seller" role="tabpanel" aria-labelledby="seller-tab">
@@ -223,7 +310,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label" for="seller_ebill">E - Waybill</label>
                                     <input type='file' id="seller_ebill"
                                         class="form-control @error('seller_ebill') is-invalid @enderror" wire:model="seller_ebill">
@@ -257,7 +344,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label" for="seller_ebill_expiry_date">E - Waybill Expiry Date</label>
                                     <input type='date' id="seller_ebill_expiry_date"
                                         class="form-control @error('seller_ebill_expiry_date') is-invalid @enderror"
@@ -267,7 +354,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label" for="seller_transport_receipt">Transport Receipt</label>
                                     <input type='file' id="seller_transport_receipt"
                                         class="form-control @error('seller_transport_receipt') is-invalid @enderror"
@@ -308,6 +395,93 @@
                                     @enderror
                                 </div>
 
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="seller_credit_note">Credit Note</label>
+                                    <input type='file' id="seller_credit_note"
+                                        class="form-control @error('seller_credit_note') is-invalid @enderror"
+                                        wire:model="seller_credit_note">
+                                    <label for="seller_credit_note">
+                                        @if ($seller_credit_note)
+                                            @php
+                                                $extension = strtolower($seller_credit_note->getClientOriginalExtension());
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                                <img src="{{ $seller_credit_note->temporaryUrl() }}" class="label-banner">
+                                            @else
+                                                <span class="text-warning">Preview not available for {{ $extension }}
+                                                    files.</span>
+                                            @endif
+                                        @elseif ($show_seller_credit_note)
+                                            @php
+                                                $extension = strtolower(pathinfo($show_seller_credit_note, PATHINFO_EXTENSION));
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                                <img src="{{ $show_seller_credit_note }}" class="label-banner">
+                                            @else
+                                                <a href="{{ $show_seller_credit_note }}" target="_blank">View Attachment</a>
+                                            @endif
+                                        @else
+                                            <img class="label-thumbnail"
+                                                src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                        @endif
+                                    </label>
+                                    @error('seller_credit_note')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="seller_credit_note_amount">Credit Note Amount</label>
+                                    <input type="number" class="form-control @error('seller_credit_note_amount') is-invalid @enderror"
+                                        placeholder="Enter Credit Note Amount" wire:model="seller_credit_note_amount">
+                                    @error('seller_credit_note_amount')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="seller_debit_note">Debit Note</label>
+                                    <input type='file' id="seller_debit_note"
+                                        class="form-control @error('seller_debit_note') is-invalid @enderror"
+                                        wire:model="seller_debit_note">
+                                    <label for="seller_debit_note">
+                                        @if ($seller_debit_note)
+                                            @php
+                                                $extension = strtolower($seller_debit_note->getClientOriginalExtension());
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                                <img src="{{ $seller_debit_note->temporaryUrl() }}" class="label-banner">
+                                            @else
+                                                <span class="text-warning">Preview not available for {{ $extension }}
+                                                    files.</span>
+                                            @endif
+                                        @elseif ($show_seller_debit_note)
+                                            @php
+                                                $extension = strtolower(pathinfo($show_seller_debit_note, PATHINFO_EXTENSION));
+                                            @endphp
+                                            @if (in_array($extension, ['jpg', 'jpeg', 'png', 'PNG', 'gif']))
+                                                <img src="{{ $show_seller_debit_note }}" class="label-banner">
+                                            @else
+                                                <a href="{{ $show_seller_debit_note }}" target="_blank">View Attachment</a>
+                                            @endif
+                                        @else
+                                            <img class="label-thumbnail"
+                                                src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
+                                        @endif
+                                    </label>
+                                    @error('seller_debit_note')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="seller_debit_note_amount">Debit Note Amount</label>
+                                    <input type="number" class="form-control @error('seller_debit_note_amount') is-invalid @enderror"
+                                        placeholder="Enter Debit Note Amount" wire:model="seller_debit_note_amount">
+                                    @error('seller_debit_note_amount')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>

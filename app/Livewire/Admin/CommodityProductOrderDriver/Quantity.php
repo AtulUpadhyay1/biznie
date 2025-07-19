@@ -13,8 +13,8 @@ class Quantity extends Component
     public $page_title = 'Update Vehicle Quantity';
     public $active_tab = 'buyer';
     public $hidden_id, $order_id, $driver_data, $order_data, $quantity = [];
-    public $invoice, $show_invoice, $amount, $ebill, $ebill_expiry_date, $transport_receipt, $show_ebill, $show_transport_receipt;
-    public $seller_invoice, $show_seller_invoice, $seller_amount, $seller_ebill, $seller_ebill_expiry_date, $seller_transport_receipt, $show_seller_ebill, $show_seller_transport_receipt;
+    public $invoice, $show_invoice, $amount, $ebill, $ebill_expiry_date, $transport_receipt, $show_ebill, $show_transport_receipt, $credit_note, $show_credit_note, $credit_note_amount, $debit_note, $show_debit_note, $debit_note_amount;
+    public $seller_invoice, $show_seller_invoice, $seller_amount, $seller_ebill, $seller_ebill_expiry_date, $seller_transport_receipt, $show_seller_ebill, $show_seller_transport_receipt, $seller_credit_note, $show_seller_credit_note, $seller_credit_note_amount, $seller_debit_note, $show_seller_debit_note, $seller_debit_note_amount;
 
     protected $queryString = [
         'active_tab' => ['except' => '']
@@ -32,15 +32,24 @@ class Quantity extends Component
         $this->show_ebill = imageUrl($this->driver_data->ebill);
         $this->ebill_expiry_date = $this->driver_data->ebill_expiry_date;
         $this->show_transport_receipt = imageUrl($this->driver_data->transport_receipt);
+        $this->show_credit_note = imageUrl($this->driver_data->credit_note);
+        $this->credit_note_amount = $this->driver_data->credit_note_amount;
+        $this->show_debit_note = imageUrl($this->driver_data->debit_note);
+        $this->debit_note_amount = $this->driver_data->debit_note_amount;
         foreach ($this->order_data->value as $key => $variation){
             $this->quantity[$key] = $this->driver_data->final_quantity_by_seller ? $this->driver_data->final_quantity_by_seller[$key] : 0;
         }
+
         if($this->driver_data->seller_invoices) {
             $this->show_seller_invoice = imageUrl($this->driver_data->seller_invoices['invoice']);
             $this->seller_amount = $this->driver_data->seller_invoices['amount'];
             $this->show_seller_ebill = imageUrl($this->driver_data->seller_invoices['ebill']);
             $this->seller_ebill_expiry_date = $this->driver_data->seller_invoices['ebill_expiry_date'];
             $this->show_seller_transport_receipt = imageUrl($this->driver_data->seller_invoices['transport_receipt']);
+            $this->show_seller_credit_note = imageUrl($this->driver_data->seller_invoices['credit_note']);
+            $this->seller_credit_note_amount = $this->driver_data->seller_invoices['credit_note_amount'];
+            $this->show_seller_debit_note = imageUrl($this->driver_data->seller_invoices['debit_note']);
+            $this->seller_debit_note_amount = $this->driver_data->seller_invoices['debit_note_amount'];
         }
     }
 
@@ -73,6 +82,10 @@ class Quantity extends Component
             'ebill' => null,
             'ebill_expiry_date' => null,
             'transport_receipt' => null,
+            'credit_note' => null,
+            'credit_note_amount' => 0,
+            'debit_note' => null,
+            'debit_note_amount' => 0,
         ];
 
         $seller_invoice_arr = [
@@ -81,6 +94,10 @@ class Quantity extends Component
             'ebill' => $this->seller_ebill ? imageUpload($this->seller_ebill, 'driver_detail', $seller_invoice_data['ebill']) : $seller_invoice_data['ebill'],
             'ebill_expiry_date' => $this->seller_ebill_expiry_date,
             'transport_receipt' => $this->seller_transport_receipt ? imageUpload($this->seller_transport_receipt, 'driver_detail', $seller_invoice_data['transport_receipt']) : $seller_invoice_data['transport_receipt'],
+            'credit_note' => $this->seller_credit_note ? imageUpload($this->seller_credit_note, 'driver_detail', $seller_invoice_data['credit_note']) : $seller_invoice_data['credit_note'],
+            'credit_note_amount' => $this->seller_credit_note_amount,
+            'debit_note' => $this->seller_debit_note ? imageUpload($this->seller_debit_note, 'driver_detail', $seller_invoice_data['debit_note']) : $seller_invoice_data['debit_note'],
+            'debit_note_amount' => $this->seller_debit_note_amount,
         ];
 
         $this->driver_data->final_quantity_by_seller = $this->quantity;
@@ -89,6 +106,10 @@ class Quantity extends Component
         $this->driver_data->ebill       = $this->ebill ? imageUpload($this->ebill, 'driver_detail', $this->driver_data->ebill) : $this->driver_data->ebill;
         $this->driver_data->ebill_expiry_date= $this->ebill_expiry_date;
         $this->driver_data->transport_receipt= $this->transport_receipt ? imageUpload($this->transport_receipt, 'driver_detail', $this->driver_data->transport_receipt) : $this->driver_data->transport_receipt;
+        $this->driver_data->credit_note = $this->credit_note ? imageUpload($this->credit_note, 'driver_detail', $this->driver_data->credit_note) : $this->driver_data->credit_note;
+        $this->driver_data->credit_note_amount = $this->credit_note_amount;
+        $this->driver_data->debit_note = $this->debit_note ? imageUpload($this->debit_note, 'driver_detail', $this->driver_data->debit_note) : $this->driver_data->debit_note;
+        $this->driver_data->debit_note_amount = $this->debit_note_amount;
         $this->driver_data->seller_invoices = $seller_invoice_arr;
         $this->driver_data->save();
 
