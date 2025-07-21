@@ -99,6 +99,7 @@ class OrderDetailResource extends JsonResource
             'customer_credit_due_date'      => $this->customer_credit_due_date,
             'update_for'                    => $this->update_for,
             'driver_list'                   => $this->getDrivers ? CommodityProductOrderDriverResource::collection($this->getDrivers) : [],
+            'invoice_list'                  => []
         ];
 
         $seller_commodity_product   = SellerCommodityProduct::where('user_id', $this->seller_user_id)->where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();
@@ -188,6 +189,45 @@ class OrderDetailResource extends JsonResource
             }
 
             $data['quality_check_image']=$quality_check_image_arr;
+        }
+
+        if($this->getDrivers->sum('amount') > 0){
+            foreach ($this->getDrivers as $driver_data){
+                $data['invoice_list'][] = [
+                    'vehicle_number'    => $driver_data->vehicle_number,
+                    'name'              => null,
+                    'invoice'           => $driver_data->invoice ? imageUrl($driver_data->invoice) : null,
+                    'ebill'             => $driver_data->ebill ? imageUrl($driver_data->ebill) : null,
+                    'ebill_expiry_date' => $driver_data->ebill_expiry_date,
+                    'transport_receipt' => $driver_data->transport_receipt ? imageUrl($driver_data->transport_receipt) : null,
+                    'amount'            => $driver_data->amount,
+                    'debit_note'        => $driver_data->debit_note ? imageUrl($driver_data->debit_note) : null,
+                    'debit_note_amount' => $driver_data->debit_note_amount,
+                    'credit_note'       => $driver_data->credit_note ? imageUrl($driver_data->credit_note) : null,
+                    'credit_note_amount'=> $driver_data->credit_note_amount,
+                ];
+            }
+
+        } elseif($this->all_invoices && count($this->all_invoices) > 0){
+
+            foreach ($this->all_invoices as $invoice_data) {
+                $data['invoice_list'][] = [
+                    'vehicle_number'    => null,
+                    'name'              => $invoice_data['name'],
+                    'invoice'           => $invoice_data['invoice_file'] ? imageUrl($invoice_data['invoice_file']) : null,
+                    'ebill'             => $invoice_data['ebill'] ? imageUrl($invoice_data['ebill']) : null,
+                    'ebill_expiry_date' => $invoice_data['ebill_expiry_date'],
+                    'transport_receipt' => isset($invoice_data['transport_receipt']) ? imageUrl($invoice_data['transport_receipt']) : null,
+                    'amount'            => $invoice_data['amount'],
+                    'debit_note'        => isset($invoice_data['debit_note']) ? imageUrl($invoice_data['debit_note']) : null,
+                    'debit_note_amount' => isset($invoice_data['debit_note_amount']) ? $invoice_data['debit_note_amount'] : null,
+                    'credit_note'       => isset($invoice_data['credit_note']) ? imageUrl($invoice_data['credit_note']) : null,
+                    'credit_note_amount'=> isset($invoice_data['credit_note_amount']) ? $invoice_data['credit_note_amount'] : null,
+                ];
+            }
+
+        } else{
+            $data['invoice_list'] = [];
         }
 
         return $data;
