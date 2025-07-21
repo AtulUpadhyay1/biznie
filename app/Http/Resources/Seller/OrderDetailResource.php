@@ -100,6 +100,7 @@ class OrderDetailResource extends JsonResource
             'credit_days'                   => $this->getSellerProductEnquiry->seller_credit_days,
             'update_for'                    => $this->update_for,
             'driver_list'                   => $this->getDrivers ? CommodityProductOrderDriverResource::collection($this->getDrivers) : [],
+            'invoice_list'                  => []
         ];
 
         $seller_commodity_product   = SellerCommodityProduct::where('user_id', $this->seller_user_id)->where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();
@@ -192,6 +193,43 @@ class OrderDetailResource extends JsonResource
 
         $data['paid_amount'] = $paid_amout;
         $data['due_amount'] = $data['total_amount'] - $data['paid_amount'];
+
+        if($this->getDrivers->sum('amount') > 0){
+            foreach ($this->getDrivers as $driver_data){
+                if($driver_data->seller_invoices){
+                    $seller_invoices = $driver_data->seller_invoices;
+                    $data['invoice_list'][] = [
+                        'vehicle_number'    => $driver_data->vehicle_number,
+                        'name'              => null,
+                        'invoice'           => isset($seller_invoices['invoice']) ? imageUrl($seller_invoices['invoice']) : null,
+                        'ebill'             => isset($seller_invoices['ebill']) ? imageUrl($seller_invoices['ebill']) : null,
+                        'ebill_expiry_date' => $seller_invoices['ebill_expiry_date'] ?? null,
+                        'transport_receipt' => isset($seller_invoices['transport_receipt']) ? imageUrl($seller_invoices['transport_receipt']) : null,
+                        'amount'            => $driver_data['amount'],
+                        'debit_note'        => isset($seller_invoices['debit_note']) ? imageUrl($seller_invoices['debit_note']) : null,
+                        'debit_note_amount' => isset($seller_invoices['debit_note_amount']) ? $seller_invoices['debit_note_amount'] : null,
+                        'credit_note'       => isset($seller_invoices['credit_note']) ? imageUrl($seller_invoices['credit_note']) : null,
+                        'credit_note_amount'=> isset($seller_invoices['credit_note_amount']) ? $seller_invoices['credit_note_amount'] : null,
+                    ];
+                }
+            }
+        } elseif ($this->seller_invoices && count($this->seller_invoices) > 0){
+            foreach ($this->seller_invoices as $invoice){
+                $data['invoice_list'][] = [
+                    'vehicle_number'    => null,
+                    'name'              => $invoice['name'],
+                    'invoice'           => $invoice['invoice_file'] ? imageUrl($invoice['invoice_file']) : null,
+                    'ebill'             => $invoice['ebill'] ? imageUrl($invoice['ebill']) : null,
+                    'ebill_expiry_date' => $invoice['ebill_expiry_date'],
+                    'transport_receipt' => isset($invoice['transport_receipt']) ? imageUrl($invoice['transport_receipt']) : null,
+                    'amount'            => $invoice['amount'],
+                    'debit_note'        => isset($invoice['debit_note']) ? imageUrl($invoice['debit_note']) : null,
+                    'debit_note_amount' => isset($invoice['debit_note_amount']) ? $invoice['debit_note_amount'] : null,
+                    'credit_note'       => isset($invoice['credit_note']) ? imageUrl($invoice['credit_note']) : null,
+                    'credit_note_amount'=> isset($invoice['credit_note_amount']) ? $invoice['credit_note_amount'] : null,
+                ];
+            }
+        }
 
         return $data;
     }
