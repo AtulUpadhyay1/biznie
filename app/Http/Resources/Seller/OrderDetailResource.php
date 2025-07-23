@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Seller;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Models\SellerCommodityProduct;
@@ -197,6 +198,8 @@ class OrderDetailResource extends JsonResource
         if($this->getDrivers->sum('amount') > 0){
             foreach ($this->getDrivers as $driver_data){
                 if($driver_data->seller_invoices){
+                    $expiryDate = Carbon::parse($driver_data['ebill_expiry_date']);
+                    $daysLeft = $expiryDate->isToday() ? 0 : ($expiryDate->isPast() ? 0 : $expiryDate->diffInDays(now()) + 1);
                     $seller_invoices = $driver_data->seller_invoices;
                     $data['invoice_list'][] = [
                         'vehicle_number'    => $driver_data->vehicle_number,
@@ -204,6 +207,8 @@ class OrderDetailResource extends JsonResource
                         'invoice'           => isset($seller_invoices['invoice']) ? imageUrl($seller_invoices['invoice']) : null,
                         'ebill'             => isset($seller_invoices['ebill']) ? imageUrl($seller_invoices['ebill']) : null,
                         'ebill_expiry_date' => $seller_invoices['ebill_expiry_date'] ?? null,
+                        'days_left'         => $daysLeft,
+                        'is_expired_today'  => $expiryDate->isToday(),
                         'transport_receipt' => isset($seller_invoices['transport_receipt']) ? imageUrl($seller_invoices['transport_receipt']) : null,
                         'amount'            => $driver_data['amount'],
                         'debit_note'        => isset($seller_invoices['debit_note']) ? imageUrl($seller_invoices['debit_note']) : null,
@@ -215,12 +220,16 @@ class OrderDetailResource extends JsonResource
             }
         } elseif ($this->seller_invoices && count($this->seller_invoices) > 0){
             foreach ($this->seller_invoices as $invoice){
+                $expiryDate = Carbon::parse($invoice['ebill_expiry_date']);
+                $daysLeft = $expiryDate->isToday() ? 0 : ($expiryDate->isPast() ? 0 : $expiryDate->diffInDays(now()) + 1);
                 $data['invoice_list'][] = [
                     'vehicle_number'    => null,
                     'name'              => $invoice['name'],
                     'invoice'           => $invoice['invoice_file'] ? imageUrl($invoice['invoice_file']) : null,
                     'ebill'             => $invoice['ebill'] ? imageUrl($invoice['ebill']) : null,
                     'ebill_expiry_date' => $invoice['ebill_expiry_date'],
+                    'days_left'         => $daysLeft,
+                    'is_expired_today'  => $expiryDate->isToday(),
                     'transport_receipt' => isset($invoice['transport_receipt']) ? imageUrl($invoice['transport_receipt']) : null,
                     'amount'            => $invoice['amount'],
                     'debit_note'        => isset($invoice['debit_note']) ? imageUrl($invoice['debit_note']) : null,
