@@ -711,6 +711,19 @@
                                                             <td>
                                                                 @if ($driver_data->ebill_expiry_date)
                                                                     {{ dateFormat($driver_data->ebill_expiry_date) }}
+                                                                    <br>
+                                                                    @php
+                                                                        $expiryDate = \Carbon\Carbon::parse($driver_data->ebill_expiry_date);
+                                                                        $daysLeft = $expiryDate->isToday() ? 0 : ($expiryDate->isPast() ? 0 : $expiryDate->diffInDays(now()) + 1);
+                                                                    @endphp
+                                                                    @if ($daysLeft <= 0)
+                                                                        <b class="text-danger">{{ $daysLeft == 0 && $expiryDate->isToday() ? '0 days left' : 'Expired' }}</b>
+                                                                    @elseif ($daysLeft <= 3)
+                                                                        <b class="text-warning">{{ $daysLeft }} days left</b>
+                                                                    @else
+                                                                        <b class="text-success">{{ $daysLeft }} days left</b>
+                                                                    @endif
+
                                                                 @else
                                                                     <span class="text-muted">Not Available</span>
                                                                 @endif
@@ -766,6 +779,19 @@
                                                             <td>
                                                                 @if ($invoice['ebill_expiry_date'])
                                                                     {{ dateFormat($invoice['ebill_expiry_date']) }}
+                                                                    <br>
+                                                                    @php
+                                                                        $expiryDate = \Carbon\Carbon::parse($invoice['ebill_expiry_date']);
+                                                                        $daysLeft = $expiryDate->isToday() ? 0 : ($expiryDate->isPast() ? 0 : $expiryDate->diffInDays(now()) + 1);
+                                                                    @endphp
+                                                                    @if ($daysLeft <= 0)
+                                                                        <b class="text-danger">{{ $daysLeft == 0 && $expiryDate->isToday() ? '0 days left' : 'Expired' }}</b>
+                                                                    @elseif ($daysLeft <= 3)
+                                                                        <b class="text-warning">{{ $daysLeft }} days left</b>
+                                                                    @else
+                                                                        <b class="text-success">{{ $daysLeft }} days left</b>
+                                                                    @endif
+
                                                                 @else
                                                                     <span class="text-muted">Not Available</span>
                                                                 @endif
@@ -868,9 +894,21 @@
                                                                 <td>
                                                                     @if ($seller_invoices['ebill_expiry_date'])
                                                                         {{ dateFormat($seller_invoices['ebill_expiry_date']) }}
-                                                                    @else
-                                                                        <span class="text-muted">Not Available</span>
-                                                                    @endif
+                                                                        <br>
+                                                                        @php
+                                                                            $expiryDate = \Carbon\Carbon::parse($seller_invoices['ebill_expiry_date']);
+                                                                            $daysLeft = $expiryDate->isToday() ? 0 : ($expiryDate->isPast() ? 0 : $expiryDate->diffInDays(now()) + 1);
+                                                                        @endphp
+                                                                        @if ($daysLeft <= 0)
+                                                                            <b class="text-danger">{{ $daysLeft == 0 && $expiryDate->isToday() ? '0 days left' : 'Expired' }}</b>
+                                                                        @elseif ($daysLeft <= 3)
+                                                                            <b class="text-warning">{{ $daysLeft }} days left</b>
+                                                                        @else
+                                                                            <b class="text-success">{{ $daysLeft }} days left</b>
+                                                                        @endif
+                                                                        @else
+                                                                            <span class="text-muted">Not Available</span>
+                                                                        @endif
                                                                 </td>
                                                                 <td>
                                                                     @if ($seller_invoices['transport_receipt'])
@@ -924,6 +962,18 @@
                                                             <td>
                                                                 @if ($invoice['ebill_expiry_date'])
                                                                     {{ dateFormat($invoice['ebill_expiry_date']) }}
+                                                                    <br>
+                                                                    @php
+                                                                        $expiryDate = \Carbon\Carbon::parse($invoice['ebill_expiry_date']);
+                                                                        $daysLeft = $expiryDate->isToday() ? 0 : ($expiryDate->isPast() ? 0 : $expiryDate->diffInDays(now()) + 1);
+                                                                    @endphp
+                                                                    @if ($daysLeft <= 0)
+                                                                        <b class="text-danger">{{ $daysLeft == 0 && $expiryDate->isToday() ? '0 days left' : 'Expired' }}</b>
+                                                                    @elseif ($daysLeft <= 3)
+                                                                        <b class="text-warning">{{ $daysLeft }} days left</b>
+                                                                    @else
+                                                                        <b class="text-success">{{ $daysLeft }} days left</b>
+                                                                    @endif
                                                                 @else
                                                                     <span class="text-muted">Not Available</span>
                                                                 @endif
