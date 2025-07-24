@@ -96,6 +96,18 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="master_otp" class="form-label">Master OTP
+                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="The OTP required for master access.">
+                                        <i class="bi bi-info-circle"></i>
+                                    </span>
+                                </label>
+                                <input type="number" class="form-control" placeholder="Master OTP" id="master_otp" wire:model="value.master_otp">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <div class="col-md-6">

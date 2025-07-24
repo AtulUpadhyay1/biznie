@@ -18,6 +18,7 @@ class Setting extends Component
         $this->value['order_token_amount'] = websiteSetupValue('order_token_amount');
         $this->value['customer_quality_check_visibility'] = websiteSetupValue('customer_quality_check_visibility');
         $this->value['enquiry_send_to_transporter'] = websiteSetupValue('enquiry_send_to_transporter');
+        $this->value['master_otp'] = websiteSetupValue('master_otp');
         return view('admin.website_setup.setting');
     }
 
