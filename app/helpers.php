@@ -272,4 +272,36 @@ if(!function_exists('getIngotPriceLocation')){
     }
 }
 
+if(!function_exists('sendMySmsShopMesssage')){
+    function sendMySmsShopMesssage($apikey, $senderid, $number, $message) {
+        $client = new Client();
+        $response = $client->post('http://sms.mysmsshop.in/V2/http-api.php', [
+            'form_params' => [
+                "apikey"    => $apikey,
+                "senderid"  => $senderid,
+                "number"    => $number,
+                "message"   => $message,
+                "format"    => "json"
+            ],
+        ]);
+
+        $otp = 1234;
+        // $otp = rand(1111, 9999);
+
+        // if(config('app.env') == 'production' && $request->phone != "8920976591"){
+        //     Msg91::sms()->to('91'.$request->phone)->flow('648d8690d6fc051b591f1ec3')->variable('user', $user->name)->variable('otp', $otp)->send();
+        // }
+
+        $data = UserOtp::where('phone', $phone)->first();
+        if(!$data){
+            $data = new UserOtp;
+        }
+        $data->phone = $phone;
+        $data->otp = $otp;
+        $data->save();
+        // return $response;
+    }
+}
+
+
 ?>
