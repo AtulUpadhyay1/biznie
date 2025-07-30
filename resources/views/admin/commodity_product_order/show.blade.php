@@ -528,6 +528,7 @@
                                         @if ($custmoer_enq_data['commission_type'] == 'exclude')
                                             <p><span class="text-danger">Commission (Excluded) : </span> ₹ {{ formatIndianNumber($custmoer_enq_data['commission']) }}</p>
                                         @endif
+                                        <p><span class="text-danger">Load Within : </span> {{ $seller_enquiry_data->load_within }} Days</p>
                                         <small class="text-success">Rate included - loading charges, insurance charges, Packaging charges, Quality inspection charges, TCS & GST </small>
                                         <hr>
 

@@ -655,6 +655,15 @@
                                                                 </td>
                                                             @endif
                                                         </tr>
+                                                        <tr>
+                                                            <th style="border-right: hidden;">
+                                                                <label for="load_within" class="form-label">Load Within</label>
+                                                            </th>
+                                                            <td colspan="{{ $selected_seller_commodity_product->insurance_charge > 0 ? count($set_enquiry_data->value[0]['value']) : count($set_enquiry_data->value[0]['value']) + 1 }}">
+                                                                <input type="number" class="form-control" id="load_within" placeholder="Enter Load Within" wire:model="load_within">
+                                                                @error('load_within') <small class="text-danger">{{ $message }}</small>@enderror
+                                                            </td>
+                                                        </tr>
                                                         @if ($selected_seller_commodity_product->quality_charge > 0)
                                                             <tr>
                                                                 <td colspan="{{ count($set_enquiry_data->value[0]['value'])+1 }}" style="border-left: hidden; border-bottom: hidden;"></td>
@@ -717,6 +726,7 @@
                                                                 ₹ {{ formatIndianNumber($total_variation_price) }}
                                                             </td>
                                                         </tr>
+
                                                     </tbody>
                                                 </table>
                                             </div>

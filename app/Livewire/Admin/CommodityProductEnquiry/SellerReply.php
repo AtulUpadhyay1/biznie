@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
+use App\Models\CommodityProductState;
 use App\Models\SellerCommodityProduct;
 use App\Models\TransporterAddressPrice;
 use App\Models\TransporterProductEnquiry;
@@ -21,7 +22,7 @@ class SellerReply extends Component
     public $transporter_list;
     public $transporter_enquiry, $transporter_price, $selected_transporter_id;
 
-    public $seller_credit_days = 0, $customer_credit_days = 0;
+    public $seller_credit_days = 0, $customer_credit_days = 0, $load_within = 0;
 
     public $active_tab = 'seller';
     protected $queryString = [
@@ -112,6 +113,16 @@ class SellerReply extends Component
             $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? $this->set_enquiry_data->base_price : 0;
             $this->transport_price = $this->set_enquiry_data->transport_price ? $this->set_enquiry_data->transport_price : 0;
             $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_seller_commodity_product->commission_amount;
+
+            $get_product_state = CommodityProductState::where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
+                ->where('brand_id', $this->set_enquiry_data->brand_id)
+                ->where('state', $state)
+                ->where('city', $city)
+                ->first();
+
+            if($get_product_state){
+                $this->load_within = $get_product_state->load_within;
+            }
         }
     }
 
@@ -185,6 +196,7 @@ class SellerReply extends Component
             $enquiry_data->is_mark = 1;
             $enquiry_data->seller_credit_days = $this->seller_credit_days;
             $enquiry_data->customer_credit_days = $this->customer_credit_days;
+            $enquiry_data->load_within = $this->load_within;
             if($enquiry_data->history != "Mark For Sell"){
                 $enquiry_data->status = 'Mark For Sell';
                 $history = $enquiry_data->history;

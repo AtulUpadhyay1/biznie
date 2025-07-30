@@ -150,7 +150,7 @@
             if($enquiry_data->getCommodityProduct->order_amount_type == 'flat'){
                 $data['required_booking_amount'] = $enquiry_data->getCommodityProduct->required_order_amount ? $enquiry_data->getCommodityProduct->required_order_amount * $data['total_quantity']: 0;
             }
-            
+
             if($enquiry_data->getCommodityProduct->order_amount_type == 'percent'){
                 $data['required_booking_amount'] = $data['for_price'] * $enquiry_data->getCommodityProduct->required_order_amount / 100;
             }
@@ -516,6 +516,7 @@
                         @if ($data['commission_type'] == 'exclude')
                             <p><span class="text-danger">Commission (Excluded) : </span> ₹ {{ formatIndianNumber($data['commission']) }}</p>
                         @endif
+                        <p><span class="text-danger">Load Within : </span> {{ $seller_enquiry_data->load_within }} Days</p>
                         <small class="text-success">Rate included - loading charges, insurance charges, Packaging charges, Quality inspection charges, TCS & GST </small>
                         <hr>
 
