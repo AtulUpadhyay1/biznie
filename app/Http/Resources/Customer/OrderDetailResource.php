@@ -108,6 +108,7 @@ class OrderDetailResource extends JsonResource
         $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($this->product_enquiries_id);
         $markedSeller = $enquiry_data->getMarkedSellerProductEnquiry;
         $data['commission_type'] = $markedSeller->commission_type;
+        $data['credit_days'] = $markedSeller->customer_credit_days ? $markedSeller->customer_credit_days : $enquiry_data->getUser->credit_days;
         if($data['commission_type'] == 'exclude'){
             $data['base_price'] += $data['commission'];
         }
