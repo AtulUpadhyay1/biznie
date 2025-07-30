@@ -109,6 +109,7 @@ class OrderDetailResource extends JsonResource
         $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($this->product_enquiries_id);
         $seller_enquiry_data = $enquiry_data->getMarkedSellerProductEnquiry;
         $data['commission_type'] = $seller_enquiry_data->commission_type;
+        $data['load_within'] = $seller_enquiry_data->load_within ? $seller_enquiry_data->load_within : 0;
 
         $packaging_arr = [];
         foreach ($seller_commodity_product->packaging_type as $packaging_charge) {

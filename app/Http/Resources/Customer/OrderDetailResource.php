@@ -109,6 +109,7 @@ class OrderDetailResource extends JsonResource
         $markedSeller = $enquiry_data->getMarkedSellerProductEnquiry;
         $data['commission_type'] = $markedSeller->commission_type;
         $data['credit_days'] = $markedSeller->customer_credit_days ? $markedSeller->customer_credit_days : $enquiry_data->getUser->credit_days;
+        $data['load_within'] = $markedSeller->load_within ? $markedSeller->load_within : 0;
         if($data['commission_type'] == 'exclude'){
             $data['base_price'] += $data['commission'];
         }
