@@ -80,6 +80,12 @@
                                 <input type="text" class="form-control" id="address_line_two" wire:model="address_line_two" placeholder="Address Line Two">
                                 @error('address_line_two') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="load_within" class="form-label">Load Within <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="load_within" wire:model="load_within" placeholder="Load Within">
+                                @error('load_within') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
                         </div>
                         <hr>
                         <div class="table-responsive">

@@ -16,7 +16,7 @@ class Show extends Component
 
     public $page_title = 'Commodity Product Show';
 
-    public $hidden_id, $brand_id, $state_name, $city_name, $address_line_one, $address_line_two, $pincode;
+    public $hidden_id, $brand_id, $state_name, $city_name, $address_line_one, $address_line_two, $pincode, $load_within = 0;
     public $chart;
 
     public function mount($id)
@@ -70,6 +70,7 @@ class Show extends Component
         $state_data->address_line_one     = $this->address_line_one;
         $state_data->address_line_two     = $this->address_line_two;
         $state_data->pincode              = $this->pincode;
+        $state_data->load_within          = $this->load_within;
         $state_data->save();
 
         foreach ($get_state_price as $state_price) {

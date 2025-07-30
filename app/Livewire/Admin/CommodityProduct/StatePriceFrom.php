@@ -16,7 +16,7 @@ class StatePriceFrom extends Component
 {
     public $page_title = "Add State Wise Price";
 
-    public $brand_id, $state_name, $city_name, $address_line_one, $address_line_two, $pincode, $state_price_id;
+    public $brand_id, $state_name, $city_name, $address_line_one, $address_line_two, $pincode, $state_price_id, $load_within = 0;
 
     public $hidden_id, $variation_inputs = [], $selected_attributes = [], $variation=[], $uploaded_variation = [], $unit = [];
 
@@ -69,6 +69,7 @@ class StatePriceFrom extends Component
             $this->address_line_one = $get_state_variation->address_line_one;
             $this->address_line_two = $get_state_variation->address_line_two;
             $this->pincode = $get_state_variation->pincode;
+            $this->load_within = $get_state_variation->load_within;
         }
 
         foreach ($this->selected_attributes as $attribute) {
@@ -140,6 +141,7 @@ class StatePriceFrom extends Component
         $state_data->address_line_one     = $this->address_line_one;
         $state_data->address_line_two     = $this->address_line_two;
         $state_data->pincode              = $this->pincode;
+        $state_data->load_within          = $this->load_within;
         $state_data->save();
 
         foreach ($this->uploaded_variation as $uploaded_variation_id => $uploaded_variation) {
