@@ -101,7 +101,9 @@ class OrderDetailResource extends JsonResource
             'credit_days'                   => $this->getSellerProductEnquiry->seller_credit_days,
             'update_for'                    => $this->update_for,
             'driver_list'                   => $this->getDrivers ? CommodityProductOrderDriverResource::collection($this->getDrivers) : [],
-            'invoice_list'                  => []
+            'invoice_list'                  => [],
+            'total_invoice_amount'          => 0,
+
         ];
 
         $seller_commodity_product   = SellerCommodityProduct::where('user_id', $this->seller_user_id)->where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();
@@ -217,6 +219,8 @@ class OrderDetailResource extends JsonResource
                         'credit_note'       => isset($seller_invoices['credit_note']) ? imageUrl($seller_invoices['credit_note']) : null,
                         'credit_note_amount'=> isset($seller_invoices['credit_note_amount']) ? $seller_invoices['credit_note_amount'] : null,
                     ];
+
+                    $data['total_invoice_amount'] += $driver_data->amount;
                 }
             }
         } elseif ($this->seller_invoices && count($this->seller_invoices) > 0){
@@ -238,6 +242,7 @@ class OrderDetailResource extends JsonResource
                     'credit_note'       => isset($invoice['credit_note']) ? imageUrl($invoice['credit_note']) : null,
                     'credit_note_amount'=> isset($invoice['credit_note_amount']) ? $invoice['credit_note_amount'] : null,
                 ];
+                $data['total_invoice_amount'] += $invoice['amount'];
             }
         }
 
