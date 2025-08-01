@@ -163,6 +163,15 @@ class ProductEnquiryDetailResource extends JsonResource
 
             $data['for_price']          = $data['ex_price'] + $data['transport_price'] * $data['total_quantity'];
             $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
+
+            if($this->getCommodityProduct->order_amount_type == 'flat'){
+                $data['required_booking_amount'] = $this->getCommodityProduct->required_order_amount ? $this->getCommodityProduct->required_order_amount * $data['total_quantity']: 0;
+            }
+
+            if($this->getCommodityProduct->order_amount_type == 'percent'){
+                $data['required_booking_amount'] = $data['for_price'] * $this->getCommodityProduct->required_order_amount / 100;
+            }
+
             // $data['status']     = $this->getMarkedSellerProductEnquiry->status;
         }else{
             $data['variation']   = $this->variation;
