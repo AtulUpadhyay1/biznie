@@ -78,6 +78,8 @@ class AuthApiController extends Controller
         }
 
         sendOtp($request->phone);
+        // sendMySmsShopMessage('hAoIyvpY6HUvbZdX', 'ABEERH', $request->phone, 'Hello, Your OTP to reset password is '.rand(1111, 9999).' ABHEERH');
+
 
         return response([
             'success'   => true,

@@ -272,8 +272,8 @@ if(!function_exists('getIngotPriceLocation')){
     }
 }
 
-if(!function_exists('sendMySmsShopMesssage')){
-    function sendMySmsShopMesssage($apikey, $senderid, $number, $message) {
+if(!function_exists('sendMySmsShopMessage')){
+    function sendMySmsShopMessage($apikey, $senderid, $number, $message) {
         $client = new Client();
         $response = $client->post('http://sms.mysmsshop.in/V2/http-api.php', [
             'form_params' => [
