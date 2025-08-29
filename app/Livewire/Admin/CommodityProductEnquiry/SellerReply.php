@@ -15,7 +15,7 @@ use App\Models\SellerCommodityProductStatePrice;
 class SellerReply extends Component
 {
     public $page_title = 'View Seller Reply';
-    public $hidden_id, $selected_enquiry_id, $list, $data, $set_enquiry_data, $set_seller_commodity_product, $set_enquiry_data_price = [], $set_enquiry_data_base_price, $transport_price = 0, $commission = 200;
+    public $hidden_id, $selected_enquiry_id, $list, $data, $set_enquiry_data, $set_seller_commodity_product, $set_enquiry_quantity = [], $set_enquiry_data_price = [], $set_enquiry_data_base_price, $transport_price = 0, $commission = 200;
 
     public $product_enquiry_data, $base_price, $selected_seller_commodity_product, $is_editable_commission = true;
 
@@ -70,6 +70,7 @@ class SellerReply extends Component
     public function updatePriceForm()
     {
         if($this->selected_enquiry_id){
+            $this->set_enquiry_quantity = [];
             $this->set_enquiry_data_price = [];
             $this->set_enquiry_data = SellerProductEnquiry::with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct', 'getUser')->find($this->selected_enquiry_id);
             $this->set_seller_commodity_product = SellerCommodityProduct::where('user_id', $this->set_enquiry_data->user_id)
@@ -107,6 +108,7 @@ class SellerReply extends Component
                         }
                     })
                     ->first();
+                $this->set_enquiry_quantity[] = $variation['quantity'];
                 $this->set_enquiry_data_price[] = $gauge_diff ? $gauge_diff->price : 0;
             }
             // $this->set_enquiry_data_base_price = $seller_commodity_product->base_price ? $seller_commodity_product->base_price : 0;
@@ -156,6 +158,7 @@ class SellerReply extends Component
             'transport_price'               => 'required|min:0',
             'commission'                    => 'required|min:0',
             'set_enquiry_data_price'        => 'required',
+            'set_enquiry_quantity'          => 'required',
         ]);
         try {
 
@@ -183,7 +186,8 @@ class SellerReply extends Component
 
             $new_variation_arr = [];
             foreach ($enquiry_data->value as $key => $variation) {
-                $variation['price'] = $this->set_enquiry_data_price[$key] ?? 0;
+                $variation['price'] = $this->set_enquiry_data_price[$key] != '' ? $this->set_enquiry_data_price[$key] : 0;
+                $variation['quantity'] = $this->set_enquiry_quantity[$key] != '' ? $this->set_enquiry_quantity[$key] : 1;
                 $new_variation_arr[] = $variation;
 
             }

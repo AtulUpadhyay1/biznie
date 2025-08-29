@@ -518,7 +518,10 @@
                                                                 @foreach ($variation['value'] as $value)
                                                                     <td>{{ $value['value'] }}</td>
                                                                 @endforeach
-                                                                <td>{{ $variation['quantity'] }}</td>
+                                                                <td>
+                                                                    {{-- {{ $variation['quantity'] }} -> {{ $set_enquiry_quantity[$loop->index] }} <br> --}}
+                                                                    <input type="number" class="form-control" wire:model.live="set_enquiry_quantity.{{$loop->index}}" min="1">
+                                                                </td>
                                                                 <td>
                                                                     <input type="number" class="form-control" wire:model="set_enquiry_data_price.{{$loop->index}}">
                                                                 </td>
@@ -526,6 +529,7 @@
                                                                     @php
                                                                         // $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0) + $all_charges;
                                                                         // $total_variation_price += $variation_price;
+                                                                        $variation['quantity'] = $set_enquiry_quantity[$loop->index] != '' ? $set_enquiry_quantity[$loop->index] : 0;
                                                                         $transport_price = $transport_price != '' ? $transport_price : 0;
                                                                         $variation_price = ($variation['price'] != "" ? $variation['price'] : 0) + ($set_enquiry_data_base_price != "" ? $set_enquiry_data_base_price : 0) + $all_charges;
                                                                         if($selected_seller_commodity_product->commission_type == 'exclude'){
