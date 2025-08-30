@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Mail\EnquiryMail;
 use Illuminate\Http\Request;
 use App\Models\ProductEnquiry;
 use App\Models\TransporterDetail;
 use App\Http\Controllers\Controller;
 use App\Models\SellerProductEnquiry;
+use Illuminate\Support\Facades\Mail;
 use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
 use App\Models\ProductEnquiryHistory;
@@ -104,8 +106,6 @@ class ProductEnquiryApiController extends Controller
             $data_info = [
                 'unique_id'     => $data->unique_id,
             ];
-            sendNotification(auth()->user(), $title, $body, $type, $data_info, true);
-            sendAdminNotification('New Product Enquiry', 'You got a new product enquiry.');
 
             $enquiry_data = ProductEnquiry::with('getBrand', 'getCommodityProduct')->findOrFail($data->id);
             // Enquiry Send to Seller
@@ -188,7 +188,15 @@ class ProductEnquiryApiController extends Controller
                         $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
                     }
                     $data->save();
+                }
 
+                $enquiry_data->status = count($seller_ids)!=0 ? 'Enquiry Sent To Seller' : 'No Seller Available';
+                $history = $enquiry_data->history;
+                $history[] = ['status' => 'Enquiry Sent To Seller', 'created_at' => Carbon::now()];
+                $enquiry_data->history = $history;
+                $enquiry_data->save();
+
+                foreach ($seller_ids as $user_id) {
                     $user = User::find($user_id);
 
                     $title = 'New Product Enquiry';
@@ -198,15 +206,14 @@ class ProductEnquiryApiController extends Controller
                         'unique_id'     => $data->unique_id,
                     ];
                     sendNotification($user, $title, $body, $type, $data_info, true);
-
+                    if($user && $user->email){
+                        Mail::to($user->email)->send(new EnquiryMail());
+                    }
                 }
-
-                $enquiry_data->status = count($seller_ids)!=0 ? 'Enquiry Sent To Seller' : 'No Seller Available';
-                $history = $enquiry_data->history;
-                $history[] = ['status' => 'Enquiry Sent To Seller', 'created_at' => Carbon::now()];
-                $enquiry_data->history = $history;
-                $enquiry_data->save();
             }
+
+            sendNotification(auth()->user(), $title, $body, $type, $data_info, true);
+            sendAdminNotification('New Product Enquiry', 'You got a new product enquiry.');
 
             // if(websiteSetupValue('enquiry_send_to_transporter') && websiteSetupValue('enquiry_send_to_transporter') == 1){
             //     $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $enquiry_data->commodity_product_id)->pluck('user_id')->toArray();

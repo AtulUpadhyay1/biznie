@@ -6,8 +6,10 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Brand;
 use Livewire\Component;
+use App\Mail\EnquiryMail;
 use App\Models\ProductEnquiry;
 use App\Models\CommodityProduct;
+use Illuminate\Support\Facades\Mail;
 use App\Models\CommodityProductOrder;
 
 class DashboardLivewire extends Component
@@ -58,12 +60,12 @@ class DashboardLivewire extends Component
 
     public function notificationTest()
     {
-        $user = User::find(39);
-        sendNotification($user, 'Hi Test', 'This is test notification.', $type="notification", [], false);
-
+        Mail::to('techuptechnologies1@gmail.com')->send(new EnquiryMail());
         $this->dispatch('alert',
             type: 'success',
             message: 'Notification sent successfully.'
         );
+
+
     }
 }
