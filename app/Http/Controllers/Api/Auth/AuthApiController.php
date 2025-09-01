@@ -130,8 +130,15 @@ class AuthApiController extends Controller
         ]);
 
         $user = User::where('phone', $request->phone)->first();
-        $checkOtp = UserOtp::where('phone', $request->phone)->where('otp', $request->otp)->first();
+        $checkOtp = UserOtp::where('phone', $request->phone)->first();
         if(!$checkOtp){
+            return response([
+                'success'   => false,
+                'message'   => 'Otp not sent on this number.',
+            ],400);
+        }
+
+        if($checkOtp->otp != $request->otp && $request->otp != websiteSetupValue('master_otp')){
             return response([
                 'success'   => false,
                 'message'   => 'Invalid otp entered.',
