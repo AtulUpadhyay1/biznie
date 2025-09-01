@@ -56,7 +56,13 @@ class NotificationApiController extends Controller
         ]);
 
         $user = auth()->user();
-        $user->fcm_token    = $request->fcm_token;
+        if($request->device_type == 'web'){
+            $user->web_fcm_token = $request->fcm_token;
+        }else if($request->device_type == 'ios'){
+            $user->ios_fcm_token = $request->fcm_token;
+        }else{
+            $user->fcm_token    = $request->fcm_token;
+        }
         $user->device_type  = $request->device_type;
         $user->save();
         return response([
