@@ -12,6 +12,7 @@ use App\Models\Notification;
 use App\Models\WebsiteSetup;
 use App\Models\PackagingType;
 use App\Firebase\FireBaseManager;
+use App\Services\Msg91OtpService;
 use Illuminate\Support\Facades\DB;
 use App\Models\CommodityProductVariation;
 use App\Models\CommodityProductStatePrice;
@@ -211,12 +212,12 @@ if(!function_exists('formatIndianNumber')){
 
 if(!function_exists('sendOtp')){
     function sendOtp($phone) {
-        $otp = 1234;
-        // $otp = rand(1111, 9999);
+        $otp = rand(1111, 9999);
 
-        // if(config('app.env') == 'production' && $request->phone != "8920976591"){
-        //     Msg91::sms()->to('91'.$request->phone)->flow('648d8690d6fc051b591f1ec3')->variable('user', $user->name)->variable('otp', $otp)->send();
-        // }
+        $msg91OtpService = Msg91OtpService::sendSms("91".$phone, [
+            'type' => 'Login',
+            'otp'  => $otp
+        ]);
 
         $data = UserOtp::where('phone', $phone)->first();
         if(!$data){
