@@ -214,10 +214,10 @@ if(!function_exists('sendOtp')){
     function sendOtp($phone) {
         $otp = rand(1111, 9999);
 
-        // $msg91OtpService = Msg91OtpService::sendSms("91".$phone, [
-        //     'type' => 'Login',
-        //     'otp'  => $otp
-        // ]);
+        $msg91OtpService = Msg91OtpService::sendSms("91".$phone, [
+            'type' => 'Login',
+            'otp'  => $otp
+        ]);
 
         $data = UserOtp::where('phone', $phone)->first();
         if(!$data){
