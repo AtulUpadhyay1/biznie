@@ -54,24 +54,12 @@
                                 </tbody>
                             </table>
                         </div>
-                        <h6 class="py-2 bg-orange-light">Primary Address</h6>
+                        <h6 class="py-2 bg-orange-light">Address</h6>
                         <div class="table-responsive mb-4">
                             <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
-                                        <td><b>Address Line 1:</b><span class="ms-2">Shri sai baba mandir, behind vinayaka hospital, bhelupur road</span></td>
-                                        <td><b>Address Line 2:</b><span class="ms-2">gurudham colony, varanasi, uttarpradesh</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Landmark:</b><span class="ms-2">Vinayaka Hospital</span></td>
-                                        <td><b>Pincode:</b><span class="ms-2">221010</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>City:</b><span class="ms-2">Varanasi</span></td>
-                                        <td><b>State:</b><span class="ms-2">Uttar Pradesh</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"><b>Country:</b><span class="ms-2">India</span></td>
+                                        <td><b>Address:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->company_address : '' }}</span></td>
                                     </tr>
                                 </tbody>
                             </table>

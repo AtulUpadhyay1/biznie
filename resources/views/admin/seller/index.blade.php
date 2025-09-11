@@ -136,23 +136,7 @@
                                             {{ lastActive($data->id) }}
                                         </td>
                                         <td>
-                                            <b>Address Line One:</b>
-                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address_line_one : '' }}</span>
-                                            <br>
-                                            <b>Address Line Two:</b>
-                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address_line_two : '' }}</span>
-                                            <br>
-                                            <b>Pincode:</b>
-                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->postal_code : '' }}</span>
-                                            <br>
-                                            <b>City:</b>
-                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '' }}</span>
-                                            <br>
-                                            <b>State:</b>
-                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->state : '' }}</span>
-                                            <br>
-                                            <b>Country</b>
-                                            <span>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->country : '' }}</span>
+                                            {{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address : '' }}
                                         </td>
                                         <td class="text-center">
                                             <a type="button" id="ActionBtn" data-bs-toggle="dropdown"

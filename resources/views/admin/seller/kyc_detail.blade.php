@@ -49,14 +49,6 @@
                                 <tbody>
                                     <tr>
                                         <td><b>Address:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address : '' }}</span></td>
-                                        <td><b>Pincode:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->postal_code : '' }}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>City:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '' }}</span></td>
-                                        <td><b>State:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->state : '' }}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"><b>Country:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->country : '' }}</span></td>
                                     </tr>
                                 </tbody>
                             </table>
