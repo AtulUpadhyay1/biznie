@@ -22,7 +22,7 @@ class ProfileApiController extends Controller
         $this->validate($request, [
             'name'      => 'required',
             'company_name' => 'required',
-            'email'     => 'nullable|unique:users,email,'.auth()->id(),
+            'email'     => 'required|unique:users,email,'.auth()->id(),
             'type'      => 'nullable|array'
         ]);
         $user           = auth()->user();
