@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'kyc_status',
+        'kyc_verified_at',
+        'kyc_description',
     ];
 
     /**

@@ -24,7 +24,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.customer-list') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -37,7 +37,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.seller.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -50,7 +50,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.transporter.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -63,7 +63,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.brand') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -76,7 +76,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.commodity-product-enquiry.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -89,7 +89,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -102,7 +102,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -115,7 +115,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -128,7 +128,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.commodity-product-order.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -141,7 +141,7 @@
             </a>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <a class="text-dark" href="{{ route('admin.commodity-product.index') }}" wire:navigate>
                 <div class="card border border-danger">
                     <div class="card-body p-3">
@@ -154,4 +154,132 @@
             </a>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12 col-xl-12 col-md-12 mb-3">
+            <div class="card border border-danger">
+                <div class="card-header bg-transparent border-danger d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        New Buyer Registrations
+                        <span class="badge bg-danger">{{ $customer_list->total() }}</span>
+                    </h5>
+                    <div class="d-flex align-items-center">
+                        <div class="custom-search-bar me-2">
+                            <div class="input-group">
+                                <span class="input-group-text"> <i data-feather="search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
+                            </div>
+                        </div>
+                        <a href="{{ route('admin.customer-list') }}" wire:navigate class="btn btn-sm btn-danger">View All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if ($customer_list->count() > 0)
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Detail</th>
+                                        <th scope="col">Contact Info</th>
+                                        <th scope="col">Registered At</th>
+                                        <th scope="col">KYC Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($customer_list as $item)
+                                        <tr>
+                                            <th scope="row">{{ $loop->iteration }}</th>
+                                            <td>
+                                                <b>Name: </b> {{ $item->name }} <br>
+                                                <b>Company Name: </b> {{ $item->getUserDetail ? $item->getUserDetail->company_name : '--' }} <br>
+                                                <b>Address :</b> {{ $item->getUserDetail ? $item->getUserDetail->company_address : '--' }}
+                                            </td>
+                                            <td>
+                                                <i class="bi bi-telephone"></i><span class="ms-2">{{ $item->phone }}</span>
+                                                <br>
+                                                <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $item->email }}</span>
+                                            </td>
+                                            <td>{{ dateTimeFormat($item->created_at) }}</td>
+                                            <td>
+                                                <select name="kyc_status" id="kycSelect{{ $item->id }}" class="form-select form-select-sm" wire:change="changeKycStatus({{ $item->id }}, $event.target.value)">
+                                                    <option value="pending" {{ $item->kyc_status == 'pending' ? 'selected' : '' }} disabled>Pending</option>
+                                                    <option value="approved" {{ $item->kyc_status == 'approved' ? 'selected' : '' }}>Approved</option>
+                                                    <option value="rejected" {{ $item->kyc_status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                                </select>
+
+                                                @if($item->kyc_status == 'rejected' && $item->kyc_description)
+                                                    <small class="text-muted d-block mt-1">
+                                                        <strong>Reason:</strong> {{ Str::limit($item->kyc_description, 50) }}
+                                                    </small>
+                                                @endif
+
+                                                <!-- Rejection Modal -->
+                                                <div class="modal fade" id="rejectionModal{{ $item->id }}" tabindex="-1" aria-labelledby="rejectionModalLabel{{ $item->id }}" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="rejectionModalLabel{{ $item->id }}">Rejection Reason</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="cancelRejection()"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea class="form-control" rows="4" placeholder="Enter rejection reason..." wire:model="rejectionReasons.{{ $item->id }}"></textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" wire:click="cancelRejection()">Cancel</button>
+                                                                <button type="button" class="btn btn-danger" wire:click="submitRejection({{ $item->id }})" data-bs-dismiss="modal">Submit</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3">
+                            {{ $customer_list->links() }}
+                        </div>
+                    @else
+                        <p class="text-center">No new buyers found.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+document.addEventListener('livewire:initialized', () => {
+    // Listen for the showRejectionModal event
+    Livewire.on('showRejectionModal', (data) => {
+        const modal = new bootstrap.Modal(document.getElementById('rejectionModal' + data.userId));
+        modal.show();
+    });
+
+    // Listen for resetSelectValue event
+    Livewire.on('resetSelectValue', () => {
+        // Reset all select dropdowns to their original values
+        document.querySelectorAll('select[name="kyc_status"]').forEach(select => {
+            const originalValue = select.querySelector('option[selected]')?.value || 'pending';
+            select.value = originalValue;
+        });
+    });
+
+    // Handle modal close events to reset select dropdown
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('hidden.bs.modal', function () {
+            // Get the user ID from modal ID
+            const modalId = this.id;
+            const userId = modalId.replace('rejectionModal', '');
+            const selectElement = document.getElementById('kycSelect' + userId);
+
+            if (selectElement) {
+                // Reset to original value
+                const originalValue = selectElement.querySelector('option[selected]')?.value || 'pending';
+                selectElement.value = originalValue;
+            }
+        });
+    });
+});
+</script>
