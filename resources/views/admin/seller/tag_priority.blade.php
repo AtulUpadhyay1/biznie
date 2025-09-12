@@ -22,14 +22,18 @@
                             <div class="col-md-6">
                                 <label class="form-label">Tags</label>
                                 <div>
-                                    @foreach ($seller_tag as $tag)
+                                    @forelse ($seller_tag as $tag)
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" name="tag" class="form-check-input" value="{{$tag->id}}" wire:model="tag" id="tag_{{$tag->id}}">
                                             <label class="form-check-label" for="tag_{{$tag->id}}">
                                                 {{$tag->name}}
                                             </label>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <div class="alert alert-danger p-2" role="alert">
+                                            No tag added yet! Please <a href="{{ route('admin.seller-tag.create') }}" wire:navigate class="alert-link">click here</a> to add tag.
+                                        </div>
+                                    @endforelse
                                 </div>
                             </div>
                             <div class="col-md-6">

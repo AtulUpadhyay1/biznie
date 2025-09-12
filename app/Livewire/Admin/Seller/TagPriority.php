@@ -18,7 +18,7 @@ class TagPriority extends Component
 
     public function render()
     {
-        $seller_tag = SellerTag::latest()->get();
+        $seller_tag = SellerTag::where('status', 1)->latest()->get();
         return view('admin.seller.tag_priority', compact('seller_tag'), ['page_title' => 'Tag & Priority']);
     }
 

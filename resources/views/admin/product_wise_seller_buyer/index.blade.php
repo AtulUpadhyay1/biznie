@@ -54,7 +54,13 @@
                                                 <h2 class="accordion-header" id="seller_heading_{{ $seller_data->id }}">
 
                                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#seller_collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="seller_collapse_{{ $seller_data->id }}">
-                                                    <b>{{ $seller_data->getUser->getBusiness->name}} <small>({{$seller_data->getUser->name}} - {{$seller_data->getUser->phone}})</small></b>, &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }}, &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }}, &nbsp;<b>Base Price</b> : {{ $seller_data->base_price ?? 0 }}
+                                                    <b>{{ $seller_data->getUser->getBusiness->name}} <small>({{$seller_data->getUser->name}} - {{$seller_data->getUser->phone}}) ({{$seller_data->getUser?->getUserDetail?->priority ?? 0}}⭐)</small></b>,
+                                                    &nbsp;<b>Brand</b> : {{ $seller_data->getBrand->name }},
+                                                    &nbsp;<b>State</b> : {{ $seller_data->getStatePrice[0]->state }},
+                                                    &nbsp;<b>City</b> : {{ $seller_data->getStatePrice[0]->city }},
+                                                    &nbsp;<b>Base Price</b> : {{ $seller_data->base_price ?? 0 }},
+                                                    @if($seller_data->price_validity) &nbsp;<b>Price Validity</b> : {{ dateTimeFormat($seller_data->price_validity) }} @endif
+                                                    @if($seller_data->quantity) &nbsp;<b>Quantity</b> : {{ $seller_data->quantity ?? 0 }} @endif
                                                     </button>
                                                 </h2>
                                                 <div id="seller_collapse_{{ $seller_data->id }}" class="accordion-collapse collapse" aria-labelledby="seller_heading_{{ $seller_data->id }}" data-bs-parent="#state_price_accordion">

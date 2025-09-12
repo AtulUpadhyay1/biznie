@@ -40,7 +40,7 @@ class Index extends Component
         if($this->brand_id){
             $seller_list = $seller_list->where('brand_id', $this->brand_id);
         }
-        $this->seller_list = $seller_list->with('getStatePrice', 'getBrand', 'getUser', 'getUser.getBusiness')->get();
+        $this->seller_list = $seller_list->with('getStatePrice', 'getBrand', 'getUser', 'getUser.getBusiness', 'getUser.getUserDetail')->get();
 
         $customer_ids = ProductEnquiry::where('commodity_product_id', $this->product_id);
         if($this->brand_id){
