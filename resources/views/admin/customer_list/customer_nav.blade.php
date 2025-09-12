@@ -13,6 +13,7 @@
             <div class="text-center">
                 <img src="{{asset('admin_css/assets/images/avatar.png')}}" alt="" class="w-25 h-25">
                 <h5 class="text-dark mt-3"> {{ $data->name }} </h5>
+                <small>( {{ $data->getUserDetail ? $data->getUserDetail->priority : 0 }} ⭐ )</small>
             </div>
         </div>
         <div class="card-body">
