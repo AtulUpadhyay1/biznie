@@ -28,7 +28,8 @@
                                     <th>State</th>
                                     <th>City</th>
                                     <th>Base Price</th>
-                                    <th>Updated At</th>
+                                    <th>Price Validity</th>
+                                    <th>Quantity</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -39,16 +40,21 @@
                                         <td>{{ $data->getBrand ? $data->getBrand->name : '--' }} </td>
                                         <td>{{ isset($data->getStatePrice[0]) ? $data->getStatePrice[0]->state : '--' }}</td>
                                         <td>{{ isset($data->getStatePrice[0]) ? $data->getStatePrice[0]->city : '--' }}</td>
+                                        <td> {{ formatIndianNumber($data->base_price) }}</td>
                                         <td>
-                                            {{ formatIndianNumber($data->base_price) }}
                                             @if ($data->price_validity)
-                                                <br><small class="text-danger" style="font-size: x-small;">
-                                                    Price Validity <br>
-                                                    {{ $data->price_validity }}
+                                                {{ $data->price_validity }}
+                                                <br><small class="text-danger">
+                                                    @if(\Carbon\Carbon::parse($data->price_validity)->isPast())
+                                                        Expired
+                                                    @else
+                                                        Expire In
+                                                    @endif
+                                                    {{ \Carbon\Carbon::parse($data->price_validity)->diffForHumans() }}
                                                 </small>
                                             @endif
                                         </td>
-                                        <td>{{ $data->updated_at }}</td>
+                                        <td>{{ $data->quantity }}</td>
                                         <td>
                                             <a type="button" id="ActionBtn_{{$data->id}}" data-bs-toggle="dropdown" role="button"
                                                 aria-haspopup="true" aria-expanded="false">

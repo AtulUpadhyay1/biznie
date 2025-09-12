@@ -32,6 +32,12 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
+                                <label for="quantity" class="form-label">Quantity</label>
+                                <input type="number" class="form-control @error('quantity') is-invalid @enderror" id="quantity" placeholder="Enter Quantity" wire:model="quantity">
+                                @error('quantity') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
                                 <label for="loading_charge" class="form-label">Loading Charge</label>
                                 <input type="number" class="form-control @error('loading_charge') is-invalid @enderror" id="loading_charge" placeholder="Enter Loading Charge" wire:model="loading_charge">
                                 @error('loading_charge') <small class="text-danger">{{ $message }}</small>@enderror

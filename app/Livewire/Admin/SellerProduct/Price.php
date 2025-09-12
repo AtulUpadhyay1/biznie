@@ -10,7 +10,7 @@ use App\Models\SellerCommodityProductHistory;
 class Price extends Component
 {
     public $user_id, $product_id;
-    public $price_validity, $base_price, $loading_charge, $insurance_charge, $quality_charge, $gst, $tcs;
+    public $price_validity, $quantity, $base_price, $loading_charge, $insurance_charge, $quality_charge, $gst, $tcs;
 
     public $charge_name=[], $charge_price=[], $operator=[];
     public $charge = 0, $charge_inputs = [];
@@ -25,7 +25,7 @@ class Price extends Component
 
         $date = Carbon::parse($data->price_validity);
         $this->price_validity   = $date->format('Y-m-d\TH:i');
-
+        $this->quantity         = $data->quantity;
         $this->loading_charge   = $data->loading_charge;
         $this->insurance_charge = $data->insurance_charge;
         $this->quality_charge   = $data->quality_charge;
@@ -65,6 +65,7 @@ class Price extends Component
             $data = SellerCommodityProduct::findOrFail($this->product_id);
             $data->base_price       = $this->base_price;
             $data->price_validity   = Carbon::parse($this->price_validity)->format('Y-m-d h:i A');
+            $data->quantity         = $this->quantity;
             $data->loading_charge   = $this->loading_charge;
             $data->insurance_charge = $this->insurance_charge;
             $data->quality_charge   = $this->quality_charge;
