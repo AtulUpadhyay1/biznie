@@ -22,6 +22,7 @@ class LoginResource extends JsonResource
             'email' => $this->email,
             'company_name' => null,
             'kyc_status' => null,
+            'priority' => $this->getUserDetail ? $this->getUserDetail->priority : 0
         ];
         if($this->type == 'seller'){
             if($this->getBusiness){
