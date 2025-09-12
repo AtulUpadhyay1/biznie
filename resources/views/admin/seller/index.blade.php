@@ -93,6 +93,8 @@
                                             <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>
                                             <br>
                                             <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $data->email }}</span>
+                                            <br>
+                                            {{ $data->getUserDetail->priority ?? 0 }}⭐
                                         </td>
                                         <td>
                                             <b>Business Name:</b>

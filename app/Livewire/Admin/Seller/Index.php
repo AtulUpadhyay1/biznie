@@ -20,7 +20,7 @@ class Index extends Component
     {
         $list = User::search($this->search)
             ->where('type', 'seller')
-            ->with('getBusiness', 'getSellerKycDetail', 'getSellerProductEnquiries', 'getSellerOrders')
+            ->with('getBusiness', 'getSellerKycDetail', 'getSellerProductEnquiries', 'getSellerOrders', 'getUserDetail')
             ->latest()
             ->simplePaginate(getPaginate());
         return view('admin.seller.index', compact('list'), ['page_title' => 'Seller List']);
