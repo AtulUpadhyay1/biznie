@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Seller\Authenticated;
 
+use Carbon\Carbon;
 use App\Models\Brand;
 use App\Models\HomeProduct;
 use Illuminate\Support\Str;
@@ -364,7 +365,8 @@ class CommodityProductApiController extends Controller
             $data->quality_charge   = $request->quality_charge;
             $data->gst              = $request->gst;
             $data->tcs              = $request->tcs;
-            $data->price_validity   = $request->price_validity;
+            $data->quantity         = $request->quantity;
+            $data->price_validity   = Carbon::parse($request->price_validity)->format('Y-m-d h:i A');
             // $data->charge_name      = $request->charge_name ?? $data->charge_name;
             // $data->charge_price     = $request->charge_price ?? $data->charge_price;
             // $data->operator         = $request->operator ?? $data->operator;

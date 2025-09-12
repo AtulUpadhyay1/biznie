@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Seller;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,7 +25,8 @@ class MyCommodityProductPriceResource extends JsonResource
             'quality_charge'    => $this->quality_charge,
             'gst'               => $this->gst,
             'tcs'               => $this->tcs,
-            'price_validity'    => $this->price_validity,
+            'price_validity'    => $this->price_validity ? Carbon::parse($this->price_validity)->format('Y-m-d\TH:i') : null,
+            'quantity'          => $this->quantity,
             'updated_at'        => dateTimeFormat($this->updated_at),
             'charges'           => [],
         ];
