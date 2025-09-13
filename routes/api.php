@@ -35,6 +35,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     Route::post('otp-login', 'Auth\AuthApiController@otpLogin');
     Route::post('verify-otp', 'Auth\AuthApiController@verifyOtp');
 
+    Route::post('email-otp', 'Auth\AuthApiController@emailOtp');
+    Route::post('verify-email-otp', 'Auth\AuthApiController@verifyEmailOtp');
+
     // Category
     Route::get('category', 'CategoryApiController@category');
 

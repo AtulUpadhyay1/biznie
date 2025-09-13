@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use Mail;
 use App\Models\User;
+use App\Mail\EmailOtp;
 use App\Models\UserOtp;
 use App\Models\TempUser;
 use Illuminate\Http\Request;
@@ -234,5 +236,100 @@ class AuthApiController extends Controller
                 'kyc_details'       => $user->getSellerKycDetail ? new KycDetailResource($user->getSellerKycDetail) : null,
             ],
         ],200);
+    }
+
+    public function emailOtp(Request $request)
+    {
+        $this->validate($request, [
+            'email'     => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if(!$user){
+            return response([
+                'success'   => false,
+                'message'   => 'Email not found.',
+            ],400);
+        }
+
+        if($user && $user->status == 'in_active'){
+            return response([
+                'success'   => false,
+                'message'   => 'Your account has been deactivated.',
+            ],400);
+        }
+
+        $data = UserOtp::where('email', $request->email)->first();
+        if(!$data){
+            $data = new UserOtp;
+        }
+        $otp = rand(1111, 9999);
+        $data->otp = $otp;
+        $data->email = $request->email;
+        $data->save();
+
+        Mail::to($request->email)->send(new EmailOtp(
+            otp: $otp,
+            userName: $user->name,
+            userEmail: $user->email,
+            expiryMinutes: 15
+        ));
+
+        return response([
+            'success'   => true,
+            'message'   => 'Otp send successfully.'
+        ],200);
+    }
+
+    public function verifyEmailOtp(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'otp' => 'required|numeric',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        $checkOtp = UserOtp::where('email', $request->email)->first();
+        if(!$checkOtp){
+            return response([
+                'success'   => false,
+                'message'   => 'Otp not sent on this email.',
+            ],400);
+        }
+
+        if($checkOtp->otp != $request->otp && $request->otp != websiteSetupValue('master_otp')){
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid otp entered.',
+            ],400);
+        }
+
+        if($user){
+
+            if($user->status != 'active'){
+                return response([
+                    'success'   => false,
+                    'message'=> 'Your account has been deactivated.',
+                ],400);
+            }
+
+            $checkOtp->delete();
+
+            Auth::login($user);
+            return response([
+                'success'   => true,
+                'token'     => $user->createToken('auth_token')->plainTextToken,
+                'message'   => 'You are successfully login.',
+                'data'      => new LoginResource(auth()->user()),
+            ],200);
+
+        }else{
+
+            return response([
+                'success'   => false,
+                'message'   => 'Email not found.',
+            ],400);
+        }
     }
 }
