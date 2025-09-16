@@ -574,4 +574,66 @@ class CommodityProductApiController extends Controller
 
         }
     }
+
+    public function getQuality($id)
+    {
+        try {
+            $data = SellerCommodityProduct::with('getCommodityProduct')->find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+
+            return response([
+                'success'                   => true,
+                'quality'                   => $data->getCommodityProduct->quality,
+                'quality_price'             => $data->getCommodityProduct->quality_price,
+                'selected_quality'          => $data->quality,
+                'selected_quality_price'    => $data->quality_price,
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
+
+    public function updateQuality(Request $request, $id)
+    {
+        $this->validate($request, [
+            'quality'       => 'required|array',
+            'quality_price' => 'required|array',
+        ]);
+        try {
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+            $data->quality = $request->quality;
+            $data->quality_price = $request->quality_price;
+            $data->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Product quality updated successfully.',
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
 }

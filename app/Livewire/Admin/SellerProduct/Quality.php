@@ -78,8 +78,8 @@ class Quality extends Component
             );
             return;
         }
-        $product->quality = $this->selected_quality;
-        $product->quality_price = $filteredPrices;
+        $product->quality = $this->selected_quality ?? [];
+        $product->quality_price = $filteredPrices ?? [];
         $product->save();
         session()->flash('message', 'Product quality updated successfully!');
         return redirect()->route('admin.seller-product.index', $this->user_id);
