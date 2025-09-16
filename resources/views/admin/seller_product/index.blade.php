@@ -64,6 +64,7 @@
                                                 <a href="{{route('admin.seller-product.show', [$data->user_id, $data->id])}}" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
                                                 <a href="{{route('admin.seller-product.edit', [$data->user_id, $data->id])}}" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
                                                 <a href="{{route('admin.seller-product.variation', [$data->user_id, $data->id])}}" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-card-checklist icon-sm me-2"></i><span>Variant</span></a>
+                                                <a href="{{route('admin.seller-product.quality', [$data->user_id, $data->id])}}" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-cart-check icon-sm me-2"></i><span>Quality</span></a>
                                                 <a href="{{route('admin.seller-product.price', [$data->user_id, $data->id])}}" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-currency-rupee icon-sm me-2"></i><span>Update Price</span></a>
                                                 <a href="{{route('admin.seller-product.stock', [$data->user_id, $data->id])}}" class="dropdown-item d-flex align-items-center" wire:navigate><i class="bi bi-database icon-sm me-2"></i><span>Update Stock</span></a>
 
