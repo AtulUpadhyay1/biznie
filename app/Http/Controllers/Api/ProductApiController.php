@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Models\HomeProduct;
 use Illuminate\Http\Request;
 use App\Models\BookmarkProduct;
+use App\Models\ProductCategory;
+use App\Models\BusinessCategory;
 use App\Models\CommodityProduct;
 use App\Http\Controllers\Controller;
 use App\Models\SellerCommodityProduct;
@@ -171,6 +173,70 @@ class ProductApiController extends Controller
                 'message'   => 'Something went wrong. Please try again.',
                 'error'     => $th->getMessage()
             ],500);
+        }
+    }
+
+    public function businessCategoryProductList(Request $request)
+    {
+        $request->validate([
+            'business_category_id' => 'nullable|exists:business_categories,id'
+        ]);
+        try {
+            $business_categories = BusinessCategory::active()
+                ->where('featured', 1)
+                ->when($request->business_category_id, function($q) use ($request) {
+                    $q->where('id', $request->business_category_id);
+                })
+                ->select('id', 'name')
+                ->get();
+
+            $response = [];
+
+            foreach ($business_categories as $category) {
+                $product_categories = ProductCategory::active()
+                    ->where('business_category_id', $category->id)
+                    ->pluck('id')
+                    ->toArray();
+
+                $q = CommodityProduct::active()
+                    ->whereIn('category_id', $product_categories)
+                    ->select('id', 'name', 'thumbnail')
+                    ->latest();
+
+                if ($request->search) {
+                    $searchTerm = $request->search;
+                    $q->where('name', 'like', '%' . $searchTerm . '%');
+                }
+
+                if ($request->business_category_id) {
+                    $products = $q->get();
+                } else {
+                    $products = $q->take(8)->get();
+                }
+
+                foreach ($products as $product) {
+                    $product->thumbnail = imageUrl($product->thumbnail);
+                }
+
+                $response[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'products' => $products
+                ];
+            }
+
+            return response([
+                'success'   => true,
+                'message'   => 'Business category product list retrieved successfully.',
+                'list'      => $response
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again.',
+                'error' => $th->getMessage()
+            ], 500);
         }
     }
 }

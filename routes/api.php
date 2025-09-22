@@ -70,6 +70,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     Route::get('all-seller-commodity-product-list', 'ProductApiController@allSellerCommodityProductList');
     Route::get('seller-list-by-commodity-product/{commodity_product_id}', 'ProductApiController@sellerListByCommodityProduct');
 
+    // Business categories wise product list
+    Route::get('business-category-product-list', 'ProductApiController@businessCategoryProductList');
+
     // General Enquiry
     Route::post('general-enquiry', 'GeneralEnquiryApiController@store');
 
