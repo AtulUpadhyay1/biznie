@@ -36,6 +36,7 @@ class MyCommodityProductResource extends JsonResource
             'packaging'         => [],
             'thumbnail'         => imageUrl($this->thumbnail),
             'images'            => [],
+            'commodity_product_status'    => $this->getCommodityProduct?->status,
         ];
 
         if($this->getBrand){
