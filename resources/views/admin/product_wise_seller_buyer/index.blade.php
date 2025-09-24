@@ -108,6 +108,20 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="quality" wire:model="quality" wire:change="search()">
+                                    <option value="">Choose Quality...</option>
+                                    @foreach ($quality_list as $quality)
+                                        <option value="{{ $quality }}">{{ $quality }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="quality">
+                                    <i class="bi bi-box-seam me-1"></i>Quality
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -269,6 +283,11 @@
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
+                                                        <hr>
+                                                        <h5>Quality</h5>
+                                                        @foreach ($seller_data->quality as $key => $quality)
+                                                            <span class="badge bg-info text-dark rounded-pill me-1 mb-1">{{ $quality }} - ₹ {{ $seller_data->quality_price[$key] ?? 0 }}</span>
+                                                        @endforeach
                                                     </div>
                                                 </div>
                                             </div>

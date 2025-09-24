@@ -15,19 +15,20 @@ class Index extends Component
 {
     public $page_title = 'Product Wise Seller & Buyer';
 
-    public $product_id, $brand_id, $city, $order_by, $price_validity;
-    public $brand_list, $seller_list, $customer_list;
+    public $product_id, $brand_id, $city, $order_by, $price_validity, $quality;
+    public $brand_list, $seller_list, $customer_list, $quality_list = [];
     protected $queryString = [
         'product_id'    => ['except' => ''],
         'brand_id'      => ['except' => ''],
         'city'          => ['except' => ''],
         'order_by'      => ['except' => ''],
         'price_validity' => ['except' => ''],
+        'quality'       => ['except' => ''],
     ];
 
     public function mount()
     {
-        if ($this->product_id || $this->brand_id || $this->city || $this->order_by || $this->price_validity){
+        if ($this->product_id || $this->brand_id || $this->city || $this->order_by || $this->price_validity || $this->quality) {
             $this->search();
         }
     }
@@ -41,6 +42,9 @@ class Index extends Component
 
     public function search()
     {
+        $commodity_product = CommodityProduct::where('id', $this->product_id)->first();
+        $this->quality_list = $commodity_product ? $commodity_product->quality : [];
+
         $seller_list = SellerCommodityProduct::where('commodity_product_id', $this->product_id);
         $brand_ids = $seller_list->pluck('brand_id')->unique()->toArray();
         if($this->brand_id){
@@ -70,6 +74,10 @@ class Index extends Component
             $seller_list = $seller_list->where('price_validity', '>=', now());
         } elseif($this->price_validity == 'expired'){
             $seller_list = $seller_list->where('price_validity', '<', now());
+        }
+
+        if($this->quality){
+            $seller_list = $seller_list->whereJsonContains('quality', $this->quality);
         }
 
 

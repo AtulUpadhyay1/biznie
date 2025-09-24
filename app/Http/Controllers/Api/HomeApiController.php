@@ -11,6 +11,8 @@ use App\Models\MarketNews;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use App\Models\BusinessCategory;
+use App\Models\CommodityProduct;
 use App\Models\IngotPriceLocation;
 use App\Http\Controllers\Controller;
 use App\Models\SellerCommodityProduct;
@@ -51,6 +53,30 @@ class HomeApiController extends Controller
                 $brand_data->banner = asset('storage/'.$brand_data->banner);
             }
 
+            $business_categories = BusinessCategory::active()
+                ->where('featured', 1)
+                ->when($request->business_category_id, function($q) use ($request) {
+                    $q->where('id', $request->business_category_id);
+                })
+                ->select('id', 'name', 'thumbnail', 'banner')
+                ->get();
+
+            foreach ($business_categories as $key => $business_categories_data) {
+                $business_categories[$key]->thumbnail = imageUrl($business_categories_data->thumbnail);
+                $business_categories[$key]->banner = imageUrl($business_categories_data->banner);
+
+                $product_categories = ProductCategory::active()
+                    ->where('business_category_id', $business_categories_data->id)
+                    ->pluck('id')
+                    ->toArray();
+
+                $commodity_product_count = CommodityProduct::active()
+                    ->whereIn('category_id', $product_categories)
+                    ->count();
+
+                $business_categories[$key]->total_products = $commodity_product_count;
+            }
+
             return response([
                 'success'           => true,
                 'banners'           => $banner_list,
@@ -73,7 +99,8 @@ class HomeApiController extends Controller
                     'twitter'       => websiteSetupValue('twitter'),
                     'instagram'     => websiteSetupValue('instagram'),
                     'youtube'       => websiteSetupValue('youtube'),
-                ]
+                ],
+                'business_categories'=> $business_categories,
             ],200);
 
         } catch (\Throwable $th) {
