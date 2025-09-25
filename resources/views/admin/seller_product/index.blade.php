@@ -30,6 +30,7 @@
                                     <th>Base Price</th>
                                     <th>Price Validity</th>
                                     <th>Quantity</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -55,6 +56,11 @@
                                             @endif
                                         </td>
                                         <td>{{ $data->quantity }}</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" {{ $data->status == 'active' ? 'checked' : '' }}  wire:change="updateStatus({{ $data->id }})">
+                                            </div>
+                                        </td>
                                         <td>
                                             <a type="button" id="ActionBtn_{{$data->id}}" data-bs-toggle="dropdown" role="button"
                                                 aria-haspopup="true" aria-expanded="false">
