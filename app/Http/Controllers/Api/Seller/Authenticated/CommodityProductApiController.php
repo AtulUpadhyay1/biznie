@@ -636,4 +636,32 @@ class CommodityProductApiController extends Controller
 
         }
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+            $data->status = $data->status == 'active' ? 'inactive' : 'active';
+            $data->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Product status updated successfully.',
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
 }
