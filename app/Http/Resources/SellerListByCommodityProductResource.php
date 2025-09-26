@@ -31,6 +31,7 @@ class SellerListByCommodityProductResource extends JsonResource
             'updated_at'            => dateTimeFormat($this->updated_at),
             'ex_price'              => 0,
             'default_variation'     => null,
+            'unit_name'             => $this->getCommodityProduct?->getUnit?->short_name,
             'quality'               => [],
             'quality_price'         => [],
             'price_history'         => [],
