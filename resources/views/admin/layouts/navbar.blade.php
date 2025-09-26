@@ -106,6 +106,11 @@
                     </div>
                 </div>
             </li> --}}
+            <li class="nav-item me-3">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#productAddProcess">
+                   Product Add Process
+                </button>
+            </li>
             <livewire:Admin.Notification.NavbarNotification />
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
@@ -158,3 +163,23 @@
         </ul>
     </div>
 </nav>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="productAddProcess" tabindex="-1" aria-labelledby="productAddProcessLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="productAddProcessLabel">
+                    Product Add Process
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {!! websiteSetupValue('product_add_process') !!}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
