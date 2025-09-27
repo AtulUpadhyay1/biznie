@@ -14,13 +14,22 @@ class ProductEnquiryApiController extends Controller
 {
     public function index(Request $request)
     {
-        $list = SellerProductEnquiry::where('user_id', auth()->id())->latest()->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getSellerCommodityProduct')->paginate(getPaginate());
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+
+        $list = SellerProductEnquiry::where('user_id', $user_id)
+            ->latest()
+            ->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getSellerCommodityProduct')
+            ->paginate(getPaginate());
         return ProductEnquiryResource::collection($list);
     }
 
     public function show($id)
     {
-        $data = SellerProductEnquiry::where('user_id', auth()->id())->with('getBrand', 'getSellerCommodityProduct')->find($id);
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+
+        $data = SellerProductEnquiry::where('user_id', $user_id)
+            ->with('getBrand', 'getSellerCommodityProduct')
+            ->find($id);
         if(!$data){
             return response([
                 'success'   => false,
@@ -28,7 +37,7 @@ class ProductEnquiryApiController extends Controller
             ],400);
         }
 
-        $bidding_list = SellerProductEnquiry::where('user_id', '!=', auth()->id())
+        $bidding_list = SellerProductEnquiry::where('user_id', '!=', $user_id)
             ->where('product_enquiries_id', $data->product_enquiries_id)
             ->where('status', '!=', 'pending')
             ->orderBy('base_price', 'asc')
@@ -49,7 +58,11 @@ class ProductEnquiryApiController extends Controller
 
     public function biddingList($id)
     {
-        $data = SellerProductEnquiry::where('user_id', auth()->id())->with('getBrand', 'getSellerCommodityProduct')->find($id);
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+
+        $data = SellerProductEnquiry::where('user_id', $user_id)
+            ->with('getBrand', 'getSellerCommodityProduct')
+            ->find($id);
         if(!$data){
             return response([
                 'success'   => false,
@@ -63,8 +76,8 @@ class ProductEnquiryApiController extends Controller
             ->with(['getUser:id,name,phone'])
             ->select(['base_price', 'user_id'])
             ->get()
-            ->map(function ($item) {
-                $item->is_my_price = $item->user_id == auth()->id();
+            ->map(function ($item) use ($user_id) {
+                $item->is_my_price = $item->user_id == $user_id;
                 unset($item->user_id);
                 return $item;
             });

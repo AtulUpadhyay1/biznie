@@ -96,8 +96,8 @@ class CommodityProductApiController extends Controller
     public function myCommodityProductList()
     {
         try {
-
-            $list = SellerCommodityProduct::where('user_id', auth()->id())
+            $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+            $list = SellerCommodityProduct::where('user_id', $user_id)
                 ->with('getBrand', 'getCommodityProduct')
                 ->orderBy('name', 'asc')
                 ->paginate(getPaginate());
@@ -159,8 +159,10 @@ class CommodityProductApiController extends Controller
                 'state'              => $commodity_product_state->state,
             ];
 
+            $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+
             $data = new SellerCommodityProduct;
-            $data->user_id              = auth()->id();
+            $data->user_id              = $user_id;
             $data->commodity_product_id = $commodity_product->id;
             $data->name                 = isset($request->name) && $request->name ? $request->name : $commodity_product->name;
             $data->slug                 = isset($request->name) && $request->name ? Str::slug($request->name) : $commodity_product->slug;
@@ -205,7 +207,7 @@ class CommodityProductApiController extends Controller
 
             foreach ($state_prices as $state_price) {
                 $data_price                                     = new SellerCommodityProductStatePrice;
-                $data_price->user_id                            = auth()->id();
+                $data_price->user_id                            = $user_id;
                 $data_price->commodity_product_id               = $state_price->commodity_product_id;
                 $data_price->commodity_product_variation_id     = $state_price->commodity_product_variation_id;
                 $data_price->commodity_product_state_id         = $state_price->commodity_product_state_id;
@@ -221,7 +223,7 @@ class CommodityProductApiController extends Controller
             }
 
             $data_history               = new SellerCommodityProductHistory;
-            $data_history->user_id      = auth()->id();
+            $data_history->user_id      = $user_id;
             $data_history->commodity_product_id = $commodity_product->id;
             $data_history->seller_commodity_product_id = $data->id;
             $data_history->seller_commodity_product_detail = $data;
@@ -230,13 +232,13 @@ class CommodityProductApiController extends Controller
             foreach($data->loading_address as $loading_address){
                 $home_product = HomeProduct::where('commodity_product_id', $commodity_product->id)->where('brand_id', $request->brand_id)->where('city', $loading_address['city'])->first();
                 if($home_product && $home_product->base_price > $data->base_price){
-                    $home_product->user_id      = auth()->id();
+                    $home_product->user_id      = $user_id;
                     $home_product->seller_commodity_product_id = $data->id;
                     $home_product->base_price   = $data->base_price;
                     $home_product->save();
                 }else{
                     $home_product = new HomeProduct;
-                    $home_product->user_id      = auth()->id();
+                    $home_product->user_id      = $user_id;
                     $home_product->commodity_product_id = $commodity_product->id;
                     $home_product->seller_commodity_product_id = $data->id;
                     $home_product->brand_id     = $request->brand_id;
@@ -352,6 +354,8 @@ class CommodityProductApiController extends Controller
     public function updatePrice(Request $request, $id)
     {
         try {
+            $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+
             $data = SellerCommodityProduct::find($id);
             if(!$data){
                 return response([
@@ -373,7 +377,7 @@ class CommodityProductApiController extends Controller
             $data->save();
 
             $data_history               = new SellerCommodityProductHistory;
-            $data_history->user_id      = auth()->id();
+            $data_history->user_id      = $user_id;
             $data_history->commodity_product_id = $data->commodity_product_id;
             $data_history->seller_commodity_product_id = $data->id;
             $data_history->seller_commodity_product_detail = $data;
@@ -384,14 +388,14 @@ class CommodityProductApiController extends Controller
                 if($home_product){
                     $base_price = $home_product->base_price ?? 0;
                     if($base_price > 0 && $base_price > $data->base_price){
-                        $home_product->user_id      = auth()->id();
+                        $home_product->user_id      = $user_id;
                         $home_product->seller_commodity_product_id = $data->id;
                         $home_product->base_price   = $data->base_price ?? 0;
                     }
                     $home_product->save();
                 }else{
                     $home_product = new HomeProduct;
-                    $home_product->user_id      = auth()->id();
+                    $home_product->user_id      = $user_id;
                     $home_product->commodity_product_id = $data->commodity_product_id;
                     $home_product->seller_commodity_product_id = $data->id;
                     $home_product->brand_id     = $data->brand_id[0];
@@ -449,6 +453,9 @@ class CommodityProductApiController extends Controller
             'price'         => 'required|array',
             'is_selected'   => 'required|array',
         ]);
+
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+
         try {
             foreach ($request->id as $key => $id) {
                 $data = SellerCommodityProductStatePrice::find($id);
@@ -458,7 +465,7 @@ class CommodityProductApiController extends Controller
             }
 
             $data_history               = new SellerCommodityProductHistory;
-            $data_history->user_id      = auth()->id();
+            $data_history->user_id      = $user_id;
             $data_history->commodity_product_id = $data->commodity_product_id;
             $data_history->seller_commodity_product_id = $data->id;
             $data_history->seller_commodity_product_detail = $data;
@@ -512,6 +519,7 @@ class CommodityProductApiController extends Controller
             'id'            => 'required|array',
             'stock'         => 'required|array',
         ]);
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
         try {
             foreach ($request->id as $key => $id) {
                 $data = SellerCommodityProductStatePrice::find($id);
@@ -520,7 +528,7 @@ class CommodityProductApiController extends Controller
             }
 
             $data_history               = new SellerCommodityProductHistory;
-            $data_history->user_id      = auth()->id();
+            $data_history->user_id      = $user_id;
             $data_history->commodity_product_id = $data->commodity_product_id;
             $data_history->seller_commodity_product_id = $data->id;
             $data_history->seller_commodity_product_detail = $data;
