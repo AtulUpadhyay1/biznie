@@ -22,7 +22,9 @@ class LoginResource extends JsonResource
             'email' => $this->email,
             'company_name' => null,
             'kyc_status' => null,
-            'priority' => $this->getUserDetail ? $this->getUserDetail->priority : 0
+            'priority' => $this->getUserDetail ? $this->getUserDetail->priority : 0,
+            'is_staff' => $this->is_staff,
+            'permission' => $this->permission ? $this->permission : [],
         ];
         if($this->type == 'seller'){
             if($this->getBusiness){
@@ -40,6 +42,14 @@ class LoginResource extends JsonResource
         if($this->type == 'customer'){
             if($this->getUserDetail){
                 $data['company_name'] = $this->getUserDetail->company_name;
+            }
+        }
+        if($this->is_staff){
+            if($this->getAddedBy->getBusiness){
+                $data['company_name'] = $this->getAddedBy->getBusiness->name;
+            }
+            if($this->getAddedBy->getSellerKycDetail){
+                $data['kyc_status'] = $this->getAddedBy->getSellerKycDetail->status;
             }
         }
         return $data;

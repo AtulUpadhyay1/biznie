@@ -32,6 +32,7 @@ class ConfigApiController extends Controller
                 'youtube'       => websiteSetupValue('youtube'),
             ],
             'faq'               => $faq_list,
+            'permission'        => permissionList()
         ],200);
     }
 }

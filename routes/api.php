@@ -209,6 +209,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::put('driver/{id}', 'Authenticated\DriverApiController@update');
         Route::delete('driver/{id}', 'Authenticated\DriverApiController@destroy');
 
+        // Staff
+        Route::resource('staff', 'Authenticated\StaffApiController');
+
     });
 
 });

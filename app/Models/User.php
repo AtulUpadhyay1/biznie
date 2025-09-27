@@ -46,6 +46,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'business_interest' => 'array',
+        'permission' => 'array',
     ];
 
     public function scopeSearch($query, $value){
@@ -84,5 +85,10 @@ class User extends Authenticatable
     public function getSellerOrders()
     {
         return $this->hasMany(CommodityProductOrder::class, 'seller_user_id');
+    }
+
+    public function getAddedBy()
+    {
+        return $this->hasOne(User::class, 'id', 'added_by');
     }
 }

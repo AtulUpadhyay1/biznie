@@ -304,5 +304,34 @@ if(!function_exists('sendMySmsShopMessage')){
     }
 }
 
+if(!function_exists('permissionList')){
+    function permissionList() {
+        return [
+            'product' => [
+                'list'      => false,
+                'create'    => false,
+                'edit'      => false,
+                'status'    => false,
+            ],
+            'quotation' => [
+                'list'      => false,
+                'view'      => false,
+                'create'    => false,
+                'update'    => false,
+            ],
+            'order' => [
+                'list'      => false,
+                'view'      => false,
+                'update'    => false,
+            ],
+            'wallet' => [
+                'cash-wallet'       => false,
+                'credit-wallet'     => false,
+            ],
+
+        ];
+    }
+}
+
 
 ?>
