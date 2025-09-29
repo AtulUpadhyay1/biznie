@@ -11,7 +11,20 @@ class CashWalletApiController extends Controller
 {
     public function cashWallet()
     {
-        $transaction = CashWalletTransaction::where('user_id', auth()->id())->select(['transaction_id', 'amount', 'description', 'notes', 'mode', 'status', 'transaction_status', 'created_at'])->latest()->simplePaginate(getPaginate());
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+        $transaction = CashWalletTransaction::where('user_id', $user_id)
+            ->select([
+                'transaction_id',
+                'amount',
+                'description',
+                'notes',
+                'mode',
+                'status',
+                'transaction_status',
+                'created_at'
+            ])
+            ->latest()
+            ->simplePaginate(getPaginate());
         foreach ($transaction as $item) {
             $item->created_date = Carbon::parse($item->created_at)->format('d-m-Y H:i:s');
         }

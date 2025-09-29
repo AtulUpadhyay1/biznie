@@ -22,6 +22,7 @@ class Index extends Component
             ->where('type', 'seller')
             ->with('getBusiness', 'getSellerKycDetail', 'getSellerProductEnquiries', 'getSellerOrders', 'getUserDetail')
             ->latest()
+            ->where('is_staff', 0)
             ->simplePaginate(getPaginate());
         return view('admin.seller.index', compact('list'), ['page_title' => 'Seller List']);
     }

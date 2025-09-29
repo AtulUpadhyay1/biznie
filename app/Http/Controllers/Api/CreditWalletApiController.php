@@ -23,7 +23,19 @@ class CreditWalletApiController extends Controller
 
     public function creditWallet()
     {
-        $transaction = CreditWalletTransaction::where('user_id', auth()->id())->select(['transaction_id', 'amount', 'description', 'notes', 'status', 'transaction_status', 'created_at'])->latest()->simplePaginate(getPaginate());
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+        $transaction = CreditWalletTransaction::where('user_id', $user_id)
+            ->select([
+                'transaction_id',
+                'amount',
+                'description',
+                'notes',
+                'status',
+                'transaction_status',
+                'created_at'
+            ])
+            ->latest()
+            ->simplePaginate(getPaginate());
         foreach ($transaction as $item) {
             $item->created_date = Carbon::parse($item->created_at)->format('d-m-Y H:i:s');
         }
@@ -37,7 +49,8 @@ class CreditWalletApiController extends Controller
 
     public function creditWalletRequestList()
     {
-        $list = CreditWalletRequest::where('user_id', auth()->id())->get();
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+        $list = CreditWalletRequest::where('user_id', $user_id)->get();
         return response([
            'success'    => true,
             'data'      => CreditWalletRequestResource::collection($list)
@@ -52,7 +65,11 @@ class CreditWalletApiController extends Controller
             // 'documents'             => 'required|array',
         ]);
 
-        $check = CreditWalletRequest::where('user_id', auth()->id())->where('status', 'Pending')->first();
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+
+        $check = CreditWalletRequest::where('user_id', $user_id)
+            ->where('status', 'Pending')
+            ->first();
         if($check){
             return response([
                 'success'   => false,
@@ -60,7 +77,7 @@ class CreditWalletApiController extends Controller
             ],400);
         }
 
-        if(CreditWalletRequest::where('user_id', $this->user_id)->where('status', 'Approved')->exists()){
+        if(CreditWalletRequest::where('user_id', $user_id)->where('status', 'Approved')->exists()){
             return response([
                'success'   => false,
                'message'   => 'A request has already been submitted and approved.',
@@ -68,7 +85,7 @@ class CreditWalletApiController extends Controller
         }
 
         $credit_wallet_request = new CreditWalletRequest;
-        $credit_wallet_request->user_id = auth()->id();
+        $credit_wallet_request->user_id = $user_id;
         // $credit_wallet_request->document = $request->documents;
         $credit_wallet_request->reference_number = $request->reference_number;
         $credit_wallet_request->status = 'Pending';
