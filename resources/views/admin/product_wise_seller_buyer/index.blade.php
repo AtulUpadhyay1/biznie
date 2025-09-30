@@ -284,10 +284,19 @@
                                                             </tfoot>
                                                         </table>
                                                         <hr>
-                                                        <h5>Quality</h5>
-                                                        @foreach ($seller_data->quality as $key => $quality)
-                                                            <span class="badge bg-info text-dark rounded-pill me-1 mb-1">{{ $quality }} - ₹ {{ $seller_data->quality_price[$key] ?? 0 }}</span>
-                                                        @endforeach
+                                                        <div class="row">
+                                                            <div class="col-10">
+                                                                <h5>Quality</h5>
+                                                                @foreach ($seller_data->quality as $key => $quality)
+                                                                    <span class="badge bg-info text-dark rounded-pill me-1 mb-1">{{ $quality }} - ₹ {{ $seller_data->quality_price[$key] ?? 0 }}</span>
+                                                                @endforeach
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <button type="button" class="btn btn-outline-danger btn-xs btn-icon" data-bs-toggle="modal" data-bs-target="#exampleModal" title="View Calculation" wire:click="viewPriceCalculation({{ $seller_data->id }})">
+                                                                    <i class="bi bi-info-circle"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -397,6 +406,50 @@
                             @endif
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View Calculation</h5>
+                </div>
+                <div class="modal-body">
+                    @if($detail)
+                        <b>Base Price:</b> Rs {{ formatIndianNumber($detail['base_price']) }} <br>
+                        <b>Guage Difference:</b> + Rs {{ formatIndianNumber($detail['default_variation_price']) }} <br>
+                        @if($detail['loading_charge'] > 0)
+                            <b>Loading Charge:</b> + Rs {{ formatIndianNumber($detail['loading_charge']) }} <br>
+                        @endif
+                        @if($detail['insurance_charge'] > 0)
+                            <b>Insurance Charge:</b> + Rs {{ formatIndianNumber($detail['insurance_charge']) }} <br>
+                        @endif
+                        @if ($detail['quality_charge'] > 0)
+                            <b>Quality Charge: </b>+ Rs {{ formatIndianNumber($detail['quality_charge']) }} <br>
+                        @endif
+
+                        @foreach ($detail['other_charges'] as $charge)
+                            <b>{{ $charge['name'] }}:</b> {{ $charge['operator'] }} Rs {{ formatIndianNumber($charge['price']) }} <br>
+                        @endforeach
+
+
+                        <br>
+                        <b>Total:</b> Rs {{ formatIndianNumber($detail['total_amount']) }} <br>
+                        <b>GST:</b> + {{ $detail['gst'] }} % <br>
+                        <b>Ex Price:</b> Rs {{ formatIndianNumber($detail['ex_price']) }}
+                    @else
+                        <div class="text-center">
+                            <div class="spinner-border text-danger" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal" wire:click="closeModal()">Close</button>
                 </div>
             </div>
         </div>

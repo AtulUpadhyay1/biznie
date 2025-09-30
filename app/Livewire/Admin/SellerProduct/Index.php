@@ -2,10 +2,19 @@
 
 namespace App\Livewire\Admin\SellerProduct;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\PackagingType;
+use App\Models\BookmarkProduct;
+use App\Models\TransporterDetail;
+use App\Models\CommodityProductState;
 use App\Models\SellerCommodityProduct;
+use App\Models\TransporterAddressPrice;
+use App\Models\CommodityProductVariation;
+use App\Models\CommodityProductStatePrice;
+use App\Models\SellerCommodityProductHistory;
 
 class Index extends Component
 {
@@ -14,6 +23,7 @@ class Index extends Component
 
     public $page_title = '';
     public $user_id, $search;
+    public $detail = null;
     public function mount($user_id)
     {
         $this->user_id = $user_id;
@@ -23,7 +33,10 @@ class Index extends Component
 
     public function render()
     {
-        $list = SellerCommodityProduct::where('user_id', $this->user_id)->with('getCategory', 'getSubCategory', 'getUnit', 'getBrand', 'getStatePrice')->latest()->get();
+        $list = SellerCommodityProduct::where('user_id', $this->user_id)
+            ->with('getCategory', 'getSubCategory', 'getUnit', 'getBrand', 'getStatePrice')
+            ->latest()
+            ->get();
         return view('admin.seller_product.index', compact('list'));
     }
 
@@ -47,5 +60,187 @@ class Index extends Component
             );
         }
 
+    }
+
+    public function viewPriceCalculation($id)
+    {
+        $data = SellerCommodityProduct::with('getCommodityProduct', 'getBrand', 'getStatePrice')->findOrFail($id);
+
+        $detail_data = [
+            'id'                            => $data->id,
+            'commodity_product_id'          => $data->commodity_product_id,
+            'seller_commodity_product_id'   => $data->id,
+            'name'                          => $data->name,
+            'description'                   => $data->description,
+            'brand'                         => ['id' => $data->getBrand->id, 'name' => $data->getBrand->name],
+            'unit'                          => ['id' => $data->getCommodityProduct->getUnit->id, 'name' => $data->getCommodityProduct->getUnit->name],
+            'address'                       => isset($data->getStatePrice[0]) ? $data->getStatePrice[0]->city : null,
+            'base_price'                    => $data->base_price,
+            'thumbnail'                     => $data->thumbnail ? imageUrl($data->thumbnail) : asset('common/images/no-photo.png'),
+            'images'                        => [],
+            'loading_charge'                => $data->loading_charge,
+            'loading_position'              => $data->loading_position,
+            'price_validity'                => $data->price_validity ? dateTimeFormat($data->price_validity) : null,
+            'insurance_charge'              => $data->insurance_charge,
+            'quality_charge'                => $data->quality_charge,
+            'gst'                           => $data->gst,
+            'tcs'                           => $data->tcs,
+            'min_order_qty'                 => 0,
+            'order_amount_type'             => $data->order_amount_type,
+            'required_order_amount'         => $data->required_order_amount,
+            'charts'                        => [],
+            'other_charges'                 => [],
+            'ex_price'                      => 0,
+            'freight_price'                 => 0,
+            'default_variation'             => [],
+            'packaging_charge'              => [],
+        ];
+        if($data->getCommodityProduct){
+            $detail_data['min_order_qty'] = $data->getCommodityProduct->min_order_qty;
+            $detail_data['last_updated'] = dateTimeFormat($data->updated_at);
+
+            $detail_data['quality'] = $data->getCommodityProduct->quality;
+            $detail_data['quality_price'] = $data->getCommodityProduct->quality_price;
+        }
+        $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $data->commodity_product_id)
+            ->pluck('user_id');
+
+        $userDetail = auth()->user()->getUserDetail;
+        if ($userDetail && $userDetail->state && $userDetail->city) {
+            $transporter_address_price = TransporterAddressPrice::whereIn('user_id', $transporters_ids)
+            ->where('state', $userDetail->state)
+            ->where('city', $userDetail->city)
+            ->orderBy('min_price', 'asc')
+            ->first();
+
+            if ($transporter_address_price) {
+                $detail_data['freight_price'] = (int) $transporter_address_price->min_price;
+            }
+        }
+        $product_state = CommodityProductState::where('commodity_product_id', $data->commodity_product_id)->where('brand_id', $data->brand_id)->first();
+        if ($product_state && $product_state->chart) {
+            foreach ($product_state->chart ?? [] as $chart) {
+                $detail_data['charts'][] = imageUrl($chart);
+            }
+        }
+
+        $default_variation_price = 0;
+        $default_variation = CommodityProductVariation::where('commodity_product_id', $data->commodity_product_id)
+            ->where('is_default', 1)
+            ->first();
+
+        if($default_variation){
+
+            foreach($default_variation->value as $value){
+                $value['unit']  = null;
+
+                if($data->getCommodityProduct){
+                    $commodity = $data->getCommodityProduct;
+                    if($commodity && $commodity->unit){
+                        $value['unit']['name'] = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->name : '';
+                        $value['unit']['short_name'] = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->short_name : '';
+                    }
+                }
+
+                $detail_data['default_variation'][] = $value;
+            }
+
+            if($default_variation){
+                $state_price = CommodityProductStatePrice::where('commodity_product_id', $data->commodity_product_id)
+                ->where('commodity_product_variation_id', $default_variation->id)
+                ->where('brand_id', $data->brand_id)
+                ->first();
+                $default_variation_price = $state_price ? $state_price->price : 0;
+            }
+
+        }
+
+        $detail_data['default_variation_price'] = $default_variation_price;
+        $detail_data['loading_charge'] = $data->loading_charge;
+        $detail_data['insurance_charge'] = $data->insurance_charge;
+        $detail_data['quality_charge'] = $data->quality_charge;
+        $detail_data['gst'] = $data->gst;
+
+        $extra_charges = 0;
+        $other_charges = [];
+        foreach ($data->charge_name as $charge_key => $charge_name) {
+            $other_charges_arr['name'] = $charge_name;
+            $other_charges_arr['price'] = isset($data->charge_price[$charge_key]) ? $data->charge_price[$charge_key] : "0";
+            $other_charges_arr['operator'] = isset($data->operator[$charge_key]) ? $data->operator[$charge_key] : "";
+
+            if($other_charges_arr['operator']){
+                if($other_charges_arr['operator'] == "+"){
+                    $extra_charges += $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "-"){
+                    $extra_charges -= $other_charges_arr['price'];
+                }elseif($other_charges_arr['operator'] == "*"){
+                    $extra_charges += 0;
+                }elseif($other_charges_arr['operator'] == "/"){
+                    $extra_charges += 0;
+                }elseif($other_charges_arr['operator'] == "%"){
+                    $extra_charges += 0;
+                }
+            }
+            $other_charges[] = $other_charges_arr;
+        }
+        $detail_data['other_charges'] = $other_charges;
+
+        $base_price = $data->base_price;
+        $gauge_diff = $default_variation_price;
+        $all_charges = $data->loading_charge + $data->insurance_charge + $data->quality_charge + $extra_charges;
+        $total_amount = $base_price + $gauge_diff + $all_charges;
+        $tax_amount = round($total_amount * $data->gst / 100);
+        $ex_price = $total_amount + $tax_amount;
+        $detail_data['total_charges'] = $all_charges;
+        $detail_data['total_amount'] = $total_amount;
+        $detail_data['tax_amount'] = $tax_amount;
+        $detail_data['ex_price'] = $ex_price;
+
+        $thirty_dates = collect();
+        for ($i = 29; $i >= 0; $i--) {
+            $thirty_dates->push(Carbon::now()->subDays($i)->format('d/m/y'));
+        }
+
+        $price_history = SellerCommodityProductHistory::where('user_id', $data->user_id)
+            ->where('commodity_product_id', $data->commodity_product_id)
+            ->where('seller_commodity_product_id', $data->id)
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->get();
+
+
+        $packagin_arr = [];
+        if($data->packaging_type && count($data->packaging_type) > 0){
+            foreach ($data->packaging_type as $key => $type_id) {
+                $packagin_type = PackagingType::find($type_id);
+                if($packagin_type){
+                    $packagin_data['id'] = $packagin_type->id;
+                    $packagin_data['name'] = $packagin_type->name;
+                    $packagin_data['charge'] = $data->packaging_type_price ? ($data->packaging_type_price && isset($data->packaging_type_price[$packagin_type->id]) ? $data->packaging_type_price[$packagin_type->id] : 0) : 0;
+                    $packagin_arr[] = $packagin_data;
+                }
+            }
+        }
+        // Sort array by charge in ascending order
+        usort($packagin_arr, function ($a, $b) {
+            return (float)$a['charge'] <=> (float)$b['charge'];
+        });
+        $detail_data['packaging_charge'] = $packagin_arr;
+
+        $this->detail = [
+            'base_price'                => $detail_data['base_price'],
+            'default_variation_price'   => $detail_data['default_variation_price'],
+            'loading_charge'            => $detail_data['loading_charge'],
+            'insurance_charge'          => $detail_data['insurance_charge'],
+            'quality_charge'            => $detail_data['quality_charge'],
+            'other_charges'             => $detail_data['other_charges'],
+            'total_amount'              => $detail_data['total_amount'],
+            'gst'                       => $detail_data['gst'],
+            'ex_price'                  => $detail_data['ex_price'],
+        ];
+    }
+
+    public function closeModal()
+    {
+        $this->detail = null;
     }
 }

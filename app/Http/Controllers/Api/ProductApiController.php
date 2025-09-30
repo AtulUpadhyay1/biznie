@@ -85,7 +85,16 @@ class ProductApiController extends Controller
         // try {
             // $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand', 'getSellerStatePrice')->findOrFail($id);
             $data = SellerCommodityProduct::with('getCommodityProduct', 'getBrand', 'getStatePrice')->findOrFail($id);
-            $seller_product_list = SellerCommodityProduct::where('id', '!=', $id)->where('brand_id', $data->brand_id)->where('user_id', $data->user_id)->with('getBrand')->latest()->get();
+            $seller_product_list = SellerCommodityProduct::where('id', '!=', $id)
+                ->with('getCommodityProduct')
+                ->where('brand_id', $data->brand_id)
+                ->where('user_id', $data->user_id)
+                ->with('getBrand')
+                ->latest()
+                ->whereHas('getCommodityProduct', function($q) use ($data) {
+                    $q->where('status', 'active');
+                })
+                ->get();
             return response([
                 'success'        => true,
                 'products_data'  => new ProductDetailResource($data),
