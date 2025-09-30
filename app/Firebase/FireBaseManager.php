@@ -5,7 +5,7 @@ class FireBaseManager
 {
     private static function getGoogleAccessToken(){
 
-        $credentialsFilePath = 'biznie-b2952-firebase-adminsdk-86p12-f51654347f.json'; //replace this with your actual path and file name
+        $credentialsFilePath = 'biznie-60aff-firebase-adminsdk-fbsvc-68588dd59e.json'; //replace this with your actual path and file name
         $client = new \Google_Client();
         $client->setAuthConfig($credentialsFilePath);
         $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
@@ -16,7 +16,7 @@ class FireBaseManager
 
     public static function sendMessage($notification_tray, $in_app_module, $token)
     {
-        $apiurl = 'https://fcm.googleapis.com/v1/projects/biznie-b2952/messages:send';   //replace "your-project-id" with...your project ID
+        $apiurl = 'https://fcm.googleapis.com/v1/projects/biznie-60aff/messages:send';   //replace "your-project-id" with...your project ID
 
         $headers = [
                 'Authorization: Bearer ' . FireBaseManager::getGoogleAccessToken(),

@@ -2,13 +2,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebas
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBQJIT7KZ2E__RbcDJc6tap8yjOL5Skxsc",
-    authDomain: "biznie-b2952.firebaseapp.com",
-    projectId: "biznie-b2952",
-    storageBucket: "biznie-b2952.firebasestorage.com",
-    messagingSenderId: "1087293995265",
-    appId: "1:1087293995265:web:3be0345ef32a62dd098300",
-    measurementId: "G-5L32SNW05P"
+    apiKey: "AIzaSyBnA3kOxvpc6j1lbZkfkWTxbSAuAZEptZ4",
+    authDomain: "biznie-60aff.firebaseapp.com",
+    projectId: "biznie-60aff",
+    storageBucket: "biznie-60aff.firebasestorage.app",
+    messagingSenderId: "469414290605",
+    appId: "1:469414290605:web:d68133bdc2ae70ed949224",
+    measurementId: "G-XRHEZLNH7J"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -27,7 +27,7 @@ function requestPermission() {
             if (permission === 'granted') {
                 console.log('Notification permission granted.');
 
-                getToken(messaging, { vapidKey: "BDkqBR7Q7wFeviO0T2tFkp6Y0J1QP1zVjnfZSy2Rtg2mUVwS0TLegmCWiaSMTX6XFBkSZPeAVTAFQaXc9tnQfWk" })
+                getToken(messaging, { vapidKey: "BAvpVJZ7hBbLg4Xuq08uu5NiFVWoM_JNj06OzrUWY78ujLGNkIYF2ekyVnudm-BZY5sS9AiX6xOqS4qGREM7QL8" })
                     .then((currentToken) => {
                         if (currentToken) {
                             console.log("FCM Token:", currentToken);
