@@ -74,17 +74,17 @@ class Index extends Component
         }
 
         if($this->order_by == 'price_validity_asc'){
-            $seller_list = $seller_list->orderBy('price_validity', 'ASC');
+            $seller_list = $seller_list->orderByRaw('STR_TO_DATE(price_validity, "%Y-%m-%d %h:%i %p") ASC');
         } elseif($this->order_by == 'price_validity_desc'){
-            $seller_list = $seller_list->orderBy('price_validity', 'DESC');
+            $seller_list = $seller_list->orderByRaw('STR_TO_DATE(price_validity, "%Y-%m-%d %h:%i %p") DESC');
         } else {
             $seller_list = $seller_list->orderBy('id', 'DESC');
         }
 
         if($this->price_validity == 'valid'){
-            $seller_list = $seller_list->where('price_validity', '>=', now());
+            $seller_list = $seller_list->whereRaw('STR_TO_DATE(price_validity, "%Y-%m-%d %h:%i %p") >= ?', [now()]);
         } elseif($this->price_validity == 'expired'){
-            $seller_list = $seller_list->where('price_validity', '<', now());
+            $seller_list = $seller_list->whereRaw('STR_TO_DATE(price_validity, "%Y-%m-%d %h:%i %p") < ?', [now()]);
         }
 
         if($this->quality){
