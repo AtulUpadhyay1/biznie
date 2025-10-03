@@ -251,6 +251,21 @@
                 </a>
             </li>
 
+            <li class="nav-item nav-category">Staff Management</li>
+            <li class="nav-item {{ isActiveRoute(['admin.staff.index', 'admin.staff.create', 'admin.staff.edit']) ? 'active' : ''}}">
+                <a href="{{route('admin.staff.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-person-badge"></i>
+                    <span class="link-title">Staff</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ isActiveRoute(['admin.role.index', 'admin.role.create', 'admin.role.edit']) ? 'active' : ''}}">
+                <a href="{{route('admin.role.index')}}" class="nav-link" wire:navigate>
+                    <i class="bi bi-bootstrap-reboot"></i>
+                    <span class="link-title">Role</span>
+                </a>
+            </li>
+
             <li class="nav-item nav-category">Promotion Management</li>
             <li class="nav-item {{ isActiveRoute(['admin.banner.index', 'admin.banner.create', 'admin.banner.edit']) ? 'active' : '' }}">
                 <a href="{{route('admin.banner.index')}}" class="nav-link" wire:navigate>

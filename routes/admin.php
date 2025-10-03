@@ -290,7 +290,16 @@ Route::group(['as'=>'admin.'], function () {
         // Contact Us
         Route::get('contact-us', AdminRoot\ContactUs\Index::class)->name('contact-us.index');
 
-        //
+        // Staff
+        Route::get('staff', AdminRoot\Staff\Index::class)->name('staff.index');
+        Route::get('staff/create', AdminRoot\Staff\Create::class)->name('staff.create');
+        Route::get('staff/edit/{id}', AdminRoot\Staff\Edit::class)->name('staff.edit');
+
+        // Role
+        Route::get('role', AdminRoot\Role\Index::class)->name('role.index');
+        Route::get('role/create', AdminRoot\Role\Create::class)->name('role.create');
+        Route::get('role/edit/{id}', AdminRoot\Role\Edit::class)->name('role.edit');
+
         //Logout
         Route::post('logout', [App\Http\Controllers\Admin\Auth\LoginController::class, 'logout'])->name('logout');
     });
