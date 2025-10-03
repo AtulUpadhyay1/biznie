@@ -16,6 +16,11 @@ class Index extends Component
         'search'        => ['except' => '']
     ];
 
+    public function mount()
+    {
+        $this->authorize('seller-list');
+    }
+
     public function render()
     {
         $list = User::search($this->search)

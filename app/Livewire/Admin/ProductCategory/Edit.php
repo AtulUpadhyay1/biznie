@@ -23,6 +23,7 @@ class Edit extends Component
 
     public function mount($id)
     {
+        $this->authorize('commodity_product-edit');
         $this->hidden_id = $id;
         $data = ProductCategory::find($id);
         $this->business_category_list=BusinessCategory::where('status',1)->get();

@@ -38,6 +38,11 @@ class Create extends Component
 
     public $variation_count = 0;
 
+    public function mount()
+    {
+        $this->authorize('commodity_product-create');
+    }
+
     public function render()
     {
         $category_list = ProductCategory::active()->orderBy('name', 'asc')->get();

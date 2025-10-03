@@ -20,6 +20,11 @@ class Index extends Component
         'status'        => ['except' => ''],
     ];
 
+    public function mount()
+    {
+        $this->authorize('transporter-list');
+    }
+
     public function render()
     {
         $query = User::search($this->search)->where('type', 'transporter');

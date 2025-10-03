@@ -26,6 +26,11 @@ class DashboardLivewire extends Component
         'search'        => ['except' => ''],
     ];
 
+    public function mount()
+    {
+        $this->authorize('dashboard');
+    }
+
     public function render()
     {
         $total_customer = User::where('type', 'customer')->count();

@@ -17,6 +17,11 @@ class Index extends Component
         'status'        => ['except' => ''],
     ];
 
+    public function mount()
+    {
+        $this->authorize('buyer-list');
+    }
+
     public function render()
     {
         $query = User::search($this->search)->where('type', 'customer');

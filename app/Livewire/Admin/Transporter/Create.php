@@ -11,6 +11,11 @@ class Create extends Component
     public $page_title = 'Create Transporter';
     public $name, $company_name, $gst_number, $phone, $alternate_phone, $aadhar_number, $address;
 
+    public function mount()
+    {
+        $this->authorize('transporter-create');
+    }
+    
     public function render()
     {
         return view('admin.transporter.form');

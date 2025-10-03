@@ -13,6 +13,8 @@ class Edit extends Component
 
     public function mount($id)
     {
+        $this->authorize('transporter-edit');
+        
         $this->hidden_id      = $id;
         $user = User::findOrFail($this->hidden_id);
         $this->name     = $user->name;

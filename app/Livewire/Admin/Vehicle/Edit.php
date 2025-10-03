@@ -15,6 +15,7 @@ class Edit extends Component
 
     public function mount($id)
     {
+        $this->authorize('vehicle-edit');
         $this->hidden_id    = $id;
         $data               = Vehicle::find($this->hidden_id);
         $this->name         = $data->name;

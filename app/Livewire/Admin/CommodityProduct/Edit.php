@@ -30,6 +30,7 @@ class Edit extends Component
 
     public function mount($id)
     {
+        $this->authorize('commodity_product-edit');
         $this->hidden_id = $id;
         $data = CommodityProduct::with('getCommodityProductVariation')->find($this->hidden_id);
         $this->name                 = $data->name;

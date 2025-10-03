@@ -10,11 +10,12 @@
                         </div>
                         <div class="col-6 text-end">
                             <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-
-                                <a href="{{ route('admin.vehicle.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
-                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                    Add
-                                </a>
+                                @can('vehicle-create')
+                                    <a href="{{ route('admin.vehicle.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
+                                        <i class="bi bi-plus-lg btn-icon-prepend"></i>
+                                        Add
+                                    </a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -51,14 +52,16 @@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <a type="button" id="actionBtn_{{$data->id}}" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="actionBtn_{{$data->id}}">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.vehicle.edit', $data->id)}}" wire:navigate><i
-                                                    class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                            </div>
+                                            @can('vehicle-edit')
+                                                <a type="button" id="actionBtn_{{$data->id}}" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="actionBtn_{{$data->id}}">
+                                                    <a class="dropdown-item d-flex align-items-center" href="{{route('admin.vehicle.edit', $data->id)}}" wire:navigate><i
+                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                </div>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty

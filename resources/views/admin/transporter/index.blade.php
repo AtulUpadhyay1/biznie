@@ -35,10 +35,12 @@
                                     <i class="btn-icon-prepend" data-feather="download-cloud"></i>
                                     Download Report
                                 </button> --}}
-                                <a href="{{ route('admin.transporter.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
-                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                    Add
-                                </a>
+                                @can('transporter-create')
+                                    <a href="{{ route('admin.transporter.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
+                                        <i class="bi bi-plus-lg btn-icon-prepend"></i>
+                                        Add
+                                    </a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -78,8 +80,10 @@
                                             <div class="dropdown-menu" aria-labelledby="actionBtn_{{$data->id}}">
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.profile', $data->id)}}" wire:navigate><i
                                                     class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.edit', $data->id)}}" wire:navigate><i
-                                                    class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                @can('transporter-edit')
+                                                    <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.edit', $data->id)}}" wire:navigate><i
+                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                @endcan
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.vehicle', $data->id)}}" wire:navigate><i
                                                     class="bi bi-truck icon-sm me-2"></i><span>Vehicles</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.product', $data->id)}}" wire:navigate><i

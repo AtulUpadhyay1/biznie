@@ -13,6 +13,11 @@ class Index extends Component
 
     public $page_title = 'Vehicle List';
 
+    public function mount()
+    {
+        $this->authorize('vehicle-list');
+    }
+
     public function render()
     {
         $list = Vehicle::latest()->paginate(getPaginate());

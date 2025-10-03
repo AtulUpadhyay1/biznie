@@ -13,6 +13,11 @@ class Create extends Component
     public $page_title = 'Create Vehicle';
     public $name, $type, $capacity, $photo;
 
+    public function mount()
+    {
+        $this->authorize('vehicle-create');
+    }
+    
     public function render()
     {
         return view('admin.vehicle.form');

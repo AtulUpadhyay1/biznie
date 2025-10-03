@@ -16,10 +16,12 @@
                                         <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
                                     </div>
                                 </div>
-                                <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="add" href="{{route('admin.create-product-category')}}" wire:navigate>
-                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                    Add Product Category
-                                </a>
+                                @can('commodity_product-create')
+                                    <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="add" href="{{route('admin.create-product-category')}}" wire:navigate>
+                                        <i class="bi bi-plus-lg btn-icon-prepend"></i>
+                                        Add Product Category
+                                    </a>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -56,21 +58,21 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a type="button" id="ActionBtn_{{$data->id}}" data-bs-toggle="dropdown" role="button"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="ActionBtn_{{$data->id}}">
-                                                <a class="dropdown-item d-flex align-items-center" href=""><i
-                                                        class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a href="{{route('admin.edit-product-category', $data->id)}}"
-                                                    class="dropdown-item d-flex align-items-center" wire:navigate><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                                <a href="javascript:;"
-                                                    class="dropdown-item d-flex align-items-center"
-                                                    wire:click="delete({{ $data->id }})"><i
-                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
-                                            </div>
+                                            @can('commodity_product-edit')
+                                                <a type="button" id="ActionBtn_{{$data->id}}" data-bs-toggle="dropdown" role="button"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="ActionBtn_{{$data->id}}">
+                                                    <a href="{{route('admin.edit-product-category', $data->id)}}"
+                                                        class="dropdown-item d-flex align-items-center" wire:navigate><i
+                                                            class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                            {{-- <a href="javascript:;"
+                                                            class="dropdown-item d-flex align-items-center"
+                                                            wire:click="delete({{ $data->id }})"><i
+                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
+                                                </div>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty

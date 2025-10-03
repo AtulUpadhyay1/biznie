@@ -14,6 +14,11 @@ class Create extends Component
     use WithFileUploads;
     public $hidden_id, $business_category_id, $name, $attribute=[], $icon, $thumbnail, $showThumbnail, $banner, $showBanner, $meta_title, $meta_keywords, $meta_description;
 
+    public function mount()
+    {
+        $this->authorize('commodity_product-create');
+    }
+
     public function render()
     {
         $business_category_list =BusinessCategory::active()->get();

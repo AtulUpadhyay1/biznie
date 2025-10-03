@@ -17,6 +17,11 @@ class Index extends Component
         'search'        => ['except' => '']
     ];
 
+    public function mount()
+    {
+        $this->authorize('commodity_product-list');
+    }
+
     public function render()
     {
         $list = ProductCategory::search($this->search)->latest()->get();

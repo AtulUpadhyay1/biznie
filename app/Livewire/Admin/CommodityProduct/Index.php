@@ -18,6 +18,11 @@ class Index extends Component
         'search'        => ['except' => '']
     ];
 
+    public function mount()
+    {
+        $this->authorize('commodity_product-list');
+    }
+
     public function render()
     {
         $list = CommodityProduct::search($this->search)->latest()->with('getCategory')->paginate(getPaginate());

@@ -38,6 +38,7 @@ class Index extends Component
 
     public function mount()
     {
+        $this->authorize('product_wise_seller_buyer-list');
         if ($this->product_id || $this->brand_id || $this->city || $this->order_by || $this->price_validity || $this->quality) {
             $this->search();
         }
