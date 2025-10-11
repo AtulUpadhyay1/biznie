@@ -27,6 +27,8 @@ class ProfileResource extends JsonResource
             'kyc_verified_at' => dateTimeFormat($this->kyc_verified_at),
             'kyc_description' => $this->kyc_description,
             'user_detail' => NULL,
+            'is_staff'          => (int) $this->is_staff,
+            'permission'        => $this->permission ? $this->permission : [],
         ];
         $getUserDetail = $this->getUserDetail;
         if($getUserDetail){
