@@ -26,10 +26,10 @@ class DashboardLivewire extends Component
         'search'        => ['except' => ''],
     ];
 
-    public function mount()
-    {
-        $this->authorize('dashboard');
-    }
+    // public function mount()
+    // {
+    //     $this->authorize('dashboard');
+    // }
 
     public function render()
     {

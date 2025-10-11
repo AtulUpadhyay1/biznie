@@ -333,5 +333,28 @@ if(!function_exists('permissionList')){
     }
 }
 
+if(!function_exists('customerPermissionList')){
+    function customerPermissionList() {
+        return [
+            'quotation' => [
+                'list'      => false,
+                'view'      => false,
+                'create'    => false,
+                'update'    => false,
+            ],
+            'order' => [
+                'list'      => false,
+                'view'      => false,
+                'update'    => false,
+            ],
+            'wallet' => [
+                'cash-wallet'       => false,
+                'credit-wallet'     => false,
+            ],
+
+        ];
+    }
+}
+
 
 ?>

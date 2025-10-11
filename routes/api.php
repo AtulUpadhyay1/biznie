@@ -123,6 +123,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         // Update Address
         Route::post('update-address', 'UserAddressApiController@updateAddress');
+
+        // Staff
+        Route::resource('staff', 'StaffApiController');
     });
 });
 
@@ -208,9 +211,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::post('driver', 'Authenticated\DriverApiController@store');
         Route::put('driver/{id}', 'Authenticated\DriverApiController@update');
         Route::delete('driver/{id}', 'Authenticated\DriverApiController@destroy');
-
-        // Staff
-        Route::resource('staff', 'Authenticated\StaffApiController');
 
     });
 

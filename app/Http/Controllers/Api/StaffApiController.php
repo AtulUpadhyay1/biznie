@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Seller\Authenticated;
+namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,7 +45,7 @@ class StaffApiController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->password = bcrypt($request->phone);
-        $user->type = 'seller';
+        $user->type = auth()->user()->type;
         $user->is_staff = 1;
         $user->added_by = auth()->id();
         $user->permission = $request->permission ? $request->permission : [];

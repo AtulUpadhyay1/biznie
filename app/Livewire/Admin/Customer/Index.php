@@ -24,7 +24,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = User::search($this->search)->where('type', 'customer');
+        $query = User::search($this->search)->where('type', 'customer')->where('is_staff', 0);
         if ($this->status) {
             $query->where('status', $this->status);
         }
