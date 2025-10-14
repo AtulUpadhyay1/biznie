@@ -56,7 +56,7 @@
                         </a>
                         @if ($mode == 'creditwallet')
                             <br>
-                            {{-- <button class="btn btn-xs btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#addBalance">Add Balance</button> --}}
+                            <button class="btn btn-xs btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#addBalance">Add Balance</button>
                         @endif
                     </div>
                 </div>
