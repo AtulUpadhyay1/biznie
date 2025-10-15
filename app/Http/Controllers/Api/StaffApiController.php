@@ -37,6 +37,7 @@ class StaffApiController extends Controller
             'name'      => 'required|string|max:255',
             'email'     => 'required|email|unique:users,email',
             'phone'     => 'required|numeric|unique:users,phone',
+            'role'      => 'required|string|max:255',
             'permission'=> 'required|array',
         ]);
 
@@ -48,6 +49,7 @@ class StaffApiController extends Controller
         $user->type = auth()->user()->type;
         $user->is_staff = 1;
         $user->added_by = auth()->id();
+        $user->role = $request->role;
         $user->permission = $request->permission ? $request->permission : [];
         $user->save();
 
@@ -87,6 +89,7 @@ class StaffApiController extends Controller
             'name'      => 'required|string|max:255',
             'email'     => 'required|email|unique:users,email,'.$id,
             'phone'     => 'required|numeric|unique:users,phone,'.$id,
+            'role'      => 'required|string|max:255',
             'permission'=> 'required|array',
         ]);
 
@@ -103,6 +106,7 @@ class StaffApiController extends Controller
         if($request->password){
             $user->password = bcrypt($request->password);
         }
+        $user->role = $request->role;
         $user->permission = $request->permission ? $request->permission : [];
         $user->save();
 
