@@ -44,6 +44,11 @@
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link @if(Route::currentRouteName()=='admin.seller.staffs') nav_active @endif" href="{{route('admin.seller.staffs', $data->id)}}" wire:navigate>Staff List
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
