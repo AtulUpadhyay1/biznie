@@ -50,7 +50,7 @@
             @can('buyer-list')
                 <!--Customers-->
                 <li class="nav-item {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
-                'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info', 'admin.customer-enquiry-list']) ? 'active' : '' }}">
+                'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info', 'admin.customer-enquiry-list', 'admin.customer-staff-list']) ? 'active' : '' }}">
                     <a class="nav-link" data-bs-toggle="collapse" href="#customer" role="button"
                         aria-expanded="false" aria-controls="customer">
                         <i class="bi bi-people"></i>
@@ -59,10 +59,10 @@
                     </a>
                 </li>
                 <div class="collapse {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
-                    'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info', 'admin.customer-enquiry-list']) ? 'show' : '' }}" id="customer">
+                    'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info', 'admin.customer-enquiry-list', 'admin.customer-staff-list']) ? 'show' : '' }}" id="customer">
                     <ul class="nav sub-menu">
                         <li class="nav-item {{ isActiveRoute(['admin.customer-list', 'admin.customer-profile',
-                            'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info', 'admin.customer-enquiry-list']) ? 'active' : '' }}">
+                            'admin.customer-orders-list', 'admin.customer-payment-list', 'admin.edit-customer-info', 'admin.customer-enquiry-list', 'admin.customer-staff-list']) ? 'active' : '' }}">
                             <a href="{{route('admin.customer-list')}}" class="nav-link" wire:navigate>
                                 All Buyers
                             </a>

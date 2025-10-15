@@ -141,6 +141,9 @@ Route::group(['as'=>'admin.'], function () {
         //Cutomer Enquiry List
         Route::get('customer-enquiry-list/{id}', AdminRoot\Customer\Enquiry::class)->name('customer-enquiry-list');
 
+        // Customer Staff List
+        Route::get('customer-staff-list/{id}', AdminRoot\Customer\Staff::class)->name('customer-staff-list');
+
         //Product List
         Route::get('product-list', AdminRoot\Product\Index::class)->name('product-list');
 
