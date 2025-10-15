@@ -332,4 +332,39 @@ class AuthApiController extends Controller
             ],400);
         }
     }
+
+    public function deleteAccount(Request $request)
+    {
+        // $this->validate($request, [
+        //     'password'  => 'required',
+        // ]);
+        try {
+            $user = auth()->user();
+
+            // if(!\Hash::check($request->password, $user->password)){
+            //     return response([
+            //         'success'   => false,
+            //         'message'   => 'Invalid password entered.',
+            //     ],400);
+            // }
+
+            Auth::logout();
+
+            // Delete user related data if any
+
+            $user->delete();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Your account has been deleted successfully.',
+            ],200);
+
+        } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong while deleting your account.',
+                'error'     => $th->getMessage(),
+            ],500);
+        }
+    }
 }

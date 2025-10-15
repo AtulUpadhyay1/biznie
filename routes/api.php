@@ -126,6 +126,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         // Staff
         Route::resource('staff', 'StaffApiController');
+
+        // Delete Account
+        Route::post('delete-account', 'Auth\AuthApiController@deleteAccount');
     });
 });
 
