@@ -80,6 +80,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'status'            => $this->status,
             'created_at'        => dateTimeFormat($this->created_at),
             'credit_days'       => $this->seller_credit_days ? $this->seller_credit_days : auth()->user()->credit_days,
+            'load_within'       => (int)$this->load_within,
         ];
 
         $seller_commodity_product   = SellerCommodityProduct::where('user_id', $this->user_id)->where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();

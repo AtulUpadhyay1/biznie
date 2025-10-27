@@ -80,6 +80,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'status'            => $this->status,
             'created_at'        => dateTimeFormat($this->created_at),
             'credit_days'       => auth()->user()->credit_days,
+            'load_within'       => 0,
         ];
         $markedSeller = $this->getMarkedSellerProductEnquiry;
         if($markedSeller){
@@ -93,6 +94,7 @@ class ProductEnquiryDetailResource extends JsonResource
             if($data['commission_type'] == 'exclude'){
                 $data['base_price'] += $data['commission'];
             }
+            $data['load_within'] = (int)$markedSeller->load_within;
 
             $seller_commodity_product   = SellerCommodityProduct::where('user_id', $markedSeller->user_id)->where('commodity_product_id', $markedSeller->commodity_product_id)->where('brand_id', $markedSeller->brand_id)->first();
 
