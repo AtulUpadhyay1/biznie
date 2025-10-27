@@ -23,6 +23,7 @@ class LoginResource extends JsonResource
             'company_name' => null,
             'kyc_status' => null,
             'priority' => $this->getUserDetail ? $this->getUserDetail->priority : 0,
+            'role' => $this->role ?? null,
             'is_staff' => $this->is_staff,
             'permission' => $this->permission ? $this->permission : [],
         ];

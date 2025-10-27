@@ -28,6 +28,7 @@ class ProfileResource extends JsonResource
             'kyc_description' => $this->kyc_description,
             'user_detail' => NULL,
             'is_staff'          => (int) $this->is_staff,
+            'role'              => $this->role ?? null,
             'permission'        => $this->permission ? $this->permission : [],
         ];
         $getUserDetail = $this->getUserDetail;
