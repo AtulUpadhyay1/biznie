@@ -672,4 +672,37 @@ class CommodityProductApiController extends Controller
 
         }
     }
+
+    public function updateLoadWithin(Request $request, $id)
+    {
+        $this->validate($request, [
+            'load_within' =>'required',
+        ]);
+        try {
+
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+            $data->load_within = $request->load_within;
+            $data->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Load within updated successfully.',
+            ],200);
+
+        } catch (\Throwable $th) {
+
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
 }

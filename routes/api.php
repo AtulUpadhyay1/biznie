@@ -195,6 +195,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::get('get-commodity-product-quality/{id}', 'Authenticated\CommodityProductApiController@getQuality');
         Route::post('update-commodity-product-quality/{id}', 'Authenticated\CommodityProductApiController@updateQuality');
         Route::post('update-commodity-product-status/{id}', 'Authenticated\CommodityProductApiController@updateStatus');
+        Route::post('update-commodity-product-load-within/{id}', 'Authenticated\CommodityProductApiController@updateLoadWithin');
 
         // Product enquiry
         Route::get('product-enquiry', 'Authenticated\ProductEnquiryApiController@index');
