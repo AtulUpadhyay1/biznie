@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class="h6">
+                    {{-- <p class="h6">
                         <b>Total RFQ | 0</b> &nbsp; &nbsp;
                         <b>Total Order | 0</b> &nbsp; &nbsp;
                         <b>Total Replied | 0</b> &nbsp; &nbsp;
@@ -29,9 +29,9 @@
                         <b>Total Dispatched | 0</b> &nbsp; &nbsp;
                         <b>Total In-transit | 0</b> &nbsp; &nbsp;
                         <b>Total Deals | 0</b>
-                    </p>
+                    </p> --}}
 
-                    <div class="table-responsive mt-2">
+                    <div class="table-responsive">
                         <table class="custom-table">
                             <thead>
                                 <tr>
@@ -60,8 +60,8 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
-                                                <a class="dropdown-item d-flex align-items-center" href=""><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-order.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a> --}}
                                                 {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
                                             </div>
                                         </td>
