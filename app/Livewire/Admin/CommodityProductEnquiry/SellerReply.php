@@ -121,10 +121,12 @@ class SellerReply extends Component
                 ->where('state', $state)
                 ->where('city', $city)
                 ->first();
-
-            if($get_product_state){
+            if($this->set_enquiry_data->load_within){
+                $this->load_within = $this->set_enquiry_data->load_within ? $this->set_enquiry_data->load_within : 0;
+            } elseif($get_product_state){
                 $this->load_within = $get_product_state->load_within;
             }
+
         }
     }
 
