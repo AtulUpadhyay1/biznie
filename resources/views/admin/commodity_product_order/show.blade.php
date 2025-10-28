@@ -296,7 +296,7 @@
                         $seller_enq_data['commission'] = $seller_enquiry_data->commission;
                     @endphp
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
@@ -320,7 +320,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        {{-- <div class="col-md-6 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
@@ -340,7 +340,7 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-6 mb-3">
                             <div class="card">
@@ -351,14 +351,14 @@
                                 </div>
                                 <div class="card-body p-3">
                                     <p>
-                                        Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
+                                        Company : {{ $enquiry_data->getUser->getUserDetail->company_name }}<br>
                                         Phone : {{ $enquiry_data->getUser->phone }} <br>
                                         GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
                                         Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
                                         Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
                                         City : {{ $enquiry_data->billing_address['city'] }} <br>
                                         State : {{ $enquiry_data->billing_address['state'] }} <br>
+                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
                                         Credit Days : {{ $custmoer_enq_data['credit_days'] }} Days <br>
                                     </p>
                                 </div>
@@ -378,14 +378,14 @@
                                         $sellerDetail = $seller->getSellerKycDetail;
                                     @endphp
                                     <p>
-                                        Name : {{ $seller->name }} ({{$seller->getBusiness->name}})<br>
+                                        Company : {{ $seller->getBusiness->name }}<br>
                                         Phone : {{ $seller->phone }} <br>
                                         GST : {{ $sellerDetail->gst_number }} <br>
-                                        Pincode : {{ $sellerDetail->postal_code }} <br>
                                         Address Line One : {{ $sellerDetail->address_line_one }} <br>
                                         Address Line Two : {{ $sellerDetail->address_line_two }} <br>
                                         City : {{ $sellerDetail->city }} <br>
                                         State : {{ $sellerDetail->state }} <br>
+                                        Pincode : {{ $sellerDetail->postal_code }} <br>
                                         Credit Days : {{ $seller_enq_data['credit_days'] }} Days <br>
                                     </p>
                                 </div>
