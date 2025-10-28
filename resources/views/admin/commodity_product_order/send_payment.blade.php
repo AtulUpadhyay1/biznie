@@ -31,12 +31,16 @@
                                     <b>Phone: </b> {{ $data->getSeller?->phone }} <br>
                                 </p>
                             </div>
-                            <div class="col-6 mb-3">
+                            <div class="col-3 mb-3">
                                 <p>
                                     <b>Total Amount:</b> ₹ {{ formatIndianNumber($total_amoount) }} <br>
                                     <b>Paid Amount:</b> ₹ {{ formatIndianNumber($paid_amount) }} <br>
                                     <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($remaining_balance) }} <br>
                                 </p>
+                            </div>
+                            <div class="col-3 mb-3 text-end">
+                                <a href="{{ route('admin.seller.payments', $data->getSeller?->id) }}?mode=cashwallet" class="btn btn-outline-success btn-sm" wire:navigate>Cash Wallet</a>
+                                <a href="{{ route('admin.seller.payments', $data->getSeller?->id) }}?mode=creditwallet" class="btn btn-outline-primary btn-sm" wire:navigate>Credit Wallet</a>
                             </div>
                         </div>
                         <div class="row">
