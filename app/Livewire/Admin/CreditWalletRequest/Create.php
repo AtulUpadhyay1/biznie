@@ -19,7 +19,10 @@ class Create extends Component
 
     public function render()
     {
-        $user_list = User::where('status', 'active')->orderBy('name', 'asc')->get();
+        $user_list = User::where('status', 'active')
+            ->orderBy('name', 'asc')
+            ->where('is_staff', 0)
+            ->get();
         $type_list = CreditWalletDocumentType::active()->latest()->get();
         return view('admin.credit_wallet_request.form', compact('user_list', 'type_list'));
     }

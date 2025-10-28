@@ -23,7 +23,15 @@
                                     <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
                                         <option value="">Select User</option>
                                         @foreach ($user_list as $user_data)
-                                            <option value="{{ $user_data->id }}">{{ $user_data->name }} ( {{ $user_data->phone }} )</option>
+                                            <option value="{{ $user_data->id }}">
+                                                @if($user_data->type == 'seller')
+                                                    {{ $user_data->getBusiness?->name }} - {{ $user_data->name }} ( {{ $user_data->phone }} )
+                                                @elseif ($user_data->type == 'customer')
+                                                    {{ $user_data->getUserDetail?->company_name }} - {{ $user_data->name }} ( {{ $user_data->phone }} )
+                                                @else
+                                                    {{ $user_data->name }} - {{ $user_data->phone }}
+                                                @endif
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
