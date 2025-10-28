@@ -48,6 +48,9 @@
                                         <td><b>Email:</b><span class="ms-2">{{ $data->email }}</span></td>
                                         <td><b>Company Name:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->company_name : '' }}</span></td>
                                     </tr>
+                                    <tr>
+                                        <td><b>GSTIN:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->gst_number : '' }}</span></td>
+                                        <td><b>PAN:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->pan_number : '' }}</span></td>
                                 </tbody>
                             </table>
                         </div>

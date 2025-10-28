@@ -33,6 +33,11 @@
                             <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
+                                        <td><b>Business Name:</b><span class="ms-2">{{ $data->getBusiness ? $data->getBusiness->name : '' }}</span></td>
+                                        <td><b>GST Number:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->gst_number : '' }} </span></td>
+                                        <td><b>PAN:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '' }}</span></td>
+                                    </tr>
+                                    <tr>
                                         <td><b>Customer Name:</b><span class="ms-2">{{ $data->name }}</span></td>
                                         <td><b>Mobile Number:</b><span class="ms-2">{{ $data->phone }}</span></td>
                                     </tr>
@@ -74,7 +79,7 @@
                                 <tbody>
                                     <tr>
                                         <td><b>Identity Type:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_type : '' }}</span></td>
-                                        <td><b>Identity Number:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '' }}</span></td>
+                                        {{-- <td><b>Identity Number:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '' }}</span></td> --}}
                                         <td><b>Identity Proof:</b><span class="ms-2"><img src="{{ $data->getSellerKycDetail ? imageUrl($data->getSellerKycDetail->identity_proof) : '' }}" alt="Identity Proof" onerror="this.onerror=null; this.src='{{asset('admin_css/no-photo.png')}}'"> </span></td>
                                     </tr>
                                     <tr>
