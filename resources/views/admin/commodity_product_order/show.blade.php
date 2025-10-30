@@ -284,6 +284,7 @@
                             if ($get_state_price) {
                                 $variation['price'] = $get_state_price->price;
                                 $variation['per_unit_price'] = $get_state_price->price + $seller_enquiry_data->base_price + $all_charges;
+                                $variation['total_price'] = $variation['per_unit_price'];
                                 $variation['tax'] = round(($variation['per_unit_price']) * $seller_enq_data['gst'] / 100);
                                 $variation['per_unit_price'] += $variation['tax'];
                                 $variation['final_price'] = $variation['per_unit_price'] * $variation['quantity'];
@@ -436,9 +437,49 @@
                                                             @endforeach
                                                             - {{ $variation['quantity'] }} MT
                                                         </td>
-                                                        <td>₹ {{ formatIndianNumber($variation['per_unit_price']) }} / MT</td>
+                                                        <td>
+                                                            ₹ {{ formatIndianNumber($variation['per_unit_price']) }} / MT
+                                                            <button type="button" class="btn btn-xs btn-icon" data-bs-toggle="modal" data-bs-target="#customerPriceCalculationModal{{ $loop->index }}" title="View Calculation">
+                                                                <i class="bi bi-info-circle"></i>
+                                                            </button>
+                                                        </td>
                                                         <td>₹ {{ formatIndianNumber($variation['final_price']) }}</td>
                                                     </tr>
+
+                                                    <!-- Customer Price Calculation Modal -->
+                                                    <div class="modal fade" id="customerPriceCalculationModal{{ $loop->index }}" tabindex="-1" aria-labelledby="customerPriceCalculationModalLabel{{ $loop->index }}" aria-hidden="true" wire:ignore.self>
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="customerPriceCalculationModalLabel{{ $loop->index }}">View Calculation</h5>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <b>Base Price:</b> Rs {{ formatIndianNumber($custmoer_enq_data['base_price']) }} <br>
+                                                                    <b>Guage Difference:</b> + Rs {{ formatIndianNumber($variation['price']) }} <br>
+                                                                    @if($custmoer_enq_data['loading_charge'] > 0)
+                                                                        <b>Loading Charge:</b> + Rs {{ formatIndianNumber($custmoer_enq_data['loading_charge']) }} <br>
+                                                                    @endif
+                                                                    @if($custmoer_enq_data['insurance_charge'] > 0)
+                                                                        <b>Insurance Charge:</b> + Rs {{ formatIndianNumber($custmoer_enq_data['insurance_charge']) }} <br>
+                                                                    @endif
+                                                                    @if ($custmoer_enq_data['quality_charge'] > 0)
+                                                                        <b>Quality Charge: </b>+ Rs {{ formatIndianNumber($custmoer_enq_data['quality_charge']) }} <br>
+                                                                    @endif
+                                                                    @foreach ($custmoer_enq_data['other_charge'] as $charge)
+                                                                        <b>{{ $charge['name'] }}:</b> {{ $charge['operator'] }} Rs {{ formatIndianNumber($charge['price']) }} <br>
+                                                                    @endforeach
+                                                                    <br>
+                                                                    <b>Total:</b> Rs {{ formatIndianNumber($variation['total_price']) }} <br>
+                                                                    <b>GST:</b> + {{ $custmoer_enq_data['gst'] }} % <br>
+                                                                    <b>Ex Price:</b> Rs {{ formatIndianNumber($variation['per_unit_price']) }} <br>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -488,7 +529,44 @@
                                                             @endforeach
                                                             - {{ $variation['quantity'] }} MT
                                                         </td>
-                                                        <td>₹ {{ formatIndianNumber($variation['per_unit_price']) }} / MT</td>
+                                                        <td>
+                                                            ₹ {{ formatIndianNumber($variation['per_unit_price']) }} / MT
+                                                            <button type="button" class="btn btn-xs btn-icon" data-bs-toggle="modal" data-bs-target="#sellerPriceCalculationModal{{ $loop->index }}" title="View Calculation">
+                                                                <i class="bi bi-info-circle"></i>
+                                                            </button>
+                                                            <div class="modal fade" id="sellerPriceCalculationModal{{ $loop->index }}" tabindex="-1" aria-labelledby="sellerPriceCalculationModalLabel{{ $loop->index }}" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="sellerPriceCalculationModalLabel{{ $loop->index }}">View Calculation</h5>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <b>Base Price:</b> Rs {{ formatIndianNumber($seller_enq_data['base_price']) }} <br>
+                                                                            <b>Guage Difference:</b> + Rs {{ formatIndianNumber($variation['price']) }} <br>
+                                                                            @if($seller_enq_data['loading_charge'] > 0)
+                                                                                <b>Loading Charge:</b> + Rs {{ formatIndianNumber($seller_enq_data['loading_charge']) }} <br>
+                                                                            @endif
+                                                                            @if($seller_enq_data['insurance_charge'] > 0)
+                                                                                <b>Insurance Charge:</b> + Rs {{ formatIndianNumber($seller_enq_data['insurance_charge']) }} <br>
+                                                                            @endif
+                                                                            @if ($seller_enq_data['quality_charge'] > 0)
+                                                                                <b>Quality Charge: </b>+ Rs {{ formatIndianNumber($seller_enq_data['quality_charge']) }} <br>
+                                                                            @endif
+                                                                            @foreach ($seller_enq_data['other_charges'] as $charge)
+                                                                                <b>{{ $charge['name'] }}:</b> {{ $charge['operator'] }} Rs {{ formatIndianNumber($charge['price']) }} <br>
+                                                                            @endforeach
+                                                                            <br>
+                                                                            <b>Total:</b> Rs {{ formatIndianNumber($variation['total_price']) }} <br>
+                                                                            <b>GST:</b> + {{ $seller_enq_data['gst'] }} % <br>
+                                                                            <b>Ex Price:</b> Rs {{ formatIndianNumber($variation['per_unit_price']) }} <br>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         <td>₹ {{ formatIndianNumber($variation['final_price']) }}</td>
                                                     </tr>
                                                 @endforeach
