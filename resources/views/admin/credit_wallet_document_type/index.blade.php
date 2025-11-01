@@ -61,10 +61,14 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6>Documents List</h6>
+                                                    <h6>Forms Field</h6>
                                                     <hr>
-                                                    @foreach ($data->title as $key => $value)
-                                                        <p>{{ $key+1 }}. {{ $value }} - {{ $data->description[$key] }}</p>
+                                                    @foreach ($data->forms ?? [] as $form)
+                                                        <div class="mb-3">
+                                                            <label class="form-label">{{ $form['label'] }} @if($form['required'])<span class="text-danger">*</span>@endif</label>
+                                                            <input type="{{ $form['type'] }}" class="form-control" placeholder="Enter {{ $form['label'] }}">
+                                                            <small class="form-text text-muted">{{ $form['description'] }}</small>
+                                                        </div>
                                                     @endforeach
                                                 </div>
                                                 <div class="modal-footer">
