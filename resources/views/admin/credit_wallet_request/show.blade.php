@@ -23,18 +23,16 @@
                                 </div>
                                 <form wire:submit.prevent="save()">
                                     <div class="card-body">
-                                        @foreach ($data->document_type as $key => $type)
+                                        @foreach ($data->form_data as $key => $form_value)
                                             <div class="mb-3">
-                                                <div class="row">
-                                                    <div class="col-10"><label class="form-label" for="document_{{ $key }}">{{ $type }}</label></div>
-                                                    @isset($data->document[$key])
-                                                        <div class="col-2 text-end"><a href="{{asset(imageUrl($data->document[$key]))}}" target="_blank">View</a></div>
-                                                    @endisset
-                                                </div>
-                                                <input type="file" id="document_{{ $key }}" class="form-control @error('document') is-invalid @enderror" wire:model="document">
-                                                @error('document')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
+                                                <label class="form-label">{{ $form_value['label'] }}</label>
+                                                @if(is_array($form_value) && isset($form_value['type']) && $form_value['type'] == 'file' && isset($form_value['value']))
+                                                    <div>
+                                                        <a href="{{ asset('storage/'.$form_value['value']) }}" target="_blank">View Document</a>
+                                                    </div>
+                                                @else
+                                                    <input type="text" class="form-control" value="{{ is_array($form_value) && isset($form_value['value']) ? $form_value['value'] : $form_value }}" readonly>
+                                                @endif
                                             </div>
                                         @endforeach
 

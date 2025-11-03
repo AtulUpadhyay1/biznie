@@ -14,7 +14,7 @@ class CreditWalletApiController extends Controller
 {
     public function creditWalletDocument()
     {
-        $type = CreditWalletDocumentType::active()->select('id', 'name', 'title', 'description')->latest()->get();
+        $type = CreditWalletDocumentType::active()->select('id', 'name', 'title', 'description', 'forms')->latest()->get();
         return response()->json([
             'success'   => true,
             'data'      => $type
@@ -93,6 +93,7 @@ class CreditWalletApiController extends Controller
         $credit_wallet_request->description = $request->description;
         $credit_wallet_request->credit_wallet_document_type_id = $request->credit_wallet_document_type_id;
         $credit_wallet_request->document_type = CreditWalletDocumentType::find($request->credit_wallet_document_type_id)->title;
+        $credit_wallet_request->form_data = $request->forms;
         $credit_wallet_request->save();
 
         return response([

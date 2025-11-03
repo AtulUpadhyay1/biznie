@@ -13,6 +13,7 @@ class CreditWalletRequest extends Model
     protected $casts = [
         'document'      => 'array',
         'document_type' => 'array',
+        'form_data'     => 'array',
     ];
 
     public function getUser()
