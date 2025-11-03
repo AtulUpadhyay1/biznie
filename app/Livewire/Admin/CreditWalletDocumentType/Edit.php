@@ -11,6 +11,7 @@ class Edit extends Component
 
     public $hidden_id, $name, $title=[], $description=[];
     public $input_count = 0, $inputs = [];
+    public $fields = [];
 
     public function mount($id)
     {
@@ -18,15 +19,7 @@ class Edit extends Component
         $data = CreditWalletDocumentType::findOrFail($this->hidden_id);
 
         $this->name = $data->name;
-
-        $this->title = $data->title;
-        $this->description = $data->description;
-
-        $this->input_count = count($data->title);
-
-        foreach(array_slice($data->title, 1) as $key => $title){
-            $this->addField($key);
-        }
+        $this->fields = $data->forms;
     }
 
     public function render()
@@ -34,47 +27,44 @@ class Edit extends Component
         return view('admin.credit_wallet_document_type.form');
     }
 
-    public function addField($input_count)
+    public function addField()
     {
-        $input_count = $input_count + 1;
-        $this->input_count = $input_count;
-        array_push($this->inputs, $input_count);
+        $this->fields[] = [
+            'label'         => '',
+            'required'      => false,
+            'type'          => 'text',
+            'description'   => ''
+        ];
     }
 
-    public function removeField($input_count)
+    public function removeField($index)
     {
-        unset($this->inputs[$input_count]);
-
-        unset($this->title[$input_count+1]);
-        unset($this->description[$input_count+1]);
+        unset($this->fields[$index]);
+        $this->fields = array_values($this->fields);
     }
 
     public function update()
     {
-        $this->validate([
+         $this->validate([
             'name'          => 'required',
-            'title.0'       => 'required',
-            'description.0' => 'required',
         ],[
             'name.required'          => 'Document name is required',
-            'title.*.required'       => 'Title is required',
-            'description.*.required' => 'Description is required',
         ]);
 
-        foreach ($this->inputs as $value) {
+        foreach ($this->fields as $field) {
             $this->validate([
-                'title.'.$value         => 'required',
-                'description.'.$value   => 'required',
+                'fields.*.label'         => 'required',
+                'fields.*.type'          => 'required',
+                'fields.*.required'      => 'boolean',
             ],[
-                'title.'.$value.'.required'       => 'Title is required',
-                'description.'.$value.'.required' => 'Description is required',
+                'fields.*.label.required'        => 'Field label is required',
+                'fields.*.type.required'         => 'Field type is required',
             ]);
         }
 
         $data = CreditWalletDocumentType::findOrFail($this->hidden_id);
         $data->name         = $this->name;
-        $data->title        = $this->title;
-        $data->description  = $this->description;
+        $data->forms        = $this->fields;
         $data->save();
 
         session()->flash('success', 'Credit wallet document updated successfully !!');
