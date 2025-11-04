@@ -63,6 +63,7 @@ class CreditWalletApiController extends Controller
             // 'reference_number'      => 'required',
             'credit_wallet_document_type_id'    => 'required',
             // 'documents'             => 'required|array',
+            'forms'                     => 'required|array',
         ]);
 
         $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;

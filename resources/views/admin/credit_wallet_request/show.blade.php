@@ -25,7 +25,7 @@
                                     <div class="card-body">
                                         @foreach ($data->form_data as $key => $form_value)
                                             <div class="mb-3">
-                                                <label class="form-label">{{ $form_value['label'] }}</label>
+                                                <label class="form-label">{{ $form_value['label'] }} @if($form_value['required'])<span class="text-danger">*</span>@endif</label>
                                                 @if(is_array($form_value) && isset($form_value['type']) && $form_value['type'] == 'file' && isset($form_value['value']))
                                                     <div>
                                                         <a href="{{imageUrl($form_value['value'])}}" target="_blank">View Document</a>
