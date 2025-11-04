@@ -74,7 +74,7 @@ class CreditWalletApiController extends Controller
         if($check){
             return response([
                 'success'   => false,
-                'message'   => 'Not eligible for request. Please try again later.',
+                'message'   => 'A request is already pending approval. Please wait for it to be processed before submitting a new one.',
             ],400);
         }
 
