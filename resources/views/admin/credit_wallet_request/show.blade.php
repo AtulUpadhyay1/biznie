@@ -28,7 +28,7 @@
                                                 <label class="form-label">{{ $form_value['label'] }}</label>
                                                 @if(is_array($form_value) && isset($form_value['type']) && $form_value['type'] == 'file' && isset($form_value['value']))
                                                     <div>
-                                                        <a href="{{ asset('storage/'.$form_value['value']) }}" target="_blank">View Document</a>
+                                                        <a href="{{imageUrl($form_value['value'])}}" target="_blank">View Document</a>
                                                     </div>
                                                 @else
                                                     <input type="text" class="form-control" value="{{ is_array($form_value) && isset($form_value['value']) ? $form_value['value'] : $form_value }}" readonly>
