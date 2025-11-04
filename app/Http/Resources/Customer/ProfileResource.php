@@ -37,6 +37,9 @@ class ProfileResource extends JsonResource
             $user_detail['company_name']    = $getUserDetail->company_name;
             $user_detail['company_logo']    = $getUserDetail->company_logo ? imageUrl($getUserDetail->company_logo) : asset('common/images/no-photo.png');
             $user_detail['company_address'] = $getUserDetail->company_address;
+            $user_detail['address_line_one'] = $getUserDetail->address_line_one;
+            $user_detail['address_line_two'] = $getUserDetail->address_line_two;
+            $user_detail['postal_code']     = $getUserDetail->postal_code;
             $user_detail['state']           = $getUserDetail->state;
             $user_detail['city']            = $getUserDetail->city;
             $user_detail['type']            = [];

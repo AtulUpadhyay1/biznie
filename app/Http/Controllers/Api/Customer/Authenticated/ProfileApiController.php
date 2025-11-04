@@ -26,8 +26,8 @@ class ProfileApiController extends Controller
             'type'      => 'nullable|array'
         ]);
         $user           = auth()->user();
-        $user->name     = $request->name;
-        $user->email    = $request->email;
+        $user->name     = $request->name ?? $user->name;
+        $user->email    = $request->email ?? $user->email;
         $user->save();
 
         $user_detail    = UserDetail::where('user_id', auth()->id())->first();
@@ -53,12 +53,16 @@ class ProfileApiController extends Controller
         if($request->company_logo){
             $user_detail->company_logo = $request->company_logo;
         }
-        $user_detail->company_address       = $request->company_address;
-        $user_detail->state         = $request->state;
-        $user_detail->city          = $request->city;
-        $user_detail->type          = $request->type??[];
-        $user_detail->gst_number    = $request->gst_number;
-        $user_detail->pan_number    = $request->pan_number;
+        $user_detail->company_address       = $request->company_address ?? $user_detail->company_address;
+        $user_detail->address_line_one = $request->address_line_one ?? $user_detail->address_line_one;
+        $user_detail->address_line_two = $request->address_line_two ?? $user_detail->address_line_two;
+        $user_detail->postal_code = $request->pin_code ?? $user_detail->postal_code;
+        $user_detail->city = $request->city ?? $user_detail->city;
+        $user_detail->state = $request->state ?? $user_detail->state;
+        $user_detail->country = $request->country ?? $user_detail->country;
+        $user_detail->type          = $request->type ? $request->type : ($user_detail->type ? $user_detail->type : []);
+        $user_detail->gst_number    = $request->gst_number ?? $user_detail->gst_number;
+        $user_detail->pan_number    = $request->pan_number ?? $user_detail->pan_number;
         $user_detail->save();
 
         return response([
