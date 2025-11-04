@@ -66,7 +66,7 @@
                                                     @foreach ($data->forms ?? [] as $form)
                                                         <div class="mb-3">
                                                             <label class="form-label">{{ $form['label'] }} @if($form['required'])<span class="text-danger">*</span>@endif</label>
-                                                            <input type="{{ $form['type'] }}" class="form-control" placeholder="Enter {{ $form['label'] }}">
+                                                            <input type="{{ $form['type'] }}" class="form-control" placeholder="Enter {{ $form['label'] }}" disabled>
                                                             <small class="form-text text-muted">{{ $form['description'] }}</small>
                                                         </div>
                                                     @endforeach

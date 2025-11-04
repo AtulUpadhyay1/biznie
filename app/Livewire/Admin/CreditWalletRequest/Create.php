@@ -33,7 +33,7 @@ class Create extends Component
         $this->forms = [];
         $this->form_values = [];
         $this->document_type = CreditWalletDocumentType::find($this->document_type_id);
-        $this->forms = $this->document_type->forms;
+        $this->forms = $this->document_type?->forms ?? [];
     }
 
     public function save()
