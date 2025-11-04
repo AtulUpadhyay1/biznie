@@ -93,8 +93,8 @@ class Create extends Component
         $credit_wallet_request->notes = $this->notes;
         $credit_wallet_request->description = $this->description;
         $credit_wallet_request->credit_wallet_document_type_id = $this->document_type_id;
-        $credit_wallet_request->document_type = $this->document_type->title;
-        $credit_wallet_request->form_data = $form_data;
+        $credit_wallet_request->document_type = $this->document_type?->title;
+        $credit_wallet_request->form_data = $form_data ?? [];
         $credit_wallet_request->save();
 
         if($this->status == 'Approved'){
