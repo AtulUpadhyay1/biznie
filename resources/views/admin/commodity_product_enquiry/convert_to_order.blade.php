@@ -320,7 +320,7 @@
                         Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
                         Phone : {{ $enquiry_data->getUser->phone }} <br>
                         GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                        Pincode : {{ $enquiry_data->billing_address['pincode'] }} <br>
+                        Pincode : {{ isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : (isset($enquiry_data->billing_address['pin_code']) ? $enquiry_data->billing_address['pin_code'] : '') }} <br>
                         Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
                         Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
                         City : {{ $enquiry_data->billing_address['city'] }} <br>
@@ -342,7 +342,7 @@
                         Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
                         Phone : {{ $enquiry_data->getUser->phone }} <br>
                         GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                        Pincode : {{ $enquiry_data->billing_address['pincode'] }} <br>
+                        Pincode : {{ isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : (isset($enquiry_data->billing_address['pin_code']) ? $enquiry_data->billing_address['pin_code'] : '') }} <br>
                         Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
                         Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
                         City : {{ $enquiry_data->billing_address['city'] }} <br>
@@ -571,7 +571,21 @@
                     <div class="card-body">
                         <small class="text-danger">You have to pay minimum order amount to confirm order</small>
                         <p class="fw-bold"><span class="text-danger">Order Amount : </span> <span class="text-success">₹ {{ formatIndianNumber($data['required_booking_amount']) }}</span></p>
-                        <p class="fw-bold">Wallet Balance : ₹ {{ formatIndianNumber($enquiry_data->getUser->cash_balance + $enquiry_data->getUser->credit_balance) }}</p>
+                        <p class="fw-bold">
+                            <span class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="selected_wallet" id="selected_wallet_cash" value="cash_balance" wire:model="selected_wallet">
+                                <label class="form-check-label text-danger fw-bold" for="selected_wallet_cash">Cash Wallet Balance :</label>
+                                <span class="">₹ {{ formatIndianNumber($enquiry_data->getUser->cash_balance) }}</span>
+                            </span>
+                        </p>
+                        <p class="fw-bold">
+                            <span class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="selected_wallet" id="selected_wallet_credit" value="credit_balance" wire:model="selected_wallet">
+                                <label class="form-check-label text-danger fw-bold" for="selected_wallet_credit">Credit Wallet Balance :</label>
+                                <span class="">₹ {{ formatIndianNumber($enquiry_data->getUser->credit_balance) }}</span>
+                            </span>
+                        </p>
+                        {{-- <p class="fw-bold">Wallet Balance : ₹ {{ formatIndianNumber($enquiry_data->getUser->cash_balance + $enquiry_data->getUser->credit_balance) }}</p> --}}
                         <small class="text-danger">Disclaimer</small> <br>
                         <ol class="text-primary small">
                             <li>This order can not be cancelled.</li>
