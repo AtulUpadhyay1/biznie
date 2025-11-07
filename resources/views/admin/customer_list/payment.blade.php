@@ -88,7 +88,33 @@
                                                 @endif
                                             </td>
                                             <td>{{$cash_transaction->created_at}}</td>
-                                            <td>{{$cash_transaction->description}}</td>
+                                            <td>
+                                                {{$cash_transaction->description}}
+                                                @if ($cash_transaction->notes)
+                                                    <hr>
+                                                    <button class="btn btn-xs btn-info" type="button" data-bs-toggle="modal" data-bs-target="#notesModal-{{$cash_transaction->id}}">
+                                                        View Notes
+                                                    </button>
+
+                                                    <!-- Notes Modal -->
+                                                    <div class="modal fade" id="notesModal-{{$cash_transaction->id}}" tabindex="-1" aria-labelledby="notesModalLabel-{{$cash_transaction->id}}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="notesModalLabel-{{$cash_transaction->id}}">Notes</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>{{($cash_transaction->notes)}}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-xs btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -107,7 +133,33 @@
                                                 @endif
                                             </td>
                                             <td>{{$credit_transaction->created_at}}</td>
-                                            <td>{{$credit_transaction->description}}</td>
+                                            <td>
+                                                {{$credit_transaction->description}}
+                                                @if ($credit_transaction->notes)
+                                                    <hr>
+                                                    <button class="btn btn-xs btn-info" type="button" data-bs-toggle="modal" data-bs-target="#notesModal-{{$credit_transaction->id}}">
+                                                        View Notes
+                                                    </button>
+
+                                                    <!-- Notes Modal -->
+                                                    <div class="modal fade" id="notesModal-{{$credit_transaction->id}}" tabindex="-1" aria-labelledby="notesModalLabel-{{$credit_transaction->id}}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="notesModalLabel-{{$credit_transaction->id}}">Notes</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>{{($credit_transaction->notes)}}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-xs btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -156,17 +208,23 @@
                                 <input class="form-check-input" type="radio" name="mode" id="mode_other" value="other" wire:model="payment_method">
                                 <label class="form-check-label" for="mode_other">Other</label>
                             </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="mode" id="cash_balance" value="cash_balance" wire:model="payment_method">
+                                <label class="form-check-label" for="cash_balance">Cash Balance</label>
+                            </div>
                         </div>
                         @error('mode') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" rows="1" placeholder="Enter description" wire:model="description"></textarea>
+                        <textarea class="form-control" id="description" rows="2" placeholder="Enter description" wire:model="description" data-max-words="100"></textarea>
+                        <div class="form-text text-muted">Words: <span id="description_word_count">0</span>/100</div>
                         @error('description') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="notes" class="form-label">Notes</label>
-                        <textarea class="form-control" id="notes" rows="1" placeholder="Enter notes" wire:model="notes"></textarea>
+                        <textarea class="form-control" id="notes" rows="3" placeholder="Enter notes" wire:model="notes" data-max-words="2000"></textarea>
+                        <div class="form-text text-muted">Words: <span id="notes_word_count">0</span>/2000</div>
                         @error('notes') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                 </div>
@@ -177,4 +235,59 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (function(){
+            // Returns number of words in a string
+            function countWords(str){
+                if(!str) return 0;
+                return str.trim().split(/\s+/).filter(function(w){ return w.length > 0; }).length;
+            }
+
+            function enforceAndCount(textarea){
+                var max = parseInt(textarea.dataset.maxWords, 10) || 0;
+                var val = textarea.value || '';
+                var words = val.trim().split(/\s+/).filter(function(w){ return w.length > 0; });
+                if(max > 0 && words.length > max){
+                    // trim to allowed words
+                    var trimmed = words.slice(0, max).join(' ');
+                    textarea.value = trimmed;
+                    // move caret to end
+                    textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+                    // notify Livewire/other listeners
+                    var ev = new Event('input', { bubbles: true });
+                    textarea.dispatchEvent(ev);
+                    words = words.slice(0, max);
+                }
+                // update counter element if present
+                var counterId = textarea.id + '_word_count';
+                var counterEl = document.getElementById(counterId);
+                if(counterEl){
+                    counterEl.textContent = words.length;
+                }
+            }
+
+            function attach(el){
+                if(!el) return;
+                // initial count
+                enforceAndCount(el);
+                el.addEventListener('input', function(){ enforceAndCount(el); });
+            }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                var textareas = document.querySelectorAll('textarea[data-max-words]');
+                textareas.forEach(function(t){ attach(t); });
+            });
+
+            // If modal is dynamically shown, re-evaluate counts when opened (Bootstrap event)
+            var addBalanceModal = document.getElementById('addBalance');
+            if(addBalanceModal){
+                addBalanceModal.addEventListener('shown.bs.modal', function(){
+                    var textareas = addBalanceModal.querySelectorAll('textarea[data-max-words]');
+                    textareas.forEach(function(t){ enforceAndCount(t); });
+                });
+            }
+        })();
+    </script>
+
 </div>
