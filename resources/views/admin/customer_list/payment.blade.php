@@ -208,10 +208,12 @@
                                 <input class="form-check-input" type="radio" name="mode" id="mode_other" value="other" wire:model="payment_method">
                                 <label class="form-check-label" for="mode_other">Other</label>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="mode" id="cash_balance" value="cash_balance" wire:model="payment_method">
-                                <label class="form-check-label" for="cash_balance">Cash Balance</label>
-                            </div>
+                            @if ($mode == 'creditwallet')
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="mode" id="cash_balance" value="cash_balance" wire:model="payment_method">
+                                    <label class="form-check-label" for="cash_balance">Cash Balance</label>
+                                </div>
+                            @endif
                         </div>
                         @error('mode') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
