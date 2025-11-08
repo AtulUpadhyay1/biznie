@@ -76,6 +76,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'transport_price'   => 0,
             'for_price'         => 0,
             'required_booking_amount' => 0,
+            'token_amount'      => $this->getCommodityProductOrder ? $this->getCommodityProductOrder->token_amount : 0,
             'is_mark'           => false,
             'status'            => $this->status,
             'created_at'        => dateTimeFormat($this->created_at),

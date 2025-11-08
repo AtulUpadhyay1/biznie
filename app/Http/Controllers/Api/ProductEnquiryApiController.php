@@ -34,7 +34,7 @@ class ProductEnquiryApiController extends Controller
 
     public function show($id)
     {
-        $data = ProductEnquiry::with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->findOrFail($id);
+        $data = ProductEnquiry::with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getCommodityProductOrder')->findOrFail($id);
         return response([
             'success'   => true,
             'data'      => new ProductEnquiryDetailResource($data)
