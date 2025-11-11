@@ -10,7 +10,9 @@ use App\Models\ProductEnquiry;
 use App\Models\CommodityProductOrder;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CommodityProductOrderDriver;
+use App\Models\CommodityProductOrderLedger;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\CommodityProductSellerOrderLedger;
 
 class Show extends Component
 {
@@ -291,7 +293,7 @@ class Show extends Component
         $this->validate([
             'invoice_name'  => 'required',
             'invoice_file'  => 'required',
-            'invoice_amount'=> 'required'
+            'invoice_amount'=> 'required|min:1'
         ]);
         $data = CommodityProductOrder::find($this->hidden_id);
         if (!$data) {
@@ -320,6 +322,16 @@ class Show extends Component
         $invoice_arr[] = $invoice_data;
         $data->all_invoices = $invoice_arr;
         $data->save();
+
+        $credit_ledger                       = new CommodityProductOrderLedger;
+        $credit_ledger->order_id             = $data->id;
+        $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $credit_ledger->type                 = 'credit';
+        $credit_ledger->amount               = $this->invoice_amount;
+        $credit_ledger->remaining_balance    = 0;
+        $credit_ledger->description          = 'Amount credited for Order Id: '.$data->order_id;
+        $credit_ledger->save();
+
         session()->flash('success', 'Invoice updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
@@ -329,7 +341,7 @@ class Show extends Component
         $this->validate([
             'seller_invoice_name'  => 'required',
             'seller_invoice_file'  => 'required',
-            'seller_invoice_amount'=> 'required'
+            'seller_invoice_amount'=> 'required|min:1'
         ]);
         $data = CommodityProductOrder::find($this->hidden_id);
         if (!$data) {
@@ -358,6 +370,16 @@ class Show extends Component
         $invoice_arr[] = $invoice_data;
         $data->seller_invoices = $invoice_arr;
         $data->save();
+
+        $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
+        $seller_credit_ledger->order_id             = $data->id;
+        $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $seller_credit_ledger->type                 = 'credit';
+        $seller_credit_ledger->amount               = $this->seller_invoice_amount ?? 0;
+        $seller_credit_ledger->remaining_balance    = 0;
+        $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$data->order_id;
+        $seller_credit_ledger->save();
+
         session()->flash('success', 'Seller invoice updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }

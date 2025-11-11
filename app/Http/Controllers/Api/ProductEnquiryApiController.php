@@ -413,7 +413,7 @@ class ProductEnquiryApiController extends Controller
             $credit_ledger->type                 = 'credit';
             $credit_ledger->amount               = $request->token_amount;
             $credit_ledger->remaining_balance    = $request->total_amount - $request->token_amount;
-            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
+            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . ' for product token.';
             $credit_ledger->save();
         }
 

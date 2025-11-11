@@ -186,7 +186,7 @@ class ConvertToOrder extends Component
             $credit_ledger->type                 = 'credit';
             $credit_ledger->amount               = $this->token_amount;
             $credit_ledger->remaining_balance    = $this->total_amount - $this->token_amount;
-            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . 'for product token.';
+            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . ' for product token.';
             $credit_ledger->save();
         }
 
@@ -201,7 +201,7 @@ class ConvertToOrder extends Component
             $freight_credit_ledger->type                 = 'credit';
             $freight_credit_ledger->amount               = $this->freight_token_amount;
             $freight_credit_ledger->remaining_balance    = $remaining_balance;
-            $freight_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . 'for freight token.';
+            $freight_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . ' for freight token.';
             $freight_credit_ledger->save();
         }
 

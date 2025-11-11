@@ -42,7 +42,7 @@
                                     <th>#</th>
                                     <th>Transaction</th>
                                     <th>Amount</th>
-                                    <th>Remaining</th>
+                                    {{-- <th>Remaining</th> --}}
                                     <th>More Detail</th>
                                 </tr>
                             </thead>
@@ -60,7 +60,7 @@
                                         </td>
 
                                         <td>₹ {{ formatIndianNumber($data->amount) }}</td>
-                                        <td>₹ {{ formatIndianNumber($data->remaining_balance) }}</td>
+                                        {{-- <td>₹ {{ formatIndianNumber($data->remaining_balance) }}</td> --}}
                                         <td style="width: 300px;">
                                             @if ($data->payment_mode)
                                                 <b>Payment Mode : </b> {{ $data->payment_mode }} <br>
