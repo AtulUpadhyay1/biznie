@@ -412,7 +412,7 @@ class ProductEnquiryApiController extends Controller
             $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
             $credit_ledger->type                 = 'credit';
             $credit_ledger->amount               = $request->token_amount;
-            $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $request->token_amount;
+            $credit_ledger->remaining_balance    = $request->total_amount - $request->token_amount;
             $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
             $credit_ledger->save();
         }
