@@ -321,15 +321,29 @@ class ProductEnquiryApiController extends Controller
     public function enquiryToOrder(Request $request, $id)
     {
         $request->validate([
-            'token_amount'  => 'required|numeric|min:1',
-            'total_amount'  => 'required|numeric|min:1'
+            'token_amount'      => 'required|numeric|min:1',
+            'total_amount'      => 'required|numeric|min:1',
+            'selected_wallet'   => 'required|in:cash_balance,credit_balance',
         ]);
 
-        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry')->find($id);
+        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry', 'getMarkedTransporterEnquiry', 'getMarkedSellerProductEnquiry.getUser')->find($id);
         $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
-
+        $mark_transporter = $enquiry_data->getMarkedTransporterEnquiry;
         $customer = User::find($mark_seller->customer_user_id);
-        $user_total_balance = $customer->cash_balance + $customer->credit_balance;
+
+        if($request->selected_wallet == 'cash_balance'){
+            $user_total_balance = $customer->cash_balance;
+        }elseif($request->selected_wallet == 'credit_balance'){
+            $user_total_balance = $customer->credit_balance;
+        }else{
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid wallet selected.'
+            ], 400);
+        }
+
+        // $user_total_balance = $customer->cash_balance + $customer->credit_balance;
+
 
         if($request->token_amount > $user_total_balance){
             return response([
@@ -383,32 +397,76 @@ class ProductEnquiryApiController extends Controller
         $order->customer_quality_check_visibility = websiteSetupValue('customer_quality_check_visibility') ?? 0;
         $order->save();
 
-        $debit_ledger                       = new CommodityProductOrderLedger;
-        $debit_ledger->order_id             = $order->id;
-        $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $debit_ledger->type                 = 'debit';
-        $debit_ledger->amount               = $request->total_amount;
-        $debit_ledger->remaining_balance    = $request->total_amount;
-        $debit_ledger->description          = 'Amount debited for Order Id: '.$order->order_id;
-        $debit_ledger->save();
+        // $debit_ledger                       = new CommodityProductOrderLedger;
+        // $debit_ledger->order_id             = $order->id;
+        // $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        // $debit_ledger->type                 = 'debit';
+        // $debit_ledger->amount               = $request->total_amount;
+        // $debit_ledger->remaining_balance    = $request->total_amount;
+        // $debit_ledger->description          = 'Amount debited for Order Id: '.$order->order_id;
+        // $debit_ledger->save();
 
-        $credit_ledger                       = new CommodityProductOrderLedger;
-        $credit_ledger->order_id             = $order->id;
-        $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $credit_ledger->type                 = 'credit';
-        $credit_ledger->amount               = $request->token_amount;
-        $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $request->token_amount;
-        $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
-        $credit_ledger->save();
+        if($request->token_amount > 0){
+            $credit_ledger                       = new CommodityProductOrderLedger;
+            $credit_ledger->order_id             = $order->id;
+            $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+            $credit_ledger->type                 = 'credit';
+            $credit_ledger->amount               = $request->token_amount;
+            $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $request->token_amount;
+            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
+            $credit_ledger->save();
+        }
 
-        $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
-        $seller_credit_ledger->order_id             = $order->id;
-        $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $seller_credit_ledger->type                 = 'credit';
-        $seller_credit_ledger->amount               = $request->total_amount;
-        $seller_credit_ledger->remaining_balance    = $request->total_amount;
-        $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
-        $seller_credit_ledger->save();
+        // $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
+        // $seller_credit_ledger->order_id             = $order->id;
+        // $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        // $seller_credit_ledger->type                 = 'credit';
+        // $seller_credit_ledger->amount               = $request->total_amount;
+        // $seller_credit_ledger->remaining_balance    = $request->total_amount;
+        // $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
+        // $seller_credit_ledger->save();
+
+        if($request->selected_wallet == 'cash_balance'){
+            $customer->cash_balance = $customer->cash_balance - $request->token_amount;
+            $customer->save();
+
+            $cash_history = new CashWalletTransaction;
+            $cash_history->user_id           = $customer->id;
+            $cash_history->commodity_product_order_id   = $order->id;
+            $cash_history->amount            = $request->token_amount;
+            $cash_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $cash_history->mode              = 'online';
+            $cash_history->status            = 'debit';
+            $cash_history->transaction_status= 'Amount debited';
+            $cash_history->save();
+
+            $cash_history->transaction_id    = 'TX-'.date('Ymd').$cash_history->id.$customer->id.rand(111, 999);
+            $cash_history->save();
+
+        } elseif ($request->selected_wallet == 'credit_balance') {
+
+            $customer->credit_balance = $customer->credit_balance - $request->token_amount;
+            $customer->save();
+
+            $credit_history = new CreditWalletTransaction;
+            $credit_history->user_id           = $customer->id;
+            $credit_history->commodity_product_order_id   = $order->id;
+            $credit_history->amount            = $request->token_amount;
+            $credit_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $credit_history->mode              = 'online';
+            $credit_history->status            = 'debit';
+            $credit_history->transaction_status= 'Amount debited';
+            $credit_history->save();
+
+            $credit_history->transaction_id    = 'TX-'.date('Ymd').$credit_history->id.$customer->id.rand(111, 999);
+            $credit_history->save();
+
+        }
+
+        return response([
+            'success'   => true,
+            'message'   => 'Product ordered successfully.'
+        ],200);
 
         if($customer->cash_balance > $request->token_amount){
 
