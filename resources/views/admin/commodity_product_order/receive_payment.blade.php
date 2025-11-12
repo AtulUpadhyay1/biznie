@@ -33,9 +33,9 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <p>
-                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($data->total_amount) }} <br>
+                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($data->buyer_invoice_amount) ?? formatIndianNumber($data->total_amount) }} <br>
                                     <b>Paid Amount:</b> ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
-                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($data->due_amount) }} <br>
+                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($data->buyer_invoice_amount) ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount) : formatIndianNumber($data->due_amount) }} <br>
                                 </p>
                             </div>
                             <div class="col-3 mb-3 text-end">

@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <p>
-                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($total_amoount) }} <br>
+                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($total_amount) }} <br>
                                     <b>Paid Amount:</b> ₹ {{ formatIndianNumber($paid_amount) }} <br>
                                     <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($remaining_balance) }} <br>
                                 </p>

@@ -42,7 +42,9 @@ class ReceivePayment extends Component
             'transaction_amount' => 'required|numeric|min:0',
         ]);
 
-        if($order->due_amount <= 0){
+        $due_amount = $order->buyer_invoice_amount ? $order->buyer_invoice_amount - $order->paid_amount : $order->due_amount;
+
+        if($due_amount <= 0){
             $this->dispatch('alert',
                 type: 'error',
                 message: 'Order already paid.',
@@ -58,7 +60,7 @@ class ReceivePayment extends Component
             return;
         }
 
-        if($this->transaction_amount > $order->due_amount){
+        if($this->transaction_amount >= $due_amount){
             $this->dispatch('alert',
                 type: 'error',
                 message: 'Transaction amount must be less than or equal to due amount.',

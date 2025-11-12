@@ -321,6 +321,7 @@ class Show extends Component
 
         $invoice_arr[] = $invoice_data;
         $data->all_invoices = $invoice_arr;
+        $data->buyer_invoice_amount += $this->invoice_amount ?? 0;
         $data->save();
 
         $credit_ledger                       = new CommodityProductOrderLedger;
@@ -369,6 +370,7 @@ class Show extends Component
 
         $invoice_arr[] = $invoice_data;
         $data->seller_invoices = $invoice_arr;
+        $data->seller_invoice_amount += $this->seller_invoice_amount ?? 0;
         $data->save();
 
         $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
