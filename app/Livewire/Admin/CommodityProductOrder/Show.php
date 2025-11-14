@@ -327,7 +327,7 @@ class Show extends Component
         $credit_ledger                       = new CommodityProductOrderLedger;
         $credit_ledger->order_id             = $data->id;
         $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $credit_ledger->type                 = 'credit';
+        $credit_ledger->type                 = 'debit';
         $credit_ledger->amount               = $this->invoice_amount;
         $credit_ledger->remaining_balance    = 0;
         $credit_ledger->description          = 'Amount credited for Order Id: '.$data->order_id;
