@@ -13,6 +13,7 @@ use App\Models\SellerProductEnquiry;
 use Illuminate\Support\Facades\Mail;
 use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductState;
 use App\Models\ProductEnquiryHistory;
 use App\Models\SellerCommodityProduct;
 use App\Models\CreditWalletTransaction;
@@ -138,6 +139,19 @@ class ProductEnquiryApiController extends Controller
                 //     return $count === count($variation_arr);
                 // }));
 
+                $get_state_variation = CommodityProductState::where('commodity_product_id', $data->commodity_product_id)
+                    ->where('brand_id', $data->brand_id)
+                    ->first();
+                $loading_address = [];
+                if($get_state_variation){
+                    $loading_address = [
+                        'address_line_one'  => $get_state_variation->address_line_one,
+                        'address_line_two'  => $get_state_variation->address_line_two,
+                        'pin_code'          => $get_state_variation->pincode,
+                        'city'              => $get_state_variation->city,
+                        'state'             => $get_state_variation->state,
+                    ];
+                }
                 foreach ($seller_ids as $user_id) {
                     $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('commodity_product_id', $enquiry_data->commodity_product_id)->where('brand_id', $enquiry_data->brand_id)->where(function($query) use ($variation_arr){
                         foreach ($variation_arr as $variation) {
@@ -182,7 +196,7 @@ class ProductEnquiryApiController extends Controller
                     $data->message              = $enquiry_data->message;
                     $data->price                = $price_arr;
                     $data->base_price           = $seller_commodity_products->base_price ?? 0;
-                    $data->loading_address      = $seller_commodity_products->loading_address;
+                    $data->loading_address      = $get_state_variation ? $loading_address : $seller_commodity_products->loading_address;
                     $data->status               = $data->status ?? 'pending';
                     if(!$data->history){
                         $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
