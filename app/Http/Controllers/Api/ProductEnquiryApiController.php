@@ -144,13 +144,13 @@ class ProductEnquiryApiController extends Controller
                     ->first();
                 $loading_address = [];
                 if($get_state_variation){
-                    $loading_address = [
+                    $loading_address = [[
                         'address_line_one'  => $get_state_variation->address_line_one,
                         'address_line_two'  => $get_state_variation->address_line_two,
                         'pin_code'          => $get_state_variation->pincode,
                         'city'              => $get_state_variation->city,
                         'state'             => $get_state_variation->state,
-                    ];
+                    ]];
                 }
                 foreach ($seller_ids as $user_id) {
                     $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('commodity_product_id', $enquiry_data->commodity_product_id)->where('brand_id', $enquiry_data->brand_id)->where(function($query) use ($variation_arr){
@@ -196,7 +196,17 @@ class ProductEnquiryApiController extends Controller
                     $data->message              = $enquiry_data->message;
                     $data->price                = $price_arr;
                     $data->base_price           = $seller_commodity_products->base_price ?? 0;
-                    $data->loading_address      = $get_state_variation ? $loading_address : $seller_commodity_products->loading_address;
+                    // normalize seller loading_address to an array if needed
+                    if($get_state_variation){
+                        $data->loading_address = $loading_address;
+                    } else {
+                        $seller_loading_address = $seller_commodity_products->loading_address ?? [];
+                        if(!is_array($seller_loading_address)){
+                            $decoded = json_decode($seller_loading_address, true);
+                            $seller_loading_address = $decoded !== null ? $decoded : [$seller_loading_address];
+                        }
+                        $data->loading_address = $seller_loading_address;
+                    }
                     $data->status               = $data->status ?? 'pending';
                     if(!$data->history){
                         $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
