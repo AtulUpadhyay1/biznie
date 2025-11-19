@@ -93,7 +93,7 @@ class Payments extends Component
             'amount' =>'required|numeric|min:1',
         ]);
         $user = $this->data;
-        if($user->assign_credit_balance > $this->amount){
+        if($user->assign_credit_balance < $this->amount){
             $this->dispatch('alert',
                 type : 'error',
                 message : 'You can not add more than assigned credit balance.',

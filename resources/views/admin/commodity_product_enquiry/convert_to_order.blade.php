@@ -342,11 +342,11 @@
                         Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
                         Phone : {{ $enquiry_data->getUser->phone }} <br>
                         GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                        Pincode : {{ isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : (isset($enquiry_data->billing_address['pin_code']) ? $enquiry_data->billing_address['pin_code'] : '') }} <br>
-                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
-                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
-                        City : {{ $enquiry_data->billing_address['city'] }} <br>
-                        State : {{ $enquiry_data->billing_address['state'] }} <br>
+                        Pincode : {{ $enquiry_data->getUser->getUserDetail->postal_code }} <br>
+                        Address Line1 : {{ $enquiry_data->getUser->getUserDetail->address_line_one }} <br>
+                        Address Line2 : {{ $enquiry_data->getUser->getUserDetail->address_line_two }} <br>
+                        City : {{ $enquiry_data->getUser->getUserDetail->city }} <br>
+                        State : {{ $enquiry_data->getUser->getUserDetail->state }} <br>
                         Credit Days : {{ $data['credit_days'] }} Days <br>
                     </p>
                 </div>
