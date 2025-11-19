@@ -116,15 +116,16 @@ class SellerReply extends Component
             $this->transport_price = $this->set_enquiry_data->transport_price ? $this->set_enquiry_data->transport_price : 0;
             $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_seller_commodity_product->commission_amount;
 
-            $get_product_state = CommodityProductState::where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
-                ->where('brand_id', $this->set_enquiry_data->brand_id)
-                ->where('state', $state)
-                ->where('city', $city)
-                ->first();
+            // $get_product_state = CommodityProductState::where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
+            //     ->where('brand_id', $this->set_enquiry_data->brand_id)
+            //     ->where('state', $state)
+            //     ->where('city', $city)
+            //     ->first();
+
             if($this->set_enquiry_data->load_within){
                 $this->load_within = $this->set_enquiry_data->load_within ? $this->set_enquiry_data->load_within : 0;
-            } elseif($get_product_state){
-                $this->load_within = $get_product_state->load_within;
+            } elseif($seller_commodity_product){
+                $this->load_within = $seller_commodity_product->load_within;
             }
 
         }
