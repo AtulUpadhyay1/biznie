@@ -40,6 +40,7 @@
                                     <tr>
                                         <td><b>Customer Name:</b><span class="ms-2">{{ $data->name }}</span></td>
                                         <td><b>Mobile Number:</b><span class="ms-2">{{ $data->phone }}</span></td>
+                                        <td><b>City:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '' }}</span></td>
                                     </tr>
                                     <tr>
                                         <td><b>Email:</b><span class="ms-2">{{ $data->email }}</span></td>

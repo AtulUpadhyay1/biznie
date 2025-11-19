@@ -128,6 +128,11 @@
                                                 title="Product Enquiry"><i class="bi bi-cart"></i> :<b> {{ $data->getSellerProductEnquiries->count() }}</b></span>
                                             <span class="pe-2" data-bs-toggle="tooltip" title="Total Orders"><i
                                                     class="bi bi-cart-check"></i>: <b> {{ $data->getSellerOrders->count() }} </b></span>
+
+                                            <b>Company Name: </b> {{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }} <br>
+                                            <b>GSTIN:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->gst_number : '--' }}</span><br>
+                                            <b>PAN:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '--' }}</span><br>
+                                            <b>City: </b>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '--' }}
                                         </td>
                                         <td>
                                             <b>Registration Date:</b>

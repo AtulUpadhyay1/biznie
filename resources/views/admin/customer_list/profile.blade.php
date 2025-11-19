@@ -51,6 +51,8 @@
                                     <tr>
                                         <td><b>GSTIN:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->gst_number : '' }}</span></td>
                                         <td><b>PAN:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->pan_number : '' }}</span></td>
+                                        <td><b>CITY:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->city : '' }}</span></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
