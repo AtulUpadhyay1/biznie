@@ -355,11 +355,11 @@
                                         Company : {{ $enquiry_data->getUser->getUserDetail->company_name }}<br>
                                         Phone : {{ $enquiry_data->getUser->phone }} <br>
                                         GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
-                                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
-                                        City : {{ $enquiry_data->billing_address['city'] }} <br>
-                                        State : {{ $enquiry_data->billing_address['state'] }} <br>
-                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
+                                        Address Line1 : {{ $enquiry_data->getUser->getUserDetail->address_line_one }} <br>
+                                        Address Line2 : {{ $enquiry_data->getUser->getUserDetail->address_line_two }} <br>
+                                        City : {{ $enquiry_data->getUser->getUserDetail->city }} <br>
+                                        State : {{ $enquiry_data->getUser->getUserDetail->state }} <br>
+                                        Pincode : {{ $enquiry_data->getUser->getUserDetail->postal_code }} <br>
                                         Credit Days : {{ $custmoer_enq_data['credit_days'] }} Days <br>
                                     </p>
                                 </div>
