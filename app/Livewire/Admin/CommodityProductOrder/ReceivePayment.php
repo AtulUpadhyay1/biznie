@@ -60,7 +60,7 @@ class ReceivePayment extends Component
             return;
         }
 
-        if($this->transaction_amount >= $due_amount){
+        if($this->transaction_amount > $due_amount){
             $this->dispatch('alert',
                 type: 'error',
                 message: 'Transaction amount must be less than or equal to due amount.',
