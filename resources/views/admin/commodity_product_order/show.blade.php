@@ -297,7 +297,7 @@
                         $seller_enq_data['commission'] = $seller_enquiry_data->commission;
                     @endphp
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
@@ -315,30 +315,20 @@
                                         {{ $enquiry_data->consignee_detail['city'] }}
                                         {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }} <br> --}}
                                         Purpose : {{ $enquiry_data->purpose }} <br>
-                                        Description : {{ $enquiry_data->description }}
+                                        Description : {{ $enquiry_data->description }} <br>
                                     </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <h5>Buyer (Bill to)</h5>
-                                    </div>
-                                </div>
-                                <div class="card-body p-3">
-                                    <p>
-                                        Company : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
-                                        Phone : {{ $enquiry_data->getUser->phone }} <br>
-                                        GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
-                                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
-                                        State : {{ $enquiry_data->billing_address['state'] }} <br>
-                                        City : {{ $enquiry_data->billing_address['city'] }} <br>
-                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
-                                    </p>
+                                    @if($custmoer_enq_data['selected_quality'])
+                                        <p>
+                                            Quality:
+                                            {{ $custmoer_enq_data['selected_quality']['name'] }} : ₹ {{ $custmoer_enq_data['selected_quality']['price'] }} <br>
+                                        </p>
+                                    @endif
+                                    @if($custmoer_enq_data['selected_packaging_charge'])
+                                        <p>
+                                            Packaging:
+                                            {{ $custmoer_enq_data['selected_packaging_charge']['name'] }} : ₹ {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }} <br>
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -347,7 +337,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <h5>Consignee (Ship to)</h5>
+                                        <h5>Buyer Details</h5>
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
@@ -388,6 +378,50 @@
                                         State : {{ $sellerDetail->state }} <br>
                                         Pincode : {{ $sellerDetail->postal_code }} <br>
                                         Credit Days : {{ $seller_enq_data['credit_days'] }} Days <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Buyer (Bill to)</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Company : {{ $enquiry_data->billing_address['company_name'] }}<br>
+                                        Phone : {{ $enquiry_data->billing_address['phone'] }} <br>
+                                        GST : {{ $enquiry_data->billing_address['gst'] }} <br>
+                                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
+                                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
+                                        State : {{ $enquiry_data->billing_address['state'] }} <br>
+                                        City : {{ $enquiry_data->billing_address['city'] }} <br>
+                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Consignee (Ship to)</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Company : {{ $enquiry_data->consignee_detail['company_name'] }}<br>
+                                        Phone : {{ $enquiry_data->consignee_detail['phone'] }} <br>
+                                        GST : {{ $enquiry_data->consignee_detail['gst'] }} <br>
+                                        Address Line1 : {{ $enquiry_data->consignee_detail['address_line_one'] }} <br>
+                                        Address Line2 : {{ $enquiry_data->consignee_detail['address_line_two'] }} <br>
+                                        State : {{ $enquiry_data->consignee_detail['state'] }} <br>
+                                        City : {{ $enquiry_data->consignee_detail['city'] }} <br>
+                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
                                     </p>
                                 </div>
                             </div>

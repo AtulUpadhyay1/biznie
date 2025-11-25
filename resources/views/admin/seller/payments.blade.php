@@ -214,7 +214,7 @@
                             @if ($mode == 'creditwallet')
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="mode" id="cash_balance" value="cash_balance" wire:model="payment_method">
-                                    <label class="form-check-label" for="cash_balance">Cash Balance</label>
+                                    <label class="form-check-label" for="cash_balance">Cash Wallet</label>
                                 </div>
                             @endif
                         </div>
