@@ -297,7 +297,7 @@
                         $seller_enq_data['commission'] = $seller_enquiry_data->commission;
                     @endphp
                     <div class="row">
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
@@ -310,10 +310,10 @@
                                         Category : {{ $enquiry_data->getCommodityProduct->getCategory->name }} <br>
                                         Product : {{ $enquiry_data->getCommodityProduct->name }} <br>
                                         Brand : {{ $enquiry_data->getBrand->name }} <br>
-                                        Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
+                                        {{-- Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
                                         {{ $enquiry_data->consignee_detail['address_line_two'] }}
                                         {{ $enquiry_data->consignee_detail['city'] }}
-                                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }} <br>
+                                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }} <br> --}}
                                         Purpose : {{ $enquiry_data->purpose }} <br>
                                         Description : {{ $enquiry_data->description }}
                                     </p>
@@ -321,7 +321,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
@@ -330,20 +330,20 @@
                                 </div>
                                 <div class="card-body p-3">
                                     <p>
-                                        Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
+                                        Company : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
                                         Phone : {{ $enquiry_data->getUser->phone }} <br>
                                         GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
                                         Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
                                         Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
+                                        State : {{ $enquiry_data->billing_address['state'] }} <br>
                                         City : {{ $enquiry_data->billing_address['city'] }} <br>
-                                        State : {{ $enquiry_data->billing_address['state'] }}
+                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
                                     </p>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
@@ -366,7 +366,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
@@ -389,6 +389,27 @@
                                         Pincode : {{ $sellerDetail->postal_code }} <br>
                                         Credit Days : {{ $seller_enq_data['credit_days'] }} Days <br>
                                     </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Loading Address</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    @if($loading_address)
+                                        <p>
+                                            Address Line One : {{ $loading_address->address_line_one }} <br>
+                                            Address Line Two : {{ $loading_address->address_line_two }} <br>
+                                            City : {{ $loading_address->city }} <br>
+                                            State : {{ $loading_address->state }} <br>
+                                            Pincode : {{ $loading_address->pincode }} <br>
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\ProductEnquiry;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductState;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CommodityProductOrderDriver;
 use App\Models\CommodityProductOrderLedger;
@@ -34,7 +35,10 @@ class Show extends Component
         $this->vehicle_notes = $data->vehicle_notes;
         $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($data->product_enquiries_id);
         $seller_enquiry_data = $enquiry_data->getMarkedSellerProductEnquiry;
-        return view('admin.commodity_product_order.show', compact('data', 'enquiry_data', 'seller_enquiry_data'));
+        $loading_address = CommodityProductState::where('commodity_product_id', $data->commodity_product_id)
+            ->where('brand_id', $data->brand_id)
+            ->first();
+        return view('admin.commodity_product_order.show', compact('data', 'enquiry_data', 'seller_enquiry_data', 'loading_address'));
     }
 
     public function invoicePrint()
