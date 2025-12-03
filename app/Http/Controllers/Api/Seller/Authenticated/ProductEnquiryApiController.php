@@ -28,7 +28,7 @@ class ProductEnquiryApiController extends Controller
         $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
 
         $data = SellerProductEnquiry::where('user_id', $user_id)
-            ->with('getBrand', 'getSellerCommodityProduct')
+            ->with('getBrand', 'getSellerCommodityProduct', 'getProductEnquiry')
             ->find($id);
         if(!$data){
             return response([
