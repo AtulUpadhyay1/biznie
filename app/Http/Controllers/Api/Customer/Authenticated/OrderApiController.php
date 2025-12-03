@@ -24,9 +24,10 @@ class OrderApiController extends Controller
 
     public function ledger($order_id)
     {
-        $list = CommodityProductOrderLedger::where('order_id', $order_id)
-            ->get(['transaction_id', 'type', 'amount', 'remaining_balance', 'description', 'created_at'])
+        $list = CommodityProductOrderLedger::where('order_id', $order_id)->latest()
+            ->get(['transaction_id', 'type', 'amount', 'remaining_balance', 'description', 'payment_mode', 'created_at'])
             ->map(function ($item) {
+                $item->payment_mode = $item->payment_mode ?? 'Manual';
                 $item->created_at_date = Carbon::parse($item->created_at)->format('d-m-Y H-i-s');
                 return $item;
             });

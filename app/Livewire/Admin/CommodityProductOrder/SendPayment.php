@@ -84,7 +84,7 @@ class SendPayment extends Component
         $ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
         $ledger->type                 = 'debit';
         $ledger->amount               = $this->transaction_amount;
-        $ledger->remaining_balance    = $ledgers->remaining_balance - $this->transaction_amount;
+        $ledger->remaining_balance    = $remaining_balance;
         $ledger->transaction_account_name = $this->transaction_account_name;
         $ledger->transaction_account_number = $this->transaction_account_number;
         $ledger->transaction_bank_name = $this->transaction_bank_name;
