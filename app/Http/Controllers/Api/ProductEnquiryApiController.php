@@ -29,13 +29,15 @@ class ProductEnquiryApiController extends Controller
 {
     public function index()
     {
-        $list = ProductEnquiry::where('user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->latest()->paginate(getPaginate());
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+        $list = ProductEnquiry::where('user_id', $user_id)->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->latest()->paginate(getPaginate());
         return ProductEnquiryResource::collection($list);
     }
 
     public function show($id)
     {
-        $data = ProductEnquiry::with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getCommodityProductOrder')->findOrFail($id);
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+        $data = ProductEnquiry::where('user_id', $user_id)->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getCommodityProductOrder')->findOrFail($id);
         return response([
             'success'   => true,
             'data'      => new ProductEnquiryDetailResource($data)
