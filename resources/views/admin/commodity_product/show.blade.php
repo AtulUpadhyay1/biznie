@@ -176,7 +176,7 @@
                                                     <b>Pincode</b> : {{$state_variation->pincode}} |
                                                     <b>Address Line One</b> : {{$state_variation->address_line_one}} |
                                                     <b>Address Line Two</b> : {{$state_variation->address_line_two}} |
-                                                    <b>Load Within</b> : {{$state_variation->load_within}} Days
+                                                    <b>Dispatch Within</b> : {{$state_variation->load_within}} Days
 
                                                 </div>
                                                 <div class="col-4 text-end">
@@ -308,8 +308,8 @@
                                                         </div>
 
                                                         <div class="col-md-4 mb-3">
-                                                            <label for="load_within" class="form-label">Load Within <span class="text-danger">*</span></label>
-                                                            <input type="number" class="form-control" id="load_within" wire:model="load_within" placeholder="Load Within">
+                                                            <label for="load_within" class="form-label">Dispatch Within <span class="text-danger">*</span></label>
+                                                            <input type="number" class="form-control" id="load_within" wire:model="load_within" placeholder="Dispatch Within">
                                                             @error('load_within') <small class="text-danger">{{ $message }}</small>@enderror
                                                         </div>
                                                     </div>

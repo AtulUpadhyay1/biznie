@@ -661,10 +661,10 @@
                                                         </tr>
                                                         <tr>
                                                             <th style="border-right: hidden;">
-                                                                <label for="load_within" class="form-label">Load Within</label>
+                                                                <label for="load_within" class="form-label">Dispatch Within</label>
                                                             </th>
                                                             <td colspan="{{ $selected_seller_commodity_product->insurance_charge > 0 ? count($set_enquiry_data->value[0]['value']) : count($set_enquiry_data->value[0]['value']) + 1 }}">
-                                                                <input type="number" class="form-control" id="load_within" placeholder="Enter Load Within" wire:model="load_within">
+                                                                <input type="number" class="form-control" id="load_within" placeholder="Enter Dispatch Within" wire:model="load_within">
                                                                 @error('load_within') <small class="text-danger">{{ $message }}</small>@enderror
                                                             </td>
                                                         </tr>
