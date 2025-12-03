@@ -44,7 +44,12 @@
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->email }}</td>
                                         <td>{{ $data->phone }}</td>
-                                        <td>{{ $data->message }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-outline-primary view-message" data-name="{{ e($data->name) }}">
+                                                View
+                                            </button>
+                                            <div class="d-none message-text">{{ $data->message }}</div>
+                                        </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                     </tr>
                                 @empty
@@ -60,4 +65,43 @@
             </div>
         </div>
     </div>
+    <!-- Message Modal -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- filled by JS -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var messageModalEl = document.getElementById('messageModal');
+        if (!messageModalEl || typeof bootstrap === 'undefined') return;
+        var bsModal = new bootstrap.Modal(messageModalEl);
+
+        document.querySelectorAll('.view-message').forEach(function(btn){
+            btn.addEventListener('click', function(){
+                var name = this.getAttribute('data-name') || 'Message';
+                var msgEl = this.closest('tr').querySelector('.message-text');
+                var msg = msgEl ? msgEl.textContent.trim() : '';
+                messageModalEl.querySelector('.modal-title').textContent = 'Message from ' + name;
+                // preserve line breaks
+                messageModalEl.querySelector('.modal-body').innerHTML = msg.replace(/\n/g, '<br>');
+                bsModal.show();
+            });
+        });
+    });
+    </script>
+    @endpush
 </div>
