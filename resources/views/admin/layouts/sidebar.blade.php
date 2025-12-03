@@ -144,6 +144,13 @@
                         <span class="link-title">Product wise Seller / Buyer</span>
                     </a>
                 </li>
+
+                <li class="nav-item {{ isActiveRoute(['admin.latest_-price-update.index']) ? 'active' : ''}}">
+                    <a href="{{route('admin.latest-price-update.index')}}" class="nav-link" wire:navigate>
+                        <i class="bi bi-stopwatch"></i>
+                        <span class="link-title">Latest Price Update</span>
+                    </a>
+                </li>
             @endcan
 
             @canany(['commodity_product-list', 'product_category-list', 'product_sub_category-list', 'product_sub_subcategory-list', 'product_attribute-list', 'packaging_type-list', 'brand-list'])

@@ -200,6 +200,9 @@ Route::group(['as'=>'admin.'], function () {
         // Product wise seller and buyer
         Route::get('product-wise-seller-buyer', AdminRoot\ProductWiseSellerBuyer\Index::class)->name('product-wise-seller-buyer.index');
 
+        // Latest Price Update
+        Route::get('latest-price-update', AdminRoot\LatestPriceUpdate\Index::class)->name('latest-price-update.index');
+
         // Banner
         Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
         Route::get('banner/create', AdminRoot\Banner\Create::class)->name('banner.create');
