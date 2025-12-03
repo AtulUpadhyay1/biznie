@@ -72,6 +72,7 @@ class OrderDetailResource extends JsonResource
             'tcs_amount'        => 0,
             'total_charges'     => 0,
             'commission'        => $this->commission,
+            'seller_commission' => $this->getProductEnquiry?->getMarkedSellerProductEnquiry?->commission ?? 0,
             'commission_type'   => '',
             'total_amount'      => $this->total_amount,
             'paid_amount'       => $this->paid_amount,
