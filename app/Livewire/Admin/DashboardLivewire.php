@@ -64,6 +64,7 @@ class DashboardLivewire extends Component
             ->whereIn('kyc_status', ['pending', 'rejected'])
             ->latest()
             ->with(['getUserDetail'])
+            ->where('is_staff', 0)
             ->paginate(getPaginate(10));
 
         return view('admin.dashboard', compact(
