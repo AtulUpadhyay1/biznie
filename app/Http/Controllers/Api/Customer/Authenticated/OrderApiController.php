@@ -38,7 +38,7 @@ class OrderApiController extends Controller
 
     public function show($id)
     {
-        $data = CommodityProductOrder::where('customer_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit', 'getCommodityProduct.getCategory', 'getDrivers')->find($id);
+        $data = CommodityProductOrder::where('customer_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getProductEnquiry', 'getCommodityProduct.getUnit', 'getCommodityProduct.getCategory', 'getDrivers')->find($id);
         if(!$data){
             return response([
                 'success'   => false,
