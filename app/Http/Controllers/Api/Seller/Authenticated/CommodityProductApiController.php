@@ -692,7 +692,7 @@ class CommodityProductApiController extends Controller
 
             return response([
                 'success'   => true,
-                'message'   => 'Dispatch Within updated successfully.',
+                'message'   => 'Load within updated successfully.',
             ],200);
 
         } catch (\Throwable $th) {
