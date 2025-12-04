@@ -20,4 +20,9 @@ class CreditWalletRequest extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function getDocumentType()
+    {
+        return $this->belongsTo(CreditWalletDocumentType::class, 'credit_wallet_document_type_id');
+    }
 }

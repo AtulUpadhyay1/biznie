@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use App\Models\CreditWalletDocumentType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CreditWalletRequestResource extends JsonResource
@@ -23,7 +22,7 @@ class CreditWalletRequestResource extends JsonResource
             'status'                    => $this->status,
             'notes'                     => $this->notes,
             'description'               => $this->description,
-            'wallet_document_type_name' => CreditWalletDocumentType::find($this->credit_wallet_document_type_id)->name,
+            'wallet_document_type_name' => $this->getDocumentType ? $this->getDocumentType->name : null,
             'document'                  => [],
             'document_type'             => $this->document_type,
             'form_data'                 => $this->form_data,

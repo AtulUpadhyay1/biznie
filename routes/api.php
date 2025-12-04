@@ -111,6 +111,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::get('credit-wallet', 'CreditWalletApiController@creditWallet');
         Route::get('credit-wallet-request', 'CreditWalletApiController@creditWalletRequestList');
         Route::post('credit-wallet-request', 'CreditWalletApiController@creditWalletRequest');
+        Route::get('credit-wallet-request/{id}', 'CreditWalletApiController@creditWalletRequestDetail');
+        Route::post('credit-wallet-request/{id}', 'CreditWalletApiController@creditWalletRequestUpdate');
 
         // Wallet Recharge
         Route::get('cash-wallet', 'CashWalletApiController@cashWallet');
