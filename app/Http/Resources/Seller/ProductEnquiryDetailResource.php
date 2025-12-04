@@ -89,6 +89,12 @@ class ProductEnquiryDetailResource extends JsonResource
         $data['quality_charge'] = $seller_commodity_product->quality_charge;
         $data['gst'] = $seller_commodity_product->gst;
 
+        if($this->load_within){
+            $data['load_within'] = (int)$this->load_within;
+        }elseif($seller_commodity_product){
+            $data['load_within'] = (int)$seller_commodity_product->load_within;
+        }
+
         $extra_charges = 0;
         $other_charges = [];
         foreach ($seller_commodity_product->charge_name as $charge_key => $charge_name) {
