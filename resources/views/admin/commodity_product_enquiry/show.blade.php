@@ -16,7 +16,119 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Request For Quotation</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Enquiry ID: {{ $data->unique_id }} <br>
+                                        Category: {{ $data->getCommodityProduct->getCategory->name }} <br>
+                                        Product: {{ $data->getCommodityProduct->name }} <br>
+                                        Brand: {{ $data->getBrand->name }} <br>
+                                        Purpose: {{ $data->purpose }} <br>
+                                        Description: {{ $data->description }} <br>
+                                        @if($data->quality)
+                                            Quality: {{ $data->quality['name'] }} : ₹ {{ $data->quality['price'] }} <br>
+                                        @endif
+                                        @if ($data->packaging_charge)
+                                            Packaging Charge: {{ $data->packaging_charge['name'] }} : ₹ {{ $data->packaging_charge['charge'] }}  <br>
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Buyer Details</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Company : {{ $data->getUser->getUserDetail->company_name }}<br>
+                                        Phone : {{ $data->getUser->phone }} <br>
+                                        GST : {{ $data->getUser->getUserDetail->gst_number }} <br>
+                                        Address Line1 : {{ $data->getUser->getUserDetail->address_line_one }} <br>
+                                        Address Line2 : {{ $data->getUser->getUserDetail->address_line_two }} <br>
+                                        City : {{ $data->getUser->getUserDetail->city }} <br>
+                                        State : {{ $data->getUser->getUserDetail->state }} <br>
+                                        Pincode : {{ $data->getUser->getUserDetail->postal_code }} <br>
+                                        Credit Days : {{ $data->getUser->credit_days }} Days <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Buyer (Bill to)</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Company : {{ $data->billing_address['company_name'] }}<br>
+                                        Phone : {{ $data->billing_address['phone'] }} <br>
+                                        GST : {{ $data->billing_address['gst'] }} <br>
+                                        Address Line1 : {{ $data->billing_address['address_line_one'] }} <br>
+                                        Address Line2 : {{ $data->billing_address['address_line_two'] }} <br>
+                                        State : {{ $data->billing_address['state'] }} <br>
+                                        City : {{ $data->billing_address['city'] }} <br>
+                                        Pincode : {{ isset($data->consignee_detail['pin_code']) ? $data->consignee_detail['pin_code'] : (isset($data->billing_address['pincode']) ? $data->billing_address['pincode'] : '') }} <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Consignee (Ship to)</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Company : {{ $data->consignee_detail['company_name'] }}<br>
+                                        Phone : {{ $data->consignee_detail['phone'] }} <br>
+                                        GST : {{ $data->consignee_detail['gst'] }} <br>
+                                        Address Line1 : {{ $data->consignee_detail['address_line_one'] }} <br>
+                                        Address Line2 : {{ $data->consignee_detail['address_line_two'] }} <br>
+                                        State : {{ $data->consignee_detail['state'] }} <br>
+                                        City : {{ $data->consignee_detail['city'] }} <br>
+                                        Pincode : {{ isset($data->consignee_detail['pin_code']) ? $data->consignee_detail['pin_code'] : (isset($data->billing_address['pincode']) ? $data->billing_address['pincode'] : '') }} <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Loading Address</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    @if($loading_address)
+                                        <p>
+                                            Address Line One : {{ $loading_address->address_line_one }} <br>
+                                            Address Line Two : {{ $loading_address->address_line_two }} <br>
+                                            City : {{ $loading_address->city }} <br>
+                                            State : {{ $loading_address->state }} <br>
+                                            Pincode : {{ $loading_address->pincode }} <br>
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{-- <div class="col-6">
                             <p>
                                 <b>Product: </b> {{ $data->getCommodityProduct->name }} <br>
                                 <b>Brand: </b> {{ $data->getBrand->name }} <br>
@@ -54,7 +166,7 @@
                                 <b>State: </b> {{ $data->consignee_detail['state'] }} <br>
                                 <b>Gst Number: </b> {{ $data->consignee_detail['gst'] }} <br>
                             </p>
-                        </div>
+                        </div> --}}
 
                         <h5 class="my-3">Selected Product Variation</h5>
 
