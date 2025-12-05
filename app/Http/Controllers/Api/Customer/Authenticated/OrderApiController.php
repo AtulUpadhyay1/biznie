@@ -16,9 +16,15 @@ use App\Http\Resources\Customer\OrderDetailResource;
 
 class OrderApiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $list = CommodityProductOrder::where('customer_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit', 'getProductEnquiry')->latest()->paginate(getPaginate());
+        $list = CommodityProductOrder::where('customer_user_id', auth()->id())
+            ->when($request->status, function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
+            ->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit', 'getProductEnquiry')
+            ->latest()
+            ->paginate(getPaginate());
         return OrderResource::collection($list);
     }
 
