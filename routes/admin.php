@@ -246,6 +246,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('website-setup/product-delivery-info', AdminRoot\WebsiteSetup\ProductDeliveryInfo::class)->name('website_setup.product_delivery_info');
         Route::get('website-setup/product-terms-condition', AdminRoot\WebsiteSetup\ProductTermsCondition::class)->name('website_setup.product_terms');
         Route::get('website-setup/product-add-process', AdminRoot\WebsiteSetup\ProductAddProcess::class)->name('website_setup.product_add_process');
+        Route::get('website-setup/notification-setting', AdminRoot\WebsiteSetup\NotificationSetting::class)->name('website_setup.notification_setting');
 
         // Seller Tag
         Route::get('seller-tag', AdminRoot\SellerTag\Index::class)->name('seller-tag.index');

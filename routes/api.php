@@ -99,6 +99,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::delete('notification', 'NotificationApiController@destroy');
         Route::post('update-fcm-token', 'NotificationApiController@updateToken');
 
+        // Notification Settings
+        Route::get('notification-settings', 'NotificationApiController@getSettings');
+        Route::post('notification-settings', 'NotificationApiController@updateSettings');
+
         // Product enquiry
         Route::get('product-enquiry', 'ProductEnquiryApiController@index');
         Route::get('product-enquiry/{id}', 'ProductEnquiryApiController@show');

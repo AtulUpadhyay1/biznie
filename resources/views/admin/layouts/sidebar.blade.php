@@ -524,7 +524,7 @@
 
             @canany(['website_setup-general', 'website_setup-about', 'website_setup-setting', 'website_setup-returns', 'website_setup-terms', 'website_setup-privacy', 'website_setup-shop_on', 'website_setup-payment_methods', 'website_setup-logistics', 'website_setup-product_delivery_info', 'website_setup-product_terms', 'website_setup-product_add_process'])
                 <!--App Setup-->
-                <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics', 'admin.website_setup.product_delivery_info', 'admin.website_setup.product_terms', 'admin.website_setup.product_add_process']) ? 'active' : ''}}">
+                <li class="nav-item {{ isActiveRoute(['admin.website_setup.general', 'admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics', 'admin.website_setup.product_delivery_info', 'admin.website_setup.product_terms', 'admin.website_setup.product_add_process', 'admin.website_setup.notification_setting']) ? 'active' : ''}}">
                     <a class="nav-link" data-bs-toggle="collapse" href="#app-setup" role="button"
                         aria-expanded="false" aria-controls="app-setup">
                         <i class="bi bi-gear"></i>
@@ -532,7 +532,7 @@
                         <i class="bi bi-chevron-down link-arrow"></i>
                     </a>
                 </li>
-                <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.website_setup.general', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics', 'admin.website_setup.product_delivery_info', 'admin.website_setup.product_terms', 'admin.website_setup.product_add_process']) ? 'show' : ''}}" id="app-setup">
+                <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.website_setup.general', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics', 'admin.website_setup.product_delivery_info', 'admin.website_setup.product_terms', 'admin.website_setup.product_add_process', 'admin.website_setup.notification_setting']) ? 'show' : ''}}" id="app-setup">
                     <ul class="nav sub-menu">
                         @can('website_setup-general')
                             <li class="nav-item {{ isActiveRoute(['admin.website_setup.general']) ? 'active' : ''}}">
@@ -622,6 +622,11 @@
                             <li class="nav-item {{ isActiveRoute(['admin.website_setup.setting']) ? 'active' : ''}}">
                                 <a href="{{route('admin.website_setup.setting')}}" class="nav-link" wire:navigate>
                                     Setting
+                                </a>
+                            </li>
+                            <li class="nav-item {{ isActiveRoute(['admin.website_setup.notification_setting']) ? 'active' : ''}}">
+                                <a href="{{route('admin.website_setup.notification_setting')}}" class="nav-link" wire:navigate>
+                                    Notification Setting
                                 </a>
                             </li>
                         @endcan
