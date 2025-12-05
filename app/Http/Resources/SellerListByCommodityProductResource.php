@@ -29,6 +29,7 @@ class SellerListByCommodityProductResource extends JsonResource
             'base_price'            => $this->base_price,
             'thumbnail'             => $this->getCommodityProduct->thumbnail ? imageUrl($this->getCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
             'updated_at'            => dateTimeFormat($this->updated_at),
+            'price_validity'        => $this->price_validity ? dateTimeFormat($this->price_validity) : null,
             'ex_price'              => 0,
             'default_variation'     => null,
             'unit_name'             => $this->getCommodityProduct?->getUnit?->short_name,
