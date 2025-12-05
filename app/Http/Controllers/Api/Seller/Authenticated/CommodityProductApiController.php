@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\Seller\Authenticated;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Brand;
 use App\Models\HomeProduct;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\BookmarkProduct;
 use App\Models\CommodityProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BrandResource;
@@ -403,6 +405,19 @@ class CommodityProductApiController extends Controller
                     $home_product->base_price   = $data->base_price ?? 0;
                     $home_product->save();
                 }
+            }
+
+            $user_ids = BookmarkProduct::where('commodity_product_id', $data->commodity_product_id)->pluck('user_id')->toArray();
+            foreach ($user_ids as $user_id) {
+                $user = User::find($user_id);
+                sendNotification(
+                    $user,
+                    'Price Update Alert',
+                    'The price for the product '.$data->name.' has been updated. Check out the new price now!',
+                    'notification',
+                    [],
+                    true
+                );
             }
 
             return response([
