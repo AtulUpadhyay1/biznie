@@ -285,7 +285,7 @@
             @endcanany
 
             @can('commodity_product_order-list')
-                <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show', 'admin.commodity-product-order-driver.create', 'admin.commodity-product-order-driver.show', 'admin.commodity-product-order-driver.edit', 'admin.commodity-product-order.status', 'admin.commodity-product-order.history']) ? 'active' : ''}}">
+                <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show', 'admin.commodity-product-order-driver.create', 'admin.commodity-product-order-driver.show', 'admin.commodity-product-order-driver.edit', 'admin.commodity-product-order.status', 'admin.commodity-product-order.history', 'admin.commodity-product-order.transporter']) ? 'active' : ''}}">
                     <a href="{{route('admin.commodity-product-order.index')}}" class="nav-link" wire:navigate>
                         <i class="bi bi-bootstrap"></i>
                         <span class="link-title">Orders</span>

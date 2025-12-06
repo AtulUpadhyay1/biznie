@@ -23,6 +23,9 @@
     <a href="{{route('admin.commodity-product-order.history', $data->id)}}" class="btn btn-sm {{ $is_active == 'history' ? 'btn-primary' : 'btn-outline-primary' }} btn-icon-text" wire:navigate>
         <i class="bi bi-clock-history icon-sm"></i> History
     </a>
+    <a href="{{route('admin.commodity-product-order.transporter', $data->id)}}" class="btn btn-sm {{ $is_active == 'transporter' ? 'btn-primary' : 'btn-outline-primary' }} btn-icon-text" wire:navigate>
+        <i class="bi bi-truck icon-sm"></i> Transporter
+    </a>
     @if ($data->status != 'cancel' && $data->status != 'delivered')
         <a href="{{route('admin.commodity-product-order.edit', $data->id)}}" class="btn btn-sm {{ $is_active == 'edit' ? 'btn-primary' : 'btn-outline-primary' }} btn-icon-text" wire:navigate>
             <i class="bi bi-pencil-square icon-sm"></i> Edit

@@ -218,7 +218,11 @@ class Show extends Component
 
             foreach ($this->transporter_user_id as $transporter_user_id) {
                 $data = TransporterProductEnquiry::where('user_id', $transporter_user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
-                $available_transport = TransporterAddressPrice::where('user_id', $transporter_user_id)->first();
+                $available_transport = TransporterAddressPrice::where('user_id', $transporter_user_id)
+                    ->where('state', $enquiry_data->billing_address['state'])
+                    ->where('city', $enquiry_data->billing_address['city'])
+                    ->first();
+
                 if(!$data){
                     $data                   = new TransporterProductEnquiry;
                 }
