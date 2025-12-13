@@ -39,7 +39,7 @@
                                     <th>Transporter Name</th>
                                     <th>Contact Number</th>
                                     <th>Address</th>
-                                    <th>Price</th>
+                                    <th colspan="2">Price</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,9 +55,39 @@
                                             <b>City</b> : {{ $transporter_data->city }} <br>
                                         </td>
                                         <td>
-                                           {{ number_format($transporter_data->min_price) }} - {{ number_format($transporter_data->max_price) }}
+                                            ₹ {{ number_format($transporter_data->min_price) }} - ₹ {{ number_format($transporter_data->max_price) }} <br>
+                                            @if ($transporter_data->enquiry_data && $transporter_data->enquiry_data->price)
+                                                Updated Price: ₹ {{ number_format($transporter_data->enquiry_data->price) }} <button class="btn btn-info btn-sm p-0" title="Update Price" data-bs-toggle="modal" data-bs-target="#updateTransporterPrice_{{ $transporter_data->enquiry_data->id }}" wire:click="setTransporterPrice({{ $transporter_data->enquiry_data->id }})"><i class="bi bi-pencil-square"></i></button>
+                                                <br><span class="badge bg-info">{{ ucfirst($transporter_data->enquiry_data->status) }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($transporter_data->enquiry_data && $transporter_data->enquiry_data->status == 'replied' && !$transporter_data->enquiry_data->is_mark)
+                                                <button class="btn btn-primary btn-xs my-2" title="Mark order to transporter" wire:click="markTransporter({{ $transporter_data->enquiry_data->id }})">Mark Transporter</button>
+                                            @endif
                                         </td>
                                     </tr>
+                                    @if ($transporter_data->enquiry_data)
+                                        <div class="modal fade" id="updateTransporterPrice_{{ $transporter_data->enquiry_data->id }}" tabindex="-1" aria-labelledby="updateTransporterPriceLable_{{ $transporter_data->enquiry_data->id }}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" wire:ignore.self>
+                                            <div class="modal-dialog modal-dialog-scrollable">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="updateTransporterPriceLable_{{ $transporter_data->enquiry_data->id }}">Update Transporter Price</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <label for="transporter_price_{{ $transporter_data->enquiry_data->id }}" class="form-label">Transporter Price</label>
+                                                        <input type="number" class="form-control" id="transporter_price_{{ $transporter_data->enquiry_data->id }}" placeholder="Enter Transporter Price" wire:model="transporter_price">
+                                                        @error('transporter_price') <small class="text-danger">{{ $message }}</small>@enderror
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary" wire:click="updateTransporterPrice()">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                 @empty
                                     <tr>
                                         <td colspan="4" class="text-center">No Transporter Available for this Order</td>

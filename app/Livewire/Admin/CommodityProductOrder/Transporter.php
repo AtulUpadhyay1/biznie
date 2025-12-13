@@ -15,6 +15,7 @@ class Transporter extends Component
 {
     public $page_title = 'Order Transporter';
     public $hidden_id, $data, $transporter_user_id = [];
+    public $transporter_enquiry, $transporter_price, $selected_transporter_id;
 
     public function mount($id)
     {
@@ -32,13 +33,24 @@ class Transporter extends Component
     public function render()
     {
         $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $this->data->commodity_product_id)
-            ->pluck('user_id')
-            ->toArray();
+            ->pluck('user_id');
+
         $transporter_list = TransporterAddressPrice::whereIn('user_id', $transporters_ids)
             ->where('state', $this->data->billing_address['state'])
             ->where('city', $this->data->billing_address['city'])
             ->with('getUser')
             ->get();
+
+        $user_ids = $transporter_list->pluck('user_id');
+        $existing_enquiries = TransporterProductEnquiry::whereIn('user_id', $user_ids)
+            ->where('product_enquiries_id', $this->data->product_enquiries_id)
+            ->get()
+            ->keyBy('user_id');
+
+        $transporter_list->each(function($transporter) use ($existing_enquiries) {
+            $transporter->enquiry_data = $existing_enquiries->get($transporter->user_id);
+        });
+
         return view('admin.commodity_product_order.transporter', compact('transporter_list'));
     }
 
@@ -125,5 +137,69 @@ class Transporter extends Component
             );
 
         }
+    }
+
+    public function setTransporterPrice($id)
+    {
+        $this->transporter_enquiry = TransporterProductEnquiry::find($id);
+        $this->transporter_price = $this->transporter_enquiry->price ?? 0;
+    }
+
+    public function updateTransporterPrice()
+    {
+        $this->validate([
+            'transporter_price'    => 'required|min:1'
+        ]);
+        $data = $this->transporter_enquiry;
+        $data->price = $this->transporter_price;
+        $data->status = 'replied';
+        $history = $data->history;
+        $history[] = ['status' => 'Replied', 'created_at' => Carbon::now()];
+        $data->history = $history;
+        $data->save();
+
+        $enquiry = ProductEnquiry::findOrFail($data->product_enquiries_id);
+        if($enquiry){
+            if($enquiry->status != 'Transporter Replied'){
+                $enquiry->status = 'Transporter Replied';
+                $history = $enquiry->history;
+                $history[] = ['status' => 'Transporter Replied', 'created_at' => Carbon::now()];
+                $enquiry->history = $history;
+                $enquiry->save();
+            }
+        }
+
+        session()->flash('success', 'Transporter price updated successfully.');
+        return $this->redirectRoute('admin.commodity-product-order.transporter', $this->hidden_id, navigate: true);
+    }
+
+    public function markTransporter($enquiry_id)
+    {
+        $enquiry = ProductEnquiry::findOrFail($this->hidden_id);
+
+        if($enquiry && $enquiry->status == 'ordered'){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'This enquiry has been converted to an order.',
+            );
+            return false;
+        }
+
+        TransporterProductEnquiry::where('product_enquiries_id', $this->hidden_id)->update(['is_mark' => 0]);
+
+        $data = TransporterProductEnquiry::find($enquiry_id);
+        $data->is_mark = 1;
+        $data->save();
+
+        if($enquiry->history != "Transporter Marked"){
+            $enquiry->status = 'Transporter Marked';
+            $history = $enquiry->history;
+            $history[] = ['status' => 'Transporter Marked', 'created_at' => Carbon::now()];
+            $enquiry->history = $history;
+            $enquiry->save();
+        }
+
+        session()->flash('success', 'Transporter mark successfully.');
+        return $this->redirectRoute('admin.commodity-product-order.transporter', $this->hidden_id, navigate: true);
     }
 }
