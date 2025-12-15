@@ -33,7 +33,7 @@ class Show extends Component
         $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')->findOrFail($this->hidden_id);
         $this->page_title = 'View Order '. $data->getProductEnquiry->unique_id;
         $this->vehicle_notes = $data->vehicle_notes;
-        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($data->product_enquiries_id);
+        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser', 'getMarkedTransporterEnquiry')->findOrFail($data->product_enquiries_id);
         $seller_enquiry_data = $enquiry_data->getMarkedSellerProductEnquiry;
         $loading_address = CommodityProductState::where('commodity_product_id', $data->commodity_product_id)
             ->where('brand_id', $data->brand_id)

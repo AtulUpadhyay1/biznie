@@ -17,7 +17,17 @@
                         <div class="col-12 text-center">
                             @include('admin.commodity_product_order.menu', ['is_active' => 'receive-payment'])
                         </div>
+                        <div class="col-12 text-center mt-3">
+                            <div class="btn-group mb-3 mb-md-0" role="group" aria-label="Basic example">
+                                <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-sm btn-primary btn-icon-text" wire:navigate>
+                                    <i class="bi bi-box icon-sm"></i> For Order
+                                </a>
 
+                                <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
+                                    <i class="bi bi-truck icon-sm"></i> For Transporter
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <form wire:submit.prevent="save()">

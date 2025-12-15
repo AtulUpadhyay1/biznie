@@ -176,6 +176,10 @@
                         }else{
                             $custmoer_enq_data['variation']   = $enquiry_data->variation;
                         }
+                        $markedTransporter = $enquiry_data->getMarkedTransporterEnquiry;
+                        if ($markedTransporter) {
+                            $custmoer_enq_data['transport_price'] = $markedTransporter->price;
+                        }
                     @endphp
 
                     @php
