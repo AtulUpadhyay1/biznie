@@ -22,6 +22,7 @@ class Show extends Component
     public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file, $vehicle_notes;
     public $invoice_name, $invoice_file, $invoice_amount, $ebill, $ebill_expiry_date, $transport_receipt, $debit_note, $debit_note_amount, $credit_note, $credit_note_amount;
     public $seller_invoice_name, $seller_invoice_file, $seller_invoice_amount, $seller_ebill, $seller_ebill_expiry_date, $seller_transport_receipt, $seller_debit_note, $seller_debit_note_amount, $seller_credit_note, $seller_credit_note_amount;
+    public $transporter_invoice_name, $transporter_invoice_file, $transporter_invoice_amount, $transporter_ebill, $transporter_ebill_expiry_date, $transporter_transport_receipt, $transporter_debit_note, $transporter_debit_note_amount, $transporter_credit_note, $transporter_credit_note_amount;
 
     public function mount($id)
     {
@@ -387,6 +388,45 @@ class Show extends Component
         $seller_credit_ledger->save();
 
         session()->flash('success', 'Seller invoice updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
+    }
+
+    public function transporterUploadInvoice()
+    {
+        $this->validate([
+            'transporter_invoice_name'  => 'required',
+            'transporter_invoice_file'  => 'required',
+            'transporter_invoice_amount'=> 'required|min:1'
+        ]);
+        $data = CommodityProductOrder::find($this->hidden_id);
+        if (!$data) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Invalid id given. Please try again.'
+            ]);
+            return false;
+        }
+        $invoice_arr = $data->transporter_invoices ?? [];
+        $invoice_data = [
+            'uuid'              => \Str::uuid()->toString(),
+            'name'              => $this->transporter_invoice_name,
+            'invoice_file'      => imageUpload($this->transporter_invoice_file, 'transporter_invoice_file'),
+            'ebill'             => $this->transporter_ebill ? imageUpload($this->transporter_ebill, 'transporter_ebill') : NULL,
+            'ebill_expiry_date' => $this->transporter_ebill_expiry_date,
+            'transport_receipt' => $this->transporter_transport_receipt ? imageUpload($this->transporter_transport_receipt, 'transporter_transport_receipt') : NULL,
+            'amount'            => $this->transporter_invoice_amount ?? 0,
+            'debit_note'        => $this->transporter_debit_note ? imageUpload($this->transporter_debit_note, 'transporter_debit_note') : NULL,
+            'debit_note_amount' => $this->transporter_debit_note_amount ?? 0,
+            'credit_note'       => $this->transporter_credit_note ? imageUpload($this->transporter_credit_note, 'transporter_credit_note') : NULL,
+            'credit_note_amount'=> $this->transporter_credit_note_amount ?? 0,
+            'created_at'        => Carbon::now()
+        ];
+
+        $invoice_arr[] = $invoice_data;
+        $data->transporter_invoices = $invoice_arr;
+        $data->save();
+
+        session()->flash('success', 'Transporter invoice updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
 }

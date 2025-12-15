@@ -22,6 +22,7 @@ class CommodityProductOrder extends Model
         'consignee_detail'  => 'array',
         'all_invoices'      => 'array',
         'seller_invoices'   => 'array',
+        'transporter_invoices' => 'array',
     ];
 
     public function scopeSearch($query, $search)
