@@ -224,6 +224,14 @@
                         if ($markedTransporter) {
                             $custmoer_enq_data['transport_price'] = $markedTransporter->price;
                         }
+                        $custmoer_enq_data['total_freight'] = 0;
+                        if ($data->transporter_invoices && count($data->transporter_invoices) > 0){
+                            foreach ($data->transporter_invoices as $transporter_invoices) {
+                                $custmoer_enq_data['total_freight'] += $transporter_invoices['amount'];
+                            }
+                        }else{
+                            $custmoer_enq_data['total_freight'] = $custmoer_enq_data['transport_price'] * $custmoer_enq_data['total_quantity'];
+                        }
                     @endphp
 
                     @php
@@ -839,7 +847,7 @@
                                             {{ formatIndianNumber($custmoer_enq_data['transport_price']) }}/Metric Ton
                                         </p>
                                         <p><span class="text-danger">Total Freight : </span> ₹
-                                            {{ formatIndianNumber($custmoer_enq_data['total_quantity'] * $custmoer_enq_data['transport_price']) }}
+                                            {{ formatIndianNumber($custmoer_enq_data['total_freight']) }}
                                         </p>
                                         <small class="text-success">
                                             Freight May Change +/- 100. <br>
