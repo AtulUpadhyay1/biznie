@@ -183,6 +183,7 @@ Route::group(['as'=>'admin.'], function () {
 
         // Commodity Product Order Payment
         Route::get('commodity-product-order/payment/{id}', AdminRoot\CommodityProductOrder\ReceivePayment::class)->name('commodity-product-order.receive-payment');
+        Route::get('commodity-product-order/transporter-payment/{id}', AdminRoot\CommodityProductOrder\TransporterReceivePayment::class)->name('commodity-product-order.transporter-receive-payment');
         Route::get('commodity-product-order/seller-payment/{id}', AdminRoot\CommodityProductOrder\SendPayment::class)->name('commodity-product-order.send-payment');
 
         // Commodity Product Order Payment History

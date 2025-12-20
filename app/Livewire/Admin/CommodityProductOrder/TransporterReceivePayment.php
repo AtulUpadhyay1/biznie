@@ -7,24 +7,30 @@ use Livewire\WithFileUploads;
 use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
 use App\Models\CreditWalletTransaction;
+use App\Models\TransporterProductEnquiry;
 use App\Models\CommodityProductOrderLedger;
 
-class ReceivePayment extends Component
+class TransporterReceivePayment extends Component
 {
     use WithFileUploads;
-    public $page_title = 'Receive payment';
-    public $hidden_id, $data, $mode = 'manual', $transaction_amount, $transaction_account_name, $transaction_account_number, $transaction_bank_name, $transaction_number, $payment_method, $date_time, $description, $file;
+    public $page_title = 'Receive payment for Transporter';
+    public $hidden_id, $data, $transporter_data, $mode = 'manual', $transaction_amount, $transaction_account_name, $transaction_account_number, $transaction_bank_name, $transaction_number, $payment_method, $date_time, $description, $file;
 
     public function mount($id)
     {
         $this->hidden_id = $id;
         $this->data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')->findOrFail($this->hidden_id);
+        $this->transporter_data = TransporterProductEnquiry::where('product_enquiries_id', $this->data->product_enquiries_id)
+            ->where('is_mark', 1)
+            ->with('getUser')
+            ->first();
+
         $this->page_title = 'View Order '. $this->data->getProductEnquiry->unique_id;
     }
 
     public function render()
     {
-        return view('admin.commodity_product_order.receive_payment');
+        return view('admin.commodity_product_order.transporter_receive_payment');
     }
 
     public function save()
@@ -38,16 +44,33 @@ class ReceivePayment extends Component
             return;
         }
 
+        if(!$order->transporter_user_id){
+            $this->dispatch('alert',
+                type: 'error',
+                message: 'No transporter assigned to this order.',
+            );
+            return;
+        }
+
         $this->validate([
             'transaction_amount' => 'required|numeric|min:0',
         ]);
 
-        $due_amount = $order->buyer_invoice_amount ? $order->buyer_invoice_amount - $order->paid_amount : $order->due_amount;
+        // Calculate transporter due amount from transport_price
+        $transporter_total = $order->transport_price ?? 0;
 
-        if($due_amount <= 0){
+        // Get already paid amount to transporter
+        $transporter_paid = CommodityProductOrderLedger::where('order_id', $this->hidden_id)
+            ->where('ledger_type', 'transporter')
+            ->where('type', 'credit')
+            ->sum('amount');
+
+        $transporter_due = $transporter_total - $transporter_paid;
+
+        if($transporter_due <= 0){
             $this->dispatch('alert',
                 type: 'error',
-                message: 'Order already paid.',
+                message: 'Transporter payment already completed.',
             );
             return;
         }
@@ -60,7 +83,7 @@ class ReceivePayment extends Component
             return;
         }
 
-        if($this->transaction_amount > $due_amount){
+        if($this->transaction_amount > $transporter_due){
             $this->dispatch('alert',
                 type: 'error',
                 message: 'Transaction amount must be less than or equal to due amount.',
@@ -88,18 +111,13 @@ class ReceivePayment extends Component
             }
         }
 
-
-        $order->paid_amount += $this->transaction_amount;
-        $order->due_amount -= $this->transaction_amount;
-        $order->save();
-
         $ledger = new CommodityProductOrderLedger;
         $ledger->order_id = $this->hidden_id;
         $ledger->transaction_id = "TNX-".time()."-".rand(1111, 9999);
         $ledger->type = 'credit';
-        $ledger->ledger_type = 'order';
+        $ledger->ledger_type = 'transporter';
         $ledger->amount = $this->transaction_amount;
-        $ledger->remaining_balance = $this->data->due_amount;
+        $ledger->remaining_balance = $transporter_due - $this->transaction_amount;
         $ledger->transaction_account_name = $this->transaction_account_name;
         $ledger->transaction_account_number = $this->transaction_account_number;
         $ledger->transaction_bank_name = $this->transaction_bank_name;
@@ -107,7 +125,7 @@ class ReceivePayment extends Component
         $ledger->payment_method = $this->payment_method;
         $ledger->payment_mode = ucwords(str_replace('_', ' ', $this->mode));
         $ledger->date_time = $this->date_time;
-        $ledger->description = $this->description ?? 'Amount credited for Order Id: '.$this->data->order_id;
+        $ledger->description = $this->description ?? 'Payment received for Transporter - Order Id: '.$this->data->order_id;
         if($this->file){
             $file_name = time().'-'.rand(10, 99).'.'.$this->file->extension();
             $ledger->file = $this->file->storeAs('payments', $file_name, 'public');
@@ -122,8 +140,8 @@ class ReceivePayment extends Component
             $cash_history = new CashWalletTransaction;
             $cash_history->user_id           = $this->data->customer_user_id;
             $cash_history->commodity_product_order_id   = $this->hidden_id;
-            $cash_history->amount            = $this->transaction_account_number;
-            $cash_history->description       = 'Amount debited for Order Id: '.$this->data->order_id;
+            $cash_history->amount            = $this->transaction_amount;
+            $cash_history->description       = 'Amount debited for Transporter Payment - Order Id: '.$this->data->order_id;
             $cash_history->mode              = 'online';
             $cash_history->status            = 'debit';
             $cash_history->transaction_status= 'Amount debited';
@@ -141,7 +159,7 @@ class ReceivePayment extends Component
             $credit_history->user_id           = $this->data->customer_user_id;
             $credit_history->commodity_product_order_id = $this->hidden_id;
             $credit_history->amount            = $this->transaction_amount;
-            $credit_history->description       = 'Amount debited for Order Id: '.$this->data->order_id;
+            $credit_history->description       = 'Amount debited for Transporter Payment - Order Id: '.$this->data->order_id;
             $credit_history->status            = 'debit';
             $credit_history->transaction_status= 'Amount debited';
             $credit_history->save();
@@ -151,7 +169,7 @@ class ReceivePayment extends Component
 
         }
 
-        session()->flash('success', 'Payment received successfully.');
+        session()->flash('success', 'Transporter payment received successfully.');
         return $this->redirectRoute('admin.commodity-product-order.ledger', $this->hidden_id, navigate: true);
     }
 }

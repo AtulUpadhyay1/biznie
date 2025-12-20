@@ -19,11 +19,11 @@
                         </div>
                         <div class="col-12 text-center mt-3">
                             <div class="btn-group mb-3 mb-md-0" role="group" aria-label="Basic example">
-                                <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-sm btn-primary btn-icon-text" wire:navigate>
+                                <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
                                     <i class="bi bi-box icon-sm"></i> For Order
                                 </a>
 
-                                <a href="{{route('admin.commodity-product-order.transporter-receive-payment', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
+                                <a href="{{route('admin.commodity-product-order.transporter-receive-payment', $data->id)}}" class="btn btn-sm btn-primary btn-icon-text" wire:navigate>
                                     <i class="bi bi-truck icon-sm"></i> For Transporter
                                 </a>
                             </div>
@@ -43,9 +43,17 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <p>
-                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($data->buyer_invoice_amount) ?? formatIndianNumber($data->total_amount) }} <br>
-                                    <b>Paid Amount:</b> ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
-                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($data->buyer_invoice_amount) ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount) : formatIndianNumber($data->due_amount) }} <br>
+                                    @php
+                                        $transporter_total = $data->transport_price ?? 0;
+                                        $transporter_paid = App\Models\CommodityProductOrderLedger::where('order_id', $data->id)
+                                            ->where('ledger_type', 'transporter')
+                                            ->where('type', 'credit')
+                                            ->sum('amount');
+                                        $transporter_due = $transporter_total - $transporter_paid;
+                                    @endphp
+                                    <b>Transport Amount:</b> ₹ {{ formatIndianNumber($transporter_total) }} <br>
+                                    <b>Paid Amount:</b> ₹ {{ formatIndianNumber($transporter_paid) }} <br>
+                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($transporter_due) }} <br>
                                 </p>
                             </div>
                             <div class="col-3 mb-3 text-end">
