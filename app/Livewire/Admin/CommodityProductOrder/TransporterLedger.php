@@ -87,7 +87,7 @@ class TransporterLedger extends Component
             return;
         }
 
-        $remaining_balance = ($ledgers ? $ledgers->remaining_balance : $order->total_freight_amount) - $this->amount;
+        $remaining_balance = ($ledgers ? $ledgers->remaining_balance : $order->transporter_invoice_amount) - $this->amount;
 
         $ledger                       = new CommodityProductTransporterOrderLedger;
         $ledger->order_id             = $order->id;
