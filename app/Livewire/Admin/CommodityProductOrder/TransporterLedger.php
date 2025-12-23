@@ -53,7 +53,7 @@ class TransporterLedger extends Component
             'driver_id' => 'required|exists:commodity_product_order_drivers,id',
         ]);
 
-        if($this->amount > $order->total_freight_amount){
+        if($this->amount > $order->transporter_invoice_amount){
             $this->dispatch('alert',
                 type: 'error',
                 message: 'You cannot pay more than the actual amount.',

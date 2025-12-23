@@ -424,6 +424,7 @@ class Show extends Component
 
         $invoice_arr[] = $invoice_data;
         $data->transporter_invoices = $invoice_arr;
+        $data->transporter_invoice_amount += $this->transporter_invoice_amount ?? 0;
         $data->save();
 
         session()->flash('success', 'Transporter invoice updated successfully !!');

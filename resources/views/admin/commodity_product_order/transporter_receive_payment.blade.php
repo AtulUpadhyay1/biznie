@@ -43,17 +43,9 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <p>
-                                    @php
-                                        $transporter_total = $data->transport_price ?? 0;
-                                        $transporter_paid = App\Models\CommodityProductOrderLedger::where('order_id', $data->id)
-                                            ->where('ledger_type', 'transporter')
-                                            ->where('type', 'credit')
-                                            ->sum('amount');
-                                        $transporter_due = $transporter_total - $transporter_paid;
-                                    @endphp
-                                    <b>Transport Amount:</b> ₹ {{ formatIndianNumber($transporter_total) }} <br>
+                                    <b>Transport Amount:</b> ₹ {{ formatIndianNumber($data->transporter_invoice_amount ?? 0) }} <br>
                                     <b>Paid Amount:</b> ₹ {{ formatIndianNumber($transporter_paid) }} <br>
-                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($transporter_due) }} <br>
+                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($data->transporter_invoice_amount - $transporter_paid) }} <br>
                                 </p>
                             </div>
                             <div class="col-3 mb-3 text-end">

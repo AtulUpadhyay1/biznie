@@ -24,7 +24,11 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <h6>Due Amount : ₹ {{ formatIndianNumber($data->total_freight_amount) }} | Paid Amount : ₹ {{ $total_paid }}</h6>
+                            <h6>
+                                Transport Amount: ₹ {{ formatIndianNumber($data->transporter_invoice_amount) }} <br>
+                                Total Paid Amount: ₹ {{ $total_paid }} <br>
+                                Remaining Amount: ₹ {{ formatIndianNumber($data->transporter_invoice_amount - $total_paid) }}
+                            </h6>
                         </div>
                         <div class="col-md-4 text-end">
                             <button type="button" class="btn btn-info btn-xs mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">

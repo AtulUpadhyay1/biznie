@@ -191,6 +191,13 @@ class Transporter extends Component
         $data->is_mark = 1;
         $data->save();
 
+        $order = CommodityProductOrder::where('product_enquiries_id', $data->product_enquiries_id)->first();
+
+        if($order){
+            $order->transporter_user_id = $data->user_id;
+            $order->save();
+        }
+
         if($enquiry->history != "Transporter Marked"){
             $enquiry->status = 'Transporter Marked';
             $history = $enquiry->history;

@@ -30,7 +30,11 @@ class TransporterReceivePayment extends Component
 
     public function render()
     {
-        return view('admin.commodity_product_order.transporter_receive_payment');
+        $transporter_paid = CommodityProductOrderLedger::where('order_id', $this->hidden_id)
+            ->where('ledger_type', 'transporter')
+            ->where('type', 'credit')
+            ->sum('amount');
+        return view('admin.commodity_product_order.transporter_receive_payment', compact('transporter_paid'));
     }
 
     public function save()
@@ -56,10 +60,8 @@ class TransporterReceivePayment extends Component
             'transaction_amount' => 'required|numeric|min:0',
         ]);
 
-        // Calculate transporter due amount from transport_price
-        $transporter_total = $order->transport_price ?? 0;
+        $transporter_total = $order->transporter_invoice_amount ?? 0;
 
-        // Get already paid amount to transporter
         $transporter_paid = CommodityProductOrderLedger::where('order_id', $this->hidden_id)
             ->where('ledger_type', 'transporter')
             ->where('type', 'credit')
