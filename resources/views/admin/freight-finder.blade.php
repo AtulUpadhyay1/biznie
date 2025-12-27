@@ -2,13 +2,28 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title mb-4">Search Transporter by Location</h5>
-            
+
             <div class="row g-3">
-                <div class="col-md-5">
+                <div class="col-md-4">
+                    <label for="loading_address" class="form-label">Loading Address <span
+                            class="text-danger">*</span></label>
+                    <select wire:model.live="loading_address" id="loading_address" class="form-select">
+                        <option value="">Select Loading Address</option>
+                        @foreach ($loading_addresses as $addressOption)
+                            <option value="{{ $addressOption }}">{{ $addressOption }}</option>
+                        @endforeach
+                    </select>
+                    @error('loading_address')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="col-md-4">
                     <label for="state" class="form-label">State <span class="text-danger">*</span></label>
-                    <select wire:model.live="state" id="state" class="form-select">
+                    <select wire:model.live="state" id="state" class="form-select"
+                        {{ empty($states) ? 'disabled' : '' }}>
                         <option value="">Select State</option>
-                        @foreach($states as $stateOption)
+                        @foreach ($states as $stateOption)
                             <option value="{{ $stateOption }}">{{ $stateOption }}</option>
                         @endforeach
                     </select>
@@ -17,11 +32,11 @@
                     @enderror
                 </div>
 
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <label for="city" class="form-label">City <span class="text-danger">*</span></label>
                     <select wire:model="city" id="city" class="form-select" {{ empty($cities) ? 'disabled' : '' }}>
                         <option value="">Select City</option>
-                        @foreach($cities as $cityOption)
+                        @foreach ($cities as $cityOption)
                             <option value="{{ $cityOption }}">{{ $cityOption }}</option>
                         @endforeach
                     </select>
@@ -30,29 +45,29 @@
                     @enderror
                 </div>
 
-                <div class="col-md-2 d-flex align-items-end">
+                <div class="col-12 d-flex align-items-end">
                     <button type="button" wire:click="search" class="btn btn-primary me-2 btn-sm">
-                        <i class="bi bi-search"></i>
+                        <i class="bi bi-search"></i> Search
                     </button>
                     <button type="button" wire:click="clearFilters" class="btn btn-secondary btn-sm">
-                        <i class="bi bi-arrow-clockwise"></i>
+                        <i class="bi bi-arrow-clockwise"></i> Reset
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    @if($showResults)
+    @if ($showResults)
         <div class="card mt-4">
             <div class="card-body">
                 <h5 class="card-title mb-4">
                     Transporter Results
-                    @if($transporters->count() > 0)
+                    @if ($transporters->count() > 0)
                         <span class="badge bg-primary">{{ $transporters->count() }} Found</span>
                     @endif
                 </h5>
 
-                @if($transporters->count() > 0)
+                @if ($transporters->count() > 0)
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -69,18 +84,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($transporters as $index => $transporter)
+                                @foreach ($transporters as $index => $transporter)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>
-                                            @if($transporter->getUser)
+                                            @if ($transporter->getUser)
                                                 {{ $transporter->getUser->name }}
                                             @else
                                                 <span class="text-muted">N/A</span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if($transporter->getUser && $transporter->getUser->phone)
+                                            @if ($transporter->getUser && $transporter->getUser->phone)
                                                 {{ $transporter->getUser->phone }}
                                             @else
                                                 <span class="text-muted">N/A</span>
@@ -99,7 +114,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            @if($transporter->loading_address)
+                                            @if ($transporter->loading_address)
                                                 {{ Str::limit($transporter->loading_address, 50) }}
                                             @else
                                                 <span class="text-muted">N/A</span>
@@ -116,7 +131,8 @@
                 @else
                     <div class="alert alert-info" role="alert">
                         <i class="bi bi-info-circle me-2"></i>
-                        No transporters found for <strong>{{ $city }}, {{ $state }}</strong>. Please try a different location.
+                        No transporters found for <strong>{{ $loading_address }} - {{ $city }},
+                            {{ $state }}</strong>. Please try a different selection.
                     </div>
                 @endif
             </div>
