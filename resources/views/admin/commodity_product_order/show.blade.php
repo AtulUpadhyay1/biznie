@@ -846,9 +846,9 @@
                                         <p><span class="text-danger">Freight : </span> ₹
                                             {{ formatIndianNumber($custmoer_enq_data['transport_price']) }}/Metric Ton
                                         </p>
-                                        <p><span class="text-danger">Total Freight : </span> ₹
+                                        {{-- <p><span class="text-danger">Total Freight : </span> ₹
                                             {{ formatIndianNumber($custmoer_enq_data['total_freight']) }}
-                                        </p>
+                                        </p> --}}
                                         <small class="text-success">
                                             Freight May Change +/- 100. <br>
                                             (Freight Depends On Demand & Supply of Trucks On Loading Day)
