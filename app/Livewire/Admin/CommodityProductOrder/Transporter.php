@@ -177,13 +177,13 @@ class Transporter extends Component
     {
         $enquiry = ProductEnquiry::findOrFail($this->hidden_id);
 
-        if($enquiry && $enquiry->status == 'ordered'){
-            $this->dispatch('alert',
-                type : 'error',
-                message : 'This enquiry has been converted to an order.',
-            );
-            return false;
-        }
+        // if($enquiry && $enquiry->status == 'ordered'){
+        //     $this->dispatch('alert',
+        //         type : 'error',
+        //         message : 'This enquiry has been converted to an order.',
+        //     );
+        //     return false;
+        // }
 
         TransporterProductEnquiry::where('product_enquiries_id', $this->hidden_id)->update(['is_mark' => 0]);
 
