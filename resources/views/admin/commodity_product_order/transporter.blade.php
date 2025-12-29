@@ -59,7 +59,7 @@
                                             @if ($transporter_data->enquiry_data && $transporter_data->enquiry_data->price)
                                                 Updated Price: ₹ {{ number_format($transporter_data->enquiry_data->price) }} <button class="btn btn-info btn-sm p-0" title="Update Price" data-bs-toggle="modal" data-bs-target="#updateTransporterPrice_{{ $transporter_data->enquiry_data->id }}" wire:click="setTransporterPrice({{ $transporter_data->enquiry_data->id }})"><i class="bi bi-pencil-square"></i></button>
                                                 <br><span class="badge bg-info">{{ ucfirst($transporter_data->enquiry_data->status) }}</span>
-                                            @else
+                                            @elseif ($transporter_data->enquiry_data)
                                                 <button class="btn btn-info btn-sm p-0" title="Update Price" data-bs-toggle="modal" data-bs-target="#updateTransporterPrice_{{ $transporter_data->enquiry_data->id }}" wire:click="setTransporterPrice({{ $transporter_data->enquiry_data->id }})"><i class="bi bi-pencil-square"></i> Update Price</button>
                                             @endif
                                         </td>
