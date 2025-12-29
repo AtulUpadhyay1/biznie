@@ -108,7 +108,10 @@ class OrderDetailResource extends JsonResource
 
         $seller_commodity_product   = SellerCommodityProduct::where('user_id', $this->seller_user_id)->where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();
 
-        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($this->product_enquiries_id);
+        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser', 'getMarkedTransporterEnquiry')->findOrFail($this->product_enquiries_id);
+        if($enquiry_data->getMarkedTransporterEnquiry){
+            $data['transport_price'] = $enquiry_data->getMarkedTransporterEnquiry->price;
+        }
         $markedSeller = $enquiry_data->getMarkedSellerProductEnquiry;
         $data['commission_type'] = $markedSeller->commission_type;
         $data['credit_days'] = $markedSeller->customer_credit_days ? $markedSeller->customer_credit_days : $enquiry_data->getUser->credit_days;
