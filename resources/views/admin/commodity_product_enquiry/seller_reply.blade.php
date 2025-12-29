@@ -351,7 +351,7 @@
                                                             <div class="col-md-6">
                                                                 <b>Name : </b> {{ $list_data->getUser->name }} <br>
                                                                 <b>Company Name: </b> {{ $list_data->getUser->getBusiness->name }} <br>
-                                                                <b>GST : </b> {{ $list_data->getUser->getUserDetail ? $list_data->getUser->getUserDetail->gst_number : '--' }} <br>
+                                                                <b>GST : </b> {{ $list_data->getUser->getSellerKycDetail ? $list_data->getUser->getSellerKycDetail->gst_number : '--' }} <br>
                                                                 <b>Phone : </b> {{$list_data->getUser->phone}} <br>
                                                                 <b>Brand</b> : {{ $list_data->getBrand->name }} <br>
                                                                 <b>State</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }} <br>
