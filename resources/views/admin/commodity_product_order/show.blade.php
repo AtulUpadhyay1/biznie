@@ -909,7 +909,7 @@
                         <div class="col-6">
                             <p>
                                 <b>Total Amount:</b> ₹
-                                {{ formatIndianNumber($data->buyer_invoice_amount) ?? formatIndianNumber($data->total_amount) }}
+                                {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }}
                                 <br>
                                 <b>Paid Amount:</b> ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
                                 <b>Remaining Amount:</b> ₹
