@@ -67,7 +67,7 @@
                                         </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td>
-                                            Total Amount: ₹ {{ formatIndianNumber($data->buyer_invoice_amount) ?? formatIndianNumber($data->total_amount) }} <br>
+                                            Total Amount: ₹ {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }} <br>
                                             Paid Amount: ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
                                             Remaining Amount: ₹ {{ formatIndianNumber($data->buyer_invoice_amount) ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount) : formatIndianNumber($data->due_amount) }}
                                         </td>
