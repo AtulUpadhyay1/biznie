@@ -17,10 +17,10 @@
                     <i class="btn-icon-prepend" data-feather="printer"></i>
                     Print
                 </button> --}}
-                <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0" wire:click="notificationTest()">
+                {{-- <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0" wire:click="notificationTest()">
                     <i class="bi bi-cloud-download btn-icon-prepend"></i>
                     Download Report
-                </button>
+                </button> --}}
             </div>
         </div>
 
@@ -182,6 +182,7 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Detail</th>
                                             <th scope="col">Contact Info</th>
+                                            <th scope="col">More Info</th>
                                             <th scope="col">Registered At</th>
                                             <th scope="col">KYC Status</th>
                                         </tr>
@@ -199,6 +200,10 @@
                                                     <i class="bi bi-telephone"></i><span class="ms-2">{{ $item->phone }}</span>
                                                     <br>
                                                     <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $item->email }}</span>
+                                                </td>
+                                                <td>
+                                                    <b>GSTIN: </b> {{ $item->getUserDetail ? $item->getUserDetail->gst_number : '--' }} <br>
+                                                    <b>PAN: </b> {{ $item->getUserDetail ? $item->getUserDetail->pan_number : '--' }}
                                                 </td>
                                                 <td>{{ dateTimeFormat($item->created_at) }}</td>
                                                 <td>

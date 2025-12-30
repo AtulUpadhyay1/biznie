@@ -47,6 +47,7 @@ class ProductEnquiryResource extends JsonResource
             'min_price'         => $this->min_price,
             'max_price'         => $this->max_price,
             'price'             => $this->price,
+            'is_mark'           => $this->is_mark,
             'status'            => $this->status,
             'history'           => $this->history
         ];

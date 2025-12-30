@@ -101,6 +101,33 @@ class Payments extends Component
             );
             return ;
         }
+
+        if($this->payment_method == 'cash_balance'){
+            if($user->cash_balance < $this->amount){
+                $this->dispatch('alert',
+                    type : 'error',
+                    message : 'Insufficient cash wallet balance.',
+                );
+                return ;
+            }
+            $user->cash_balance -= $this->amount;
+            $user->save();
+
+            $transaction = new CashWalletTransaction;
+            $transaction->user_id = $user->id;
+            $transaction->amount = $this->amount;
+            $transaction->mode = $this->payment_method;
+            $transaction->description = $this->description;
+            $transaction->notes = $this->notes;
+            $transaction->status = 'debit';
+            $transaction->transaction_status = 'Fund deducted for credit wallet by admin';
+            $transaction->save();
+
+            $transaction->transaction_id = 'TX-'.date('Ymd').$transaction->id.$transaction->user_id.rand(111, 999);
+            $transaction->save();
+
+        }
+
         $user->credit_balance += $this->amount;
         $user->save();
 

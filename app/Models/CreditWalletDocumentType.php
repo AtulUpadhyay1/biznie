@@ -13,6 +13,7 @@ class CreditWalletDocumentType extends Model
     protected $casts = [
         'title'         => 'array',
         'description'   => 'array',
+        'forms'         => 'array',
     ];
 
     public function scopeActive($query)

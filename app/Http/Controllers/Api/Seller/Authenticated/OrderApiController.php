@@ -16,10 +16,13 @@ use App\Http\Resources\Seller\OrderDetailResource;
 
 class OrderApiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
         $list = CommodityProductOrder::where('seller_user_id', $user_id)
+            ->when($request->status, function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
             ->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit', 'getProductEnquiry')
             ->latest()
             ->paginate(getPaginate());
@@ -28,7 +31,7 @@ class OrderApiController extends Controller
 
     public function show($id)
     {
-        $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit', 'getCommodityProduct.getCategory', 'getDrivers')->find($id);
+        $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getProductEnquiry', 'getCommodityProduct.getUnit', 'getCommodityProduct.getCategory', 'getDrivers')->find($id);
         if(!$data){
             return response([
                 'success'   => false,

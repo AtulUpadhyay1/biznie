@@ -38,6 +38,7 @@
                                     <th>Transporter</th>
                                     <th>Status</th>
                                     <th>Created At</th>
+                                    <th>Amount Details</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -65,6 +66,11 @@
                                             {{ ucfirst($data->status) }}
                                         </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
+                                        <td>
+                                            Total Amount: ₹ {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }} <br>
+                                            Paid Amount: ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
+                                            Remaining Amount: ₹ {{ formatIndianNumber($data->buyer_invoice_amount) ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount) : formatIndianNumber($data->due_amount) }}
+                                        </td>
                                         <td class="text-center">
                                             <a type="button" id="ActionBtn{{$data->id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-light btn-xs px-2">
                                                 <i class="bi bi-three-dots-vertical icon-lg text-dark"></i>

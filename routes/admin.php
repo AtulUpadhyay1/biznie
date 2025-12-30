@@ -179,9 +179,11 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product-order/print-invoice/{id}', AdminRoot\CommodityProductOrder\PrintInvoice::class)->name('commodity-product-order.printInvoice');
         Route::get('commodity-product-order/history/{id}', AdminRoot\CommodityProductOrder\History::class)->name('commodity-product-order.history');
         Route::get('commodity-product-order/edit/{id}', AdminRoot\CommodityProductOrder\Edit::class)->name('commodity-product-order.edit');
+        Route::get('commodity-product-order/transporter/{id}', AdminRoot\CommodityProductOrder\Transporter::class)->name('commodity-product-order.transporter');
 
         // Commodity Product Order Payment
         Route::get('commodity-product-order/payment/{id}', AdminRoot\CommodityProductOrder\ReceivePayment::class)->name('commodity-product-order.receive-payment');
+        Route::get('commodity-product-order/transporter-payment/{id}', AdminRoot\CommodityProductOrder\TransporterReceivePayment::class)->name('commodity-product-order.transporter-receive-payment');
         Route::get('commodity-product-order/seller-payment/{id}', AdminRoot\CommodityProductOrder\SendPayment::class)->name('commodity-product-order.send-payment');
 
         // Commodity Product Order Payment History
@@ -199,6 +201,9 @@ Route::group(['as'=>'admin.'], function () {
 
         // Product wise seller and buyer
         Route::get('product-wise-seller-buyer', AdminRoot\ProductWiseSellerBuyer\Index::class)->name('product-wise-seller-buyer.index');
+
+        // Latest Price Update
+        Route::get('latest-price-update', AdminRoot\LatestPriceUpdate\Index::class)->name('latest-price-update.index');
 
         // Banner
         Route::get('banner', AdminRoot\Banner\Index::class)->name('banner.index');
@@ -243,6 +248,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('website-setup/product-delivery-info', AdminRoot\WebsiteSetup\ProductDeliveryInfo::class)->name('website_setup.product_delivery_info');
         Route::get('website-setup/product-terms-condition', AdminRoot\WebsiteSetup\ProductTermsCondition::class)->name('website_setup.product_terms');
         Route::get('website-setup/product-add-process', AdminRoot\WebsiteSetup\ProductAddProcess::class)->name('website_setup.product_add_process');
+        Route::get('website-setup/notification-setting', AdminRoot\WebsiteSetup\NotificationSetting::class)->name('website_setup.notification_setting');
 
         // Seller Tag
         Route::get('seller-tag', AdminRoot\SellerTag\Index::class)->name('seller-tag.index');

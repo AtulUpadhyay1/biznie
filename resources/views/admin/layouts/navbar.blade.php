@@ -111,6 +111,11 @@
                    Product Add Process
                 </button>
             </li>
+            <li class="nav-item me-3">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#freightFinderModal">
+                   Freight Finder
+                </button>
+            </li>
             <livewire:Admin.Notification.NavbarNotification />
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
@@ -176,6 +181,26 @@
             </div>
             <div class="modal-body">
                 {!! websiteSetupValue('product_add_process') !!}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Freight Finder Modal -->
+<div class="modal fade" id="freightFinderModal" tabindex="-1" aria-labelledby="freightFinderModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="freightFinderModalLabel">
+                    <i class="bi bi-truck me-2"></i>Freight Finder
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <livewire:Admin.FreightFinder />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

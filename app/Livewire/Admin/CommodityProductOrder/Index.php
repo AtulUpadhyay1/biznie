@@ -20,7 +20,10 @@ class Index extends Component
 
     public function render()
     {
-        $list = CommodityProductOrder::search($this->search)->with('getCommodityProduct', 'getBrand', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')->latest()->paginate(getPaginate());
+        $list = CommodityProductOrder::search($this->search)
+            ->with('getCommodityProduct', 'getBrand', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')
+            ->latest()
+            ->paginate(getPaginate());
         $total = $list->total();
         return view('admin.commodity_product_order.index', compact('list', 'total'));
     }

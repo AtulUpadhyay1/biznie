@@ -206,6 +206,7 @@ if(!function_exists('formatIndianNumber')){
         }
 
         // Return the formatted number
+        return $whole;
         return $whole . $decimal;
     }
 }

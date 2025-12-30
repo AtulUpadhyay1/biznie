@@ -24,7 +24,10 @@ class ProfileResource extends JsonResource
             'credit_availability' => null,
             'business_details'  => null,
             'kyc_details'       => null,
+            'status'            => $this->status,
+            'block_reason'      => $this->block_reason ?? null,
             'is_staff'          => (int) $this->is_staff,
+            'role'              => $this->role ?? null,
             'permission'        => $this->permission ? $this->permission : [],
         ];
 

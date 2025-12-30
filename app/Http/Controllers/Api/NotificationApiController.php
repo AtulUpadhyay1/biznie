@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Models\NotificationSetting;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotificationResource;
 
@@ -70,6 +71,65 @@ class NotificationApiController extends Controller
             'message'   => 'Token updated successfully.',
         ],200);
 
+    }
+
+    public function getSettings()
+    {
+        $data = NotificationSetting::where('model', User::class)
+            ->where('model_id', auth()->id())
+            ->first();
+        $setting = [
+            'notify_new_order_enquiry'  => true,
+            'notify_seller_reply'       => true,
+            'notify_booking_confirmed'  => true,
+        ];
+
+        if ($data) {
+            $setting = [
+                'notify_new_order_enquiry'  => (bool) $data->notify_new_order_enquiry,
+                'notify_seller_reply'       => (bool) $data->notify_seller_reply,
+                'notify_booking_confirmed'  => (bool) $data->notify_booking_confirmed,
+            ];
+        }
+
+        return response()->json([
+            'success'   => true,
+            'setting'   => $setting,
+        ], 200);
+
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $this->validate($request, [
+            'notify_new_order_enquiry'  => 'required|boolean',
+            'notify_seller_reply'       => 'required|boolean',
+            'notify_booking_confirmed'  => 'required|boolean',
+        ]);
+
+        $data = NotificationSetting::where('model', User::class)
+            ->where('model_id', auth()->id())
+            ->first();
+
+        $settingData = [
+            'notify_new_order_enquiry'  => (bool) $request->notify_new_order_enquiry,
+            'notify_seller_reply'       => (bool) $request->notify_seller_reply,
+            'notify_booking_confirmed'  => (bool) $request->notify_booking_confirmed,
+        ];
+
+        if ($data) {
+            $data->update($settingData);
+        } else {
+            NotificationSetting::create(array_merge([
+                'model'     => User::class,
+                'model_id'  => auth()->id(),
+            ], $settingData));
+        }
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Notification settings updated successfully.',
+        ], 200);
     }
 
 }

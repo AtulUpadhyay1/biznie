@@ -62,7 +62,10 @@
                                         <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
                                         <td>
                                             <b>Name: </b> {{ $data->name }} <br>
-                                            <b>Company Name: </b> {{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }}
+                                            <b>Company Name: </b> {{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }} <br>
+                                            <b>GSTIN:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->gst_number : '--' }}</span><br>
+                                            <b>PAN:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->pan_number : '--' }}</span><br>
+                                            <b>City: </b>{{ $data->getUserDetail ? $data->getUserDetail->city : '--' }}
                                         </td>
                                         <td>
                                             <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>

@@ -76,10 +76,12 @@ class ProductEnquiryDetailResource extends JsonResource
             'transport_price'   => 0,
             'for_price'         => 0,
             'required_booking_amount' => 0,
+            'token_amount'      => $this->getCommodityProductOrder ? $this->getCommodityProductOrder->token_amount : 0,
             'is_mark'           => false,
             'status'            => $this->status,
             'created_at'        => dateTimeFormat($this->created_at),
             'credit_days'       => auth()->user()->credit_days,
+            'load_within'       => 0,
         ];
         $markedSeller = $this->getMarkedSellerProductEnquiry;
         if($markedSeller){
@@ -93,6 +95,7 @@ class ProductEnquiryDetailResource extends JsonResource
             if($data['commission_type'] == 'exclude'){
                 $data['base_price'] += $data['commission'];
             }
+            $data['load_within'] = (int)$markedSeller->load_within;
 
             $seller_commodity_product   = SellerCommodityProduct::where('user_id', $markedSeller->user_id)->where('commodity_product_id', $markedSeller->commodity_product_id)->where('brand_id', $markedSeller->brand_id)->first();
 

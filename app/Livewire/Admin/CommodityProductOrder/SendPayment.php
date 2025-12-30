@@ -25,17 +25,10 @@ class SendPayment extends Component
         $paid_amount = CommodityProductSellerOrderLedger::where('order_id', $this->hidden_id)
             ->where('type', 'debit')
             ->sum('amount');
-        $remaining_balance = CommodityProductSellerOrderLedger::where('order_id', $this->hidden_id)
-            ->orderBy('id', 'DESC')
-            ->first();
-        if($remaining_balance){
-            $remaining_balance = $remaining_balance->remaining_balance;
-        } else {
-            $remaining_balance = 0;
-        }
 
-        $total_amoount = $remaining_balance + $paid_amount;
-        return view('admin.commodity_product_order.send_payment', compact('total_amoount', 'paid_amount', 'remaining_balance'));
+        $total_amount = $this->data->seller_invoice_amount ?? $this->data->total_amount;
+        $remaining_balance = $total_amount - $paid_amount;
+        return view('admin.commodity_product_order.send_payment', compact('paid_amount', 'remaining_balance', 'total_amount'));
     }
 
     public function save()
@@ -55,7 +48,14 @@ class SendPayment extends Component
 
         $ledgers = CommodityProductSellerOrderLedger::where('order_id', $this->hidden_id)->orderBy('id', 'DESC')->first();
 
-        if($ledgers && $ledgers->remaining_balance <= 0){
+        $paid_amount = CommodityProductSellerOrderLedger::where('order_id', $this->hidden_id)
+            ->where('type', 'debit')
+            ->sum('amount');
+
+        $total_amount = $this->data->seller_invoice_amount ?? $this->data->total_amount;
+        $remaining_balance = $total_amount - $paid_amount;
+
+        if($ledgers && $remaining_balance <= 0){
             $this->dispatch('alert',
                 type: 'error',
                 message: 'Order already paid.',
@@ -71,7 +71,7 @@ class SendPayment extends Component
             return;
         }
 
-        if($ledgers->remaining_balance < $this->transaction_amount){
+        if($remaining_balance < $this->transaction_amount){
             $this->dispatch('alert',
                 type: 'error',
                 message: 'Transaction amount must be less than or equal to remaining balance.',
@@ -84,7 +84,7 @@ class SendPayment extends Component
         $ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
         $ledger->type                 = 'debit';
         $ledger->amount               = $this->transaction_amount;
-        $ledger->remaining_balance    = $ledgers->remaining_balance - $this->transaction_amount;
+        $ledger->remaining_balance    = $remaining_balance;
         $ledger->transaction_account_name = $this->transaction_account_name;
         $ledger->transaction_account_number = $this->transaction_account_number;
         $ledger->transaction_bank_name = $this->transaction_bank_name;

@@ -13,6 +13,7 @@ use App\Models\SellerProductEnquiry;
 use Illuminate\Support\Facades\Mail;
 use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductState;
 use App\Models\ProductEnquiryHistory;
 use App\Models\SellerCommodityProduct;
 use App\Models\CreditWalletTransaction;
@@ -28,13 +29,15 @@ class ProductEnquiryApiController extends Controller
 {
     public function index()
     {
-        $list = ProductEnquiry::where('user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->latest()->paginate(getPaginate());
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+        $list = ProductEnquiry::where('user_id', $user_id)->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->latest()->paginate(getPaginate());
         return ProductEnquiryResource::collection($list);
     }
 
     public function show($id)
     {
-        $data = ProductEnquiry::with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry')->findOrFail($id);
+        $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
+        $data = ProductEnquiry::where('user_id', $user_id)->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getCommodityProductOrder')->findOrFail($id);
         return response([
             'success'   => true,
             'data'      => new ProductEnquiryDetailResource($data)
@@ -138,6 +141,19 @@ class ProductEnquiryApiController extends Controller
                 //     return $count === count($variation_arr);
                 // }));
 
+                $get_state_variation = CommodityProductState::where('commodity_product_id', $data->commodity_product_id)
+                    ->where('brand_id', $data->brand_id)
+                    ->first();
+                $loading_address = [];
+                if($get_state_variation){
+                    $loading_address = [[
+                        'address_line_one'  => $get_state_variation->address_line_one,
+                        'address_line_two'  => $get_state_variation->address_line_two,
+                        'pin_code'          => $get_state_variation->pincode,
+                        'city'              => $get_state_variation->city,
+                        'state'             => $get_state_variation->state,
+                    ]];
+                }
                 foreach ($seller_ids as $user_id) {
                     $product_state_prices = SellerCommodityProductStatePrice::where('user_id', $user_id)->where('commodity_product_id', $enquiry_data->commodity_product_id)->where('brand_id', $enquiry_data->brand_id)->where(function($query) use ($variation_arr){
                         foreach ($variation_arr as $variation) {
@@ -182,7 +198,17 @@ class ProductEnquiryApiController extends Controller
                     $data->message              = $enquiry_data->message;
                     $data->price                = $price_arr;
                     $data->base_price           = $seller_commodity_products->base_price ?? 0;
-                    $data->loading_address      = $seller_commodity_products->loading_address;
+                    // normalize seller loading_address to an array if needed
+                    if($get_state_variation){
+                        $data->loading_address = $loading_address;
+                    } else {
+                        $seller_loading_address = $seller_commodity_products->loading_address ?? [];
+                        if(!is_array($seller_loading_address)){
+                            $decoded = json_decode($seller_loading_address, true);
+                            $seller_loading_address = $decoded !== null ? $decoded : [$seller_loading_address];
+                        }
+                        $data->loading_address = $seller_loading_address;
+                    }
                     $data->status               = $data->status ?? 'pending';
                     if(!$data->history){
                         $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
@@ -321,15 +347,29 @@ class ProductEnquiryApiController extends Controller
     public function enquiryToOrder(Request $request, $id)
     {
         $request->validate([
-            'token_amount'  => 'required|numeric|min:1',
-            'total_amount'  => 'required|numeric|min:1'
+            'token_amount'      => 'required|numeric|min:1',
+            'total_amount'      => 'required|numeric|min:1',
+            'selected_wallet'   => 'required|in:cash_balance,credit_balance',
         ]);
 
-        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry')->find($id);
+        $enquiry_data = ProductEnquiry::with('getMarkedSellerProductEnquiry', 'getMarkedTransporterEnquiry', 'getMarkedSellerProductEnquiry.getUser')->find($id);
         $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
-
+        $mark_transporter = $enquiry_data->getMarkedTransporterEnquiry;
         $customer = User::find($mark_seller->customer_user_id);
-        $user_total_balance = $customer->cash_balance + $customer->credit_balance;
+
+        if($request->selected_wallet == 'cash_balance'){
+            $user_total_balance = $customer->cash_balance;
+        }elseif($request->selected_wallet == 'credit_balance'){
+            $user_total_balance = $customer->credit_balance;
+        }else{
+            return response([
+                'success'   => false,
+                'message'   => 'Invalid wallet selected.'
+            ], 400);
+        }
+
+        // $user_total_balance = $customer->cash_balance + $customer->credit_balance;
+
 
         if($request->token_amount > $user_total_balance){
             return response([
@@ -383,32 +423,76 @@ class ProductEnquiryApiController extends Controller
         $order->customer_quality_check_visibility = websiteSetupValue('customer_quality_check_visibility') ?? 0;
         $order->save();
 
-        $debit_ledger                       = new CommodityProductOrderLedger;
-        $debit_ledger->order_id             = $order->id;
-        $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $debit_ledger->type                 = 'debit';
-        $debit_ledger->amount               = $request->total_amount;
-        $debit_ledger->remaining_balance    = $request->total_amount;
-        $debit_ledger->description          = 'Amount debited for Order Id: '.$order->order_id;
-        $debit_ledger->save();
+        // $debit_ledger                       = new CommodityProductOrderLedger;
+        // $debit_ledger->order_id             = $order->id;
+        // $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        // $debit_ledger->type                 = 'debit';
+        // $debit_ledger->amount               = $request->total_amount;
+        // $debit_ledger->remaining_balance    = $request->total_amount;
+        // $debit_ledger->description          = 'Amount debited for Order Id: '.$order->order_id;
+        // $debit_ledger->save();
 
-        $credit_ledger                       = new CommodityProductOrderLedger;
-        $credit_ledger->order_id             = $order->id;
-        $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $credit_ledger->type                 = 'credit';
-        $credit_ledger->amount               = $request->token_amount;
-        $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $request->token_amount;
-        $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
-        $credit_ledger->save();
+        if($request->token_amount > 0){
+            $credit_ledger                       = new CommodityProductOrderLedger;
+            $credit_ledger->order_id             = $order->id;
+            $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+            $credit_ledger->type                 = 'credit';
+            $credit_ledger->amount               = $request->token_amount;
+            $credit_ledger->remaining_balance    = $request->total_amount - $request->token_amount;
+            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . ' for product token.';
+            $credit_ledger->save();
+        }
 
-        $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
-        $seller_credit_ledger->order_id             = $order->id;
-        $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $seller_credit_ledger->type                 = 'credit';
-        $seller_credit_ledger->amount               = $request->total_amount;
-        $seller_credit_ledger->remaining_balance    = $request->total_amount;
-        $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
-        $seller_credit_ledger->save();
+        // $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
+        // $seller_credit_ledger->order_id             = $order->id;
+        // $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        // $seller_credit_ledger->type                 = 'credit';
+        // $seller_credit_ledger->amount               = $request->total_amount;
+        // $seller_credit_ledger->remaining_balance    = $request->total_amount;
+        // $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
+        // $seller_credit_ledger->save();
+
+        if($request->selected_wallet == 'cash_balance'){
+            $customer->cash_balance = $customer->cash_balance - $request->token_amount;
+            $customer->save();
+
+            $cash_history = new CashWalletTransaction;
+            $cash_history->user_id           = $customer->id;
+            $cash_history->commodity_product_order_id   = $order->id;
+            $cash_history->amount            = $request->token_amount;
+            $cash_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $cash_history->mode              = 'online';
+            $cash_history->status            = 'debit';
+            $cash_history->transaction_status= 'Amount debited';
+            $cash_history->save();
+
+            $cash_history->transaction_id    = 'TX-'.date('Ymd').$cash_history->id.$customer->id.rand(111, 999);
+            $cash_history->save();
+
+        } elseif ($request->selected_wallet == 'credit_balance') {
+
+            $customer->credit_balance = $customer->credit_balance - $request->token_amount;
+            $customer->save();
+
+            $credit_history = new CreditWalletTransaction;
+            $credit_history->user_id           = $customer->id;
+            $credit_history->commodity_product_order_id   = $order->id;
+            $credit_history->amount            = $request->token_amount;
+            $credit_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $credit_history->mode              = 'online';
+            $credit_history->status            = 'debit';
+            $credit_history->transaction_status= 'Amount debited';
+            $credit_history->save();
+
+            $credit_history->transaction_id    = 'TX-'.date('Ymd').$credit_history->id.$customer->id.rand(111, 999);
+            $credit_history->save();
+
+        }
+
+        return response([
+            'success'   => true,
+            'message'   => 'Product ordered successfully.'
+        ],200);
 
         if($customer->cash_balance > $request->token_amount){
 

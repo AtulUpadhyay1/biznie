@@ -16,17 +16,24 @@ use App\Http\Resources\Customer\OrderDetailResource;
 
 class OrderApiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $list = CommodityProductOrder::where('customer_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit', 'getProductEnquiry')->latest()->paginate(getPaginate());
+        $list = CommodityProductOrder::where('customer_user_id', auth()->id())
+            ->when($request->status, function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
+            ->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit', 'getProductEnquiry')
+            ->latest()
+            ->paginate(getPaginate());
         return OrderResource::collection($list);
     }
 
     public function ledger($order_id)
     {
-        $list = CommodityProductOrderLedger::where('order_id', $order_id)
-            ->get(['transaction_id', 'type', 'amount', 'remaining_balance', 'description', 'created_at'])
+        $list = CommodityProductOrderLedger::where('order_id', $order_id)->latest()
+            ->get(['transaction_id', 'type', 'amount', 'remaining_balance', 'description', 'payment_mode', 'created_at'])
             ->map(function ($item) {
+                $item->payment_mode = $item->payment_mode ?? 'Manual';
                 $item->created_at_date = Carbon::parse($item->created_at)->format('d-m-Y H-i-s');
                 return $item;
             });
@@ -38,7 +45,7 @@ class OrderApiController extends Controller
 
     public function show($id)
     {
-        $data = CommodityProductOrder::where('customer_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getCommodityProduct.getUnit', 'getCommodityProduct.getCategory', 'getDrivers')->find($id);
+        $data = CommodityProductOrder::where('customer_user_id', auth()->id())->with('getBrand', 'getCommodityProduct', 'getProductEnquiry', 'getCommodityProduct.getUnit', 'getCommodityProduct.getCategory', 'getDrivers')->find($id);
         if(!$data){
             return response([
                 'success'   => false,

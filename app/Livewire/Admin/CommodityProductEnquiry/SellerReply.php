@@ -17,7 +17,7 @@ class SellerReply extends Component
     public $page_title = 'View Seller Reply';
     public $hidden_id, $selected_enquiry_id, $list, $data, $set_enquiry_data, $set_seller_commodity_product, $set_enquiry_quantity = [], $set_enquiry_data_price = [], $set_enquiry_data_base_price, $transport_price = 0, $commission = 200;
 
-    public $product_enquiry_data, $base_price, $selected_seller_commodity_product, $is_editable_commission = true;
+    public $main_product_enquiry, $product_enquiry_data, $base_price, $selected_seller_commodity_product, $is_editable_commission = true;
 
     public $transporter_list;
     public $transporter_enquiry, $transporter_price, $selected_transporter_id;
@@ -33,6 +33,8 @@ class SellerReply extends Component
     {
         $this->hidden_id = $id;
         $status = ['Mark For Sell', 'replied', 'ordered'];
+        $this->main_product_enquiry = ProductEnquiry::with('getBrand', 'getCommodityProduct')->findOrFail($this->hidden_id);
+
         $this->list = SellerProductEnquiry::where('product_enquiries_id', $this->hidden_id)
             ->with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct')
             ->orderBy('is_mark', 'DESC')
@@ -64,7 +66,10 @@ class SellerReply extends Component
         // if($selected_transporter){
         //     $this->transport_price = $selected_transporter->price;
         // }
-        return view('admin.commodity_product_enquiry.seller_reply', compact('selected_transporter'));
+        $loading_address = CommodityProductState::where('commodity_product_id', $this->main_product_enquiry->commodity_product_id)
+            ->where('brand_id', $this->main_product_enquiry->brand_id)
+            ->first();
+        return view('admin.commodity_product_enquiry.seller_reply', compact('selected_transporter', 'loading_address'));
     }
 
     public function updatePriceForm()
@@ -116,15 +121,18 @@ class SellerReply extends Component
             $this->transport_price = $this->set_enquiry_data->transport_price ? $this->set_enquiry_data->transport_price : 0;
             $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_seller_commodity_product->commission_amount;
 
-            $get_product_state = CommodityProductState::where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
-                ->where('brand_id', $this->set_enquiry_data->brand_id)
-                ->where('state', $state)
-                ->where('city', $city)
-                ->first();
+            // $get_product_state = CommodityProductState::where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
+            //     ->where('brand_id', $this->set_enquiry_data->brand_id)
+            //     ->where('state', $state)
+            //     ->where('city', $city)
+            //     ->first();
 
-            if($get_product_state){
-                $this->load_within = $get_product_state->load_within;
+            if($this->set_enquiry_data->load_within){
+                $this->load_within = $this->set_enquiry_data->load_within ? $this->set_enquiry_data->load_within : 0;
+            } elseif($seller_commodity_product){
+                $this->load_within = $seller_commodity_product->load_within;
             }
+
         }
     }
 

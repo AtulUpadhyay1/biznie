@@ -99,6 +99,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::delete('notification', 'NotificationApiController@destroy');
         Route::post('update-fcm-token', 'NotificationApiController@updateToken');
 
+        // Notification Settings
+        Route::get('notification-settings', 'NotificationApiController@getSettings');
+        Route::post('notification-settings', 'NotificationApiController@updateSettings');
+
         // Product enquiry
         Route::get('product-enquiry', 'ProductEnquiryApiController@index');
         Route::get('product-enquiry/{id}', 'ProductEnquiryApiController@show');
@@ -111,6 +115,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::get('credit-wallet', 'CreditWalletApiController@creditWallet');
         Route::get('credit-wallet-request', 'CreditWalletApiController@creditWalletRequestList');
         Route::post('credit-wallet-request', 'CreditWalletApiController@creditWalletRequest');
+        Route::get('credit-wallet-request/{id}', 'CreditWalletApiController@creditWalletRequestDetail');
+        Route::post('credit-wallet-request/{id}', 'CreditWalletApiController@creditWalletRequestUpdate');
 
         // Wallet Recharge
         Route::get('cash-wallet', 'CashWalletApiController@cashWallet');
@@ -195,6 +201,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
         Route::get('get-commodity-product-quality/{id}', 'Authenticated\CommodityProductApiController@getQuality');
         Route::post('update-commodity-product-quality/{id}', 'Authenticated\CommodityProductApiController@updateQuality');
         Route::post('update-commodity-product-status/{id}', 'Authenticated\CommodityProductApiController@updateStatus');
+        Route::post('update-commodity-product-load-within/{id}', 'Authenticated\CommodityProductApiController@updateLoadWithin');
 
         // Product enquiry
         Route::get('product-enquiry', 'Authenticated\ProductEnquiryApiController@index');

@@ -55,4 +55,9 @@ class SellerProductEnquiry extends Model
     {
         return $this->hasOne(CommodityProductOrder::class, 'seller_product_enquiries_id');
     }
+
+    public function getProductEnquiry()
+    {
+        return $this->belongsTo(ProductEnquiry::class, 'product_enquiries_id');
+    }
 }

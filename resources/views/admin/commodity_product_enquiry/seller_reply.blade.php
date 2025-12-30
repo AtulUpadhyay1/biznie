@@ -16,7 +16,119 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Request For Quotation</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Enquiry ID: {{ $main_product_enquiry->unique_id }} <br>
+                                        Category: {{ $main_product_enquiry->getCommodityProduct->getCategory->name }} <br>
+                                        Product: {{ $main_product_enquiry->getCommodityProduct->name }} <br>
+                                        Brand: {{ $main_product_enquiry->getBrand->name }} <br>
+                                        Purpose: {{ $main_product_enquiry->purpose }} <br>
+                                        Description: {{ $main_product_enquiry->description }} <br>
+                                        @if($main_product_enquiry->quality)
+                                            Quality: {{ $main_product_enquiry->quality['name'] }} : ₹ {{ $main_product_enquiry->quality['price'] }} <br>
+                                        @endif
+                                        @if ($main_product_enquiry->packaging_charge)
+                                            Packaging Charge: {{ $main_product_enquiry->packaging_charge['name'] }} : ₹ {{ $main_product_enquiry->packaging_charge['charge'] }}  <br>
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Buyer Details</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Company : {{ $main_product_enquiry->getUser->getUserDetail->company_name }}<br>
+                                        Phone : {{ $main_product_enquiry->getUser->phone }} <br>
+                                        GST : {{ $main_product_enquiry->getUser->getUserDetail->gst_number }} <br>
+                                        Address Line1 : {{ $main_product_enquiry->getUser->getUserDetail->address_line_one }} <br>
+                                        Address Line2 : {{ $main_product_enquiry->getUser->getUserDetail->address_line_two }} <br>
+                                        City : {{ $main_product_enquiry->getUser->getUserDetail->city }} <br>
+                                        State : {{ $main_product_enquiry->getUser->getUserDetail->state }} <br>
+                                        Pincode : {{ $main_product_enquiry->getUser->getUserDetail->postal_code }} <br>
+                                        Credit Days : {{ $main_product_enquiry->getUser->credit_days }} Days <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Buyer (Bill to)</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Company : {{ $main_product_enquiry->billing_address['company_name'] }}<br>
+                                        Phone : {{ $main_product_enquiry->billing_address['phone'] }} <br>
+                                        GST : {{ $main_product_enquiry->billing_address['gst'] }} <br>
+                                        Address Line1 : {{ $main_product_enquiry->billing_address['address_line_one'] }} <br>
+                                        Address Line2 : {{ $main_product_enquiry->billing_address['address_line_two'] }} <br>
+                                        State : {{ $main_product_enquiry->billing_address['state'] }} <br>
+                                        City : {{ $main_product_enquiry->billing_address['city'] }} <br>
+                                        Pincode : {{ isset($main_product_enquiry->consignee_detail['pin_code']) ? $main_product_enquiry->consignee_detail['pin_code'] : (isset($main_product_enquiry->billing_address['pincode']) ? $main_product_enquiry->billing_address['pincode'] : '') }} <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Consignee (Ship to)</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p>
+                                        Company : {{ $main_product_enquiry->consignee_detail['company_name'] }}<br>
+                                        Phone : {{ $main_product_enquiry->consignee_detail['phone'] }} <br>
+                                        GST : {{ $main_product_enquiry->consignee_detail['gst'] }} <br>
+                                        Address Line1 : {{ $main_product_enquiry->consignee_detail['address_line_one'] }} <br>
+                                        Address Line2 : {{ $main_product_enquiry->consignee_detail['address_line_two'] }} <br>
+                                        State : {{ $main_product_enquiry->consignee_detail['state'] }} <br>
+                                        City : {{ $main_product_enquiry->consignee_detail['city'] }} <br>
+                                        Pincode : {{ isset($main_product_enquiry->consignee_detail['pin_code']) ? $main_product_enquiry->consignee_detail['pin_code'] : (isset($data->billing_address['pincode']) ? $data->billing_address['pincode'] : '') }} <br>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Loading Address</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    @if($loading_address)
+                                        <p>
+                                            Address Line One : {{ $loading_address->address_line_one }} <br>
+                                            Address Line Two : {{ $loading_address->address_line_two }} <br>
+                                            City : {{ $loading_address->city }} <br>
+                                            State : {{ $loading_address->state }} <br>
+                                            Pincode : {{ $loading_address->pincode }} <br>
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{-- <div class="col-6">
                             <p>
                                 <b>Product: </b> {{ $data->getCommodityProduct->name }} <br>
                                 <b>Brand: </b> {{ $data->getBrand->name }} <br>
@@ -58,7 +170,7 @@
                                 <b>State: </b> {{ $data->consignee_detail['state'] }} <br>
                                 <b>Gst Number: </b> {{ $data->consignee_detail['gst'] }} <br>
                             </p>
-                        </div>
+                        </div> --}}
 
                         <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
                             <li class="nav-item">
@@ -239,7 +351,7 @@
                                                             <div class="col-md-6">
                                                                 <b>Name : </b> {{ $list_data->getUser->name }} <br>
                                                                 <b>Company Name: </b> {{ $list_data->getUser->getBusiness->name }} <br>
-                                                                <b>GST : </b> {{ $list_data->getUser->getUserDetail ? $list_data->getUser->getUserDetail->gst_number : '--' }} <br>
+                                                                <b>GST : </b> {{ $list_data->getUser->getSellerKycDetail ? $list_data->getUser->getSellerKycDetail->gst_number : '--' }} <br>
                                                                 <b>Phone : </b> {{$list_data->getUser->phone}} <br>
                                                                 <b>Brand</b> : {{ $list_data->getBrand->name }} <br>
                                                                 <b>State</b> : {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }} <br>

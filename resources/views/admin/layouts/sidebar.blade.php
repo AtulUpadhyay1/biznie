@@ -144,6 +144,13 @@
                         <span class="link-title">Product wise Seller / Buyer</span>
                     </a>
                 </li>
+
+                <li class="nav-item {{ isActiveRoute(['admin.latest_-price-update.index']) ? 'active' : ''}}">
+                    <a href="{{route('admin.latest-price-update.index')}}" class="nav-link" wire:navigate>
+                        <i class="bi bi-stopwatch"></i>
+                        <span class="link-title">Latest Price Update</span>
+                    </a>
+                </li>
             @endcan
 
             @canany(['commodity_product-list', 'product_category-list', 'product_sub_category-list', 'product_sub_subcategory-list', 'product_attribute-list', 'packaging_type-list', 'brand-list'])
@@ -278,7 +285,7 @@
             @endcanany
 
             @can('commodity_product_order-list')
-                <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show', 'admin.commodity-product-order-driver.create', 'admin.commodity-product-order-driver.show', 'admin.commodity-product-order-driver.edit', 'admin.commodity-product-order.status', 'admin.commodity-product-order.history']) ? 'active' : ''}}">
+                <li class="nav-item {{ isActiveRoute(['admin.commodity-product-order.index', 'admin.commodity-product-order.show', 'admin.commodity-product-order-driver.create', 'admin.commodity-product-order-driver.show', 'admin.commodity-product-order-driver.edit', 'admin.commodity-product-order.status', 'admin.commodity-product-order.history', 'admin.commodity-product-order.transporter']) ? 'active' : ''}}">
                     <a href="{{route('admin.commodity-product-order.index')}}" class="nav-link" wire:navigate>
                         <i class="bi bi-bootstrap"></i>
                         <span class="link-title">Orders</span>
@@ -517,7 +524,7 @@
 
             @canany(['website_setup-general', 'website_setup-about', 'website_setup-setting', 'website_setup-returns', 'website_setup-terms', 'website_setup-privacy', 'website_setup-shop_on', 'website_setup-payment_methods', 'website_setup-logistics', 'website_setup-product_delivery_info', 'website_setup-product_terms', 'website_setup-product_add_process'])
                 <!--App Setup-->
-                <li class="nav-item {{ isActiveRoute(['admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics', 'admin.website_setup.product_delivery_info', 'admin.website_setup.product_terms', 'admin.website_setup.product_add_process']) ? 'active' : ''}}">
+                <li class="nav-item {{ isActiveRoute(['admin.website_setup.general', 'admin.faq.index', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics', 'admin.website_setup.product_delivery_info', 'admin.website_setup.product_terms', 'admin.website_setup.product_add_process', 'admin.website_setup.notification_setting']) ? 'active' : ''}}">
                     <a class="nav-link" data-bs-toggle="collapse" href="#app-setup" role="button"
                         aria-expanded="false" aria-controls="app-setup">
                         <i class="bi bi-gear"></i>
@@ -525,7 +532,7 @@
                         <i class="bi bi-chevron-down link-arrow"></i>
                     </a>
                 </li>
-                <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.website_setup.general', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics', 'admin.website_setup.product_delivery_info', 'admin.website_setup.product_terms', 'admin.website_setup.product_add_process']) ? 'show' : ''}}" id="app-setup">
+                <div class="collapse {{ isActiveRoute(['admin.faq.index', 'admin.website_setup.general', 'admin.faq.create', 'admin.faq.edit', 'admin.website_setup.about', 'admin.website_setup.setting', 'admin.website_setup.about', 'admin.website_setup.returns', 'admin.website_setup.terms', 'admin.website_setup.privacy', 'admin.website_setup.shop_on', 'admin.website_setup.payment_methods', 'admin.website_setup.logistics', 'admin.website_setup.product_delivery_info', 'admin.website_setup.product_terms', 'admin.website_setup.product_add_process', 'admin.website_setup.notification_setting']) ? 'show' : ''}}" id="app-setup">
                     <ul class="nav sub-menu">
                         @can('website_setup-general')
                             <li class="nav-item {{ isActiveRoute(['admin.website_setup.general']) ? 'active' : ''}}">
@@ -615,6 +622,11 @@
                             <li class="nav-item {{ isActiveRoute(['admin.website_setup.setting']) ? 'active' : ''}}">
                                 <a href="{{route('admin.website_setup.setting')}}" class="nav-link" wire:navigate>
                                     Setting
+                                </a>
+                            </li>
+                            <li class="nav-item {{ isActiveRoute(['admin.website_setup.notification_setting']) ? 'active' : ''}}">
+                                <a href="{{route('admin.website_setup.notification_setting')}}" class="nav-link" wire:navigate>
+                                    Notification Setting
                                 </a>
                             </li>
                         @endcan

@@ -16,17 +16,24 @@ class Create extends Component
     use WithFileUploads;
 
     public $user_id, $document_type_id, $document_type, $document = [], $reference_number, $status = 'Pending', $notes, $description, $amount = 0, $credit_days = 0;
-
+    public $forms = [];
+    public $form_values = [];
     public function render()
     {
-        $user_list = User::where('status', 'active')->orderBy('name', 'asc')->get();
+        $user_list = User::where('status', 'active')
+            ->orderBy('name', 'asc')
+            ->where('is_staff', 0)
+            ->get();
         $type_list = CreditWalletDocumentType::active()->latest()->get();
         return view('admin.credit_wallet_request.form', compact('user_list', 'type_list'));
     }
 
     public function getDocumentType()
     {
+        $this->forms = [];
+        $this->form_values = [];
         $this->document_type = CreditWalletDocumentType::find($this->document_type_id);
+        $this->forms = $this->document_type?->forms ?? [];
     }
 
     public function save()
@@ -54,6 +61,26 @@ class Create extends Component
             );
             return ;
         }
+
+        $form_data = [];
+        if(!empty($this->forms)){
+            foreach($this->forms as $index => $form){
+                $value = $this->form_values[$index] ?? '';
+
+                if($form['type'] == 'file' && !empty($value)){
+                    $value = imageUpload($value, 'credit_wallet_request/documents');
+                }
+
+                $form_data[] = [
+                    'label' => $form['label'],
+                    'required' => $form['required'],
+                    'type' => $form['type'],
+                    'description' => $form['description'],
+                    'value' => $value
+                ];
+            }
+        }
+
         $credit_wallet_request = new CreditWalletRequest;
         $credit_wallet_request->user_id = $this->user_id;
         $documents = [];
@@ -66,7 +93,8 @@ class Create extends Component
         $credit_wallet_request->notes = $this->notes;
         $credit_wallet_request->description = $this->description;
         $credit_wallet_request->credit_wallet_document_type_id = $this->document_type_id;
-        $credit_wallet_request->document_type = $this->document_type->title;
+        $credit_wallet_request->document_type = $this->document_type?->title;
+        $credit_wallet_request->form_data = $form_data ?? [];
         $credit_wallet_request->save();
 
         if($this->status == 'Approved'){

@@ -6,19 +6,26 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserOtp;
 use Livewire\Component;
+use App\Models\ProductEnquiry;
 use App\Models\CashWalletTransaction;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductState;
 use App\Models\CreditWalletTransaction;
 
 class Status extends Component
 {
     public $page_title = 'Order Status';
-    public $hidden_id, $data, $status, $cancel_reason, $cancel_reason_text, $otp;
+    public $hidden_id, $data, $enquiry_data, $seller_enquiry_data, $loading_address, $status, $cancel_reason, $cancel_reason_text, $otp;
 
     public function mount($id)
     {
         $this->hidden_id = $id;
         $this->data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getProductEnquiry', 'getSellerProductEnquiry')->findOrFail($this->hidden_id);
+        $this->enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($this->data->product_enquiries_id);
+        $this->seller_enquiry_data = $this->enquiry_data->getMarkedSellerProductEnquiry;
+        $this->loading_address = CommodityProductState::where('commodity_product_id', $this->data->commodity_product_id)
+            ->where('brand_id', $this->data->brand_id)
+            ->first();
         $this->status = $this->data->status;
     }
 

@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use App\Models\CreditWalletDocumentType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CreditWalletRequestResource extends JsonResource
@@ -23,9 +22,10 @@ class CreditWalletRequestResource extends JsonResource
             'status'                    => $this->status,
             'notes'                     => $this->notes,
             'description'               => $this->description,
-            'wallet_document_type_name' => CreditWalletDocumentType::find($this->credit_wallet_document_type_id)->name,
+            'wallet_document_type_name' => $this->getDocumentType ? $this->getDocumentType->name : null,
             'document'                  => [],
             'document_type'             => $this->document_type,
+            'form_data'                 => $this->form_data,
             'created_at'                => dateTimeFormat($this->created_at),
             'updated_at'                => dateTimeFormat($this->updated_at)
         ];
@@ -34,6 +34,18 @@ class CreditWalletRequestResource extends JsonResource
             foreach ($this->document as $document) {
                 $data['document'][]     = imageUrl($document);
             }
+        }
+
+
+        if($this->form_data){
+            $form_data = [];
+            foreach ($this->form_data as $key => $form_value) {
+                if(is_array($form_value) && isset($form_value['type']) && $form_value['type'] == 'file' && isset($form_value['value'])){
+                    $form_value['value'] = imageUrl($form_value['value']);
+                }
+                $form_data[$key] = $form_value;
+            }
+            $data['form_data'] = $form_data;
         }
 
         return $data;

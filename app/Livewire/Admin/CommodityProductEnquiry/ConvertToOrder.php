@@ -17,7 +17,7 @@ use App\Models\CommodityProductSellerOrderLedger;
 class ConvertToOrder extends Component
 {
     public $page_title = 'Conver To Order';
-    public $hidden_id, $required_booking_amount, $token_amount, $total_amount, $freight_token_amount, $calculated_amount, $message, $otp, $total_ex_factory_amount, $total_freight_amount, $gst;
+    public $hidden_id, $required_booking_amount, $token_amount, $total_amount, $freight_token_amount, $calculated_amount, $message, $otp, $total_ex_factory_amount, $total_freight_amount, $gst, $selected_wallet = 'cash_balance';
 
     public function mount($id)
     {
@@ -86,7 +86,19 @@ class ConvertToOrder extends Component
         $mark_seller = $enquiry_data->getMarkedSellerProductEnquiry;
         $mark_transporter = $enquiry_data->getMarkedTransporterEnquiry;
         $customer = User::find($mark_seller->customer_user_id);
-        $user_total_balance = $customer->cash_balance + $customer->credit_balance;
+
+        if($this->selected_wallet == 'cash_balance'){
+            $user_total_balance = $customer->cash_balance;
+        }elseif($this->selected_wallet == 'credit_balance'){
+            $user_total_balance = $customer->credit_balance;
+        }else{
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Please select a valid wallet option.',
+            );
+            return false;
+        }
+        // $user_total_balance = $customer->cash_balance + $customer->credit_balance;
 
         if($this->token_amount > $user_total_balance){
             $this->dispatch('alert',
@@ -158,14 +170,14 @@ class ConvertToOrder extends Component
         $order->customer_quality_check_visibility = websiteSetupValue('customer_quality_check_visibility') ?? 0;
         $order->save();
 
-        $debit_ledger                       = new CommodityProductOrderLedger;
-        $debit_ledger->order_id             = $order->id;
-        $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $debit_ledger->type                 = 'debit';
-        $debit_ledger->amount               = $this->total_amount;
-        $debit_ledger->remaining_balance    = $this->total_amount;
-        $debit_ledger->description          = 'Amount debited for Order Id: '.$order->order_id;
-        $debit_ledger->save();
+        // $debit_ledger                       = new CommodityProductOrderLedger;
+        // $debit_ledger->order_id             = $order->id;
+        // $debit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        // $debit_ledger->type                 = 'debit';
+        // $debit_ledger->amount               = $this->total_amount;
+        // $debit_ledger->remaining_balance    = $this->total_amount;
+        // $debit_ledger->description          = 'Amount debited for Order Id: '.$order->order_id;
+        // $debit_ledger->save();
 
         if($this->token_amount > 0){
             $credit_ledger                       = new CommodityProductOrderLedger;
@@ -173,8 +185,8 @@ class ConvertToOrder extends Component
             $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
             $credit_ledger->type                 = 'credit';
             $credit_ledger->amount               = $this->token_amount;
-            $credit_ledger->remaining_balance    = $debit_ledger->remaining_balance - $this->token_amount;
-            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . 'for product token.';
+            $credit_ledger->remaining_balance    = $this->total_amount - $this->token_amount;
+            $credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . ' for product token.';
             $credit_ledger->save();
         }
 
@@ -189,18 +201,58 @@ class ConvertToOrder extends Component
             $freight_credit_ledger->type                 = 'credit';
             $freight_credit_ledger->amount               = $this->freight_token_amount;
             $freight_credit_ledger->remaining_balance    = $remaining_balance;
-            $freight_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . 'for freight token.';
+            $freight_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id . ' for freight token.';
             $freight_credit_ledger->save();
         }
 
-        $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
-        $seller_credit_ledger->order_id             = $order->id;
-        $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
-        $seller_credit_ledger->type                 = 'credit';
-        $seller_credit_ledger->amount               = $this->total_amount;
-        $seller_credit_ledger->remaining_balance    = $this->total_amount;
-        $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
-        $seller_credit_ledger->save();
+        // $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
+        // $seller_credit_ledger->order_id             = $order->id;
+        // $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        // $seller_credit_ledger->type                 = 'credit';
+        // $seller_credit_ledger->amount               = $this->total_amount;
+        // $seller_credit_ledger->remaining_balance    = $this->total_amount;
+        // $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$order->order_id;
+        // $seller_credit_ledger->save();
+
+        if($this->selected_wallet == 'cash_balance'){
+            $customer->cash_balance = $customer->cash_balance - $this->token_amount;
+            $customer->save();
+
+            $cash_history = new CashWalletTransaction;
+            $cash_history->user_id           = $customer->id;
+            $cash_history->commodity_product_order_id   = $order->id;
+            $cash_history->amount            = $this->token_amount;
+            $cash_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $cash_history->mode              = 'online';
+            $cash_history->status            = 'debit';
+            $cash_history->transaction_status= 'Amount debited';
+            $cash_history->save();
+
+            $cash_history->transaction_id    = 'TX-'.date('Ymd').$cash_history->id.$customer->id.rand(111, 999);
+            $cash_history->save();
+
+        } elseif ($this->selected_wallet == 'credit_balance') {
+
+            $customer->credit_balance = $customer->credit_balance - $this->token_amount;
+            $customer->save();
+
+            $credit_history = new CreditWalletTransaction;
+            $credit_history->user_id           = $customer->id;
+            $credit_history->commodity_product_order_id   = $order->id;
+            $credit_history->amount            = $this->token_amount;
+            $credit_history->description       = 'Amount debited for Order Id: '.$order->order_id;
+            $credit_history->mode              = 'online';
+            $credit_history->status            = 'debit';
+            $credit_history->transaction_status= 'Amount debited';
+            $credit_history->save();
+
+            $credit_history->transaction_id    = 'TX-'.date('Ymd').$credit_history->id.$customer->id.rand(111, 999);
+            $credit_history->save();
+
+        }
+
+        session()->flash('success', 'Product ordered successfully.');
+        return $this->redirectRoute('admin.commodity-product-enquiry.index', navigate: true);
 
         if($customer->cash_balance > $this->token_amount){
 

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\Seller\Authenticated;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Brand;
 use App\Models\HomeProduct;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\BookmarkProduct;
 use App\Models\CommodityProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BrandResource;
@@ -405,6 +407,19 @@ class CommodityProductApiController extends Controller
                 }
             }
 
+            $user_ids = BookmarkProduct::where('commodity_product_id', $data->commodity_product_id)->pluck('user_id')->toArray();
+            foreach ($user_ids as $user_id) {
+                $user = User::find($user_id);
+                sendNotification(
+                    $user,
+                    'Price Update Alert',
+                    'The price for the product '.$data->name.' has been updated. Check out the new price now!',
+                    'notification',
+                    [],
+                    true
+                );
+            }
+
             return response([
                 'success'   => true,
                 'message'   => 'Product price updated successfully.',
@@ -664,6 +679,39 @@ class CommodityProductApiController extends Controller
             ],200);
 
         } catch (\Throwable $th) {
+            return response([
+                'success'   => false,
+                'message'   => 'Something went wrong. Please try again.',
+                'error'     => $th->getMessage()
+            ],500);
+
+        }
+    }
+
+    public function updateLoadWithin(Request $request, $id)
+    {
+        $this->validate($request, [
+            'load_within' =>'required',
+        ]);
+        try {
+
+            $data = SellerCommodityProduct::find($id);
+            if(!$data){
+                return response([
+                    'success'   => false,
+                    'message'   => 'Product not found.',
+                ],400);
+            }
+            $data->load_within = $request->load_within;
+            $data->save();
+
+            return response([
+                'success'   => true,
+                'message'   => 'Load within updated successfully.',
+            ],200);
+
+        } catch (\Throwable $th) {
+
             return response([
                 'success'   => false,
                 'message'   => 'Something went wrong. Please try again.',

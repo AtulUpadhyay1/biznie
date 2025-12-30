@@ -49,7 +49,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'delivery_address'  => $this->delivery_address,
             'consignee_detail'  => $this->consignee_detail,
             'purpose'           => $this->purpose,
-            'description'       => $this->description,
+            'description'       => $this->description ?? $this->getProductEnquiry->description,
             'message'           => $this->message,
             'delivery_by'       => $this->delivery_by,
             'selected_quality'           => $this->quality,
@@ -80,6 +80,7 @@ class ProductEnquiryDetailResource extends JsonResource
             'status'            => $this->status,
             'created_at'        => dateTimeFormat($this->created_at),
             'credit_days'       => $this->seller_credit_days ? $this->seller_credit_days : auth()->user()->credit_days,
+            'load_within'       => (int)$this->load_within,
         ];
 
         $seller_commodity_product   = SellerCommodityProduct::where('user_id', $this->user_id)->where('commodity_product_id', $this->commodity_product_id)->where('brand_id', $this->brand_id)->first();
@@ -87,6 +88,12 @@ class ProductEnquiryDetailResource extends JsonResource
         $data['insurance_charge'] = $seller_commodity_product->insurance_charge;
         $data['quality_charge'] = $seller_commodity_product->quality_charge;
         $data['gst'] = $seller_commodity_product->gst;
+
+        if($this->load_within){
+            $data['load_within'] = (int)$this->load_within;
+        }elseif($seller_commodity_product){
+            $data['load_within'] = (int)$seller_commodity_product->load_within;
+        }
 
         $extra_charges = 0;
         $other_charges = [];

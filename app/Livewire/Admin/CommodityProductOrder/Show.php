@@ -8,9 +8,12 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\ProductEnquiry;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductState;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CommodityProductOrderDriver;
+use App\Models\CommodityProductOrderLedger;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\CommodityProductSellerOrderLedger;
 
 class Show extends Component
 {
@@ -19,6 +22,7 @@ class Show extends Component
     public $hidden_id, $upload_type, $uploaded_file, $generate_invoice, $eBill_file, $vehicle_notes;
     public $invoice_name, $invoice_file, $invoice_amount, $ebill, $ebill_expiry_date, $transport_receipt, $debit_note, $debit_note_amount, $credit_note, $credit_note_amount;
     public $seller_invoice_name, $seller_invoice_file, $seller_invoice_amount, $seller_ebill, $seller_ebill_expiry_date, $seller_transport_receipt, $seller_debit_note, $seller_debit_note_amount, $seller_credit_note, $seller_credit_note_amount;
+    public $transporter_invoice_name, $transporter_invoice_file, $transporter_invoice_amount, $transporter_ebill, $transporter_ebill_expiry_date, $transporter_transport_receipt, $transporter_debit_note, $transporter_debit_note_amount, $transporter_credit_note, $transporter_credit_note_amount;
 
     public function mount($id)
     {
@@ -30,9 +34,12 @@ class Show extends Component
         $data = CommodityProductOrder::with('getBrand', 'getCommodityProduct', 'getDrivers', 'getSeller', 'getCustomer', 'getTransporter', 'getProductEnquiry')->findOrFail($this->hidden_id);
         $this->page_title = 'View Order '. $data->getProductEnquiry->unique_id;
         $this->vehicle_notes = $data->vehicle_notes;
-        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser')->findOrFail($data->product_enquiries_id);
+        $enquiry_data = ProductEnquiry::with('getBrand', 'getUser', 'getCommodityProduct', 'getCommodityProduct.getCategory', 'getMarkedSellerProductEnquiry', 'getMarkedSellerProductEnquiry.getUser', 'getMarkedTransporterEnquiry')->findOrFail($data->product_enquiries_id);
         $seller_enquiry_data = $enquiry_data->getMarkedSellerProductEnquiry;
-        return view('admin.commodity_product_order.show', compact('data', 'enquiry_data', 'seller_enquiry_data'));
+        $loading_address = CommodityProductState::where('commodity_product_id', $data->commodity_product_id)
+            ->where('brand_id', $data->brand_id)
+            ->first();
+        return view('admin.commodity_product_order.show', compact('data', 'enquiry_data', 'seller_enquiry_data', 'loading_address'));
     }
 
     public function invoicePrint()
@@ -291,7 +298,7 @@ class Show extends Component
         $this->validate([
             'invoice_name'  => 'required',
             'invoice_file'  => 'required',
-            'invoice_amount'=> 'required'
+            'invoice_amount'=> 'required|min:1'
         ]);
         $data = CommodityProductOrder::find($this->hidden_id);
         if (!$data) {
@@ -319,7 +326,18 @@ class Show extends Component
 
         $invoice_arr[] = $invoice_data;
         $data->all_invoices = $invoice_arr;
+        $data->buyer_invoice_amount += $this->invoice_amount ?? 0;
         $data->save();
+
+        $credit_ledger                       = new CommodityProductOrderLedger;
+        $credit_ledger->order_id             = $data->id;
+        $credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $credit_ledger->type                 = 'debit';
+        $credit_ledger->amount               = $this->invoice_amount;
+        $credit_ledger->remaining_balance    = 0;
+        $credit_ledger->description          = 'Amount credited for Order Id: '.$data->order_id;
+        $credit_ledger->save();
+
         session()->flash('success', 'Invoice updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
@@ -329,7 +347,7 @@ class Show extends Component
         $this->validate([
             'seller_invoice_name'  => 'required',
             'seller_invoice_file'  => 'required',
-            'seller_invoice_amount'=> 'required'
+            'seller_invoice_amount'=> 'required|min:1'
         ]);
         $data = CommodityProductOrder::find($this->hidden_id);
         if (!$data) {
@@ -357,8 +375,59 @@ class Show extends Component
 
         $invoice_arr[] = $invoice_data;
         $data->seller_invoices = $invoice_arr;
+        $data->seller_invoice_amount += $this->seller_invoice_amount ?? 0;
         $data->save();
+
+        $seller_credit_ledger                       = new CommodityProductSellerOrderLedger;
+        $seller_credit_ledger->order_id             = $data->id;
+        $seller_credit_ledger->transaction_id       = "TNX-".time()."-".rand(1111, 9999);
+        $seller_credit_ledger->type                 = 'credit';
+        $seller_credit_ledger->amount               = $this->seller_invoice_amount ?? 0;
+        $seller_credit_ledger->remaining_balance    = 0;
+        $seller_credit_ledger->description          = 'Amount credited for Order Id: '.$data->order_id;
+        $seller_credit_ledger->save();
+
         session()->flash('success', 'Seller invoice updated successfully !!');
+        return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
+    }
+
+    public function transporterUploadInvoice()
+    {
+        $this->validate([
+            'transporter_invoice_name'  => 'required',
+            'transporter_invoice_file'  => 'required',
+            'transporter_invoice_amount'=> 'required|min:1'
+        ]);
+        $data = CommodityProductOrder::find($this->hidden_id);
+        if (!$data) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Invalid id given. Please try again.'
+            ]);
+            return false;
+        }
+        $invoice_arr = $data->transporter_invoices ?? [];
+        $invoice_data = [
+            'uuid'              => \Str::uuid()->toString(),
+            'name'              => $this->transporter_invoice_name,
+            'invoice_file'      => imageUpload($this->transporter_invoice_file, 'transporter_invoice_file'),
+            'ebill'             => $this->transporter_ebill ? imageUpload($this->transporter_ebill, 'transporter_ebill') : NULL,
+            'ebill_expiry_date' => $this->transporter_ebill_expiry_date,
+            'transport_receipt' => $this->transporter_transport_receipt ? imageUpload($this->transporter_transport_receipt, 'transporter_transport_receipt') : NULL,
+            'amount'            => $this->transporter_invoice_amount ?? 0,
+            'debit_note'        => $this->transporter_debit_note ? imageUpload($this->transporter_debit_note, 'transporter_debit_note') : NULL,
+            'debit_note_amount' => $this->transporter_debit_note_amount ?? 0,
+            'credit_note'       => $this->transporter_credit_note ? imageUpload($this->transporter_credit_note, 'transporter_credit_note') : NULL,
+            'credit_note_amount'=> $this->transporter_credit_note_amount ?? 0,
+            'created_at'        => Carbon::now()
+        ];
+
+        $invoice_arr[] = $invoice_data;
+        $data->transporter_invoices = $invoice_arr;
+        $data->transporter_invoice_amount += $this->transporter_invoice_amount ?? 0;
+        $data->save();
+
+        session()->flash('success', 'Transporter invoice updated successfully !!');
         return $this->redirectRoute('admin.commodity-product-order.show', $this->hidden_id, navigate: true);
     }
 }

@@ -13,10 +13,16 @@ class CreditWalletRequest extends Model
     protected $casts = [
         'document'      => 'array',
         'document_type' => 'array',
+        'form_data'     => 'array',
     ];
 
     public function getUser()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getDocumentType()
+    {
+        return $this->belongsTo(CreditWalletDocumentType::class, 'credit_wallet_document_type_id');
     }
 }

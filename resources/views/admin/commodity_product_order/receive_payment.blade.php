@@ -17,7 +17,17 @@
                         <div class="col-12 text-center">
                             @include('admin.commodity_product_order.menu', ['is_active' => 'receive-payment'])
                         </div>
+                        <div class="col-12 text-center mt-3">
+                            <div class="btn-group mb-3 mb-md-0" role="group" aria-label="Basic example">
+                                <a href="{{route('admin.commodity-product-order.receive-payment', $data->id)}}" class="btn btn-sm btn-primary btn-icon-text" wire:navigate>
+                                    <i class="bi bi-box icon-sm"></i> For Order
+                                </a>
 
+                                <a href="{{route('admin.commodity-product-order.transporter-receive-payment', $data->id)}}" class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
+                                    <i class="bi bi-truck icon-sm"></i> For Transporter
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <form wire:submit.prevent="save()">
@@ -31,12 +41,16 @@
                                     <b>Phone: </b> {{ $data->getCustomer?->phone }} <br>
                                 </p>
                             </div>
-                            <div class="col-6 mb-3">
+                            <div class="col-3 mb-3">
                                 <p>
-                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($data->total_amount) }} <br>
+                                    <b>Total Amount:</b> ₹ {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }} <br>
                                     <b>Paid Amount:</b> ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
-                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($data->due_amount) }} <br>
+                                    <b>Remaining Amount:</b> ₹ {{ formatIndianNumber($data->buyer_invoice_amount) ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount) : formatIndianNumber($data->due_amount) }} <br>
                                 </p>
+                            </div>
+                            <div class="col-3 mb-3 text-end">
+                                <a href="{{ route('admin.customer-payment-list', $data->getCustomer?->id) }}?mode=cashwallet" class="btn btn-outline-success btn-sm" wire:navigate>Cash Wallet</a>
+                                <a href="{{ route('admin.customer-payment-list', $data->getCustomer?->id) }}?mode=creditwallet" class="btn btn-outline-primary btn-sm" wire:navigate>Credit Wallet</a>
                             </div>
                             <div class="mb-3">
                                 <div class="form-check form-check-inline">

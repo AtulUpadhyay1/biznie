@@ -19,11 +19,19 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div wire:ignore>
-                                    <label for="user_id" class="form-label">User <span class="text-danger">*</span></label>
+                                    <label for="user_id" class="form-label">Company <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
-                                        <option value="">Select User</option>
+                                        <option value="">Select Company</option>
                                         @foreach ($user_list as $user_data)
-                                            <option value="{{ $user_data->id }}">{{ $user_data->name }} ( {{ $user_data->phone }} )</option>
+                                            <option value="{{ $user_data->id }}">
+                                                @if($user_data->type == 'seller')
+                                                    {{ $user_data->getBusiness?->name }} - {{ $user_data->name }} ( {{ $user_data->phone }} )
+                                                @elseif ($user_data->type == 'customer')
+                                                    {{ $user_data->getUserDetail?->company_name }} - {{ $user_data->name }} ( {{ $user_data->phone }} )
+                                                @else
+                                                    {{ $user_data->name }} - {{ $user_data->phone }}
+                                                @endif
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -44,13 +52,16 @@
                             </div>
                             <div class="row">
                                 @if ($document_type)
-                                    @foreach ($document_type->title as $key => $title)
+                                    @foreach ($forms ?? [] as $index => $form)
                                         <div class="col-md-4 mb-3">
-                                            <label class="form-label" for="document_{{$key}}">{{ $title }}</label>
-                                            <input type="file" id="document_{{$key}}" class="form-control @error('document') is-invalid @enderror" wire:model="document" placeholder="Enter document">
-                                            @error('document')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
+                                            <label class="form-label">{{ $form['label'] }} @if($form['required'])<span class="text-danger">*</span>@endif</label>
+                                            @if($form['type'] == 'file')
+                                                <input type="file" class="form-control" wire:model="form_values.{{ $index }}" @if($form['required']) required @endif>
+                                            @else
+                                                <input type="{{ $form['type'] }}" class="form-control" placeholder="Enter {{ $form['label'] }}" wire:model="form_values.{{ $index }}" @if($form['required']) required @endif>
+                                            @endif
+                                            <small class="form-text text-muted">{{ $form['description'] }}</small>
+                                            @error('form_values.'.$index) <small class="text-danger">{{ $message }}</small>@enderror
                                         </div>
                                     @endforeach
                                 @endif

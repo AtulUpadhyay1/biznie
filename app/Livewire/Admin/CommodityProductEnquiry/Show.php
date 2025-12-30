@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Models\ProductEnquiry;
 use App\Models\TransporterDetail;
 use App\Models\SellerProductEnquiry;
+use App\Models\CommodityProductState;
 use App\Models\SellerCommodityProduct;
 use App\Models\TransporterAddressPrice;
 use App\Models\TransporterProductEnquiry;
@@ -72,7 +73,10 @@ class Show extends Component
             ->unique('user_id');
         $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $data->commodity_product_id)->pluck('user_id')->toArray();
         $transporter_list = TransporterAddressPrice::whereIn('user_id', $transporters_ids)->where('state', $data->billing_address['state'])->where('city', $data->billing_address['city'])->with('getUser')->get();
-        return view('admin.commodity_product_enquiry.show', compact('data', 'seller_list', 'variation_arr', 'transporter_list'));
+        $loading_address = CommodityProductState::where('commodity_product_id', $data->commodity_product_id)
+            ->where('brand_id', $data->brand_id)
+            ->first();
+        return view('admin.commodity_product_enquiry.show', compact('data', 'seller_list', 'variation_arr', 'transporter_list', 'loading_address'));
     }
 
     public function sendEnquiry()
@@ -214,7 +218,11 @@ class Show extends Component
 
             foreach ($this->transporter_user_id as $transporter_user_id) {
                 $data = TransporterProductEnquiry::where('user_id', $transporter_user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
-                $available_transport = TransporterAddressPrice::where('user_id', $transporter_user_id)->first();
+                $available_transport = TransporterAddressPrice::where('user_id', $transporter_user_id)
+                    ->where('state', $enquiry_data->billing_address['state'])
+                    ->where('city', $enquiry_data->billing_address['city'])
+                    ->first();
+
                 if(!$data){
                     $data                   = new TransporterProductEnquiry;
                 }
