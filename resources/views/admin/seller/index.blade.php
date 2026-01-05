@@ -1,4 +1,24 @@
 <div>
+    <style>
+        hr {
+            margin: 0.5rem 0;
+        }
+
+        .table-sm>:not(caption)>*>* {
+            padding: 0.25rem .55rem;
+        }
+
+        .border-red {
+            border: 2px solid #fd7070;
+        }
+
+        .span-bd {
+            border-collapse: initial;
+            border: 1px solid #dee2e6;
+            padding: 5px;
+            margin: 1px;
+        }
+    </style>
     @section('title', config('app.name') . ' | ' . $page_title)
 
     <div class="row">
@@ -15,7 +35,8 @@
                                     <div class="custom-search-bar">
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                            <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
+                                            <input type="text" class="form-control" placeholder="Search here..."
+                                                wire:model.live="search">
                                         </div>
                                     </div>
                                 </li>
@@ -84,27 +105,54 @@
                             </thead>
                             <tbody>
                                 @forelse ($list as $key => $data )
-                                    <tr>
+                                    <tr class="border-red">
                                         <th>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</th>
                                         <td>
-                                            <b>User Name:</b>
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>User Name:</b></td>
+                                                        <td>{{ $data->name }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Phone:</b></td>
+                                                        <td>{{ $data->phone }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Email:</b></td>
+                                                        <td>{{ $data->email }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Priority:</b></td>
+                                                        <td>{{ $data->getUserDetail->priority ?? 0 }}⭐
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            {{-- <b>User Name:</b>
                                             <span>{{ $data->name }}</span>
                                             <br>
-                                            <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>
+                                            <i class="bi bi-telephone"></i><span
+                                                class="ms-2">{{ $data->phone }}</span>
                                             <br>
-                                            <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $data->email }}</span>
+                                            <i class="bi bi-envelope-at"></i><span
+                                                class="ms-2">{{ $data->email }}</span>
                                             <br>
-                                            {{ $data->getUserDetail->priority ?? 0 }}⭐
+                                            {{ $data->getUserDetail->priority ?? 0 }}⭐ --}}
                                         </td>
                                         <td>
                                             <b>Business Name:</b>
-                                            <span class="text-primary"> {{ $data->getBusiness->name }} </span>
+                                            <span class="text-danger text-uppercase"> {{ $data->getBusiness->name }}
+                                            </span>
                                             @if ($data->getSellerKycDetail)
                                                 @if ($data->getSellerKycDetail->status == 'uploaded' || $data->getSellerKycDetail->status == 'pending')
                                                     <i class="bi bi-stopwatch-fill text-warning"></i>
                                                 @elseif ($data->getSellerKycDetail->status == 'approved')
                                                     <i class="bi bi-patch-check-fill text-success"></i>
-                                                @elseif (($data->getSellerKycDetail->status == 'rejected'))
+                                                @elseif ($data->getSellerKycDetail->status == 'rejected')
                                                     <i class="bi bi-x-circle-fill text-danger"></i>
                                                 @endif
                                             @endif
@@ -117,30 +165,64 @@
                                                     <i class="bi bi-currency-rupee"></i>
                                                     {{ formatIndianNumber($data->cash_balance) }}</b>
                                             </span>
-                                            <br>
                                             <span class="pe-2 border-end" data-bs-toggle="tooltip"
                                                 title="Credit Balance"><i class="bi bi-credit-card-2-front"></i> : <b>
                                                     <i class="bi bi-currency-rupee"></i>
                                                     {{ formatIndianNumber($data->credit_balance) }}</b>
-                                                </span>
-                                            <br>
+                                            </span>
                                             <span class="pe-2 border-end" data-bs-toggle="tooltip"
-                                                title="Product Enquiry"><i class="bi bi-cart"></i> :<b> {{ $data->getSellerProductEnquiries->count() }}</b></span>
+                                                title="Product Enquiry"><i class="bi bi-cart"></i> :<b>
+                                                    {{ $data->getSellerProductEnquiries->count() }}</b></span>
                                             <span class="pe-2" data-bs-toggle="tooltip" title="Total Orders"><i
-                                                    class="bi bi-cart-check"></i>: <b> {{ $data->getSellerOrders->count() }} </b></span>
-
-                                            <b>Company Name: </b> {{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }} <br>
-                                            <b>GSTIN:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->gst_number : '--' }}</span><br>
-                                            <b>PAN:</b><span class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '--' }}</span><br>
-                                            <b>City: </b>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '--' }}
+                                                    class="bi bi-cart-check"></i>: <b>
+                                                    {{ $data->getSellerOrders->count() }} </b></span>
+                                            <br>
+                                            <hr />
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>Company Name:</b></td>
+                                                        <td>{{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>GSTIN:</b></td>
+                                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->gst_number : '--' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>PAN:</b></td>
+                                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '--' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>City:</b></td>
+                                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '--' }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </td>
                                         <td>
-                                            <b>Registration Date:</b>
-                                            {{ dateFormat($data->getBusiness->created_at) }} <br>
-                                            <b>Updation Date:</b>
-                                            {{ dateFormat($data->getBusiness->updated_at) }} <br>
-                                            <b>Last Active:</b>
-                                            {{ lastActive($data->id) }}
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>Registration On:</b></td>
+                                                        <td>{{ dateFormat($data->getBusiness->created_at) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Updation On:</b></td>
+                                                        <td>{{ dateFormat($data->getBusiness->updated_at) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Last Active:</b></td>
+                                                        <td>{{ lastActive($data->id) }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </td>
                                         <td>
                                             {{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address : '' }}
@@ -151,18 +233,24 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.seller-kyc-detail', $data->id)}}" wire:navigate><i
+                                                <a class="dropdown-item d-flex align-items-center"
+                                                    href="{{ route('admin.seller-kyc-detail', $data->id) }}"
+                                                    wire:navigate><i
                                                         class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
                                                 {{-- <a href="{{route('admin.edit-seller')}}" wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
                                                         class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a> --}}
-                                                <a href="{{route('admin.tag-priority', $data->id)}}" wire:navigate
+                                                <a href="{{ route('admin.tag-priority', $data->id) }}" wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-bookmarks icon-sm me-2"></i><span>Tag & Priority</span></a>
+                                                        class="bi bi-bookmarks icon-sm me-2"></i><span>Tag &
+                                                        Priority</span></a>
                                                 {{-- <a href="javascript:;"
                                                     class="dropdown-item d-flex align-items-center"><i
                                                         class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
-                                                <a href="{{route('admin.seller-product.index', $data->id)}}" class="dropdown-item d-flex align-items-center"><i class="bi bi-box icon-sm me-2"></i><span>Product Section</span></a>
+                                                <a href="{{ route('admin.seller-product.index', $data->id) }}"
+                                                    class="dropdown-item d-flex align-items-center"><i
+                                                        class="bi bi-box icon-sm me-2"></i><span>Product
+                                                        Section</span></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -172,7 +260,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {{$list->links()}}
+                    {{ $list->links() }}
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <div>
-    @section('title', config('app.name') . ' | '.$page_title)
+    @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <x-loader />
         <div class="col-12">
@@ -9,10 +9,14 @@
                         <div class="col-6 card-title">
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
-                            <span class="badge rounded-pill border {{$data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }} </span>
+                            <span
+                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
+                            </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product-order.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
+                            <a href="{{ route('admin.commodity-product-order.index') }}"
+                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
+                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                         <div class="col-12 text-center">
                             @include('admin.commodity_product_order.menu', ['is_active' => 'sellerLedger'])
@@ -39,7 +43,8 @@
                                         <td>{{ $key + 1 + ($ledgers->currentPage() - 1) * $ledgers->perPage() }}</td>
                                         <td>
                                             {{ $data->transaction_id }} <br>
-                                            <span class="badge {{$data->type == 'credit' ? 'bg-success' : 'bg-danger'}}">
+                                            <span
+                                                class="badge {{ $data->type == 'credit' ? 'bg-success' : 'bg-danger' }}">
                                                 {{ ucfirst($data->type) }}
                                             </span> <br>
                                             <b>Date & Time : </b>
@@ -72,7 +77,9 @@
                                             @endif
                                             @if ($data->file)
                                                 <b>File: </b>
-                                                <a href="{{ asset('storage/'.$data->file) }}" target="_blank">View</a> <br>
+                                                <a href="{{ asset('storage/' . $data->file) }}"
+                                                    target="_blank">View</a>
+                                                <br>
                                             @endif
                                         </td>
                                     </tr>
@@ -90,4 +97,3 @@
         </div>
     </div>
 </div>
-

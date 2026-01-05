@@ -9,10 +9,14 @@
                         <div class="col-6 card-title">
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
-                            <span class="badge rounded-pill border {{$data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }} </span>
+                            <span
+                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
+                            </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product-order.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
+                            <a href="{{ route('admin.commodity-product-order.index') }}"
+                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
+                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                         <div class="col-12 text-center">
                             {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}

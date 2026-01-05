@@ -32,7 +32,7 @@
                                     <i class="bi bi-pencil-square btn-icon-prepend"></i>
                                     Edit
                                 </a>
-                                
+
                                 @if (isset($data->status) && $data->status === 'active')
                                     <button type="button"
                                         class="btn btn-danger btn-sm btn-icon-text align-items-center ms-2"
@@ -65,7 +65,8 @@
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="blockReason" class="form-label">Reason</label>
-                                        <textarea id="blockReason" class="form-control" rows="4" wire:model.defer="blockReason" placeholder="Enter reason for blocking the customer"></textarea>
+                                        <textarea id="blockReason" class="form-control" rows="4" wire:model.defer="blockReason"
+                                            placeholder="Enter reason for blocking the customer"></textarea>
                                         @error('blockReason')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -102,27 +103,41 @@
                     <div class="row">
                         <h6 class="py-2 bg-orange-light">Buyer Details</h6>
                         <div class="table-responsive mb-4">
-                            <table class="custom-table borderless-table">
+                            <table class="table table-sm table-bordered mt-3">
                                 <tbody>
                                     <tr>
-                                        <td><b>Name:</b><span class="ms-2">{{ $data->name }}</span></td>
-                                        <td><b>Mobile Number:</b><span class="ms-2">{{ $data->phone }}</span></td>
+                                        <td><b>Name:</b></td>
+                                        <td>{{ $data->name }}</td>
                                     </tr>
                                     <tr>
-                                        <td><b>Email:</b><span class="ms-2">{{ $data->email }}</span></td>
-                                        <td><b>Company Name:</b><span
-                                                class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->company_name : '' }}</span>
+                                        <td><b>Mobile Number:</b></td>
+                                        <td><span class="text-uppercase">{{ $data->phone }}</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>GSTIN:</b><span
-                                                class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->gst_number : '' }}</span>
+                                        <td><b>Email:</b></td>
+                                        <td>{{ $data->email }}
                                         </td>
-                                        <td><b>PAN:</b><span
-                                                class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->pan_number : '' }}</span>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Company Name:</b></td>
+                                        <td><span
+                                                class="text-uppercase">{{ $data->getUserDetail ? $data->getUserDetail->company_name : '' }}</span>
                                         </td>
-                                        <td><b>CITY:</b><span
-                                                class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->city : '' }}</span>
+                                    </tr>
+                                    <tr>
+                                        <td><b>GSTIN:</b></td>
+                                        <td>{{ $data->getUserDetail ? $data->getUserDetail->gst_number : '--' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>PAN:</b></td>
+                                        <td>{{ $data->getUserDetail ? $data->getUserDetail->pan_number : '--' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>City:</b></td>
+                                        <td>{{ $data->getUserDetail ? $data->getUserDetail->city : '--' }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -133,7 +148,7 @@
                             <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
-                                        <td><b>Address:</b><span
+                                        <td><span
                                                 class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->company_address : '' }}</span>
                                         </td>
                                     </tr>

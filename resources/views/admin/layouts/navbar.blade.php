@@ -106,32 +106,34 @@
                     </div>
                 </div>
             </li> --}}
-            <li class="nav-item me-3">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#productAddProcess">
-                   Product Add Process
+            <li class="head-btn nav-item">
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#productAddProcess">
+                    Product Add Process
                 </button>
             </li>
-            <li class="nav-item me-3">
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#freightFinderModal">
-                   Freight Finder
+            <li class="nav-item">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#freightFinderModal">
+                    Freight Finder
                 </button>
             </li>
             <livewire:Admin.Notification.NavbarNotification />
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="wd-30 ht-30 rounded-circle" src="{{asset('admin_css/assets/images/avatar.png')}}"
+                    <img class="wd-30 ht-30 rounded-circle" src="{{ asset('admin_css/assets/images/avatar.png') }}"
                         alt="profile">
                 </a>
                 <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                     <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                         <div class="mb-3">
-                            <img class="wd-80 ht-80 rounded-circle" src="{{asset('admin_css/assets/images/avatar.png')}}"
-                                alt="">
+                            <img class="wd-80 ht-80 rounded-circle"
+                                src="{{ asset('admin_css/assets/images/avatar.png') }}" alt="">
                         </div>
                         <div class="text-center">
-                            <p class="tx-16 fw-bolder">{{auth()->user()->name}}</p>
-                            <p class="tx-12 text-muted">{{auth()->user()->email}}</p>
+                            <p class="tx-16 fw-bolder">{{ auth()->user()->name }}</p>
+                            <p class="tx-12 text-muted">{{ auth()->user()->email }}</p>
                         </div>
                     </div>
                     <ul class="list-unstyled p-1">
@@ -154,7 +156,9 @@
                             </a>
                         </li>
                         <li class="dropdown-item py-2">
-                            <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-body ms-0">
+                            <a href="{{ route('admin.logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                class="text-body ms-0">
                                 <i class="bi bi-box-arrow-right me-2 icon-md"></i>
                                 <span>Log Out</span>
                             </a>
@@ -170,7 +174,8 @@
 </nav>
 
 <!-- Add Product Modal -->
-<div class="modal fade" id="productAddProcess" tabindex="-1" aria-labelledby="productAddProcessLabel" aria-hidden="true">
+<div class="modal fade" id="productAddProcess" tabindex="-1" aria-labelledby="productAddProcessLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
@@ -190,7 +195,8 @@
 </div>
 
 <!-- Freight Finder Modal -->
-<div class="modal fade" id="freightFinderModal" tabindex="-1" aria-labelledby="freightFinderModalLabel" aria-hidden="true" wire:ignore.self>
+<div class="modal fade" id="freightFinderModal" tabindex="-1" aria-labelledby="freightFinderModalLabel"
+    aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">

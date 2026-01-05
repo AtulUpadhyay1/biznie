@@ -10,7 +10,7 @@
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
                             <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }}
+                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
                             </span>
                         </div>
                         <div class="col-6 text-end">
@@ -26,34 +26,77 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-4">
-                            <p>
-                                <b>Product: </b> {{ $data->getCommodityProduct->name }} <br>
-                                <b>Brand: </b> {{ $data->getBrand->name }} <br>
-                                <b>Purpose: </b> {{ $data->purpose }} <br>
-                            </p>
+                            <table class="table table-sm table-bordered">
+                                <tbody>
+                                    <!-- Product Details -->
+                                    <tr>
+                                        <td><strong>Product</strong></td>
+                                        <td>{{ $data->getCommodityProduct->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Brand</strong></td>
+                                        <td>{{ $data->getBrand->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Purpose</strong></td>
+                                        <td>{{ $data->purpose }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-4 text-center">
-                            <p>
-                                <b>Company Name: </b> {{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }}
-                                <br>
-                                <b>User: </b> {{ $data->getCustomer?->name }} <br>
-                                <b>GST: </b> {{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }} <br>
-                                <b>Phone: </b> {{ $data->getCustomer?->phone }} <br>
-                            </p>
+                        <div class="col-4">
+                            <table class="table table-sm table-bordered">
+                                <tbody>
+                                    <!-- Product Details -->
+                                    <tr>
+                                        <td><strong>Customer Company</strong></td>
+                                        <td>{{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Customer Name</strong></td>
+                                        <td>{{ $data->getCustomer?->name ?? '--' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Customer GST</strong></td>
+                                        <td>{{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Customer Phone</strong></td>
+                                        <td>{{ $data->getCustomer?->phone ?? '--' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-4 text-end">
-                            <p>
-                                <b>Business Name: </b> {{ $data->getSeller?->getBusiness?->name }} <br>
-                                <b>Seller: </b> {{ $data->getSeller->name }} <br>
-                                <b>Phone: </b> {{ $data->getSeller->phone }} <br>
-                            </p>
-                            @if ($data->getTransporter)
-                                <br>
-                                <p>
-                                    <b>Transporter: </b> {{ $data->getTransporter->name }} <br>
-                                    <b>Phone: </b> {{ $data->getTransporter->phone }} <br>
-                                </p>
-                            @endif
+                        <div class="col-4">
+                            <table class="table table-sm table-bordered">
+                                <tbody>
+                                    <!-- Product Details -->
+                                    <tr>
+                                        <td><strong>Business Name</strong></td>
+                                        <td>{{ $data->getSeller?->getBusiness?->name ?? '--' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Seller Name</strong></td>
+                                        <td>{{ $data->getSeller?->name ?? '--' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Seller Phone</strong></td>
+                                        <td>{{ $data->getSeller?->phone ?? '--' }}</td>
+                                    </tr>
+
+                                    <!-- Transporter Details (Conditional) -->
+                                    @if ($data->getTransporter)
+                                        <tr>
+                                            <td><strong>Transporter Name</strong></td>
+                                            <td>{{ $data->getTransporter->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Transporter Phone</strong></td>
+                                            <td>{{ $data->getTransporter->phone }}</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="row">
@@ -72,15 +115,13 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($data->value as $variation)
-
                                         <tr>
-                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{ $loop->iteration }}</td>
                                             @foreach ($variation['value'] as $value)
                                                 <td>{{ $value['value'] }}</td>
                                             @endforeach
                                             <td>{{ $variation['quantity'] }}</td>
                                         </tr>
-
                                     @endforeach
                                 </tbody>
                             </table>
@@ -94,22 +135,22 @@
                                     <div class="col-6 text-end">
                                         <div>
                                             <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-check-input" name="update_for" id="quantity"
-                                                    value="quantity" wire:model="update_for">
+                                                <input type="radio" class="form-check-input" name="update_for"
+                                                    id="quantity" value="quantity" wire:model="update_for">
                                                 <label class="form-check-label" for="quantity">
                                                     Quantity
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-check-input" name="update_for" id="variant"
-                                                    value="variant" wire:model="update_for">
+                                                <input type="radio" class="form-check-input" name="update_for"
+                                                    id="variant" value="variant" wire:model="update_for">
                                                 <label class="form-check-label" for="variant">
                                                     Size
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-check-input" name="update_for" id="both"
-                                                    value="both" wire:model="update_for">
+                                                <input type="radio" class="form-check-input" name="update_for"
+                                                    id="both" value="both" wire:model="update_for">
                                                 <label class="form-check-label" for="both">
                                                     Both
                                                 </label>
@@ -150,18 +191,35 @@
                                                 </th>
                                                 @foreach ($variation->value as $value)
                                                     @php
-                                                        $unit_name = "";
-                                                        $unit_short_name = "";
-                                                        if($variation->getSellerCommodityProduct && $variation->getSellerCommodityProduct->commodity_product_id){
-                                                            $commodity = App\Models\CommodityProduct::find($variation->getSellerCommodityProduct->commodity_product_id);
-                                                            if($commodity && $commodity->unit){
-                                                                $unit_name = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->name : '';
-                                                                $unit_short_name = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->short_name : '';
+                                                        $unit_name = '';
+                                                        $unit_short_name = '';
+                                                        if (
+                                                            $variation->getSellerCommodityProduct &&
+                                                            $variation->getSellerCommodityProduct->commodity_product_id
+                                                        ) {
+                                                            $commodity = App\Models\CommodityProduct::find(
+                                                                $variation->getSellerCommodityProduct
+                                                                    ->commodity_product_id,
+                                                            );
+                                                            if ($commodity && $commodity->unit) {
+                                                                $unit_name = getProductUnit(
+                                                                    $commodity->unit[$value['name']],
+                                                                )
+                                                                    ? getProductUnit($commodity->unit[$value['name']])
+                                                                        ->name
+                                                                    : '';
+                                                                $unit_short_name = getProductUnit(
+                                                                    $commodity->unit[$value['name']],
+                                                                )
+                                                                    ? getProductUnit($commodity->unit[$value['name']])
+                                                                        ->short_name
+                                                                    : '';
                                                             }
                                                         }
                                                     @endphp
 
-                                                    <td>{{ $value['name'] }} : {{ $value['value'] }} {{ $unit_short_name }}</td>
+                                                    <td>{{ $value['name'] }} : {{ $value['value'] }}
+                                                        {{ $unit_short_name }}</td>
                                                 @endforeach
 
                                                 <td>

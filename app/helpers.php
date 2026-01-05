@@ -42,7 +42,7 @@ if(! function_exists('getPaginate')){
 
 if(!function_exists('dateTimeFormat')){
     function dateTimeFormat($datesTime){
-        return date('d-m-Y h:i A', strtotime($datesTime));
+        return date('d-m-Y - h:i A', strtotime($datesTime));
     }
 }
 

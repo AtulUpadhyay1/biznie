@@ -1,4 +1,9 @@
 <div>
+    <style>
+        .table-sm>:not(caption)>*>* {
+            padding: 0.25rem .55rem;
+        }
+    </style>
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <x-loader />
@@ -10,7 +15,7 @@
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
                             <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }}
+                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
                             </span>
                         </div>
                         <div class="col-6 text-end">
@@ -225,12 +230,13 @@
                             $custmoer_enq_data['transport_price'] = $markedTransporter->price;
                         }
                         $custmoer_enq_data['total_freight'] = 0;
-                        if ($data->transporter_invoices && count($data->transporter_invoices) > 0){
+                        if ($data->transporter_invoices && count($data->transporter_invoices) > 0) {
                             foreach ($data->transporter_invoices as $transporter_invoices) {
                                 $custmoer_enq_data['total_freight'] += $transporter_invoices['amount'];
                             }
-                        }else{
-                            $custmoer_enq_data['total_freight'] = $custmoer_enq_data['transport_price'] * $custmoer_enq_data['total_quantity'];
+                        } else {
+                            $custmoer_enq_data['total_freight'] =
+                                $custmoer_enq_data['transport_price'] * $custmoer_enq_data['total_quantity'];
                         }
                     @endphp
 
@@ -400,32 +406,50 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <p>
-                                        Enquiry Id : {{ $enquiry_data->unique_id }} <br>
-                                        Category : {{ $enquiry_data->getCommodityProduct->getCategory->name }} <br>
-                                        Product : {{ $enquiry_data->getCommodityProduct->name }} <br>
-                                        Brand : {{ $enquiry_data->getBrand->name }} <br>
-                                        {{-- Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
-                                        {{ $enquiry_data->consignee_detail['address_line_two'] }}
-                                        {{ $enquiry_data->consignee_detail['city'] }}
-                                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }} <br> --}}
-                                        Purpose : {{ $enquiry_data->purpose }} <br>
-                                        Description : {{ $enquiry_data->description }} <br>
-                                    </p>
-                                    @if ($custmoer_enq_data['selected_quality'])
-                                        <p>
-                                            Quality:
-                                            {{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
-                                            {{ $custmoer_enq_data['selected_quality']['price'] }} <br>
-                                        </p>
-                                    @endif
-                                    @if ($custmoer_enq_data['selected_packaging_charge'])
-                                        <p>
-                                            Packaging:
-                                            {{ $custmoer_enq_data['selected_packaging_charge']['name'] }} : ₹
-                                            {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }} <br>
-                                        </p>
-                                    @endif
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Enquiry Id</strong></td>
+                                                <td>{{ $enquiry_data->unique_id }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Category</strong></td>
+                                                <td>{{ $enquiry_data->getCommodityProduct->getCategory->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Product</strong></td>
+                                                <td>{{ $enquiry_data->getCommodityProduct->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Brand</strong></td>
+                                                <td>{{ $enquiry_data->getBrand->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Purpose</strong></td>
+                                                <td>{{ $enquiry_data->purpose }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Description</strong></td>
+                                                <td>{{ $enquiry_data->description }}</td>
+                                            </tr>
+                                            @if ($custmoer_enq_data['selected_quality'])
+                                                <tr>
+                                                    <td><strong>Quality</strong></td>
+                                                    <td>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
+                                                        {{ $custmoer_enq_data['selected_quality']['price'] }}</td>
+                                                </tr>
+                                            @endif
+                                            @if ($custmoer_enq_data['selected_packaging_charge'])
+                                                <tr>
+                                                    <td><strong>Packaging</strong></td>
+                                                    <td>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }} :
+                                                        ₹
+                                                        {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -438,19 +462,46 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <p>
-                                        Company : {{ $enquiry_data->getUser->getUserDetail->company_name }}<br>
-                                        Phone : {{ $enquiry_data->getUser->phone }} <br>
-                                        GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                                        Address Line1 : {{ $enquiry_data->getUser->getUserDetail->address_line_one }}
-                                        <br>
-                                        Address Line2 : {{ $enquiry_data->getUser->getUserDetail->address_line_two }}
-                                        <br>
-                                        City : {{ $enquiry_data->getUser->getUserDetail->city }} <br>
-                                        State : {{ $enquiry_data->getUser->getUserDetail->state }} <br>
-                                        Pincode : {{ $enquiry_data->getUser->getUserDetail->postal_code }} <br>
-                                        Credit Days : {{ $custmoer_enq_data['credit_days'] }} Days <br>
-                                    </p>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Company</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->company_name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Phone</strong></td>
+                                                <td>{{ $enquiry_data->getUser->phone }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>GST</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Address Line1</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->address_line_one }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Address Line2</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->address_line_two }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>City</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->city }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>State</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->state }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Pincode</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->postal_code }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Credit Days</strong></td>
+                                                <td>{{ $custmoer_enq_data['credit_days'] }} Days</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -467,17 +518,46 @@
                                         $seller = $enquiry_data->getMarkedSellerProductEnquiry->getUser;
                                         $sellerDetail = $seller->getSellerKycDetail;
                                     @endphp
-                                    <p>
-                                        Company : {{ $seller->getBusiness->name }}<br>
-                                        Phone : {{ $seller->phone }} <br>
-                                        GST : {{ $sellerDetail->gst_number }} <br>
-                                        Address Line One : {{ $sellerDetail->address_line_one }} <br>
-                                        Address Line Two : {{ $sellerDetail->address_line_two }} <br>
-                                        City : {{ $sellerDetail->city }} <br>
-                                        State : {{ $sellerDetail->state }} <br>
-                                        Pincode : {{ $sellerDetail->postal_code }} <br>
-                                        Credit Days : {{ $seller_enq_data['credit_days'] }} Days <br>
-                                    </p>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Company</strong></td>
+                                                <td>{{ $seller->getBusiness->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Phone</strong></td>
+                                                <td>{{ $seller->phone }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>GST</strong></td>
+                                                <td>{{ $sellerDetail->gst_number }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Address Line One</strong></td>
+                                                <td>{{ $sellerDetail->address_line_one }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Address Line Two</strong></td>
+                                                <td>{{ $sellerDetail->address_line_two }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>City</strong></td>
+                                                <td>{{ $sellerDetail->city }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>State</strong></td>
+                                                <td>{{ $sellerDetail->state }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Pincode</strong></td>
+                                                <td>{{ $sellerDetail->postal_code }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Credit Days</strong></td>
+                                                <td>{{ $seller_enq_data['credit_days'] }} Days</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -490,18 +570,43 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <p>
-                                        Company : {{ $enquiry_data->billing_address['company_name'] }}<br>
-                                        Phone : {{ $enquiry_data->billing_address['phone'] }} <br>
-                                        GST : {{ $enquiry_data->billing_address['gst'] }} <br>
-                                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
-                                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
-                                        State : {{ $enquiry_data->billing_address['state'] }} <br>
-                                        City : {{ $enquiry_data->billing_address['city'] }} <br>
-                                        Pincode :
-                                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }}
-                                        <br>
-                                    </p>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Company</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['company_name'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Phone</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['phone'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>GST</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['gst'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Address Line1</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['address_line_one'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Address Line2</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['address_line_two'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>State</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['state'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>City</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['city'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Pincode</strong></td>
+                                                <td>{{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -514,18 +619,43 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <p>
-                                        Company : {{ $enquiry_data->consignee_detail['company_name'] }}<br>
-                                        Phone : {{ $enquiry_data->consignee_detail['phone'] }} <br>
-                                        GST : {{ $enquiry_data->consignee_detail['gst'] }} <br>
-                                        Address Line1 : {{ $enquiry_data->consignee_detail['address_line_one'] }} <br>
-                                        Address Line2 : {{ $enquiry_data->consignee_detail['address_line_two'] }} <br>
-                                        State : {{ $enquiry_data->consignee_detail['state'] }} <br>
-                                        City : {{ $enquiry_data->consignee_detail['city'] }} <br>
-                                        Pincode :
-                                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }}
-                                        <br>
-                                    </p>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Company</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['company_name'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Phone</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['phone'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>GST</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['gst'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Address Line1</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['address_line_one'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Address Line2</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['address_line_two'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>State</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['state'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>City</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['city'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Pincode</strong></td>
+                                                <td>{{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -539,13 +669,30 @@
                                 </div>
                                 <div class="card-body p-3">
                                     @if ($loading_address)
-                                        <p>
-                                            Address Line One : {{ $loading_address->address_line_one }} <br>
-                                            Address Line Two : {{ $loading_address->address_line_two }} <br>
-                                            City : {{ $loading_address->city }} <br>
-                                            State : {{ $loading_address->state }} <br>
-                                            Pincode : {{ $loading_address->pincode }} <br>
-                                        </p>
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Address Line One</strong></td>
+                                                    <td>{{ $loading_address->address_line_one }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Address Line Two</strong></td>
+                                                    <td>{{ $loading_address->address_line_two }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>City</strong></td>
+                                                    <td>{{ $loading_address->city }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>State</strong></td>
+                                                    <td>{{ $loading_address->state }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Pincode</strong></td>
+                                                    <td>{{ $loading_address->pincode }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     @endif
                                 </div>
                             </div>
@@ -561,26 +708,35 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <p>
-                                            Basic Price : ₹ {{ $custmoer_enq_data['base_price'] }} / Metric Ton <br>
-                                            Freight : ₹ {{ $custmoer_enq_data['transport_price'] }} / Metric Ton
-                                        </p> <br>
-                                        @if ($custmoer_enq_data['selected_quality'])
-                                            <p>
-                                                Quality:
-                                                {{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
-                                                {{ $custmoer_enq_data['selected_quality']['price'] }} <br>
-                                            </p>
-                                        @endif
-                                        @if ($custmoer_enq_data['selected_packaging_charge'])
-                                            <p>
-                                                Packaging:
-                                                {{ $custmoer_enq_data['selected_packaging_charge']['name'] }} : ₹
-                                                {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }} <br>
-                                            </p>
-                                            <br>
-                                        @endif
-                                        <table class="table table-hover">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Basic Price</strong></td>
+                                                    <td>₹ {{ $custmoer_enq_data['base_price'] }} / Metric Ton</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Freight</strong></td>
+                                                    <td>₹ {{ $custmoer_enq_data['transport_price'] }} / Metric Ton</td>
+                                                </tr>
+                                                @if ($custmoer_enq_data['selected_quality'])
+                                                    <tr>
+                                                        <td><strong>Quality</strong></td>
+                                                        <td>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
+                                                            {{ $custmoer_enq_data['selected_quality']['price'] }}</td>
+                                                    </tr>
+                                                @endif
+                                                @if ($custmoer_enq_data['selected_packaging_charge'])
+                                                    <tr>
+                                                        <td><strong>Packaging</strong></td>
+                                                        <td>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }}
+                                                            : ₹
+                                                            {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-hover mt-3">
                                             <thead>
                                                 <tr>
                                                     <th>Requirements</th>
@@ -685,25 +841,34 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <p>
-                                            Basic Price : ₹ {{ $seller_enq_data['base_price'] }} / Metric Ton <br>
-                                            Freight : ₹ {{ $custmoer_enq_data['transport_price'] }} / Metric Ton
-                                        </p> <br>
-                                        @if ($custmoer_enq_data['selected_quality'])
-                                            <p>
-                                                Quality:
-                                                {{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
-                                                {{ $custmoer_enq_data['selected_quality']['price'] }} <br>
-                                            </p>
-                                        @endif
-                                        @if ($custmoer_enq_data['selected_packaging_charge'])
-                                            <p>
-                                                Packaging:
-                                                {{ $custmoer_enq_data['selected_packaging_charge']['name'] }} : ₹
-                                                {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }} <br>
-                                            </p>
-                                            <br>
-                                        @endif
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Basic Price</strong></td>
+                                                    <td>₹ {{ $seller_enq_data['base_price'] }} / Metric Ton</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Freight</strong></td>
+                                                    <td>₹ {{ $custmoer_enq_data['transport_price'] }} / Metric Ton</td>
+                                                </tr>
+                                                @if ($custmoer_enq_data['selected_quality'])
+                                                    <tr>
+                                                        <td><strong>Quality</strong></td>
+                                                        <td>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
+                                                            {{ $custmoer_enq_data['selected_quality']['price'] }}</td>
+                                                    </tr>
+                                                @endif
+                                                @if ($custmoer_enq_data['selected_packaging_charge'])
+                                                    <tr>
+                                                        <td><strong>Packaging</strong></td>
+                                                        <td>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }}
+                                                            : ₹
+                                                            {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -823,45 +988,110 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <p><span class="text-danger">Credit Days : </span>
-                                            {{ $custmoer_enq_data['credit_days'] }} Days</p>
-                                        <p><span class="text-danger">Basic Price : </span> ₹
-                                            {{ formatIndianNumber($custmoer_enq_data['base_price']) }} </p>
-                                        <p><span class="text-danger">Ex-Factory Price : </span> ₹
-                                            {{ formatIndianNumber($custmoer_enq_data['final_variation_price']) }}</p>
-                                        <p><span class="text-danger">Total Quantity : </span>
-                                            {{ $custmoer_enq_data['total_quantity'] }} Metric Ton</p>
-                                        <p><span class="text-danger">Total Ex-Factory Price : </span> ₹
-                                            {{ formatIndianNumber($custmoer_enq_data['final_variation_price']) }}</p>
-                                        @if ($custmoer_enq_data['commission_type'] == 'exclude')
-                                            <p><span class="text-danger">Commission (Excluded) : </span> ₹
-                                                {{ formatIndianNumber($custmoer_enq_data['commission']) }}</p>
-                                        @endif
-                                        <p><span class="text-danger">Load Within : </span>
-                                            {{ $seller_enquiry_data->load_within }} Days</p>
-                                        <small class="text-success">Rate included - loading charges, insurance charges,
-                                            Packaging charges, Quality inspection charges, TCS & GST </small>
-                                        <hr>
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Credit Days</strong></td>
+                                                    <td>{{ $custmoer_enq_data['credit_days'] }} Days</td>
+                                                </tr>
 
-                                        <p><span class="text-danger">Freight : </span> ₹
-                                            {{ formatIndianNumber($custmoer_enq_data['transport_price']) }}/Metric Ton
-                                        </p>
-                                        {{-- <p><span class="text-danger">Total Freight : </span> ₹
-                                            {{ formatIndianNumber($custmoer_enq_data['total_freight']) }}
-                                        </p> --}}
-                                        <small class="text-success">
-                                            Freight May Change +/- 100. <br>
-                                            (Freight Depends On Demand & Supply of Trucks On Loading Day)
-                                        </small>
-                                        <hr>
+                                                <tr>
+                                                    <td><strong>Basic Price</strong></td>
+                                                    <td>₹ {{ formatIndianNumber($custmoer_enq_data['base_price']) }}
+                                                    </td>
+                                                </tr>
 
-                                        <p><span class="text-danger">Total Amount Payable (Ex-Factory+Freight) :
-                                            </span> ₹
-                                            {{ formatIndianNumber($custmoer_enq_data['final_variation_price'] + $custmoer_enq_data['total_quantity'] * $custmoer_enq_data['transport_price']) }}
-                                        </p>
-                                        <small class="text-danger fw-bold">Disclaimer</small> <br>
-                                        <small class="text-success fw-bold">The invoice amount will be updated after
-                                            the goods are loaded and the final quantity is confirmed.</small>
+                                                <tr>
+                                                    <td><strong>Ex-Factory Price</strong></td>
+                                                    <td>₹
+                                                        {{ formatIndianNumber($custmoer_enq_data['final_variation_price']) }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Total Quantity</strong></td>
+                                                    <td>{{ $custmoer_enq_data['total_quantity'] }} Metric Ton</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Total Ex-Factory Price</strong></td>
+                                                    <td>₹
+                                                        {{ formatIndianNumber($custmoer_enq_data['final_variation_price']) }}
+                                                    </td>
+                                                </tr>
+
+                                                @if ($custmoer_enq_data['commission_type'] == 'exclude')
+                                                    <tr>
+                                                        <td><strong>Commission (Excluded)</strong></td>
+                                                        <td>₹
+                                                            {{ formatIndianNumber($custmoer_enq_data['commission']) }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+
+                                                <tr>
+                                                    <td><strong>Load Within</strong></td>
+                                                    <td>{{ $seller_enquiry_data->load_within }} Days</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="2" class="text-success">
+                                                        <small>
+                                                            Rate included – loading charges, insurance charges,
+                                                            packaging charges,
+                                                            quality inspection charges, TCS & GST
+                                                        </small>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <hr>
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Freight</strong></td>
+                                                    <td>
+                                                        ₹
+                                                        {{ formatIndianNumber($custmoer_enq_data['transport_price']) }}
+                                                        / Metric Ton
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="2" class="text-success">
+                                                        <small>
+                                                            Freight may change ±100.<br>
+                                                            (Freight depends on demand & supply of trucks on loading
+                                                            day)
+                                                        </small>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Total Amount Payable<br>(Ex-Factory + Freight)</strong>
+                                                    </td>
+                                                    <td>
+                                                        ₹
+                                                        {{ formatIndianNumber(
+                                                            $custmoer_enq_data['final_variation_price'] +
+                                                                $custmoer_enq_data['total_quantity'] * $custmoer_enq_data['transport_price'],
+                                                        ) }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <small class="text-danger fw-bold">Disclaimer</small><br>
+                                                        <small class="text-success fw-bold">
+                                                            The invoice amount will be updated after the goods are
+                                                            loaded
+                                                            and the final quantity is confirmed.
+                                                        </small>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -874,48 +1104,96 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <p><span class="text-danger">Credit Days : </span>
-                                            {{ $seller_enq_data['credit_days'] }} Days</p>
-                                        <p><span class="text-danger">Basic Price : </span> ₹
-                                            {{ formatIndianNumber($seller_enq_data['base_price']) }}</p>
-                                        <p><span class="text-danger">Total Quantity : </span>
-                                            {{ $seller_enq_data['total_quantity'] }} MT</p>
-                                        <p><span class="text-danger">Total Ex-Factory Price : </span> ₹
-                                            {{ formatIndianNumber($seller_enq_data['ex_price']) }}</p>
-                                        @if ($seller_enq_data['commission_type'] == 'include')
-                                            @php
-                                                $commission =
-                                                    $seller_enq_data['commission'] *
-                                                    ($seller_enq_data['total_quantity'] +
-                                                        $seller_enq_data['gst'] / 100);
-                                            @endphp
-                                            <p><span class="text-danger">Commission (Included) : </span> ₹
-                                                {{ formatIndianNumber($commission) }}
-                                                ({{ $seller_enq_data['commission'] }} / MT)
-                                                ({{ $seller_enq_data['gst'] }}% GST)</p>
-                                        @endif
-                                        <small class="text-success">Rate included - loading charges, insurance charges,
-                                            packaging charges, quality inspection charges & GST. TCS may apply (If
-                                            applicable).
-                                            <br>
-                                            The credit period starts form the date the invoice is generated.
-                                        </small>
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Credit Days</strong></td>
+                                                    <td>{{ $seller_enq_data['credit_days'] }} Days</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Basic Price</strong></td>
+                                                    <td>₹ {{ formatIndianNumber($seller_enq_data['base_price']) }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Total Quantity</strong></td>
+                                                    <td>{{ $seller_enq_data['total_quantity'] }} MT</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Total Ex-Factory Price</strong></td>
+                                                    <td>₹ {{ formatIndianNumber($seller_enq_data['ex_price']) }}</td>
+                                                </tr>
+
+                                                @if ($seller_enq_data['commission_type'] == 'include')
+                                                    @php
+                                                        $commission =
+                                                            $seller_enq_data['commission'] *
+                                                            ($seller_enq_data['total_quantity'] +
+                                                                $seller_enq_data['gst'] / 100);
+                                                    @endphp
+                                                    <tr>
+                                                        <td><strong>Commission (Included)</strong></td>
+                                                        <td>
+                                                            ₹ {{ formatIndianNumber($commission) }}
+                                                            <br>
+                                                            <small class="text-muted">
+                                                                {{ $seller_enq_data['commission'] }} / MT ·
+                                                                {{ $seller_enq_data['gst'] }}% GST
+                                                            </small>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+
+                                                <tr>
+                                                    <td colspan="2" class="text-success">
+                                                        <small>
+                                                            Rate included – loading charges, insurance charges,
+                                                            packaging charges,
+                                                            quality inspection charges & GST.
+                                                            TCS may apply (if applicable).
+                                                            <br>
+                                                            The credit period starts from the date the invoice is
+                                                            generated.
+                                                        </small>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         @endif
                     </div>
-                    <div class="row mt-3">
+                    <div class="row">
                         <div class="col-6">
-                            <p>
-                                <b>Total Amount:</b> ₹
-                                {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }}
-                                <br>
-                                <b>Paid Amount:</b> ₹ {{ formatIndianNumber($data->paid_amount) }} <br>
-                                <b>Remaining Amount:</b> ₹
-                                {{ formatIndianNumber($data->buyer_invoice_amount) ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount) : formatIndianNumber($data->due_amount) }}
-                                <br>
-                            </p>
+                            <div class="p-3 border rounded bg-light">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-semibold text-muted">Total Amount</span>
+                                    <span class="fw-bold">₹
+                                        {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }}</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-semibold text-muted">Paid Amount</span>
+                                    <span class="text-success fw-bold">₹
+                                        {{ formatIndianNumber($data->paid_amount) }}</span>
+                                </div>
+
+                                <hr class="my-2">
+
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-semibold text-muted">Remaining Amount</span>
+                                    <span class="text-danger fw-bold">
+                                        ₹
+                                        {{ formatIndianNumber($data->buyer_invoice_amount)
+                                            ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount)
+                                            : formatIndianNumber($data->due_amount) }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-6 text-end">
                             <p>
@@ -2143,55 +2421,71 @@
         </div>
     </div>
 
-    <div class="modal fade" id="transporterInvoiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="transporterInvoiceModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="transporterInvoiceModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="transporterInvoiceModalLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <form wire:submit.prevent="transporterUploadInvoice()">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="transporterInvoiceModalLabel">Transporter Invoice / Amount</h1>
+                        <h1 class="modal-title fs-5" id="transporterInvoiceModalLabel">Transporter Invoice / Amount
+                        </h1>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="transporter_invoice_name">Invoice Name</label>
-                                <input type="text" id="transporter_invoice_name" class="form-control @error('transporter_invoice_name') is-invalid @enderror" wire:model="transporter_invoice_name" placeholder="Enter Invoice Name">
+                                <input type="text" id="transporter_invoice_name"
+                                    class="form-control @error('transporter_invoice_name') is-invalid @enderror"
+                                    wire:model="transporter_invoice_name" placeholder="Enter Invoice Name">
                                 @error('transporter_invoice_name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="transporter_invoice_file">Invoice</label>
-                                <input type="file" id="transporter_invoice_file" class="form-control @error('transporter_invoice_file') is-invalid @enderror" wire:model="transporter_invoice_file" placeholder="Enter Invoice Name">
+                                <input type="file" id="transporter_invoice_file"
+                                    class="form-control @error('transporter_invoice_file') is-invalid @enderror"
+                                    wire:model="transporter_invoice_file" placeholder="Enter Invoice Name">
                                 @error('transporter_invoice_file')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="transporter_invoice_amount">Invoice Amount</label>
-                                <input type="number" id="transporter_invoice_amount" class="form-control @error('transporter_invoice_amount') is-invalid @enderror" wire:model="transporter_invoice_amount" placeholder="Enter Invoice Amount">
+                                <input type="number" id="transporter_invoice_amount"
+                                    class="form-control @error('transporter_invoice_amount') is-invalid @enderror"
+                                    wire:model="transporter_invoice_amount" placeholder="Enter Invoice Amount">
                                 @error('transporter_invoice_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="transporter_ebill">E - Waybill</label>
-                                <input type='file' id="transporter_ebill" class="form-control @error('transporter_ebill') is-invalid @enderror" wire:model="transporter_ebill">
+                                <input type='file' id="transporter_ebill"
+                                    class="form-control @error('transporter_ebill') is-invalid @enderror"
+                                    wire:model="transporter_ebill">
                                 @error('transporter_ebill')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label class="form-label" for="transporter_ebill_expiry_date">E - Waybill Expiry Date</label>
-                                <input type='date' id="transporter_ebill_expiry_date" class="form-control @error('transporter_ebill_expiry_date') is-invalid @enderror" wire:model="transporter_ebill_expiry_date">
+                                <label class="form-label" for="transporter_ebill_expiry_date">E - Waybill Expiry
+                                    Date</label>
+                                <input type='date' id="transporter_ebill_expiry_date"
+                                    class="form-control @error('transporter_ebill_expiry_date') is-invalid @enderror"
+                                    wire:model="transporter_ebill_expiry_date">
                                 @error('transporter_ebill_expiry_date')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label class="form-label" for="transporter_transport_receipt">Transport Receipt</label>
-                                <input type='file' id="transporter_transport_receipt" class="form-control @error('transporter_transport_receipt') is-invalid @enderror" wire:model="transporter_transport_receipt">
+                                <label class="form-label" for="transporter_transport_receipt">Transport
+                                    Receipt</label>
+                                <input type='file' id="transporter_transport_receipt"
+                                    class="form-control @error('transporter_transport_receipt') is-invalid @enderror"
+                                    wire:model="transporter_transport_receipt">
                                 @error('transporter_transport_receipt')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -2199,15 +2493,20 @@
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="transporter_debit_note">Debit Note</label>
-                                <input type='file' id="transporter_debit_note" class="form-control @error('transporter_debit_note') is-invalid @enderror" wire:model="transporter_debit_note">
+                                <input type='file' id="transporter_debit_note"
+                                    class="form-control @error('transporter_debit_note') is-invalid @enderror"
+                                    wire:model="transporter_debit_note">
                                 @error('transporter_debit_note')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="transporter_debit_note_amount">Debit Note Amount</label>
-                                <input type="number" id="transporter_debit_note_amount" class="form-control @error('transporter_debit_note_amount') is-invalid @enderror" wire:model="transporter_debit_note_amount" placeholder="Enter Debit Note Amount">
+                                <label class="form-label" for="transporter_debit_note_amount">Debit Note
+                                    Amount</label>
+                                <input type="number" id="transporter_debit_note_amount"
+                                    class="form-control @error('transporter_debit_note_amount') is-invalid @enderror"
+                                    wire:model="transporter_debit_note_amount" placeholder="Enter Debit Note Amount">
                                 @error('transporter_debit_note_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -2215,15 +2514,21 @@
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="transporter_credit_note">Credit Note</label>
-                                <input type='file' id="transporter_credit_note" class="form-control @error('transporter_credit_note') is-invalid @enderror" wire:model="transporter_credit_note">
+                                <input type='file' id="transporter_credit_note"
+                                    class="form-control @error('transporter_credit_note') is-invalid @enderror"
+                                    wire:model="transporter_credit_note">
                                 @error('transporter_credit_note')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="transporter_credit_note_amount">Credit Note Amount</label>
-                                <input type="number" id="transporter_credit_note_amount" class="form-control @error('transporter_credit_note_amount') is-invalid @enderror" wire:model="transporter_credit_note_amount" placeholder="Enter Credit Note Amount">
+                                <label class="form-label" for="transporter_credit_note_amount">Credit Note
+                                    Amount</label>
+                                <input type="number" id="transporter_credit_note_amount"
+                                    class="form-control @error('transporter_credit_note_amount') is-invalid @enderror"
+                                    wire:model="transporter_credit_note_amount"
+                                    placeholder="Enter Credit Note Amount">
                                 @error('transporter_credit_note_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

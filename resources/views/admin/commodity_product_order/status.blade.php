@@ -1,5 +1,5 @@
 <div>
-    @section('title', config('app.name') . ' | '.$page_title)
+    @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <x-loader />
         <div class="col-12">
@@ -9,10 +9,14 @@
                         <div class="col-6 card-title">
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
-                            <span class="badge rounded-pill border {{$data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }} </span>
+                            <span
+                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
+                            </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product-order.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
+                            <a href="{{ route('admin.commodity-product-order.index') }}"
+                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
+                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                         <div class="col-12 text-center">
                             @include('admin.commodity_product_order.menu', ['is_active' => 'status'])
@@ -50,24 +54,74 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <p>
-                                        Enquiry Id : {{ $enquiry_data->unique_id }} <br>
-                                        Category : {{ $enquiry_data->getCommodityProduct->getCategory->name }} <br>
-                                        Product : {{ $enquiry_data->getCommodityProduct->name }} <br>
-                                        Brand : {{ $enquiry_data->getBrand->name }} <br>
-                                        {{-- Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
-                                        {{ $enquiry_data->consignee_detail['address_line_two'] }}
-                                        {{ $enquiry_data->consignee_detail['city'] }}
-                                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }} <br> --}}
-                                        Purpose : {{ $enquiry_data->purpose }} <br>
-                                        Description : {{ $enquiry_data->description }} <br>
-                                        @if($enquiry_data->quality)
-                                                Quality: {{ $enquiry_data->quality['name'] }} : ₹ {{ $enquiry_data->quality['price'] }} <br>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Enquiry ID</strong></td>
+                                                <td>{{ $enquiry_data->unique_id }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Category</strong></td>
+                                                <td>{{ $enquiry_data->getCommodityProduct->getCategory->name }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Product</strong></td>
+                                                <td>{{ $enquiry_data->getCommodityProduct->name }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Brand</strong></td>
+                                                <td>{{ $enquiry_data->getBrand->name }}</td>
+                                            </tr>
+
+                                            {{-- Delivery Location (Uncomment if needed)
+        <tr>
+            <td><strong>Delivery Location</strong></td>
+            <td>
+                {{ $enquiry_data->consignee_detail['address_line_one'] }},
+                {{ $enquiry_data->consignee_detail['address_line_two'] }},
+                {{ $enquiry_data->consignee_detail['city'] }},
+                {{ $enquiry_data->consignee_detail['pin_code'] 
+                    ?? $enquiry_data->consignee_detail['pincode'] }}
+            </td>
+        </tr>
+        --}}
+
+                                            <tr>
+                                                <td><strong>Purpose</strong></td>
+                                                <td>{{ $enquiry_data->purpose }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Description</strong></td>
+                                                <td>{{ $enquiry_data->description }}</td>
+                                            </tr>
+
+                                            @if ($enquiry_data->quality)
+                                                <tr>
+                                                    <td><strong>Quality</strong></td>
+                                                    <td>
+                                                        {{ $enquiry_data->quality['name'] }} –
+                                                        ₹ {{ formatIndianNumber($enquiry_data->quality['price']) }}
+                                                    </td>
+                                                </tr>
                                             @endif
-                                        @if ($enquiry_data->packaging_charge)
-                                            Packaging Charge: {{ $enquiry_data->packaging_charge['name'] }} : ₹ {{ $enquiry_data->packaging_charge['charge'] }}  <br>
-                                        @endif
-                                    </p>
+
+                                            @if ($enquiry_data->packaging_charge)
+                                                <tr>
+                                                    <td><strong>Packaging Charge</strong></td>
+                                                    <td>
+                                                        {{ $enquiry_data->packaging_charge['name'] }} –
+                                                        ₹
+                                                        {{ formatIndianNumber($enquiry_data->packaging_charge['charge']) }}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
@@ -80,17 +134,55 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <p>
-                                        Company : {{ $enquiry_data->getUser->getUserDetail->company_name }}<br>
-                                        Phone : {{ $enquiry_data->getUser->phone }} <br>
-                                        GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                                        Address Line1 : {{ $enquiry_data->getUser->getUserDetail->address_line_one }} <br>
-                                        Address Line2 : {{ $enquiry_data->getUser->getUserDetail->address_line_two }} <br>
-                                        City : {{ $enquiry_data->getUser->getUserDetail->city }} <br>
-                                        State : {{ $enquiry_data->getUser->getUserDetail->state }} <br>
-                                        Pincode : {{ $enquiry_data->getUser->getUserDetail->postal_code }} <br>
-                                        Credit Days : {{ $enquiry_data->getUser->credit_days }} Days <br>
-                                    </p>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Company</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->company_name }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Phone</strong></td>
+                                                <td>{{ $enquiry_data->getUser->phone }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>GST</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Address Line 1</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->address_line_one }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Address Line 2</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->address_line_two }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>City</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->city }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>State</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->state }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Pincode</strong></td>
+                                                <td>{{ $enquiry_data->getUser->getUserDetail->postal_code }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Credit Days</strong></td>
+                                                <td>{{ $enquiry_data->getUser->credit_days }} Days</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
@@ -107,17 +199,55 @@
                                         $seller = $enquiry_data->getMarkedSellerProductEnquiry->getUser;
                                         $sellerDetail = $seller->getSellerKycDetail;
                                     @endphp
-                                    <p>
-                                        Company : {{ $seller->getBusiness->name }}<br>
-                                        Phone : {{ $seller->phone }} <br>
-                                        GST : {{ $sellerDetail->gst_number }} <br>
-                                        Address Line One : {{ $sellerDetail->address_line_one }} <br>
-                                        Address Line Two : {{ $sellerDetail->address_line_two }} <br>
-                                        City : {{ $sellerDetail->city }} <br>
-                                        State : {{ $sellerDetail->state }} <br>
-                                        Pincode : {{ $sellerDetail->postal_code }} <br>
-                                        Credit Days : {{ $seller_enquiry_data->seller_credit_days }} Days <br>
-                                    </p>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Company</strong></td>
+                                                <td>{{ $seller->getBusiness->name }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Phone</strong></td>
+                                                <td>{{ $seller->phone }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>GST</strong></td>
+                                                <td>{{ $sellerDetail->gst_number }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Address Line One</strong></td>
+                                                <td>{{ $sellerDetail->address_line_one }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Address Line Two</strong></td>
+                                                <td>{{ $sellerDetail->address_line_two }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>City</strong></td>
+                                                <td>{{ $sellerDetail->city }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>State</strong></td>
+                                                <td>{{ $sellerDetail->state }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Pincode</strong></td>
+                                                <td>{{ $sellerDetail->postal_code }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Credit Days</strong></td>
+                                                <td>{{ $seller_enquiry_data->seller_credit_days }} Days</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
@@ -130,16 +260,52 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <p>
-                                        Company : {{ $enquiry_data->billing_address['company_name'] }}<br>
-                                        Phone : {{ $enquiry_data->billing_address['phone'] }} <br>
-                                        GST : {{ $enquiry_data->billing_address['gst'] }} <br>
-                                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
-                                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
-                                        State : {{ $enquiry_data->billing_address['state'] }} <br>
-                                        City : {{ $enquiry_data->billing_address['city'] }} <br>
-                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
-                                    </p>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Company</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['company_name'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Phone</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['phone'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>GST</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['gst'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Address Line 1</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['address_line_one'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Address Line 2</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['address_line_two'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>State</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['state'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>City</strong></td>
+                                                <td>{{ $enquiry_data->billing_address['city'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Pincode</strong></td>
+                                                <td>
+                                                    {{ $enquiry_data->consignee_detail['pin_code'] ?? ($enquiry_data->billing_address['pincode'] ?? '') }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
@@ -152,16 +318,52 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <p>
-                                        Company : {{ $enquiry_data->consignee_detail['company_name'] }}<br>
-                                        Phone : {{ $enquiry_data->consignee_detail['phone'] }} <br>
-                                        GST : {{ $enquiry_data->consignee_detail['gst'] }} <br>
-                                        Address Line1 : {{ $enquiry_data->consignee_detail['address_line_one'] }} <br>
-                                        Address Line2 : {{ $enquiry_data->consignee_detail['address_line_two'] }} <br>
-                                        State : {{ $enquiry_data->consignee_detail['state'] }} <br>
-                                        City : {{ $enquiry_data->consignee_detail['city'] }} <br>
-                                        Pincode : {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }} <br>
-                                    </p>
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Company</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['company_name'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Phone</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['phone'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>GST</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['gst'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Address Line 1</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['address_line_one'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Address Line 2</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['address_line_two'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>State</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['state'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>City</strong></td>
+                                                <td>{{ $enquiry_data->consignee_detail['city'] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Pincode</strong></td>
+                                                <td>
+                                                    {{ $enquiry_data->consignee_detail['pin_code'] ?? ($enquiry_data->billing_address['pincode'] ?? '') }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
@@ -174,14 +376,35 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    @if($loading_address)
-                                        <p>
-                                            Address Line One : {{ $loading_address->address_line_one }} <br>
-                                            Address Line Two : {{ $loading_address->address_line_two }} <br>
-                                            City : {{ $loading_address->city }} <br>
-                                            State : {{ $loading_address->state }} <br>
-                                            Pincode : {{ $loading_address->pincode }} <br>
-                                        </p>
+                                    @if ($loading_address)
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Address Line One</strong></td>
+                                                    <td>{{ $loading_address->address_line_one }}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Address Line Two</strong></td>
+                                                    <td>{{ $loading_address->address_line_two }}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>City</strong></td>
+                                                    <td>{{ $loading_address->city }}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>State</strong></td>
+                                                    <td>{{ $loading_address->state }}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Pincode</strong></td>
+                                                    <td>{{ $loading_address->pincode }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     @endif
                                 </div>
                             </div>
@@ -240,7 +463,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="orderCancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="orderCancelLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="orderCancel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="orderCancelLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <x-loader />
             <div class="modal-content">
@@ -250,50 +474,58 @@
                 <div class="modal-body">
                     <lable for="cancel_reason">Please Select Reason <span class="text-danger">*</span></lable>
                     <div class="form-check mt-3">
-                        <input class="form-check-input" type="radio" name="cancel_reason" id="price_increased" value="Price Increased" wire:model.live="cancel_reason">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="price_increased"
+                            value="Price Increased" wire:model.live="cancel_reason">
                         <label class="form-check-label" for="price_increased">
                             Price Increased
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="cancel_reason" id="price_descreased" value="Price Decreased" wire:model.live="cancel_reason">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="price_descreased"
+                            value="Price Decreased" wire:model.live="cancel_reason">
                         <label class="form-check-label" for="price_descreased">
                             Price Decreased
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="cancel_reason" id="sale_closed" value="Sale Closed" wire:model.live="cancel_reason">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="sale_closed"
+                            value="Sale Closed" wire:model.live="cancel_reason">
                         <label class="form-check-label" for="sale_closed">
                             Sale Closed
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="cancel_reason" id="stock_out" value="Stock Out" wire:model.live="cancel_reason">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="stock_out"
+                            value="Stock Out" wire:model.live="cancel_reason">
                         <label class="form-check-label" for="stock_out">
                             Stock Out
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="cancel_reason" id="other" value="Other" wire:model.live="cancel_reason">
+                        <input class="form-check-input" type="radio" name="cancel_reason" id="other"
+                            value="Other" wire:model.live="cancel_reason">
                         <label class="form-check-label" for="other">
                             Other
                         </label>
                     </div>
-                    @if($this->cancel_reason == 'Other')
-                        <textarea class="form-control" id="cancel_reason" rows="5" wire:model="cancel_reason_text" placeholder="Please provide a brief description of why you want to cancel this order."></textarea>
+                    @if ($this->cancel_reason == 'Other')
+                        <textarea class="form-control" id="cancel_reason" rows="5" wire:model="cancel_reason_text"
+                            placeholder="Please provide a brief description of why you want to cancel this order."></textarea>
                     @endif
                 </div>
                 <div class="modal-footer">
                     <a href="" class="btn btn-secondary" wire:navigate>Close</a>
                     @if ($this->cancel_reason)
-                        <button type="button" class="btn btn-danger" wire:click="updateStatus()" data-bs-dismiss="modal">Update</button>
+                        <button type="button" class="btn btn-danger" wire:click="updateStatus()"
+                            data-bs-dismiss="modal">Update</button>
                     @endif
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="otpVeryfiy" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="otpVeryfiyLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="otpVeryfiy" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="otpVeryfiyLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -302,7 +534,8 @@
                 </div>
                 <div class="modal-body">
                     <label for="otp">Otp Send On {{ $data->getCustomer?->phone }}</label>
-                    <input type="number" class="form-control" id="otp" placeholder="Enter OTP" wire:model="otp">
+                    <input type="number" class="form-control" id="otp" placeholder="Enter OTP"
+                        wire:model="otp">
                     <div class="text-end">
                         <small id="resend-otp" class="d-none" wire:click="sendOtp()">
                             <a href="javascript:;" onclick="restartTimer()">Resend OTP</a>
@@ -312,7 +545,8 @@
                 </div>
                 <div class="modal-footer">
                     <a href="" class="btn btn-danger btn-sm" wire:navigate>Close</a>
-                    <button type="button" class="btn btn-success btn-sm" wire:click="verifyOtp()" wire:loading.attr="disabled">
+                    <button type="button" class="btn btn-success btn-sm" wire:click="verifyOtp()"
+                        wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="verifyOtp">Verify</span>
                         <span wire:loading wire:target="verifyOtp">Verifying...</span>
                     </button>
@@ -387,11 +621,11 @@
                 startTimer(60);
             }
 
-            modalElement.addEventListener('shown.bs.modal', function () {
+            modalElement.addEventListener('shown.bs.modal', function() {
                 startTimer(60);
             });
 
-            modalElement.addEventListener('hidden.bs.modal', function () {
+            modalElement.addEventListener('hidden.bs.modal', function() {
                 clearInterval(timer);
                 timerElement.textContent = '';
                 resendOtpElement.classList.add('d-none');

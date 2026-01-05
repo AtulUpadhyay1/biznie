@@ -1,4 +1,13 @@
 <div>
+    <style>
+        .table-sm>:not(caption)>*>* {
+            padding: 0.25rem .55rem;
+        }
+
+        .border-red {
+            border: 2px solid #fd7070;
+        }
+    </style>
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <div class="col-12">
@@ -14,7 +23,8 @@
                                     <div class="custom-search-bar">
                                         <div class="input-group">
                                             <span class="input-group-text"> <i data-feather="search"></i></span>
-                                            <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
+                                            <input type="text" class="form-control" placeholder="Search here..."
+                                                wire:model.live="search">
                                         </div>
                                     </div>
                                 </li>
@@ -35,7 +45,8 @@
                                     <i class="btn-icon-prepend" data-feather="download-cloud"></i>
                                     Download Report
                                 </button> --}}
-                                <a href="{{ route('admin.customer.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
+                                <a href="{{ route('admin.customer.create') }}"
+                                    class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
                                     <i class="bi bi-plus-lg btn-icon-prepend"></i>
                                     Add
                                 </a>
@@ -58,29 +69,91 @@
                             </thead>
                             <tbody>
                                 @forelse ($list as $key => $data)
-                                    <tr>
+                                    <tr class="border-red">
                                         <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
                                         <td>
-                                            <b>Name: </b> {{ $data->name }} <br>
-                                            <b>Company Name: </b> {{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }} <br>
-                                            <b>GSTIN:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->gst_number : '--' }}</span><br>
-                                            <b>PAN:</b><span class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->pan_number : '--' }}</span><br>
-                                            <b>City: </b>{{ $data->getUserDetail ? $data->getUserDetail->city : '--' }}
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>Name:</b></td>
+                                                        <td>{{ $data->name }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Company Name:</b></td>
+                                                        <td><span
+                                                                class="text-uppercase">{{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }}</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>GSTIN:</b></td>
+                                                        <td>{{ $data->getUserDetail ? $data->getUserDetail->gst_number : '--' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>PAN:</b></td>
+                                                        <td>{{ $data->getUserDetail ? $data->getUserDetail->pan_number : '--' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>City:</b></td>
+                                                        <td>{{ $data->getUserDetail ? $data->getUserDetail->city : '--' }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </td>
                                         <td>
-                                            <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>
-                                            <br>
-                                            <i class="bi bi-envelope-at"></i><span class="ms-2">{{ $data->email }}</span>
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><i class="bi bi-telephone"></i></td>
+                                                        <td>{{ $data->phone }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><i class="bi bi-envelope-at"></i></td>
+                                                        <td>{{ $data->email }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </td>
                                         <td>
-                                            <b>Cash Wallet: </b> ₹ {{ $data->cash_balance }} <br>
-                                            <b>Credit Wallet: </b> ₹ {{ formatIndianNumber($data->credit_balance) }} <br>
-                                            <b>Credit Limit:</b> ₹ {{ formatIndianNumber($data->assign_credit_balance) }} <br>
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>Cash Wallet:</b></td>
+                                                        <td>₹ {{ $data->cash_balance }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Credit Wallet:</b></td>
+                                                        <td>₹ {{ formatIndianNumber($data->credit_balance) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Credit Limit:</b></td>
+                                                        <td>₹ {{ formatIndianNumber($data->assign_credit_balance) }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </td>
                                         <td>
-                                            <b>Registration Date: </b> {{ dateFormat($data->created_at) }} <br>
-                                            <b>Last Active: </b>{{ lastActive($data->id) }} <br>
-                                            {!! $data->status == 'active' ? '<span class="text-success fw-bolder"> Active </span>' : '<span class="text-danger fw-bolder"> Inactive </span>' !!}
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>Registration Date:</b></td>
+                                                        <td>{{ dateFormat($data->created_at) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Last Active:</b></td>
+                                                        <td>{{ lastActive($data->id) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Status:</b></td>
+                                                        <td>{!! $data->status == 'active'
+                                                            ? '<span class="text-success fw-bolder">Active</span>'
+                                                            : '<span class="text-danger fw-bolder">Inactive</span>' !!}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </td>
                                         <td class="text-center">
                                             <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
@@ -88,8 +161,10 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.customer-profile', $data->id)}}" wire:navigate><i
-                                                    class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a class="dropdown-item d-flex align-items-center"
+                                                    href="{{ route('admin.customer-profile', $data->id) }}"
+                                                    wire:navigate><i
+                                                        class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
                                                 {{-- <a class="dropdown-item d-flex align-items-center" href="#"><i
                                                     class="bi bi-person-slash icon-sm me-2"></i><span>Block</span></a>
                                                 <a href="javascript:;"

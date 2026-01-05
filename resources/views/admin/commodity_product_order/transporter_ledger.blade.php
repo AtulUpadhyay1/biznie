@@ -1,5 +1,5 @@
 <div>
-    @section('title', config('app.name') . ' | '.$page_title)
+    @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <x-loader />
         <div class="col-12">
@@ -9,13 +9,19 @@
                         <div class="col-6 card-title">
                             <h4>{{ $page_title }}</h4>
                             <small> ( {{ $data->order_id }} ) </small>
-                            <span class="badge rounded-pill border {{$data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }} </span>
+                            <span
+                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
+                            </span>
                         </div>
                         <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product-order.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
+                            <a href="{{ route('admin.commodity-product-order.index') }}"
+                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
+                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
                         </div>
                         <div class="col-12 text-center">
-                            @include('admin.commodity_product_order.menu', ['is_active' => 'transporterLedger'])
+                            @include('admin.commodity_product_order.menu', [
+                                'is_active' => 'transporterLedger',
+                            ])
                         </div>
 
                     </div>
@@ -23,15 +29,31 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-8">
-                            <h6>
-                                Transport Amount: ₹ {{ formatIndianNumber($data->transporter_invoice_amount) }} <br>
-                                Total Paid Amount: ₹ {{ $total_paid }} <br>
-                                Remaining Amount: ₹ {{ formatIndianNumber($data->transporter_invoice_amount - $total_paid) }}
-                            </h6>
+                        <div class="col-md-8 mb-3">
+                            <div class="border rounded p-3 bg-light">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Transport Amount</span>
+                                    <strong>₹ {{ formatIndianNumber($data->transporter_invoice_amount) }}</strong>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Total Paid</span>
+                                    <strong class="text-success">₹ {{ formatIndianNumber($total_paid) }}</strong>
+                                </div>
+
+                                <hr class="my-2">
+
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Remaining Amount</span>
+                                    <strong class="text-danger">
+                                        ₹ {{ formatIndianNumber($data->transporter_invoice_amount - $total_paid) }}
+                                    </strong>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-4 text-end">
-                            <button type="button" class="btn btn-info btn-xs mb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <button type="button" class="btn btn-info btn-xs mb-2" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">
                                 Add Payment
                             </button>
                         </div>
@@ -53,7 +75,8 @@
                                         <td>{{ $key + 1 + ($ledgers->currentPage() - 1) * $ledgers->perPage() }}</td>
                                         <td>
                                             {{ $data->transaction_id }} <br>
-                                            <span class="badge {{$data->type == 'credit' ? 'bg-success' : 'bg-danger'}}">
+                                            <span
+                                                class="badge {{ $data->type == 'credit' ? 'bg-success' : 'bg-danger' }}">
                                                 {{ ucfirst($data->type) }}
                                             </span> <br>
                                             <b>Date & Time : </b>
@@ -87,7 +110,9 @@
                                             @endif
                                             @if ($data->file)
                                                 <b>File: </b>
-                                                <a href="{{ asset('storage/'.$data->file) }}" target="_blank">View</a> <br>
+                                                <a href="{{ asset('storage/' . $data->file) }}"
+                                                    target="_blank">View</a>
+                                                <br>
                                             @endif
                                             @if ($data->getDrivers)
                                                 <hr>
@@ -111,7 +136,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -121,14 +147,16 @@
                     <div class="mb-2">
                         <label class="form-label">Paymet Added By :</label>
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="added_by" id="seller" value="seller" wire:model="added_by">
+                            <input type="radio" class="form-check-input" name="added_by" id="seller" value="seller"
+                                wire:model="added_by">
                             <label class="form-check-label" for="seller">
                                 Seller
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="added_by" id="biznie" value="biznie" wire:model="added_by">
+                            <input type="radio" class="form-check-input" name="added_by" id="biznie" value="biznie"
+                                wire:model="added_by">
                             <label class="form-check-label" for="biznie">
                                 Biznie
                             </label>
@@ -138,14 +166,16 @@
                     <div class="mb-2">
                         <label class="form-label">Payment Method :</label>
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="payment_method" id="cash" value="cash" wire:model="payment_method">
+                            <input type="radio" class="form-check-input" name="payment_method" id="cash"
+                                value="cash" wire:model="payment_method">
                             <label class="form-check-label" for="cash">
                                 Cash
                             </label>
                         </div>
 
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="payment_method" id="online" value="online" wire:model="payment_method">
+                            <input type="radio" class="form-check-input" name="payment_method" id="online"
+                                value="online" wire:model="payment_method">
                             <label class="form-check-label" for="online">
                                 Online
                             </label>
@@ -153,30 +183,42 @@
                     </div>
                     <div class="mb-2">
                         <label class="form-label" for="driver_id">Vehicle <span class="text-danger">*</span></label>
-                        <select class="form-select @error('driver_id') is-invalid @enderror" id="driver_id" wire:model="driver_id">
+                        <select class="form-select @error('driver_id') is-invalid @enderror" id="driver_id"
+                            wire:model="driver_id">
                             <option value="">Select Vehicle</option>
                             @foreach ($driver_list ?? [] as $driver)
                                 <option value="{{ $driver->id }}">{{ $driver->vehicle_number }}</option>
                             @endforeach
                         </select>
-                        @error('driver_id') <small class="text-danger">{{ $message }}</small>@enderror
+                        @error('driver_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="mb-2">
                         <label class="form-label" for="amount">Amount <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="Enter amount" wire:model="amount">
-                        @error('amount') <small class="text-danger">{{ $message }}</small>@enderror
+                        <input type="number" class="form-control @error('amount') is-invalid @enderror"
+                            id="amount" placeholder="Enter amount" wire:model="amount">
+                        @error('amount')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label" for="description">Description</label>
-                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" rows="1" placeholder="Enter description"></textarea>
-                        @error('description') <small class="text-danger">{{ $message }}</small>@enderror
+                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
+                            rows="1" placeholder="Enter description"></textarea>
+                        @error('description')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label" for="file">File</label>
-                        <input type="file" id="file" class="form-control @error('file') is-invalid @enderror" wire:model="file">
-                        @error('file') <small class="text-danger">{{ $message }}</small>@enderror
+                        <input type="file" id="file" class="form-control @error('file') is-invalid @enderror"
+                            wire:model="file">
+                        @error('file')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">
