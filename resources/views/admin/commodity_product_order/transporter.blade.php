@@ -31,7 +31,7 @@
 
                         <div class="col-4 text-end">
                             @if (count($this->transporter_user_id))
-                                <button class="btn btn-primary btn-xs my-2" title="Send enquiry to seller"
+                                <button class="btn btn-success btn-xs my-2" title="Send enquiry to seller"
                                     wire:click="sendTransporterEnquiry()">Send Enquiry</button>
                             @endif
                         </div>

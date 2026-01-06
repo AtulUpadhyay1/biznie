@@ -2408,7 +2408,7 @@ progress {
     color: #000;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid #81dfdb;
+    border: 1px solid #f2b38e;
     appearance: none;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
@@ -2611,7 +2611,7 @@ textarea.form-control-lg {
     background-repeat: no-repeat;
     background-position: right .8rem center;
     background-size: 16px 12px;
-    border: 1px solid #81dfdb;
+    border: 1px solid #f2b38e;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     appearance: none
@@ -3079,7 +3079,7 @@ div.tox .input-group .tox-button:focus {
     text-align: center;
     white-space: nowrap;
     background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
+    border: 1px solid #f2b38e;
     border-radius: .25rem
 }
 
@@ -5665,7 +5665,7 @@ div.tox .wizard>.actions .btn-group-vertical>a~.tox-button {
     display: block;
     padding: var(--bs-pagination-padding-y) var(--bs-pagination-padding-x);
     font-size: var(--bs-pagination-font-size);
-    color: var(--bs-pagination-color);
+    color: #cc0000;
     background-color: var(--bs-pagination-bg);
     border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color);
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
@@ -5679,7 +5679,7 @@ div.tox .wizard>.actions .btn-group-vertical>a~.tox-button {
 
 .page-link:hover {
     z-index: 2;
-    color: var(--bs-pagination-hover-color);
+    /* color: var(--bs-pagination-hover-color); */
     background-color: var(--bs-pagination-hover-bg);
     border-color: var(--bs-pagination-hover-border-color)
 }
@@ -5696,8 +5696,8 @@ div.tox .wizard>.actions .btn-group-vertical>a~.tox-button {
 .page-link.active {
     z-index: 3;
     color: var(--bs-pagination-active-color);
-    background-color: var(--bs-pagination-active-bg);
-    border-color: var(--bs-pagination-active-border-color)
+    background-color: #cc0000;
+    border-color: #cc0000;
 }
 
 .disabled>.page-link,
@@ -9401,6 +9401,11 @@ div.tox .tox-button .badge {
 .bg-success {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-success-rgb), var(--bs-bg-opacity)) !important
+}
+
+.bg-orange,
+.btn-orange {
+    background-color: #ffe3d2 !important;
 }
 
 .bg-info {

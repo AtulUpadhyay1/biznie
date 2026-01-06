@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold text-primary mb-1">
-                <i class="bi bi-stopwatch me-2"></i>{{$page_title}}
+                <i class="bi bi-stopwatch me-2"></i>{{ $page_title }}
             </h2>
             <p class="text-muted mb-0">Latest price information for commodity products</p>
         </div>
@@ -133,7 +133,9 @@
                     <div class="border-bottom">
                         <ul class="nav nav-tabs border-0" id="dataTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active px-4 py-3 fw-semibold" id="seller-tab" data-bs-toggle="tab" data-bs-target="#seller" type="button" role="tab" aria-controls="seller" aria-selected="true">
+                                <button class="nav-link active px-4 py-3 fw-semibold" id="seller-tab"
+                                    data-bs-toggle="tab" data-bs-target="#seller" type="button" role="tab"
+                                    aria-controls="seller" aria-selected="true">
                                     <i class="bi bi-shop me-2"></i>
                                     Sellers
                                     <span class="badge bg-primary ms-2">{{ count($seller_list ?? []) }}</span>
@@ -151,87 +153,132 @@
 
                     <div class="tab-content" id="dataTabContent">
                         <!-- Enhanced Seller Tab -->
-                        <div class="tab-pane fade show active p-4" id="seller" role="tabpanel" aria-labelledby="seller-tab">
-                            @if(count($seller_list ?? []) > 0)
+                        <div class="tab-pane fade show active p-4" id="seller" role="tabpanel"
+                            aria-labelledby="seller-tab">
+                            @if (count($seller_list ?? []) > 0)
                                 <div class="accordion" id="sellerAccordion">
                                     @foreach ($seller_list ?? [] as $seller_data)
                                         <div class="accordion-item border rounded mb-3 shadow-sm">
                                             <h2 class="accordion-header" id="seller_heading_{{ $seller_data->id }}">
-                                                <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#seller_collapse_{{ $seller_data->id }}" aria-expanded="false" aria-controls="seller_collapse_{{ $seller_data->id }}">
+                                                <button class="accordion-button collapsed shadow-sm p-3 rounded"
+                                                    type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#seller_collapse_{{ $seller_data->id }}"
+                                                    aria-expanded="false"
+                                                    aria-controls="seller_collapse_{{ $seller_data->id }}">
+
                                                     <div class="w-100">
+
                                                         <!-- Business Info Row -->
                                                         <div class="d-flex flex-wrap align-items-center gap-3 mb-2">
                                                             <div class="d-flex align-items-center">
-                                                                <i class="bi bi-building text-primary me-2"></i>
-                                                                <strong class="text-dark">{{ $seller_data->getUser->getBusiness->name}}</strong>
+                                                                <i class="bi bi-building text-primary me-2 fs-5"></i>
+                                                                <strong
+                                                                    class="text-dark fs-6">{{ $seller_data->getUser->getBusiness->name }}</strong>
                                                             </div>
+
                                                             <div class="d-flex align-items-center text-muted">
-                                                                <i class="bi bi-person me-1"></i>
-                                                                <small>{{$seller_data->getUser->name}} - {{$seller_data->getUser->phone}}</small>
+                                                                <i class="bi bi-person me-2 fs-6"></i>
+                                                                <small>{{ $seller_data->getUser->name }} -
+                                                                    {{ $seller_data->getUser->phone }}</small>
                                                             </div>
+
                                                             <div class="d-flex align-items-center">
-                                                                <i class="bi bi-star-fill text-warning me-1"></i>
-                                                                <small class="fw-semibold">{{$seller_data->getUser?->getUserDetail?->priority ?? 0}}</small>
+                                                                <i class="bi bi-star-fill text-warning me-2 fs-6"></i>
+                                                                <small
+                                                                    class="fw-semibold">{{ $seller_data->getUser?->getUserDetail?->priority ?? 0 }}</small>
                                                             </div>
-                                                            @if($seller_data->getCommodityProduct)
-                                                                <span class="badge {{ $seller_data->getCommodityProduct->status == 'active' ? 'bg-success' : 'bg-danger' }} rounded-pill">
-                                                                    {{ ucfirst($seller_data->getCommodityProduct->status) }}
-                                                                </span>
+
+                                                            @if ($seller_data->getCommodityProduct)
+                                                                <div>
+                                                                    <span
+                                                                        class="badge {{ $seller_data->getCommodityProduct->status == 'active' ? 'bg-success' : 'bg-danger' }} rounded-pill px-3 py-1">
+                                                                        {{ ucfirst($seller_data->getCommodityProduct->status) }}
+                                                                    </span>
+                                                                </div>
                                                             @endif
                                                         </div>
+
+                                                        <hr />
 
                                                         <!-- Details Row -->
-                                                        <div class="row g-2 text-sm">
-                                                            <div class="col-md-3">
+                                                        <div class="row g-2 mb-2 text-muted small">
+
+                                                            <div class="col-md-3 d-flex align-items-center">
                                                                 <i class="bi bi-tag text-info me-1"></i>
-                                                                <strong>Brand:</strong> {{ $seller_data->getBrand->name }}
+                                                                <span><strong>Brand:</strong>
+                                                                    {{ $seller_data->getBrand->name }}</span>
                                                             </div>
-                                                            <div class="col-md-3">
+
+                                                            <div class="col-md-3 d-flex align-items-center">
                                                                 <i class="bi bi-geo-alt text-success me-1"></i>
-                                                                <strong>Location:</strong> {{ $seller_data->getStatePrice[0]->state }}, {{ $seller_data->getStatePrice[0]->city }}
+                                                                <span><strong>Location:</strong>
+                                                                    {{ $seller_data->getStatePrice[0]->state }},
+                                                                    {{ $seller_data->getStatePrice[0]->city }}</span>
                                                             </div>
-                                                            <div class="col-md-3">
+
+                                                            <div class="col-md-3 d-flex align-items-center">
                                                                 <i class="bi bi-currency-rupee text-warning me-1"></i>
-                                                                <strong>Base Price:</strong> ₹{{ number_format($seller_data->base_price ?? 0, 2) }}
+                                                                <span><strong>Base Price:</strong>
+                                                                    ₹{{ number_format($seller_data->base_price ?? 0, 2) }}</span>
                                                             </div>
-                                                            @if($seller_data->quantity)
-                                                            <div class="col-md-3">
-                                                                <i class="bi bi-box text-secondary me-1"></i>
-                                                                <strong>Quantity:</strong> {{ $seller_data->quantity ?? 0 }}
-                                                            </div>
+
+                                                            @if ($seller_data->quantity)
+                                                                <div class="col-md-3 d-flex align-items-center">
+                                                                    <i class="bi bi-box text-secondary me-1"></i>
+                                                                    <span><strong>Quantity:</strong>
+                                                                        {{ $seller_data->quantity ?? 0 }}</span>
+                                                                </div>
                                                             @endif
+
                                                         </div>
 
-                                                        @if($seller_data->price_validity)
-                                                        <div class="mt-2">
-                                                            <i class="bi bi-calendar-event text-danger me-1"></i>
-                                                            <strong>Valid Until:</strong>
-                                                            <span class="text-danger">{{ dateTimeFormat($seller_data->price_validity) }}</span>
+                                                        <hr />
+
+                                                        <!-- Validity & Updated At -->
+                                                        <div class="d-flex flex-wrap gap-3 mt-1 text-muted small">
+
+                                                            @if ($seller_data->price_validity)
+                                                                <div class="d-flex align-items-center">
+                                                                    <i
+                                                                        class="bi bi-calendar-event text-danger me-1"></i>
+                                                                    <span><strong>Valid Until:</strong> <span
+                                                                            class="text-danger">{{ dateTimeFormat($seller_data->price_validity) }}</span></span>
+                                                                </div>
+                                                            @endif
+
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="bi bi-clock-history text-secondary me-1"></i>
+                                                                <span><strong>Updated At:</strong>
+                                                                    {{ dateTimeFormat($seller_data->updated_at ?? $seller_data->created_at) }}</span>
+                                                            </div>
+
                                                         </div>
-                                                        @endif
-                                                        <div class="mt-1">
-                                                            <i class="bi bi-clock-history text-secondary me-1"></i>
-                                                            <strong>Updated At:</strong>
-                                                            <span class="text-dark">{{ dateTimeFormat($seller_data->updated_at ?? $seller_data->created_at) }}</span>
-                                                        </div>
+
                                                     </div>
                                                 </button>
                                             </h2>
-                                            <div id="seller_collapse_{{ $seller_data->id }}" class="accordion-collapse collapse" aria-labelledby="seller_heading_{{ $seller_data->id }}" data-bs-parent="#sellerAccordion">
-                                                <div class="accordion-body bg-light">
+
+                                            <div id="seller_collapse_{{ $seller_data->id }}"
+                                                class="accordion-collapse collapse"
+                                                aria-labelledby="seller_heading_{{ $seller_data->id }}"
+                                                data-bs-parent="#sellerAccordion">
+                                                <div class="accordion-body">
                                                     <div class="table-responsive">
                                                         <table class="table table-hover mb-0">
                                                             <thead>
                                                                 <tr>
                                                                     <th class="text-center">#</th>
                                                                     @php
-                                                                        $attributes = $seller_data->getStatePrice[0]->value;
+                                                                        $attributes =
+                                                                            $seller_data->getStatePrice[0]->value;
                                                                     @endphp
                                                                     @foreach ($attributes as $attribute)
-                                                                        <th class="text-center">{{$attribute['name']}}</th>
+                                                                        <th class="text-center">
+                                                                            {{ $attribute['name'] }}</th>
                                                                     @endforeach
                                                                     <th class="text-center">
-                                                                        <i class="bi bi-currency-rupee me-1"></i>Gauge Difference
+                                                                        <i class="bi bi-currency-rupee me-1"></i>Gauge
+                                                                        Difference
                                                                     </th>
                                                                     <th class="text-center">
                                                                         <i class="bi bi-boxes me-1"></i>Stock
@@ -243,61 +290,93 @@
                                                                     <tr>
                                                                         <td class="text-center fw-bold">
                                                                             {{ $loop->iteration }}
-                                                                            @if($state_price->is_selected)
-                                                                                <i class="bi bi-check-circle-fill text-success ms-1"></i>
+                                                                            @if ($state_price->is_selected)
+                                                                                <i
+                                                                                    class="bi bi-check-circle-fill text-success ms-1"></i>
                                                                             @endif
                                                                         </td>
                                                                         @foreach ($state_price->value as $price_value)
-                                                                            <td class="text-center">{{ $price_value['value'] }}</td>
+                                                                            <td class="text-center">
+                                                                                {{ $price_value['value'] }}</td>
                                                                         @endforeach
-                                                                        <td class="text-center fw-semibold text-primary">₹{{ number_format($state_price->price, 2) }}</td>
-                                                                        <td class="text-center">{{ $state_price->stock ?? 0 }}</td>
+                                                                        <td
+                                                                            class="text-center fw-semibold text-primary">
+                                                                            ₹{{ number_format($state_price->price, 2) }}
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            {{ $state_price->stock ?? 0 }}</td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
-                                                            <tfoot class="table-secondary">
+                                                            <tfoot class="table-white">
                                                                 <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">
+                                                                    <th colspan="{{ count($attributes) + 2 }}"
+                                                                        class="text-end">
                                                                         <i class="bi bi-truck me-1"></i>Loading Charge
                                                                     </th>
-                                                                    <td class="text-center fw-bold">₹{{ number_format($seller_data->loading_charge ?? 0, 2) }}</td>
+                                                                    <td class="text-center fw-bold">
+                                                                        ₹{{ number_format($seller_data->loading_charge ?? 0, 2) }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">
-                                                                        <i class="bi bi-shield-check me-1"></i>Insurance Charge
+                                                                    <th colspan="{{ count($attributes) + 2 }}"
+                                                                        class="text-end">
+                                                                        <i class="bi bi-shield-check me-1"></i>Insurance
+                                                                        Charge
                                                                     </th>
-                                                                    <td class="text-center fw-bold">₹{{ number_format($seller_data->insurance_charge ?? 0, 2) }}</td>
+                                                                    <td class="text-center fw-bold">
+                                                                        ₹{{ number_format($seller_data->insurance_charge ?? 0, 2) }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">
+                                                                    <th colspan="{{ count($attributes) + 2 }}"
+                                                                        class="text-end">
                                                                         <i class="bi bi-award me-1"></i>Quality Charge
                                                                     </th>
-                                                                    <td class="text-center fw-bold">₹{{ number_format($seller_data->quality_charge ?? 0, 2) }}</td>
+                                                                    <td class="text-center fw-bold">
+                                                                        ₹{{ number_format($seller_data->quality_charge ?? 0, 2) }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">
+                                                                    <th colspan="{{ count($attributes) + 2 }}"
+                                                                        class="text-end">
                                                                         <i class="bi bi-receipt me-1"></i>GST
                                                                     </th>
-                                                                    <td class="text-center fw-bold">{{ $seller_data->gst ?? 0 }}%</td>
+                                                                    <td class="text-center fw-bold">
+                                                                        {{ $seller_data->gst ?? 0 }}%</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th colspan="{{count($attributes)+2}}" class="text-end">
+                                                                    <th colspan="{{ count($attributes) + 2 }}"
+                                                                        class="text-end">
                                                                         <i class="bi bi-calculator me-1"></i>TCS
                                                                     </th>
-                                                                    <td class="text-center fw-bold">{{ $seller_data->tcs ?? 0 }}%</td>
+                                                                    <td class="text-center fw-bold">
+                                                                        {{ $seller_data->tcs ?? 0 }}%</td>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
                                                         <hr>
                                                         <div class="row">
                                                             <div class="col-10">
-                                                                <h5>Quality</h5>
-                                                                @foreach ($seller_data->quality as $key => $quality)
-                                                                    <span class="badge bg-info text-dark rounded-pill me-1 mb-1">{{ $quality }} - ₹ {{ $seller_data->quality_price[$key] ?? 0 }}</span>
-                                                                @endforeach
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <h5>Quality : </h5>
+                                                                    <div>
+                                                                        @foreach ($seller_data->quality as $key => $quality)
+                                                                            <span
+                                                                                class="badge bg-orange text-dark rounded-pill me-1 mb-1">{{ $quality }}
+                                                                                - ₹
+                                                                                {{ $seller_data->quality_price[$key] ?? 0 }}</span>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div class="col-2">
-                                                                <button type="button" class="btn btn-outline-danger btn-xs btn-icon" data-bs-toggle="modal" data-bs-target="#exampleModal" title="View Calculation" wire:click="viewPriceCalculation({{ $seller_data->id }})">
+                                                                <button type="button"
+                                                                    class="btn btn-outline-danger btn-xs btn-icon"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#exampleModal"
+                                                                    title="View Calculation"
+                                                                    wire:click="viewPriceCalculation({{ $seller_data->id }})">
                                                                     <i class="bi bi-info-circle"></i>
                                                                 </button>
                                                             </div>
@@ -322,7 +401,7 @@
                         </div>
                         <!-- Enhanced Buyer Tab -->
                         {{-- <div class="tab-pane fade p-4" id="buyer" role="tabpanel" aria-labelledby="buyer-tab">
-                            @if(count($customer_list ?? []) > 0)
+                            @if (count($customer_list ?? []) > 0)
                                 <div class="accordion" id="buyerAccordion">
                                     @foreach ($customer_list ?? [] as $customer_data)
                                         <div class="accordion-item border rounded mb-3 shadow-sm">
@@ -420,20 +499,21 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        wire:ignore.self>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">View Calculation</h5>
                 </div>
                 <div class="modal-body">
-                    @if($detail)
+                    @if ($detail)
                         <b>Base Price:</b> Rs {{ formatIndianNumber($detail['base_price']) }} <br>
                         <b>Guage Difference:</b> + Rs {{ formatIndianNumber($detail['default_variation_price']) }} <br>
-                        @if($detail['loading_charge'] > 0)
+                        @if ($detail['loading_charge'] > 0)
                             <b>Loading Charge:</b> + Rs {{ formatIndianNumber($detail['loading_charge']) }} <br>
                         @endif
-                        @if($detail['insurance_charge'] > 0)
+                        @if ($detail['insurance_charge'] > 0)
                             <b>Insurance Charge:</b> + Rs {{ formatIndianNumber($detail['insurance_charge']) }} <br>
                         @endif
                         @if ($detail['quality_charge'] > 0)
@@ -441,7 +521,8 @@
                         @endif
 
                         @foreach ($detail['other_charges'] as $charge)
-                            <b>{{ $charge['name'] }}:</b> {{ $charge['operator'] }} Rs {{ formatIndianNumber($charge['price']) }} <br>
+                            <b>{{ $charge['name'] }}:</b> {{ $charge['operator'] }} Rs
+                            {{ formatIndianNumber($charge['price']) }} <br>
                         @endforeach
 
 
@@ -458,19 +539,20 @@
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal" wire:click="closeModal()">Close</button>
+                    <button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal"
+                        wire:click="closeModal()">Close</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- Custom Styles -->
     <style>
-        .form-floating > .form-select {
+        .form-floating>.form-select {
             padding-top: 1.625rem;
             padding-bottom: 0.625rem;
         }
 
-        .form-floating > label {
+        .form-floating>label {
             opacity: 0.65;
             transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
         }

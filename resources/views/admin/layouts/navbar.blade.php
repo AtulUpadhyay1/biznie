@@ -113,7 +113,7 @@
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                     data-bs-target="#freightFinderModal">
                     Freight Finder
                 </button>

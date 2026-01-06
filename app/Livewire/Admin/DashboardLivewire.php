@@ -65,7 +65,7 @@ class DashboardLivewire extends Component
             ->latest()
             ->with(['getUserDetail'])
             ->where('is_staff', 0)
-            ->paginate(getPaginate(10));
+            ->paginate(getPaginate(5));
 
         return view('admin.dashboard', compact(
             'total_customer',
@@ -87,7 +87,8 @@ class DashboardLivewire extends Component
     public function notificationTest()
     {
         Mail::to('techuptechnologies1@gmail.com')->send(new EnquiryMail());
-        $this->dispatch('alert',
+        $this->dispatch(
+            'alert',
             type: 'success',
             message: 'Notification sent successfully.'
         );
@@ -112,12 +113,14 @@ class DashboardLivewire extends Component
             }
             $user->save();
 
-            $this->dispatch('alert',
+            $this->dispatch(
+                'alert',
                 type: 'success',
                 message: 'KYC status updated successfully.'
             );
         } else {
-            $this->dispatch('alert',
+            $this->dispatch(
+                'alert',
                 type: 'error',
                 message: 'User not found.'
             );
@@ -129,7 +132,8 @@ class DashboardLivewire extends Component
         $rejectionReason = $this->rejectionReasons[$user_id] ?? null;
 
         if (empty($rejectionReason)) {
-            $this->dispatch('alert',
+            $this->dispatch(
+                'alert',
                 type: 'error',
                 message: 'Please provide a rejection reason.'
             );
@@ -147,12 +151,14 @@ class DashboardLivewire extends Component
             unset($this->rejectionReasons[$user_id]);
             $this->pendingRejectionUserId = null;
 
-            $this->dispatch('alert',
+            $this->dispatch(
+                'alert',
                 type: 'success',
                 message: 'KYC status rejected with reason.'
             );
         } else {
-            $this->dispatch('alert',
+            $this->dispatch(
+                'alert',
                 type: 'error',
                 message: 'User not found.'
             );

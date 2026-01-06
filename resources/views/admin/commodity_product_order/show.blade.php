@@ -1216,7 +1216,7 @@
                         </div>
                     </div>
 
-                    <div class="row mt-3">
+                    <div class="row align-items-center mt-3">
                         <div class="col-md-3 mb-2">
                             <div class="card">
                                 <div class="card-body p-0">

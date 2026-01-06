@@ -45,7 +45,8 @@
                                         <td>{{ $data->email }}</td>
                                         <td>{{ $data->phone }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-outline-primary view-message" data-name="{{ e($data->name) }}">
+                                            <button type="button" class="btn btn-sm btn-outline-success view-message"
+                                                data-name="{{ e($data->name) }}">
                                                 View
                                             </button>
                                             <div class="d-none message-text">{{ $data->message }}</div>
@@ -84,24 +85,26 @@
     </div>
 
     @push('scripts')
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var messageModalEl = document.getElementById('messageModal');
-        if (!messageModalEl || typeof bootstrap === 'undefined') return;
-        var bsModal = new bootstrap.Modal(messageModalEl);
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var messageModalEl = document.getElementById('messageModal');
+                if (!messageModalEl || typeof bootstrap === 'undefined') return;
+                var bsModal = new bootstrap.Modal(messageModalEl);
 
-        document.querySelectorAll('.view-message').forEach(function(btn){
-            btn.addEventListener('click', function(){
-                var name = this.getAttribute('data-name') || 'Message';
-                var msgEl = this.closest('tr').querySelector('.message-text');
-                var msg = msgEl ? msgEl.textContent.trim() : '';
-                messageModalEl.querySelector('.modal-title').textContent = 'Message from ' + name;
-                // preserve line breaks
-                messageModalEl.querySelector('.modal-body').innerHTML = msg.replace(/\n/g, '<br>');
-                bsModal.show();
+                document.querySelectorAll('.view-message').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        var name = this.getAttribute('data-name') || 'Message';
+                        var msgEl = this.closest('tr').querySelector('.message-text');
+                        var msg = msgEl ? msgEl.textContent.trim() : '';
+                        messageModalEl.querySelector('.modal-title').textContent = 'Message from ' +
+                            name;
+                        // preserve line breaks
+                        messageModalEl.querySelector('.modal-body').innerHTML = msg.replace(/\n/g,
+                            '<br>');
+                        bsModal.show();
+                    });
+                });
             });
-        });
-    });
-    </script>
+        </script>
     @endpush
 </div>
