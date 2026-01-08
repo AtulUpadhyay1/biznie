@@ -138,21 +138,15 @@
                     </div>
                     <ul class="list-unstyled p-1">
                         <li class="dropdown-item py-2">
-                            <a href="javascript:;" class="text-body ms-0">
+                            <a href="{{ route('admin.profile.edit') }}" class="text-body ms-0">
                                 <i class="bi bi-person me-2 icon-md"></i>
                                 <span>Profile</span>
                             </a>
                         </li>
                         <li class="dropdown-item py-2">
-                            <a href="javascript:;" class="text-body ms-0">
+                            <a href="{{ route('admin.profile.edit') }}" class="text-body ms-0">
                                 <i class="bi bi-pencil-square me-2 icon-md"></i>
                                 <span>Edit Profile</span>
-                            </a>
-                        </li>
-                        <li class="dropdown-item py-2">
-                            <a href="javascript:;" class="text-body ms-0">
-                                <i class="bi bi-arrow-left-right me-2 icon-md"></i>
-                                <span>Switch User</span>
                             </a>
                         </li>
                         <li class="dropdown-item py-2">

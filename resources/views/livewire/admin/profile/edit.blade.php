@@ -1,0 +1,115 @@
+<div>
+    @section('title', config('app.name') . ' | Edit Profile')
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-6 card-title">
+                            <h4>Edit Profile</h4>
+                        </div>
+                        <div class="col-6 text-end">
+                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Back"
+                                href="{{ route('admin.dashboard') }}" wire:navigate>
+                                <i class="bi bi-arrow-left btn-icon-prepend"></i>Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form wire:submit.prevent="updateProfile">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="name">Full Name <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="name" wire:model="name" placeholder="Enter your name">
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="email">Email Address <span
+                                        class="text-danger">*</span></label>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                    id="email" wire:model="email" placeholder="Enter your email">
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="phone">Phone Number</label>
+                                <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                                    id="phone" wire:model="phone" placeholder="Enter your phone number">
+                                @error('phone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">&nbsp;</label>
+                                <button type="button" class="btn btn-sm btn-outline-primary d-block"
+                                    wire:click="togglePasswordSection">
+                                    @if ($showPasswordSection)
+                                        <i class="bi bi-eye-slash me-1"></i>Hide Password Section
+                                    @else
+                                        <i class="bi bi-key me-1"></i>Change Password
+                                    @endif
+                                </button>
+                            </div>
+                        </div>
+
+                        @if ($showPasswordSection)
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="alert alert-info" role="alert">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        <strong>Password Requirements:</strong> Minimum 8 characters
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="current_password">Current Password <span
+                                            class="text-danger">*</span></label>
+                                    <input type="password"
+                                        class="form-control @error('current_password') is-invalid @enderror"
+                                        id="current_password" wire:model="current_password"
+                                        placeholder="Enter current password">
+                                    @error('current_password')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="new_password">New Password <span
+                                            class="text-danger">*</span></label>
+                                    <input type="password"
+                                        class="form-control @error('new_password') is-invalid @enderror"
+                                        id="new_password" wire:model="new_password" placeholder="Enter new password">
+                                    @error('new_password')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="new_password_confirmation">Confirm New Password <span
+                                            class="text-danger">*</span></label>
+                                    <input type="password" class="form-control" id="new_password_confirmation"
+                                        wire:model="new_password_confirmation" placeholder="Confirm new password">
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <x-submit-btn text="Update Profile" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
