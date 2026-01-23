@@ -23,6 +23,14 @@ Route::group(['as'=>'admin.'], function () {
     Route::get('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'showLoginForm'])->name('login');
     Route::post('login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'login'])->name('login');
 
+    // Forgot Password Routes
+    Route::get('forgot-password', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('forgot-password/send-otp', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'sendPasswordResetOtp'])->name('password.send-otp');
+    Route::get('verify-otp', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'showVerifyOtpForm'])->name('password.verify-otp');
+    Route::post('verify-otp', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'verifyOtp'])->name('password.verify-otp.submit');
+    Route::get('reset-password', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'showResetPasswordForm'])->name('password.reset');
+    Route::post('reset-password', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'resetPassword'])->name('password.reset.submit');
+
     // Route::get('address-syn', [App\Http\Controllers\Admin\DashboardController::class, 'addressSyn']);
 
     // Authenticated Routes
@@ -38,6 +46,11 @@ Route::group(['as'=>'admin.'], function () {
 
         // Admin Profile
         Route::get('profile/edit', AdminRoot\Profile\Edit::class)->name('profile.edit');
+
+        // Recovery Email Routes
+        Route::get('recovery-email/change', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'showChangeRecoveryEmailForm'])->name('recovery-email.change');
+        Route::post('recovery-email/send-otp', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'sendRecoveryEmailOtp'])->name('recovery-email.send-otp');
+        Route::post('recovery-email/verify-otp', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'verifyAndChangeRecoveryEmail'])->name('recovery-email.verify-otp');
 
         // Business Category
         Route::get('business-category', AdminRoot\BusinessCategory\Index::class)->name('business-category');

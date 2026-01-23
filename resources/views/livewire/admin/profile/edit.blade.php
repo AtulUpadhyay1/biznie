@@ -49,6 +49,21 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
+                                <label class="form-label">Recovery Email</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" class="form-control"
+                                        value="{{ auth('admin')->user()->recovery_email ?? 'Not Set' }}"
+                                        disabled readonly>
+                                    <a href="{{ route('admin.recovery-email.change') }}"
+                                        class="btn btn-sm btn-outline-warning text-nowrap"
+                                        title="Change Recovery Email">
+                                        <i class="bi bi-pencil-square"></i> Change
+                                    </a>
+                                </div>
+                                <small class="text-muted">Used for password reset and account recovery</small>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
                                 <label class="form-label">&nbsp;</label>
                                 <button type="button" class="btn btn-sm btn-outline-primary d-block"
                                     wire:click="togglePasswordSection">

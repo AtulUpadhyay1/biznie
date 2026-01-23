@@ -16,18 +16,9 @@
         <!-- core:css -->
         <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/core/core.css')}}">
         <!-- Layout styles -->
-        @if(session()->has('selected_theme') && session()->get('selected_theme') == "Dark")
-            <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
-        @else
-            <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
-        @endif
+        <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
         <!-- End layout styles -->
         <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
-        {{-- @if(websiteSetupValue('favicon'))
-            <link rel="shortcut icon" href="{{asset('admin/admin/website_setup/'.websiteSetupValue('favicon'))}}" />
-        @else
-            <link rel="shortcut icon" href="{{asset('admin/assets/images/favicon.png')}}" />
-        @endif --}}
         <link rel="shortcut icon" href="{{asset('admin_css/assets/images/favicon.png')}}" />
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
@@ -43,29 +34,19 @@
                     <div class="login-content">
                         <div>
                             <img src="{{asset('admin_css/assets/images/avatar.png')}}">
-                            <h2 class="admin-title">Welcome Admin </h2>
-                            <form class="admin-login-form forms-sample" method="POST" action="{{ route('admin.login') }}">
+                            <h2 class="admin-title">Reset Password</h2>
+                            <p style="color: #666; margin-bottom: 20px;">Enter your new password</p>
+
+                            <form class="admin-login-form forms-sample" method="POST" action="{{ route('admin.password.reset.submit') }}">
                                 @csrf
-                                <div class="input-area one">
-                                    <div class="input-icon">
-                                        <i class="bi bi-person-fill"></i>
-                                    </div>
-                                    <div class="input-text-area">
-                                        <input type="email" class="input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="Username">
-                                    </div>
-                                </div>
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input type="hidden" name="email" value="{{ session('verified_email') }}">
 
                                 <div class="input-area pass" x-data="{ showPassword: false }">
                                     <div class="input-icon">
                                         <i x-bind:class="showPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'" x-bind:title="showPassword ? 'Hide Password' : 'Show Password'" x-on:click="showPassword = ! showPassword"></i>
                                     </div>
                                     <div class="input-text-area">
-                                        <input x-bind:type="showPassword ? 'text' : 'password'" class="input @error('password') is-invalid @enderror" id="password" autocomplete="current-password" name="password" placeholder="Password">
+                                        <input x-bind:type="showPassword ? 'text' : 'password'" class="input @error('password') is-invalid @enderror" id="password" name="password" placeholder="New Password" minlength="8" required>
                                     </div>
                                 </div>
                                 @error('password')
@@ -74,15 +55,27 @@
                                     </span>
                                 @enderror
 
-                                <a href="{{ route('admin.password.request') }}">Forgot Password?</a>
-				                <input type="submit" class="submit-btn" value="Login">
+                                <div class="input-area pass" x-data="{ showPassword: false }" style="margin-top: 15px;">
+                                    <div class="input-icon">
+                                        <i x-bind:class="showPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'" x-bind:title="showPassword ? 'Hide Password' : 'Show Password'" x-on:click="showPassword = ! showPassword"></i>
+                                    </div>
+                                    <div class="input-text-area">
+                                        <input x-bind:type="showPassword ? 'text' : 'password'" class="input @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" placeholder="Confirm New Password" minlength="8" required>
+                                    </div>
+                                </div>
+                                @error('password_confirmation')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+
+                                <input type="submit" class="submit-btn" value="Reset Password" style="margin-top: 20px;">
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
         <script src="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.js')}}"></script>
@@ -101,27 +94,18 @@
                     var error_message = "{{Session::get('error')}}";
 
                     if(success_message != ""){
-                        success_sweet_alert(success_message);
+                        Toast.fire({
+                            icon: 'success',
+                            title: success_message
+                        });
                     }
                     if(error_message !=""){
-                        error_sweet_alert(error_message)
+                        Toast.fire({
+                            icon: 'error',
+                            title: error_message
+                        });
                     }
-
                 });
-
-                function success_sweet_alert(success_message){
-                    Toast.fire({
-                        icon: 'success',
-                        title: success_message
-                    });
-                }
-
-                function error_sweet_alert(error_message){
-                    Toast.fire({
-                        icon: 'error',
-                        title: error_message
-                    });
-                }
             });
         </script>
     </body>
