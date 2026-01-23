@@ -27,7 +27,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-12 mb-3" wire:ignore>
                                 <label class="form-label" for="description">Description <span class="text-danger">*</span></label>
                                 <textarea id="description" class="form-control @error('description') is-invalid @enderror" wire:model="description" rows="5" placeholder="Enter description"></textarea>
                                 @error('description')
@@ -70,4 +70,14 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function () {
+                const description = CKEDITOR.replace('description');
+                description.on('change', function(event){
+                    @this.set('description', event.editor.getData());
+                });
+            });
+        </script>
+    @endpush
 </div>
