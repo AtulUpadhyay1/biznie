@@ -348,7 +348,7 @@ class AuthApiController extends Controller
             //     ],400);
             // }
 
-            Auth::logout();
+            // Auth::logout();
 
             // Delete user related data if any
 
