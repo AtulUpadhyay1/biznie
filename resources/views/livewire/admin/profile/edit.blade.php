@@ -82,44 +82,88 @@
                                     <div class="alert alert-info" role="alert">
                                         <i class="bi bi-info-circle me-2"></i>
                                         <strong>Password Requirements:</strong> Minimum 8 characters
+                                        @if(!$otpSent)
+                                            <br><strong>Note:</strong> An OTP will be sent to your recovery email to verify this change.
+                                        @endif
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="current_password">Current Password <span
-                                            class="text-danger">*</span></label>
-                                    <input type="password"
-                                        class="form-control @error('current_password') is-invalid @enderror"
-                                        id="current_password" wire:model="current_password"
-                                        placeholder="Enter current password">
-                                    @error('current_password')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
+                                @if(!$showOtpField)
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="current_password">Current Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password"
+                                            class="form-control @error('current_password') is-invalid @enderror"
+                                            id="current_password" wire:model="current_password"
+                                            placeholder="Enter current password">
+                                        @error('current_password')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="new_password">New Password <span
-                                            class="text-danger">*</span></label>
-                                    <input type="password"
-                                        class="form-control @error('new_password') is-invalid @enderror"
-                                        id="new_password" wire:model="new_password" placeholder="Enter new password">
-                                    @error('new_password')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="new_password">New Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password"
+                                            class="form-control @error('new_password') is-invalid @enderror"
+                                            id="new_password" wire:model="new_password" placeholder="Enter new password">
+                                        @error('new_password')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="new_password_confirmation">Confirm New Password <span
-                                            class="text-danger">*</span></label>
-                                    <input type="password" class="form-control" id="new_password_confirmation"
-                                        wire:model="new_password_confirmation" placeholder="Confirm new password">
-                                </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="new_password_confirmation">Confirm New Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" id="new_password_confirmation"
+                                            wire:model="new_password_confirmation" placeholder="Confirm new password">
+                                    </div>
+                                @else
+                                    <div class="col-12">
+                                        <div class="alert alert-success" role="alert">
+                                            <i class="bi bi-envelope-check me-2"></i>
+                                            OTP has been sent to your recovery email. Please check your inbox.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="otp">Enter OTP <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text"
+                                            class="form-control @error('otp') is-invalid @enderror"
+                                            id="otp" wire:model="otp"
+                                            placeholder="Enter 6-digit OTP"
+                                            maxlength="6"
+                                            pattern="[0-9]*"
+                                            inputmode="numeric">
+                                        @error('otp')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-muted">OTP expires in 10 minutes</small>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">&nbsp;</label>
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                wire:click="resendOtp">
+                                                <i class="bi bi-arrow-clockwise me-1"></i>Resend OTP
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         @endif
 
                         <div class="row">
                             <div class="col-md-6">
-                                <x-submit-btn text="Update Profile" />
+                                @if($showPasswordSection && !$showOtpField)
+                                    <x-submit-btn text="Send OTP to Recovery Email" />
+                                @elseif($showPasswordSection && $showOtpField)
+                                    <x-submit-btn text="Verify OTP & Update Password" />
+                                @else
+                                    <x-submit-btn text="Update Profile" />
+                                @endif
                             </div>
                         </div>
                     </form>

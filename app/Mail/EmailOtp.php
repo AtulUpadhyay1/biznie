@@ -17,6 +17,7 @@ class EmailOtp extends Mailable
     public $userName;
     public $expiryMinutes;
     public $userEmail;
+    public $subject;
 
     /**
      * Create a new message instance.
@@ -25,13 +26,15 @@ class EmailOtp extends Mailable
      * @param string $userName The name of the user
      * @param string $userEmail The email address of the user
      * @param int $expiryMinutes Number of minutes until OTP expires
+     * @param string $subject The email subject
      */
-    public function __construct($otp, $userName = null, $userEmail = null, $expiryMinutes = 10)
+    public function __construct($otp, $userName = null, $userEmail = null, $expiryMinutes = 10, $subject = null)
     {
         $this->otp = $otp;
         $this->userName = $userName;
         $this->userEmail = $userEmail;
         $this->expiryMinutes = $expiryMinutes;
+        $this->subject = $subject ?? 'Email Verification Code - ' . config('app.name', 'Biznie');
     }
 
     /**
@@ -41,7 +44,7 @@ class EmailOtp extends Mailable
     {
         return new Envelope(
             to: $this->userEmail,
-            subject: 'Email Verification Code - ' . config('app.name', 'Biznie'),
+            subject: $this->subject,
         );
     }
 
