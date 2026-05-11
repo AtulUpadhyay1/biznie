@@ -28,7 +28,7 @@ class Create extends Component
         $data = new User;
         $data->name         = $this->name;
         $data->type         = $this->type;
-        $data->phone_number = $this->phone;
+        $data->phone        = $this->phone;
         $data->save();
 
         $detail = new UserDetail;
