@@ -98,6 +98,14 @@ class ProductEnquiryApiController extends Controller
         ]);
 
         $data               = SellerProductEnquiry::find($id);
+
+        if($data->getCommodityProductOrder && $data->getCommodityProductOrder->id){
+            return response([
+                'success'   => false,
+                'message'   => 'You cannot update this enquiry as it has already been ordered.'
+            ],400);
+        }
+        
         $data->value        = $request->variation;
         $data->price        = $request->price;
         $data->base_price   = $request->base_price;
