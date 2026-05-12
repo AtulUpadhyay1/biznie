@@ -84,6 +84,33 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-2">
+                                    <div class="row">
+                                        <div class="mb-2">
+                                            <label for="billing_address_line_one">Select Quality</label>
+                                            @foreach ($data->getCommodityProduct->quality as $quality_key => $quality)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="quality" value="{{ $quality }}" id="quality_{{ $quality_key }}" wire:model.live="selected_quality">
+                                                    <label class="form-check-label" for="quality_{{ $quality_key }}">
+                                                        {{ $quality }} <span class="text-danger">(₹ {{ formatIndianNumber($data->getCommodityProduct->quality_price[$quality_key]) }})</span>
+                                                    </label>
+                                                </div>
+                                                
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="mb-2">
+                                            <label for="billing_address_line_one">Select Packaging Type</label>
+                                            @foreach ($package_type_array as $packaging)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="packaging_type" value="{{ $packaging['id'] }}" id="packaging_type_{{ $packaging['id'] }}" wire:model.live="selected_packaging_type">
+                                                    <label class="form-check-label" for="packaging_type_{{ $packaging['id'] }}">
+                                                        {{ $packaging['name'] }} <span class="text-danger">(₹ {{ formatIndianNumber($packaging['charge']) }})</span>
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                     <div wire:ignore>
                                         <div class="row">
                                             <div class="col-6">

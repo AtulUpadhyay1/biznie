@@ -2,23 +2,25 @@
 
 namespace App\Livewire\Admin\CommodityProductEnquiry;
 
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Address;
-use Livewire\Component;
-use App\Models\HomeProduct;
-use App\Models\ProductEnquiry;
 use App\Models\CommodityProduct;
-use App\Models\SellerProductEnquiry;
+use App\Models\HomeProduct;
+use App\Models\PackagingType;
+use App\Models\ProductEnquiry;
 use App\Models\ProductEnquiryHistory;
 use App\Models\SellerCommodityProductStatePrice;
+use App\Models\SellerProductEnquiry;
+use App\Models\User;
+use Carbon\Carbon;
+use Livewire\Component;
 
 class Variation extends Component
 {
     public $page_title = 'Add Enquiry';
 
-    public $hidden_id, $user_id, $variation_id = [], $variation_quantity = [], $origin_city, $purpose, $description, $price;
+    public $hidden_id, $user_id, $variation_id = [], $variation_quantity = [], $origin_city, $purpose, $description, $price, $quality, $packaging_charge, $selected_quality, $selected_packaging_type;
     public $same_buyer_address = false;
+    public $package_type_array = [];
     public $billing_address = [
         'pin_code'          => '',
         'address_line_one'  => '',
@@ -59,7 +61,67 @@ class Variation extends Component
         $data = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct', 'getBrand', 'getSellerStatePrice')->findOrFail($this->hidden_id);
         $this->price = $data->base_price;
         $variations = SellerCommodityProductStatePrice::with('getSellerCommodityProduct')->where('seller_commodity_product_id', $data->seller_commodity_product_id)->get();
+        
+        $packagin_arr = [];
+        if($data->getSellerCommodityProduct && $data->getSellerCommodityProduct->packaging_type && count($data->getSellerCommodityProduct->packaging_type) > 0){
+            foreach ($data->getSellerCommodityProduct->packaging_type as $key => $type_id) {
+                $packagin_type = PackagingType::find($type_id);
+                if($packagin_type){
+                    $packagin_data['id'] = $packagin_type->id;
+                    $packagin_data['name'] = $packagin_type->name;
+                    $packagin_data['charge'] = $data->getSellerCommodityProduct->packaging_type_price ? ($data->getSellerCommodityProduct->packaging_type_price && isset($data->getSellerCommodityProduct->packaging_type_price[$packagin_type->id]) ? $data->getSellerCommodityProduct->packaging_type_price[$packagin_type->id] : 0) : 0;
+                    $packagin_arr[] = $packagin_data;
+                }
+            }
+        }
+        // Sort array by charge in ascending order
+        usort($packagin_arr, function ($a, $b) {
+            return (float)$a['charge'] <=> (float)$b['charge'];
+        });
+        $this->package_type_array = $packagin_arr;
+        $this->initializeDefaultQualityAndPackaging($data);
+
         return view('admin.commodity_product_enquiry.variation', compact('data', 'variations', 'user_list'));
+    }
+
+    protected function initializeDefaultQualityAndPackaging($data)
+    {
+        if (is_null($this->selected_quality) && $data->getCommodityProduct && is_array($data->getCommodityProduct->quality) && count($data->getCommodityProduct->quality) > 0) {
+            $firstQuality = $data->getCommodityProduct->quality[0];
+            $firstPrice = $data->getCommodityProduct->quality_price[0] ?? 0;
+            $this->selected_quality = $firstQuality;
+            $this->quality = [
+                'name' => $firstQuality,
+                'price' => (string)($firstPrice ?? 0),
+            ];
+        }
+
+        if (is_null($this->selected_packaging_type) && count($this->package_type_array) > 0) {
+            $firstPackage = $this->package_type_array[0];
+            $this->selected_packaging_type = $firstPackage['id'];
+            $this->packaging_charge = $firstPackage;
+        }
+    }
+
+    public function updatedSelectedQuality($value)
+    {
+        $data = HomeProduct::with('getCommodityProduct')->findOrFail($this->hidden_id);
+        if ($data->getCommodityProduct && is_array($data->getCommodityProduct->quality)) {
+            $qualityKey = array_search($value, $data->getCommodityProduct->quality, true);
+            $price = $qualityKey !== false ? ($data->getCommodityProduct->quality_price[$qualityKey] ?? 0) : 0;
+            $this->quality = [
+                'name' => $value,
+                'price' => (string)($price ?? 0),
+            ];
+        }
+    }
+
+    public function updatedSelectedPackagingType($value)
+    {
+        $selectedPackage = collect($this->package_type_array)->firstWhere('id', (int)$value);
+        if ($selectedPackage) {
+            $this->packaging_charge = $selectedPackage;
+        }
     }
 
     public function getStateCityByPincode($type)
@@ -116,6 +178,28 @@ class Variation extends Component
             'variation_quantity'    => 'required|array',
         ]);
 
+        $user = User::find($this->user_id);
+        if(!$user){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'User not found.',
+            );
+            return false;
+        }
+
+        $product = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct')->findOrFail($this->hidden_id);
+        $this->initializeDefaultQualityAndPackaging($product);
+        $minimum_balance = websiteSetupValue('minimum_balance_for_enquiry') ? websiteSetupValue('minimum_balance_for_enquiry') : 0;
+        $user_total_balance = $user->cash_balance + $user->credit_balance;
+
+        if($minimum_balance > $user_total_balance){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Company balance is insufficient to make an enquiry. Please add funds to account.',
+            );
+            return false;
+        }
+
         $variation_arr = [];
         foreach ($this->variation_id as $key => $variation_id) {
             $variation = SellerCommodityProductStatePrice::with('getSellerCommodityProduct')->find($variation_id);
@@ -153,6 +237,8 @@ class Variation extends Component
         $data->variation            = $variation_arr;
         $data->billing_address      = $this->billing_address;
         $data->consignee_detail     = $this->consignee_detail;
+        $data->quality              = $this->quality;
+        $data->packaging_charge     = $this->packaging_charge;
         $data->purpose              = $this->purpose;
         $data->description          = $this->description;
         $data->price                = $this->price;
@@ -174,8 +260,6 @@ class Variation extends Component
         $data_history->description          = $data->description;
         $data_history->price                = $data->price;
         $data_history->save();
-
-        $user = User::find($this->user_id);
 
         $title = 'Product Enquiry';
         $body = 'Dear '.$user->name.', Your product enquiry has been successfully submitted.';
@@ -247,6 +331,8 @@ class Variation extends Component
                 $data->consignee_detail     = $enquiry_data->consignee_detail;
                 $data->purpose              = $enquiry_data->purpose;
                 $data->description          = $enquiry_data->description;
+                $data->quality              = $enquiry_data->quality;
+                $data->packaging_charge     = $enquiry_data->packaging_charge;
                 $data->message              = $enquiry_data->message;
                 $data->price                = $price_arr;
                 $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
