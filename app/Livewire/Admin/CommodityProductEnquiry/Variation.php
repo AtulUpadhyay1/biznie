@@ -11,6 +11,7 @@ use App\Models\ProductEnquiryHistory;
 use App\Models\SellerCommodityProductStatePrice;
 use App\Models\SellerProductEnquiry;
 use App\Models\User;
+use App\Models\UserAddress;
 use Carbon\Carbon;
 use Livewire\Component;
 
@@ -21,34 +22,10 @@ class Variation extends Component
     public $hidden_id, $user_id, $variation_id = [], $variation_quantity = [], $origin_city, $purpose, $description, $price, $quality, $packaging_charge, $selected_quality, $selected_packaging_type;
     public $same_buyer_address = false;
     public $package_type_array = [];
-    public $billing_address = [
-        'pin_code'          => '',
-        'address_line_one'  => '',
-        'address_line_two'  => '',
-        'city'              => '',
-        'state'             => '',
-    ];
-
-    public $delivery_address = [
-        'pin_code'          => '',
-        'address_line_one'  => '',
-        'address_line_two'  => '',
-        'city'              => '',
-        'state'             => '',
-    ];
-
-    public $consignee_detail = [
-        'consignee_company' => '',
-        'address'           => [
-            'pin_code'          => '',
-            'address_line_one'  => '',
-            'address_line_two'  => '',
-            'city'              => '',
-            'state'             => '',
-        ],
-        'gst_number'        => '',
-        'consignee_phone'   => ''
-    ];
+    public $user_address_list = [];
+    public $billing_address_id;
+    public $delivery_address;
+    public $consignee_address_id;
 
     public function mount($id)
     {
@@ -145,28 +122,9 @@ class Variation extends Component
     public function consigneeAddress()
     {
         if($this->same_buyer_address){
-            $this->consignee_detail = [
-                'address'           => [
-                    'pin_code'          => $this->billing_address['pin_code'],
-                    'address_line_one'  => $this->billing_address['address_line_one'],
-                    'address_line_two'  => $this->billing_address['address_line_two'],
-                    'city'              => $this->billing_address['city'],
-                    'state'             => $this->billing_address['state'],
-                ]
-            ];
-
+            $this->consignee_address_id = $this->billing_address_id;
         }else{
-
-            $this->consignee_detail = [
-                'address'           => [
-                    'pin_code'          => '',
-                    'address_line_one'  => '',
-                    'address_line_two'  => '',
-                    'city'              => '',
-                    'state'             => '',
-                ]
-            ];
-
+            $this->consignee_address_id = null;
         }
     }
 
@@ -187,6 +145,70 @@ class Variation extends Component
             return false;
         }
 
+        if(!$this->billing_address_id){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Please select billing address.',
+            );
+            return false;
+        }
+
+        if(!$this->consignee_address_id){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Please select consignee address.',
+            );
+            return false;
+        }
+
+        $billing_address = UserAddress::where('id', $this->billing_address_id)
+            ->where('user_id', $this->user_id)
+            ->select([
+                'id', 
+                'pincode', 
+                'address_line_one', 
+                'address_line_two', 
+                'city', 
+                'state', 
+                'country', 
+                'company_name', 
+                'phone', 
+                'gst'
+            ])
+            ->first();
+
+        if(!$billing_address){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Billing address not found.',
+            );
+            return false;
+        }
+
+        $consignee_address = UserAddress::where('id', $this->consignee_address_id)
+            ->where('user_id', $this->user_id)
+            ->select([
+                'id', 
+                'pincode', 
+                'address_line_one', 
+                'address_line_two', 
+                'city', 
+                'state', 
+                'country', 
+                'company_name', 
+                'phone', 
+                'gst'
+            ])
+            ->first();
+
+        if(!$consignee_address){
+            $this->dispatch('alert',
+                type : 'error',
+                message : 'Consignee address not found.',
+            );
+            return false;
+        }
+        
         $product = HomeProduct::with('getCommodityProduct', 'getSellerCommodityProduct')->findOrFail($this->hidden_id);
         $this->initializeDefaultQualityAndPackaging($product);
         $minimum_balance = websiteSetupValue('minimum_balance_for_enquiry') ? websiteSetupValue('minimum_balance_for_enquiry') : 0;
@@ -235,8 +257,8 @@ class Variation extends Component
         $data->unique_id            = 'PE-'.date('Ymd').'-'.rand(1111, 9999);
         $data->origin_city          = $this->origin_city;
         $data->variation            = $variation_arr;
-        $data->billing_address      = $this->billing_address;
-        $data->consignee_detail     = $this->consignee_detail;
+        $data->billing_address      = $billing_address;
+        $data->consignee_detail     = $consignee_address;
         $data->quality              = $this->quality;
         $data->packaging_charge     = $this->packaging_charge;
         $data->purpose              = $this->purpose;
@@ -363,5 +385,22 @@ class Variation extends Component
         session()->flash('success', 'Product enquiry created successfully !!');
         return $this->redirectRoute('admin.commodity-product-enquiry.index',navigate: true);
 
+    }
+
+    public function getUserAddress()
+    {
+        $this->user_address_list = UserAddress::where('user_id', $this->user_id)
+                ->select([
+                    'id', 
+                    'pincode', 
+                    'address_line_one', 
+                    'address_line_two', 
+                    'city', 
+                    'state', 
+                    'country', 
+                    'company_name', 
+                    'phone', 
+                    'gst'
+                ])->get();
     }
 }

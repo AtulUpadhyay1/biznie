@@ -114,14 +114,14 @@
                                     <div wire:ignore>
                                         <div class="row">
                                             <div class="col-6">
-                                                <label for="user_id" class="form-label">User <span class="text-danger">*</span></label>
+                                                <label for="user_id" class="form-label">Company (User) <span class="text-danger">*</span></label>
                                             </div>
                                             <div class="col-6 text-end">
                                                 <a href="#" class="btn btn-xs btn-light mb-1">Add</a>
                                             </div>
                                         </div>
                                         <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
-                                            <option value="">Select User</option>
+                                            <option value="">Select Company</option>
                                             @foreach ($user_list as $user_data)
                                                 <option value="{{ $user_data->id }}">{{ $user_data->name }} ( {{ $user_data->phone }} )</option>
                                             @endforeach
@@ -131,109 +131,71 @@
                                 </div>
 
                                 <div class="card card-body p-2 mb-2">
-                                    <h6>Buyer Address</h6>
-                                    <div class="mb-2">
-                                        <label for="billing_address_pincode">Pincode</label>
-                                        <input type="number" class="form-control form-control-sm" id="billing_address_pincode" wire:model="billing_address.pin_code" placeholder="Enter Pincode" wire:change="getStateCityByPincode('billing_address')">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="billing_address_line_one">Address Line 1</label>
-                                        <input type="text" class="form-control form-control-sm" id="billing_address_line_one" wire:model="billing_address.address_line_one" placeholder="Enter Address Line 1">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="billing_address_line_two">Address Line 2</label>
-                                        <input type="text" class="form-control form-control-sm" id="billing_address_line_two" wire:model="billing_address.address_line_two" placeholder="Enter Address Line 2">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="billing_address_city">City</label>
-                                        <input type="text" class="form-control form-control-sm" id="billing_address_city" wire:model="billing_address.city" placeholder="Enter City" readonly>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="billing_address_state">State</label>
-                                        <input type="text" class="form-control form-control-sm" id="billing_address_state" wire:model="billing_address.state" placeholder="Enter State" readonly>
-                                    </div>
+                                    <h6>Billing Address (Bill To)</h6>
+                                    @forelse ($user_address_list as $user_address_data) 
+                                        <div class="card">
+                                            <div class="card-body p-2">
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" class="form-check-input" id="billing_address_{{ $user_address_data->id }}" wire:model.live="billing_address_id" value="{{ $user_address_data->id }}">
+                                                    <label class="form-check-label" for="billing_address_{{ $user_address_data->id }}">
+                                                        <span class="badge bg-light text-black">Select</span>
+                                                    </label>
+                                                </div>
+                                                <hr>
+                                                <b>Company Name:</b> {{ $user_address_data->company_name }} <br>
+                                                <b>Phone Number:</b> {{ $user_address_data->phone }} <br>
+                                                <b>Gst Number:</b> {{ $user_address_data->gst }} <br>
+                                                <b>Address Line1:</b> {{ $user_address_data->address_line_one }} <br>
+                                                <b>Address Line2:</b> {{ $user_address_data->address_line_two }} <br>
+                                                <b>City:</b> {{ $user_address_data->city }} <br>
+                                                <b>State:</b> {{ $user_address_data->state }} <br>
+                                                <b>Pincode:</b> {{ $user_address_data->pincode }} <br>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="card">
+                                            <div class="card-body p-2 text-center">
+                                                <p>No billing address available.</p>
+                                            </div>
+                                        </div>
+                                    @endforelse
                                 </div>
 
-                                {{-- <div class="card card-body p-2 mb-2">
-                                    <h6>Delivery Address</h6>
-                                    <div class="mb-2">
-                                        <label for="delivery_address_pincode">Pincode</label>
-                                        <input type="number" class="form-control form-control-sm" id="delivery_address_pincode" wire:model="delivery_address.pin_code" placeholder="Enter Pincode">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="delivery_address_line_one">Address Line 1</label>
-                                        <input type="text" class="form-control form-control-sm" id="delivery_address_line_one" wire:model="delivery_address.address_line_one" placeholder="Enter Address Line 1">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="delivery_address_line_two">Address Line 2</label>
-                                        <input type="text" class="form-control form-control-sm" id="delivery_address_line_two" wire:model="delivery_address.address_line_two" placeholder="Enter Address Line 2">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="delivery_address_city">City</label>
-                                        <input type="text" class="form-control form-control-sm" id="delivery_address_city" wire:model="delivery_address.city" placeholder="Enter City">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="delivery_address_state">State</label>
-                                        <input type="text" class="form-control form-control-sm" id="delivery_address_state" wire:model="delivery_address.state" placeholder="Enter State">
-                                    </div>
-                                </div> --}}
-
                                 <div class="card card-body p-2 mb-2">
-                                    <h6>Consignee Detail Address <br></h6>
+                                    <h6>Consignee Details (Ship To) <br></h6>
                                     <div class="text-end h6">
                                         <input type="checkbox" class="form-check-input" id="same_buyer_address" wire:model.live="same_buyer_address" wire:change="consigneeAddress()">
                                         <label class="form-check-label" for="same_buyer_address">
                                             <span class="badge bg-light text-black">Same Buyer Address</span>
                                         </label>
                                     </div>
-                                    <div class="mb-2">
-                                        <label for="consignee_company">Company</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_company" wire:model="consignee_detail.consignee_company" placeholder="Enter Consignee Company">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="consignee_phone">Phone</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_phone" wire:model="consignee_detail.consignee_phone" placeholder="Enter Consignee Phone">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="consignee_detail_pincode">Pincode</label>
-                                        <input type="number" class="form-control form-control-sm" id="consignee_detail_pincode" wire:model="consignee_detail.address.pin_code" placeholder="Enter Pincode" wire:change="getStateCityByPincode('consignee_detail')">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="consignee_detail_line_one">Address Line 1</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_line_one" wire:model="consignee_detail.address.address_line_one" placeholder="Enter Address Line 1">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="consignee_detail_line_two">Address Line 2</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_line_two" wire:model="consignee_detail.address.address_line_two" placeholder="Enter Address Line 2">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="consignee_detail_city">City</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_city" wire:model="consignee_detail.address.city" placeholder="Enter City" readonly>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="consignee_detail_state">State</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_state" wire:model="consignee_detail.address.state" placeholder="Enter State" readonly>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label for="consignee_detail_gst_number">GST Number</label>
-                                        <input type="text" class="form-control form-control-sm" id="consignee_detail_gst_number" wire:model="consignee_detail.gst_number" placeholder="Enter GST Number">
-                                    </div>
-
+                                    @forelse ($user_address_list as $user_address_data) 
+                                        <div class="card">
+                                            <div class="card-body p-2">
+                                                <div class="form-check mb-2">
+                                                    <input type="checkbox" class="form-check-input" id="consignee_address_{{ $user_address_data->id }}" wire:model.live="consignee_address_id" value="{{ $user_address_data->id }}">
+                                                    <label class="form-check-label" for="consignee_address">
+                                                        <span class="badge bg-light text-black">Select</span>
+                                                    </label>
+                                                </div>
+                                                <hr>
+                                                <b>Company Name:</b> {{ $user_address_data->company_name }} <br>
+                                                <b>Phone Number:</b> {{ $user_address_data->phone }} <br>
+                                                <b>Gst Number:</b> {{ $user_address_data->gst }} <br>
+                                                <b>Address Line1:</b> {{ $user_address_data->address_line_one }} <br>
+                                                <b>Address Line2:</b> {{ $user_address_data->address_line_two }} <br>
+                                                <b>City:</b> {{ $user_address_data->city }} <br>
+                                                <b>State:</b> {{ $user_address_data->state }} <br>
+                                                <b>Pincode:</b> {{ $user_address_data->pincode }} <br>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="card">
+                                            <div class="card-body p-2 text-center">
+                                                <p>No billing address available.</p>
+                                            </div>
+                                        </div>
+                                    @endforelse
                                 </div>
                             </div>
                         </div>
@@ -250,8 +212,8 @@
                     var data = $(this).select2("val");
                     @this.set(elementName, data);
 
-                    if(elementName == 'document_type_id'){
-                        @this.getDocumentType();
+                    if(elementName == 'user_id'){
+                        @this.getUserAddress();
                     }
                 });
                 window.addEventListener('render-select2', event => {
