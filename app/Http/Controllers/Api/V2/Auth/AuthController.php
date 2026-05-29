@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V2\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\V2\Auth\RegisterOtpController;
 use App\Http\Resources\V2\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,17 @@ class AuthController extends Controller
             'email'    => ['required', 'email', 'max:160', 'unique:users,email'],
             'phone'    => ['nullable', 'string', 'regex:/^\d{10}$/', 'unique:users,phone'],
             'password' => ['required', 'confirmed', Password::min(8)->letters()->numbers()],
+            'otp'      => ['required', 'string', 'regex:/^\d{6}$/'],
         ]);
+
+        $verify = RegisterOtpController::verifyOtp($data['email'], $data['otp']);
+        if (! $verify['ok']) {
+            return response()->json([
+                'success' => false,
+                'message' => $verify['message'] ?? 'Invalid verification code.',
+                'errors'  => ['otp' => [$verify['message'] ?? 'Invalid verification code.']],
+            ], 422);
+        }
 
         $user = new User();
         $user->name     = $data['name'];
@@ -28,7 +39,10 @@ class AuthController extends Controller
         $user->password = $data['password']; // hashed via $casts
         $user->type     = 'customer';
         $user->status   = 'active';
+        $user->email_verified_at = now();
         $user->save();
+
+        RegisterOtpController::consumeOtp($data['email']);
 
         $token = $user->createToken('biznie-next')->plainTextToken;
 
