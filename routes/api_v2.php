@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V2\Auth\AuthController;
+use App\Http\Controllers\Api\V2\Auth\PasswordResetController;
 use App\Http\Controllers\Api\V2\HomeController;
 use App\Http\Controllers\Api\V2\ProductController;
 use App\Http\Controllers\Api\V2\CategoryController;
@@ -32,6 +33,10 @@ Route::get('handshake', fn () => response()->json(['success' => true, 'version' 
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::post('forgot-password', [PasswordResetController::class, 'forgot'])
+        ->middleware('throttle:6,1');
+    Route::post('reset-password', [PasswordResetController::class, 'reset'])
+        ->middleware('throttle:6,1');
 });
 
 // Public catalog
