@@ -33,6 +33,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
+            // Biznie v2 API (consumed by biznie-next-app). Additive — does not affect legacy /api routes.
+            Route::middleware('api')
+                ->prefix('api/v2')
+                ->group(base_path('routes/api_v2.php'));
+
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
 
