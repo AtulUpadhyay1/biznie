@@ -10,6 +10,8 @@ class ProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         $detail = $this->whenLoaded('getUserDetail', fn () => $this->getUserDetail);
+        $sellerKyc = $this->relationLoaded('getSellerKycDetail') ? $this->getSellerKycDetail : null;
+        $transporter = $this->relationLoaded('getTransporterDetail') ? $this->getTransporterDetail : null;
 
         return [
             'id'                  => $this->id,
@@ -41,6 +43,38 @@ class ProfileResource extends JsonResource
                 'gst_number'        => $detail->gst_number,
                 'pan_number'        => $detail->pan_number,
                 'type'              => $detail->type,
+            ] : null,
+            'seller_kyc'          => $sellerKyc ? [
+                'status'                => $sellerKyc->status,
+                'gst_number'            => $sellerKyc->gst_number,
+                'gst_type'              => $sellerKyc->gst_type,
+                'identity_type'         => $sellerKyc->identity_type,
+                'identity_number'       => $sellerKyc->identity_number,
+                'identity_proof'        => $sellerKyc->identity_proof ? imageUrl($sellerKyc->identity_proof) : null,
+                'identity_proof_back'   => $sellerKyc->identity_proof_back ? imageUrl($sellerKyc->identity_proof_back) : null,
+                'address_proof'         => $sellerKyc->address_proof ? imageUrl($sellerKyc->address_proof) : null,
+                'address_proof_back'    => $sellerKyc->address_proof_back ? imageUrl($sellerKyc->address_proof_back) : null,
+                'business_registration_certificate' => $sellerKyc->business_registration_certificate
+                    ? imageUrl($sellerKyc->business_registration_certificate) : null,
+                'address'               => $sellerKyc->address,
+                'address_line_one'      => $sellerKyc->address_line_one,
+                'address_line_two'      => $sellerKyc->address_line_two,
+                'postal_code'           => $sellerKyc->postal_code,
+                'city'                  => $sellerKyc->city,
+                'state'                 => $sellerKyc->state,
+                'country'               => $sellerKyc->country,
+                'account_number'        => $sellerKyc->account_number,
+                'account_holder_name'   => $sellerKyc->account_holder_name,
+                'bank_name'             => $sellerKyc->bank_name,
+                'ifsc_code'             => $sellerKyc->ifsc_code,
+            ] : null,
+            'transporter_detail'  => $transporter ? [
+                'company_name'    => $transporter->company_name,
+                'gst_number'      => $transporter->gst_number,
+                'pan_number'      => $transporter->pan_number,
+                'address'         => $transporter->address,
+                'alternate_phone' => $transporter->alternate_phone,
+                'aadhar_number'   => $transporter->aadhar_number,
             ] : null,
         ];
     }

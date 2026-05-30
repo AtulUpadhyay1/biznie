@@ -35,4 +35,9 @@ class TransporterProductEnquiry extends Model
     {
         return $this->belongsTo(CommodityProduct::class, 'commodity_product_id');
     }
+
+    public function getProductEnquiry()
+    {
+        return $this->belongsTo(ProductEnquiry::class, 'product_enquiries_id');
+    }
 }

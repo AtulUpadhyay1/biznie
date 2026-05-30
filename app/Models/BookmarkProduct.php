@@ -15,4 +15,19 @@ class BookmarkProduct extends Model
         'seller_commodity_product_id',
         'commodity_product_id',
     ];
+
+    public function getCommodityProduct()
+    {
+        return $this->belongsTo(CommodityProduct::class, 'commodity_product_id');
+    }
+
+    public function getSellerCommodityProduct()
+    {
+        return $this->belongsTo(SellerCommodityProduct::class, 'seller_commodity_product_id');
+    }
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
