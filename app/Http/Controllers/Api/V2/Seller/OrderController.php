@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\V2\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V2\OrderLedgerResource;
 use App\Http\Resources\V2\Seller\SellerOrderDetailResource;
 use App\Http\Resources\V2\Seller\SellerOrderResource;
 use App\Models\CommodityProductOrder;
+use App\Models\CommodityProductSellerOrderLedger;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -52,6 +54,7 @@ class OrderController extends Controller
                 'getCommodityProduct.getCategory:id,name',
                 'getCustomer:id,name,phone,email',
                 'getProductEnquiry:id,unique_id',
+                'getDrivers',
             ])
             ->find($id);
 
@@ -104,5 +107,33 @@ class OrderController extends Controller
     {
         $user = $request->user();
         return $user->is_staff ? (int) $user->added_by : (int) $user->id;
+    }
+
+    public function ledger(Request $request, int $id): JsonResponse
+    {
+        $ownerId = $this->ownerId($request);
+        $order = CommodityProductOrder::where('seller_user_id', $ownerId)->find($id);
+
+        if (! $order) {
+            return response()->json(['success' => false, 'message' => 'Order not found.'], 404);
+        }
+
+        $entries = CommodityProductSellerOrderLedger::where('order_id', $order->id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data'    => OrderLedgerResource::collection($entries)->resolve(),
+            'order'   => [
+                'id'           => $order->id,
+                'order_id'     => $order->order_id,
+                'unique_id'    => $order->unique_id,
+                'total_amount' => (float) ($order->total_amount ?? 0),
+                'paid_amount'  => (float) ($order->paid_amount ?? 0),
+                'due_amount'   => (float) ($order->due_amount ?? 0),
+                'final_amount' => (float) ($order->final_amount ?? 0),
+            ],
+        ]);
     }
 }

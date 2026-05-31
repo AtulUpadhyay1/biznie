@@ -20,10 +20,12 @@ use App\Http\Controllers\Api\V2\Customer\EnquiryController as CustomerEnquiryCon
 use App\Http\Controllers\Api\V2\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\Api\V2\Customer\OrderLedgerController as CustomerOrderLedgerController;
 use App\Http\Controllers\Api\V2\Customer\ProfileController as CustomerProfileController;
+use App\Http\Controllers\Api\V2\Customer\PromotionController as CustomerPromotionController;
 use App\Http\Controllers\Api\V2\Customer\WalletController as CustomerWalletController;
 use App\Http\Controllers\Api\V2\Customer\WatchlistController as CustomerWatchlistController;
 use App\Http\Controllers\Api\V2\Seller\DashboardController as SellerDashboardController;
 use App\Http\Controllers\Api\V2\Seller\OrderController as SellerOrderController;
+use App\Http\Controllers\Api\V2\Seller\CommodityProductController as SellerCommodityProductController;
 use App\Http\Controllers\Api\V2\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Api\V2\Seller\QuotationController as SellerQuotationController;
 use App\Http\Controllers\Api\V2\NotificationController;
@@ -31,6 +33,7 @@ use App\Http\Controllers\Api\V2\StaffController;
 use App\Http\Controllers\Api\V2\Transporter\DashboardController as TransporterDashboardController;
 use App\Http\Controllers\Api\V2\Transporter\EnquiryController as TransporterEnquiryController;
 use App\Http\Controllers\Api\V2\Transporter\OrderController as TransporterOrderController;
+use App\Http\Controllers\Api\V2\Transporter\AssetController as TransporterAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +94,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('profile', [CustomerProfileController::class, 'show']);
         Route::put('profile', [CustomerProfileController::class, 'update']);
+
+        // Role promotion (customer → seller / transporter)
+        Route::get('seller-types', [CustomerPromotionController::class, 'sellerTypes']);
+        Route::post('become-seller', [CustomerPromotionController::class, 'becomeSeller']);
+        Route::post('become-transporter', [CustomerPromotionController::class, 'becomeTransporter']);
 
         Route::get('addresses', [CustomerAddressController::class, 'index']);
         Route::post('addresses', [CustomerAddressController::class, 'store']);
@@ -153,6 +161,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('orders', [SellerOrderController::class, 'index']);
         Route::get('orders/{id}', [SellerOrderController::class, 'show']);
+        Route::get('orders/{id}/ledger', [SellerOrderController::class, 'ledger']);
         Route::put('orders/{id}/status', [SellerOrderController::class, 'updateStatus']);
 
         Route::get('rfqs', [SellerQuotationController::class, 'index']);
@@ -163,6 +172,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('products', [SellerProductController::class, 'index']);
         Route::get('products/{id}', [SellerProductController::class, 'show']);
         Route::put('products/{id}/status', [SellerProductController::class, 'updateStatus']);
+
+        Route::get('commodity-products', [SellerCommodityProductController::class, 'index']);
+        Route::get('commodity-products/{id}', [SellerCommodityProductController::class, 'show']);
+        Route::put('commodity-products/{id}/status', [SellerCommodityProductController::class, 'updateStatus']);
     });
 
     // Transporter surface
@@ -177,5 +190,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('enquiries/{id}', [TransporterEnquiryController::class, 'show']);
         Route::get('enquiries/{id}/bidding', [TransporterEnquiryController::class, 'biddingList']);
         Route::post('enquiries/{id}/respond', [TransporterEnquiryController::class, 'respond']);
+
+        // Asset assignment (vehicles, commodity products, belts)
+        Route::get('vehicles', [TransporterAssetController::class, 'vehicles']);
+        Route::post('vehicles', [TransporterAssetController::class, 'assignVehicles']);
+        Route::get('products', [TransporterAssetController::class, 'products']);
+        Route::post('products', [TransporterAssetController::class, 'assignProducts']);
+        Route::get('belts', [TransporterAssetController::class, 'belts']);
+        Route::post('belts', [TransporterAssetController::class, 'storeBelt']);
+        Route::delete('belts/{id}', [TransporterAssetController::class, 'destroyBelt'])->whereNumber('id');
     });
 });
