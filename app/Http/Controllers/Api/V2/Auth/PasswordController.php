@@ -6,12 +6,31 @@ use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 
 class PasswordController extends Controller
 {
+    public function update(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', PasswordRule::min(8)->letters()->numbers()],
+        ]);
+
+        $user = $request->user();
+        $user->password = Hash::make($data['password']);
+        $user->remember_token = Str::random(60);
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password updated successfully.',
+        ]);
+    }
+
     public function forgot(Request $request): JsonResponse
     {
         $request->validate([

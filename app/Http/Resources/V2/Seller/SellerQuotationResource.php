@@ -9,7 +9,10 @@ class SellerQuotationResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $myReply = $this->whenLoaded('getMySellerProductEnquiry');
+        $myReply = $this->relationLoaded('getMySellerProductEnquiry')
+            ? $this->getRelation('getMySellerProductEnquiry')
+            : null;
+
         return [
             'id'           => $this->id,
             'unique_id'    => $this->unique_id,
@@ -38,7 +41,7 @@ class SellerQuotationResource extends JsonResource
                 'id'   => $this->getUser->id,
                 'name' => $this->getUser->name,
             ] : null,
-            'my_reply' => $myReply && $myReply->resource ? [
+            'my_reply' => $myReply ? [
                 'id'              => $myReply->id,
                 'status'          => $myReply->status,
                 'base_price'      => (float) ($myReply->base_price ?? 0),

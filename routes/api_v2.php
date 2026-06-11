@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V2\Auth\AuthController;
+use App\Http\Controllers\Api\V2\Auth\PasswordController;
 use App\Http\Controllers\Api\V2\Auth\PasswordResetController;
 use App\Http\Controllers\Api\V2\Auth\RegisterOtpController;
 use App\Http\Controllers\Api\V2\HomeController;
@@ -87,6 +88,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('auth/me', [AuthController::class, 'me']);
     Route::post('auth/logout', [AuthController::class, 'logout']);
     Route::post('auth/logout-all', [AuthController::class, 'logoutAll']);
+    Route::put('auth/password', [PasswordController::class, 'update']);
 
     // Customer dashboard surface
     Route::prefix('me')->group(function () {
