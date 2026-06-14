@@ -77,6 +77,8 @@ class AuthController extends Controller
             ], 403);
         }
 
+        $user->load(['getBusiness', 'getUserDetail', 'getTransporterDetail', 'getAddedBy.getBusiness']);
+
         $token = $user->createToken('biznie-next')->plainTextToken;
 
         return response()->json([
@@ -89,9 +91,11 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
+        $user = $request->user()->load(['getBusiness', 'getUserDetail', 'getTransporterDetail', 'getAddedBy.getBusiness']);
+
         return response()->json([
             'success' => true,
-            'user'    => new UserResource($request->user()),
+            'user'    => new UserResource($user),
         ]);
     }
 

@@ -12,6 +12,15 @@ class ProfileResource extends JsonResource
         $detail = $this->whenLoaded('getUserDetail', fn () => $this->getUserDetail);
         $sellerKyc = $this->relationLoaded('getSellerKycDetail') ? $this->getSellerKycDetail : null;
         $transporter = $this->relationLoaded('getTransporterDetail') ? $this->getTransporterDetail : null;
+        $business = $this->relationLoaded('getBusiness') ? $this->getBusiness : null;
+        $ownerBusiness = $this->relationLoaded('getAddedBy') && $this->getAddedBy?->relationLoaded('getBusiness')
+            ? $this->getAddedBy->getBusiness
+            : null;
+        $resolvedCompanyName = match ($this->type) {
+            'seller' => $business->name ?? $ownerBusiness->name ?? $detail?->company_name,
+            'transporter' => $transporter->company_name ?? $detail?->company_name,
+            default => $detail?->company_name,
+        };
 
         return [
             'id'                  => $this->id,
@@ -30,7 +39,7 @@ class ProfileResource extends JsonResource
             'credit_days'         => $this->credit_days ?? null,
             'created_at'          => optional($this->created_at)->toIso8601String(),
             'user_detail'         => $detail ? [
-                'company_name'      => $detail->company_name,
+                'company_name'      => $resolvedCompanyName,
                 'company_logo'      => $detail->company_logo ? imageUrl($detail->company_logo) : null,
                 'profile_photo'     => $detail->profile_photo ? imageUrl($detail->profile_photo) : null,
                 'company_address'   => $detail->company_address,
@@ -43,7 +52,21 @@ class ProfileResource extends JsonResource
                 'gst_number'        => $detail->gst_number,
                 'pan_number'        => $detail->pan_number,
                 'type'              => $detail->type,
-            ] : null,
+            ] : ($resolvedCompanyName ? [
+                'company_name'      => $resolvedCompanyName,
+                'company_logo'      => null,
+                'profile_photo'     => null,
+                'company_address'   => null,
+                'address_line_one'  => null,
+                'address_line_two'  => null,
+                'postal_code'       => null,
+                'city'              => null,
+                'state'             => null,
+                'country'           => null,
+                'gst_number'        => null,
+                'pan_number'        => null,
+                'type'              => null,
+            ] : null),
             'seller_kyc'          => $sellerKyc ? [
                 'status'                => $sellerKyc->status,
                 'gst_number'            => $sellerKyc->gst_number,

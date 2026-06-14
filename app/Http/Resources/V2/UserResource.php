@@ -9,9 +9,22 @@ class UserResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $business = $this->relationLoaded('getBusiness') ? $this->getBusiness : null;
+        $userDetail = $this->relationLoaded('getUserDetail') ? $this->getUserDetail : null;
+        $transporterDetail = $this->relationLoaded('getTransporterDetail') ? $this->getTransporterDetail : null;
+        $ownerBusiness = $this->relationLoaded('getAddedBy') && $this->getAddedBy?->relationLoaded('getBusiness')
+            ? $this->getAddedBy->getBusiness
+            : null;
+        $companyName = match ($this->type) {
+            'seller' => $business->name ?? $ownerBusiness->name ?? $userDetail?->company_name,
+            'transporter' => $transporterDetail->company_name ?? $userDetail?->company_name,
+            default => $userDetail?->company_name,
+        };
+
         return [
             'id'         => $this->id,
             'name'       => $this->name,
+            'company_name' => $companyName,
             'email'      => $this->email,
             'phone'      => $this->phone,
             'type'       => $this->type,

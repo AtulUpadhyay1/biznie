@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V2\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V2\ProfileResource;
+use App\Models\Business;
 use App\Models\SellerKycDetail;
 use App\Models\TransporterDetail;
 use App\Models\UserDetail;
@@ -19,6 +20,8 @@ class ProfileController extends Controller
             'getUserDetail',
             'getSellerKycDetail',
             'getTransporterDetail',
+            'getBusiness',
+            'getAddedBy.getBusiness',
         ]);
 
         return response()->json([
@@ -94,6 +97,7 @@ class ProfileController extends Controller
         $user = $request->user();
         $kyc = SellerKycDetail::where('user_id', $user->id)->first() ?: new SellerKycDetail();
         $detail = UserDetail::where('user_id', $user->id)->first() ?: new UserDetail();
+        $business = Business::where('user_id', $user->id)->first() ?: new Business();
 
         $data = $request->validate([
             'name'             => ['required', 'string', 'max:120'],
@@ -128,6 +132,10 @@ class ProfileController extends Controller
         $detail->pan_number   = $data['pan_number'] ?? $detail->pan_number;
         $detail->save();
 
+        $business->user_id = $user->id;
+        $business->name = $data['company_name'];
+        $business->save();
+
         $kyc->user_id          = $user->id;
         $kyc->gst_number       = $data['gst_number'];
         $kyc->identity_number  = $data['pan_number'] ?? $kyc->identity_number;
@@ -149,7 +157,7 @@ class ProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Profile updated successfully.',
-            'data'    => new ProfileResource($user->fresh(['getUserDetail', 'getSellerKycDetail', 'getTransporterDetail'])),
+            'data'    => new ProfileResource($user->fresh(['getUserDetail', 'getSellerKycDetail', 'getTransporterDetail', 'getBusiness', 'getAddedBy.getBusiness'])),
         ]);
     }
 
