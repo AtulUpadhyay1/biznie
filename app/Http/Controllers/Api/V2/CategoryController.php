@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V2\CategoryResource;
-use App\Models\BusinessCategory;
+use App\Models\ProductCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $q = BusinessCategory::active()->latest();
+        $q = ProductCategory::active()->latest();
         if ($request->boolean('featured')) {
             $q->where('featured', 1);
         }
@@ -35,7 +35,7 @@ class CategoryController extends Controller
 
     public function show(string $slug): JsonResponse
     {
-        $category = BusinessCategory::active()->where('slug', $slug)->firstOrFail();
+        $category = ProductCategory::active()->where('slug', $slug)->firstOrFail();
 
         return response()->json([
             'success' => true,
