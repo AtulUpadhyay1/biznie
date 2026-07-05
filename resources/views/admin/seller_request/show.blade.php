@@ -258,7 +258,7 @@
                                     @forelse(($requestRecord->timeline ?? []) as $event)
                                         <div class="sr-timeline-item mb-3">
                                             <div class="fw-semibold">{{ $event['label'] ?? $event['event'] ?? 'Update' }}</div>
-                                            <div class="small text-muted">{{ $event['at'] ?? '--' }}</div>
+                                            <div class="small text-muted">{{ dateTimeFormat($event['at']) ?? '--' }}</div>
                                             @if(!empty($event['note']))
                                                 <div class="small mt-1">{{ $event['note'] }}</div>
                                             @endif
