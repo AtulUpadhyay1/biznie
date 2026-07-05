@@ -1,116 +1,271 @@
 <div>
     @section('title', config('app.name') . ' | ' . $page_title)
+    @php
+        $status = strtolower((string) ($requestRecord->request_status ?? 'draft'));
+        $statusBadgeClass = match ($status) {
+            'approved' => 'success',
+            'rejected' => 'danger',
+            'submitted', 'under_review' => 'warning',
+            default => 'secondary',
+        };
+    @endphp
+
+    <style>
+        .sr-gradient-card {
+            border: 0;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f8fff8 0%, #f2f8ff 100%);
+            box-shadow: 0 8px 24px rgba(20, 33, 61, 0.08);
+        }
+        .sr-soft-card {
+            border: 1px solid #e8edf3;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(17, 24, 39, 0.04);
+        }
+        .sr-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #15223b;
+            margin-bottom: 14px;
+        }
+        .sr-kv {
+            border: 1px solid #eef1f6;
+            border-radius: 10px;
+            padding: 10px 12px;
+            height: 100%;
+            background: #fff;
+        }
+        .sr-kv-label {
+            font-size: .75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: .02em;
+            margin-bottom: 3px;
+        }
+        .sr-kv-value {
+            font-size: .92rem;
+            color: #0f172a;
+            font-weight: 600;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+        .sr-doc-btn {
+            width: 100%;
+            text-align: left;
+            border-radius: 10px;
+        }
+        .sr-timeline-item {
+            position: relative;
+            padding-left: 22px;
+        }
+        .sr-timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #198754;
+        }
+        .sr-timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 12px);
+            background: #dbe3ee;
+        }
+        .sr-timeline-item:last-child::after {
+            display: none;
+        }
+    </style>
+
     <div class="row">
         <div class="col-12">
-            <div class="card mb-3">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Seller Request Review</h4>
-                    <a href="{{ route('admin.seller-request.index') }}" class="btn btn-danger btn-sm" wire:navigate>Back</a>
-                </div>
-                <div class="card-body">
+            <div class="card sr-gradient-card mb-3">
+                <div class="card-body p-4 p-lg-5">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                        <div>
+                            <h3 class="mb-1">Seller Request Review</h3>
+                            <div class="text-muted">Review application details and take a clear action.</div>
+                        </div>
+                        <a href="{{ route('admin.seller-request.index') }}" class="btn btn-outline-danger btn-sm" wire:navigate>
+                            <i class="fa fa-arrow-left me-1"></i> Back to List
+                        </a>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-3">
+                            <div class="sr-kv">
+                                <div class="sr-kv-label">Reference</div>
+                                <div class="sr-kv-value">{{ $requestRecord->request_reference ?? 'Draft' }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="sr-kv">
+                                <div class="sr-kv-label">Status</div>
+                                <div class="sr-kv-value">
+                                    <span class="badge text-bg-{{ $statusBadgeClass }} text-uppercase px-3 py-2">
+                                        {{ str_replace('_', ' ', $requestRecord->request_status ?? 'draft') }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="sr-kv">
+                                <div class="sr-kv-label">Current Step</div>
+                                <div class="sr-kv-value">{{ $requestRecord->current_step ?? 0 }}/6</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="sr-kv">
+                                <div class="sr-kv-label">Requested By</div>
+                                <div class="sr-kv-value">{{ $requestRecord->getUser?->name ?? '--' }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="progress mb-4" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ min(100, (int) (($requestRecord->current_step ?? 0) / 6 * 100)) }}%" aria-valuenow="{{ min(100, (int) (($requestRecord->current_step ?? 0) / 6 * 100)) }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+
                     @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
+                        <div class="alert alert-success border-0 shadow-sm mb-4">
+                            <i class="fa fa-check-circle me-1"></i> {{ session('success') }}
+                        </div>
                     @endif
+
                     <div class="row g-3">
-                        <div class="col-lg-8">
-                            <div class="card shadow-sm mb-3">
+                        <div class="col-xl-8">
+                            <div class="card sr-soft-card mb-3">
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-between flex-wrap gap-2 mb-3">
-                                        <div>
-                                            <div class="text-muted small">Reference</div>
-                                            <div class="fw-semibold">{{ $requestRecord->request_reference ?? 'Draft' }}</div>
-                                        </div>
-                                        <div>
-                                            <div class="text-muted small">Status</div>
-                                            <div class="fw-semibold text-uppercase">{{ str_replace('_', ' ', $requestRecord->request_status) }}</div>
-                                        </div>
-                                        <div>
-                                            <div class="text-muted small">Current Step</div>
-                                            <div class="fw-semibold">{{ $requestRecord->current_step }}/6</div>
-                                        </div>
+                                    <h5 class="sr-section-title">Business Information</h5>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Business Name</div><div class="sr-kv-value">{{ $requestRecord->company_name ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">GST Number</div><div class="sr-kv-value">{{ $requestRecord->gst_number ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">PAN Number</div><div class="sr-kv-value">{{ $requestRecord->pan_number ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Business Type</div><div class="sr-kv-value">{{ $requestRecord->business_type ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Constitution</div><div class="sr-kv-value">{{ $requestRecord->constitution_type ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Years in Business</div><div class="sr-kv-value">{{ $requestRecord->years_in_business ?? '--' }}</div></div></div>
+                                        <div class="col-12"><div class="sr-kv"><div class="sr-kv-label">Address</div><div class="sr-kv-value">{{ $requestRecord->company_address ?? '--' }}</div></div></div>
+                                        <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">City</div><div class="sr-kv-value">{{ $requestRecord->city ?? '--' }}</div></div></div>
+                                        <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">State</div><div class="sr-kv-value">{{ $requestRecord->state ?? '--' }}</div></div></div>
+                                        <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">Country</div><div class="sr-kv-value">{{ $requestRecord->country ?? '--' }}</div></div></div>
+                                        <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">Pincode</div><div class="sr-kv-value">{{ $requestRecord->pincode ?? '--' }}</div></div></div>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <h5 class="mb-2">Business Information</h5>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-md-6"><strong>Business Name:</strong> {{ $requestRecord->company_name }}</div>
-                                        <div class="col-md-6"><strong>GST:</strong> {{ $requestRecord->gst_number }}</div>
-                                        <div class="col-md-6"><strong>PAN:</strong> {{ $requestRecord->pan_number ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Business Type:</strong> {{ $requestRecord->business_type ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Constitution:</strong> {{ $requestRecord->constitution_type ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Years in Business:</strong> {{ $requestRecord->years_in_business ?? '--' }}</div>
-                                        <div class="col-12"><strong>Address:</strong> {{ $requestRecord->company_address ?? '--' }}</div>
-                                        <div class="col-md-4"><strong>City:</strong> {{ $requestRecord->city ?? '--' }}</div>
-                                        <div class="col-md-4"><strong>State:</strong> {{ $requestRecord->state ?? '--' }}</div>
-                                        <div class="col-md-4"><strong>Country:</strong> {{ $requestRecord->country ?? '--' }}</div>
-                                        <div class="col-md-4"><strong>Pincode:</strong> {{ $requestRecord->pincode ?? '--' }}</div>
+                            <div class="card sr-soft-card mb-3">
+                                <div class="card-body">
+                                    <h5 class="sr-section-title">Contact & Bank Details</h5>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Contact Person</div><div class="sr-kv-value">{{ $requestRecord->contact_person ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Designation</div><div class="sr-kv-value">{{ $requestRecord->designation ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Mobile</div><div class="sr-kv-value">{{ $requestRecord->mobile ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Alternate Mobile</div><div class="sr-kv-value">{{ $requestRecord->alternate_mobile ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Email</div><div class="sr-kv-value">{{ $requestRecord->email ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Account Holder</div><div class="sr-kv-value">{{ $requestRecord->account_holder_name ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Bank Name</div><div class="sr-kv-value">{{ $requestRecord->bank_name ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Account Number</div><div class="sr-kv-value">{{ $requestRecord->account_number ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">IFSC Code</div><div class="sr-kv-value">{{ $requestRecord->ifsc_code ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Account Type</div><div class="sr-kv-value">{{ $requestRecord->account_type ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Branch</div><div class="sr-kv-value">{{ $requestRecord->branch ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Category</div><div class="sr-kv-value">{{ $requestRecord->category ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Turnover</div><div class="sr-kv-value">{{ $requestRecord->turnover ?? '--' }}</div></div></div>
+                                        <div class="col-12"><div class="sr-kv"><div class="sr-kv-label">Products</div><div class="sr-kv-value">{{ $requestRecord->products ?? '--' }}</div></div></div>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <h5 class="mb-2">Contact Person</h5>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-md-6"><strong>Contact Person:</strong> {{ $requestRecord->contact_person ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Designation:</strong> {{ $requestRecord->designation ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Mobile:</strong> {{ $requestRecord->mobile ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Alternate Mobile:</strong> {{ $requestRecord->alternate_mobile ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Email:</strong> {{ $requestRecord->email ?? '--' }}</div>
-                                    </div>
-
-                                    <h5 class="mb-2">Bank & Product</h5>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-md-6"><strong>Account Holder:</strong> {{ $requestRecord->account_holder_name ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Bank:</strong> {{ $requestRecord->bank_name ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Account Number:</strong> {{ $requestRecord->account_number ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>IFSC:</strong> {{ $requestRecord->ifsc_code ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Account Type:</strong> {{ $requestRecord->account_type ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Branch:</strong> {{ $requestRecord->branch ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Category:</strong> {{ $requestRecord->category ?? '--' }}</div>
-                                        <div class="col-md-6"><strong>Turnover:</strong> {{ $requestRecord->turnover ?? '--' }}</div>
-                                        <div class="col-12"><strong>Products:</strong> {{ $requestRecord->products ?? '--' }}</div>
-                                    </div>
-
-                                    <h5 class="mb-2">Documents</h5>
+                            <div class="card sr-soft-card">
+                                <div class="card-body">
+                                    <h5 class="sr-section-title">Documents</h5>
                                     <div class="row g-2">
-                                        <div class="col-md-4"><a href="{{ $requestRecord->gst_certificate_path ? asset('storage/'.$requestRecord->gst_certificate_path) : '#' }}" target="_blank">GST Certificate</a></div>
-                                        <div class="col-md-4"><a href="{{ $requestRecord->pan_document_path ? asset('storage/'.$requestRecord->pan_document_path) : '#' }}" target="_blank">PAN Document</a></div>
-                                        <div class="col-md-4"><a href="{{ $requestRecord->registration_certificate_path ? asset('storage/'.$requestRecord->registration_certificate_path) : '#' }}" target="_blank">Registration Certificate</a></div>
-                                        <div class="col-md-4"><a href="{{ $requestRecord->address_proof_path ? asset('storage/'.$requestRecord->address_proof_path) : '#' }}" target="_blank">Address Proof</a></div>
-                                        <div class="col-md-4"><a href="{{ $requestRecord->cancelled_cheque_path ? asset('storage/'.$requestRecord->cancelled_cheque_path) : '#' }}" target="_blank">Cancelled Cheque</a></div>
-                                        <div class="col-md-4"><a href="{{ $requestRecord->other_documents_path ? asset('storage/'.$requestRecord->other_documents_path) : '#' }}" target="_blank">Other Documents</a></div>
+                                        <div class="col-md-6 col-lg-4">
+                                            @if($requestRecord->gst_certificate_path)
+                                                <a href="{{ asset('storage/' . $requestRecord->gst_certificate_path) }}" target="_blank" class="btn btn-light border sr-doc-btn">GST Certificate</a>
+                                            @else
+                                                <button type="button" class="btn btn-light border sr-doc-btn" disabled>GST Certificate (Not uploaded)</button>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            @if($requestRecord->pan_document_path)
+                                                <a href="{{ asset('storage/' . $requestRecord->pan_document_path) }}" target="_blank" class="btn btn-light border sr-doc-btn">PAN Document</a>
+                                            @else
+                                                <button type="button" class="btn btn-light border sr-doc-btn" disabled>PAN Document (Not uploaded)</button>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            @if($requestRecord->registration_certificate_path)
+                                                <a href="{{ asset('storage/' . $requestRecord->registration_certificate_path) }}" target="_blank" class="btn btn-light border sr-doc-btn">Registration Certificate</a>
+                                            @else
+                                                <button type="button" class="btn btn-light border sr-doc-btn" disabled>Registration Certificate (Not uploaded)</button>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            @if($requestRecord->address_proof_path)
+                                                <a href="{{ asset('storage/' . $requestRecord->address_proof_path) }}" target="_blank" class="btn btn-light border sr-doc-btn">Address Proof</a>
+                                            @else
+                                                <button type="button" class="btn btn-light border sr-doc-btn" disabled>Address Proof (Not uploaded)</button>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            @if($requestRecord->cancelled_cheque_path)
+                                                <a href="{{ asset('storage/' . $requestRecord->cancelled_cheque_path) }}" target="_blank" class="btn btn-light border sr-doc-btn">Cancelled Cheque</a>
+                                            @else
+                                                <button type="button" class="btn btn-light border sr-doc-btn" disabled>Cancelled Cheque (Not uploaded)</button>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            @if($requestRecord->other_documents_path)
+                                                <a href="{{ asset('storage/' . $requestRecord->other_documents_path) }}" target="_blank" class="btn btn-light border sr-doc-btn">Other Documents</a>
+                                            @else
+                                                <button type="button" class="btn btn-light border sr-doc-btn" disabled>Other Documents (Not uploaded)</button>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="card shadow-sm mb-3">
+
+                        <div class="col-xl-4">
+                            <div class="card sr-soft-card mb-3 sticky-top" style="top: 90px;">
                                 <div class="card-body">
-                                    <h5 class="mb-3">Review Action</h5>
+                                    <h5 class="sr-section-title mb-2">Review Action</h5>
+                                    <p class="text-muted small mb-3">Add a clear reason for approval or rejection for better audit history.</p>
                                     <div class="mb-3">
                                         <label class="form-label">Review Note / Rejection Reason</label>
-                                        <textarea class="form-control" rows="5" wire:model.live="reviewNote" placeholder="Add note for approve or reject."></textarea>
+                                        <textarea class="form-control" rows="5" wire:model.live="reviewNote" placeholder="Write your note here..."></textarea>
                                         @error('reviewNote') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="button" class="btn btn-success" wire:click="approve" @disabled($requestRecord->request_status === 'approved')>Approve & Create Seller</button>
-                                        <button type="button" class="btn btn-danger" wire:click="reject">Reject Request</button>
+                                        <button type="button" class="btn btn-success" wire:click="approve" @disabled(($requestRecord->request_status ?? '') === 'approved')>
+                                            <i class="fa fa-check me-1"></i> Approve & Create Seller
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger" wire:click="reject">
+                                            <i class="fa fa-times me-1"></i> Reject Request
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card shadow-sm mb-3">
+                            <div class="card sr-soft-card">
                                 <div class="card-body">
-                                    <h5 class="mb-3">Timeline</h5>
-                                    <div class="timeline-list">
-                                        @forelse(($requestRecord->timeline ?? []) as $event)
-                                            <div class="border-start ps-3 mb-3 position-relative">
-                                                <div class="fw-semibold">{{ $event['label'] ?? $event['event'] }}</div>
-                                                <div class="small text-muted">{{ $event['at'] ?? '' }}</div>
-                                                @if(!empty($event['note']))
-                                                    <div class="small mt-1">{{ $event['note'] }}</div>
-                                                @endif
-                                            </div>
-                                        @empty
-                                            <div class="text-muted">No timeline yet.</div>
-                                        @endforelse
-                                    </div>
+                                    <h5 class="sr-section-title mb-3">Timeline</h5>
+                                    @forelse(($requestRecord->timeline ?? []) as $event)
+                                        <div class="sr-timeline-item mb-3">
+                                            <div class="fw-semibold">{{ $event['label'] ?? $event['event'] ?? 'Update' }}</div>
+                                            <div class="small text-muted">{{ $event['at'] ?? '--' }}</div>
+                                            @if(!empty($event['note']))
+                                                <div class="small mt-1">{{ $event['note'] }}</div>
+                                            @endif
+                                        </div>
+                                    @empty
+                                        <div class="text-muted">No timeline yet.</div>
+                                    @endforelse
                                 </div>
                             </div>
                         </div>
