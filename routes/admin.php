@@ -122,6 +122,8 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('seller/orders/{id}', AdminRoot\Seller\Orders::class)->name('seller.orders');
         Route::get('seller/payments/{id}', AdminRoot\Seller\Payments::class)->name('seller.payments');
         Route::get('seller/staffs/{id}', AdminRoot\Seller\Staff::class)->name('seller.staffs');
+        Route::get('seller-request', AdminRoot\SellerRequest\Index::class)->name('seller-request.index');
+        Route::get('seller-request/{id}', AdminRoot\SellerRequest\Show::class)->name('seller-request.show');
 
         // Seller Product Section
         Route::get('seller-product/{user_id}', AdminRoot\SellerProduct\Index::class)->name('seller-product.index');

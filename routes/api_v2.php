@@ -99,6 +99,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Role promotion (customer → seller / transporter)
         Route::get('seller-types', [CustomerPromotionController::class, 'sellerTypes']);
+        Route::get('seller-request', [CustomerPromotionController::class, 'sellerRequest']);
+        Route::post('seller-request/step', [CustomerPromotionController::class, 'saveSellerRequestStep']);
+        Route::post('seller-request/submit', [CustomerPromotionController::class, 'submitSellerRequest']);
         Route::post('become-seller', [CustomerPromotionController::class, 'becomeSeller']);
         Route::post('become-transporter', [CustomerPromotionController::class, 'becomeTransporter']);
 
