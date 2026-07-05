@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\V2\Auth;
 
+use App\Mail\V2NewUserRegisteredAdminMail;
+use App\Mail\V2WelcomeUserMail;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\V2\Auth\RegisterOtpController;
 use App\Http\Resources\V2\UserResource;
@@ -9,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -43,6 +46,7 @@ class AuthController extends Controller
         $user->save();
 
         RegisterOtpController::consumeOtp($data['email']);
+        $this->sendRegistrationEmails($user);
 
         $token = $user->createToken('biznie-next')->plainTextToken;
 
@@ -117,5 +121,24 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Logged out from all devices.',
         ]);
+    }
+
+    private function sendRegistrationEmails(User $user): void
+    {
+        $adminEmail = (string) config('mail.admin_contact_address', 'contact@biznie.com');
+
+        if ($adminEmail !== '') {
+            try {
+                Mail::to($adminEmail)->send(new V2NewUserRegisteredAdminMail($user));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
+
+        try {
+            Mail::to($user->email)->send(new V2WelcomeUserMail($user->name));
+        } catch (\Throwable $e) {
+            report($e);
+        }
     }
 }

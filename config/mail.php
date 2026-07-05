@@ -103,6 +103,8 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'admin_contact_address' => env('MAIL_ADMIN_CONTACT_ADDRESS', 'contact@biznie.com'),
+
     /*
     |--------------------------------------------------------------------------
     | Markdown Mail Settings
