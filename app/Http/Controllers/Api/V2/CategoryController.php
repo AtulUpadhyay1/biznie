@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V2\CategoryResource;
+use App\Http\Resources\V2\SubCategoryResource;
 use App\Models\ProductCategory;
+use App\Models\ProductSubCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -40,6 +42,22 @@ class CategoryController extends Controller
         return response()->json([
             'success' => true,
             'data'    => new CategoryResource($category),
+        ]);
+    }
+
+    public function subCategories(Request $request, int $categoryId): JsonResponse
+    {
+        $list = ProductSubCategory::active()
+            ->where('product_category_id', $categoryId)
+            ->when($request->string('search')->toString(), function ($q, $search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->orderBy('name')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data'    => SubCategoryResource::collection($list),
         ]);
     }
 }

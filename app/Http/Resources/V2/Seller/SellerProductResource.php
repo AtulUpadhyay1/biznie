@@ -20,6 +20,10 @@ class SellerProductResource extends JsonResource
             'name'        => $this->name,
             'slug'        => $this->slug,
             'status'      => $this->status,
+            'request_status'    => $this->request_status,
+            'request_reference' => $this->request_reference,
+            'review_note'       => $this->review_note,
+            'can_edit'          => in_array($this->request_status, ['draft', 'rejected'], true),
             'thumbnail'   => $imageUrls[0] ?? null,
             'images'      => $imageUrls,
             'commodity_product' => $this->getCommodityProduct ? [

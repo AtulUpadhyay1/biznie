@@ -28,6 +28,12 @@ class SellerCommodityProduct extends Model
         'packaging_type'        => 'array',
         'packaging_type_price'  => 'array',
         'loading_address'       => 'array',
+        'physical_specification' => 'array',
+        'chemical_specification' => 'array',
+        'timeline'              => 'array',
+        'current_step'          => 'integer',
+        'submitted_at'          => 'datetime',
+        'reviewed_at'           => 'datetime',
     ];
 
     public function getCommodityProduct()
@@ -68,5 +74,29 @@ class SellerCommodityProduct extends Model
     public function getStatePrice()
     {
         return $this->hasMany(SellerCommodityProductStatePrice::class, 'seller_commodity_product_id');
+    }
+
+    public function getReviewer()
+    {
+        return $this->belongsTo(Admin::class, 'reviewed_by');
+    }
+
+    public function appendTimeline(string $event, array $meta = []): void
+    {
+        $timeline = $this->timeline ?? [];
+        $timeline[] = array_merge([
+            'event' => $event,
+            'label' => match ($event) {
+                'step_saved' => 'Step saved',
+                'submitted' => 'Product submitted',
+                'approved' => 'Product approved',
+                'rejected' => 'Product rejected',
+                'resubmitted' => 'Product resubmitted',
+                default => $event,
+            },
+            'at' => now()->toIso8601String(),
+        ], $meta);
+
+        $this->timeline = $timeline;
     }
 }

@@ -63,6 +63,8 @@ Route::prefix('auth')->group(function () {
 // Public catalog
 Route::get('home', [HomeController::class, 'home']);
 Route::get('categories', [CategoryController::class, 'index']);
+Route::get('categories/{categoryId}/sub-categories', [CategoryController::class, 'subCategories'])
+    ->whereNumber('categoryId');
 Route::get('categories/{slug}', [CategoryController::class, 'show']);
 Route::get('brands', [BrandController::class, 'index']);
 
@@ -175,8 +177,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('rfqs/{id}/respond', [SellerQuotationController::class, 'respond']);
 
         Route::get('products', [SellerProductController::class, 'index']);
-        Route::get('products/{id}', [SellerProductController::class, 'show']);
-        Route::put('products/{id}/status', [SellerProductController::class, 'updateStatus']);
+        Route::post('products/step', [SellerProductController::class, 'saveStep']);
+        Route::post('products/{id}/submit', [SellerProductController::class, 'submit'])->whereNumber('id');
+        Route::get('products/{id}/edit', [SellerProductController::class, 'editData'])->whereNumber('id');
+        Route::get('products/{id}', [SellerProductController::class, 'show'])->whereNumber('id');
+        Route::put('products/{id}/status', [SellerProductController::class, 'updateStatus'])->whereNumber('id');
 
         Route::get('commodity-products', [SellerCommodityProductController::class, 'index']);
         Route::get('commodity-products/{id}', [SellerCommodityProductController::class, 'show']);
