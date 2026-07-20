@@ -165,6 +165,11 @@
                                                     href="{{ route('admin.customer-profile', $data->id) }}"
                                                     wire:navigate><i
                                                         class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a class="dropdown-item d-flex align-items-center"
+                                                    href="{{ route('admin.seller-request.create', $data->id) }}"
+                                                    wire:navigate><i
+                                                        class="bi bi-person-plus icon-sm me-2"></i><span>Seller
+                                                        Request</span></a>
                                                 {{-- <a class="dropdown-item d-flex align-items-center" href="#"><i
                                                     class="bi bi-person-slash icon-sm me-2"></i><span>Block</span></a>
                                                 <a href="javascript:;"

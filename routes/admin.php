@@ -123,10 +123,12 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('seller/payments/{id}', AdminRoot\Seller\Payments::class)->name('seller.payments');
         Route::get('seller/staffs/{id}', AdminRoot\Seller\Staff::class)->name('seller.staffs');
         Route::get('seller-request', AdminRoot\SellerRequest\Index::class)->name('seller-request.index');
+        Route::get('seller-request/create/{user_id}', AdminRoot\SellerRequest\Create::class)->name('seller-request.create');
         Route::get('seller-request/{id}', AdminRoot\SellerRequest\Show::class)->name('seller-request.show');
 
         // Seller Product Requests (add-product approval queue)
         Route::get('seller-product-request', AdminRoot\SellerProductRequest\Index::class)->name('seller-product-request.index');
+        Route::get('seller-product-request/create/{user_id}', AdminRoot\SellerProductRequest\Create::class)->name('seller-product-request.create');
         Route::get('seller-product-request/{id}', AdminRoot\SellerProductRequest\Show::class)->name('seller-product-request.show');
 
         // Seller Product Section

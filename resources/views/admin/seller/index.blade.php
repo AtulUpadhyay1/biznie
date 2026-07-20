@@ -256,6 +256,11 @@
                                                     class="dropdown-item d-flex align-items-center"><i
                                                         class="bi bi-box icon-sm me-2"></i><span>Product
                                                         Section</span></a>
+                                                <a href="{{ route('admin.seller-product-request.create', $data->id) }}"
+                                                    wire:navigate
+                                                    class="dropdown-item d-flex align-items-center"><i
+                                                        class="bi bi-clipboard-plus icon-sm me-2"></i><span>Product
+                                                        Request</span></a>
                                             </div>
                                         </td>
                                     </tr>
