@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V2\ProductDetailResource;
+use App\Http\Resources\V2\ProductOfferResource;
 use App\Http\Resources\V2\ProductResource;
 use App\Models\CommodityProduct;
+use App\Services\ProductPricingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -49,7 +52,46 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => true,
-            'data'    => new ProductResource($product),
+            'data'    => new ProductDetailResource($product),
+        ]);
+    }
+
+    /**
+     * Live seller offers for a commodity product, cheapest first.
+     *
+     * This is the step between the catalog and the detail page: the buyer picks
+     * which seller's offer to open.
+     */
+    public function offers(string $slug, Request $request, ProductPricingService $pricing): JsonResponse
+    {
+        $product = CommodityProduct::active()
+            ->with(['getCategory', 'getUnit'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $offers = $pricing->sellerOffers($product);
+
+        return response()->json([
+            'success' => true,
+            'data'    => [
+                'product' => [
+                    'id'        => $product->id,
+                    'name'      => $product->name,
+                    'slug'      => $product->slug,
+                    'thumbnail' => $product->thumbnail ? imageUrl($product->thumbnail) : null,
+                    'category'  => $product->getCategory ? [
+                        'id'   => $product->getCategory->id,
+                        'name' => $product->getCategory->name,
+                    ] : null,
+                    'unit'      => $product->getUnit ? [
+                        'id'   => $product->getUnit->id,
+                        'name' => $product->getUnit->name,
+                    ] : null,
+                    'min_order_qty' => (float) ($product->min_order_qty ?? 0),
+                ],
+                'destinations' => $pricing->deliveryDestinations((int) $product->id),
+                'offers'       => ProductOfferResource::collection($offers)->resolve(),
+            ],
         ]);
     }
 }
