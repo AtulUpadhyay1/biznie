@@ -129,7 +129,7 @@
                     @if ($step === 1)
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Company Name <span class="text-danger">*</span></label>
+                                <label class="form-label">Business Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('company_name') is-invalid @enderror"
                                     wire:model="company_name">
                                 @error('company_name')
@@ -153,10 +153,10 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Seller Type <span class="text-danger">*</span></label>
+                                <label class="form-label">Business Type <span class="text-danger">*</span></label>
                                 <select class="form-select @error('seller_type_id') is-invalid @enderror"
                                     wire:model="seller_type_id">
-                                    <option value="">Select Seller Type</option>
+                                    <option value="">Select business type</option>
                                     @foreach ($sellerTypes as $sellerType)
                                         <option value="{{ $sellerType->id }}">{{ $sellerType->name }}</option>
                                     @endforeach
@@ -166,18 +166,26 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Business Type</label>
-                                <input type="text" class="form-control @error('business_type') is-invalid @enderror"
-                                    wire:model="business_type">
-                                @error('business_type')
+                                <label class="form-label">Constitution Type <span class="text-danger">*</span></label>
+                                <select class="form-select @error('constitution_type') is-invalid @enderror"
+                                    wire:model="constitution_type">
+                                    <option value="">Select constitution type</option>
+                                    <option value="proprietorship">Proprietorship</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="llp">LLP</option>
+                                    <option value="private_limited">Private Limited</option>
+                                    <option value="public_limited">Public Limited</option>
+                                </select>
+                                @error('constitution_type')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Constitution Type <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('constitution_type') is-invalid @enderror"
-                                    wire:model="constitution_type" placeholder="e.g. Private Limited">
-                                @error('constitution_type')
+                                <label class="form-label">Years in Business <span class="text-danger">*</span></label>
+                                <input type="number" min="0" max="100"
+                                    class="form-control @error('years_in_business') is-invalid @enderror"
+                                    wire:model="years_in_business">
+                                @error('years_in_business')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -218,15 +226,6 @@
                                 <input type="text" maxlength="6"
                                     class="form-control @error('pincode') is-invalid @enderror" wire:model="pincode">
                                 @error('pincode')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Years In Business <span class="text-danger">*</span></label>
-                                <input type="number" min="0" max="100"
-                                    class="form-control @error('years_in_business') is-invalid @enderror"
-                                    wire:model="years_in_business">
-                                @error('years_in_business')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -361,9 +360,9 @@
                                 <label class="form-label">Account Type <span class="text-danger">*</span></label>
                                 <select class="form-select @error('account_type') is-invalid @enderror"
                                     wire:model="account_type">
-                                    <option value="">Select Account Type</option>
-                                    <option value="Savings">Savings</option>
-                                    <option value="Current">Current</option>
+                                    <option value="">Select account type</option>
+                                    <option value="savings">Savings</option>
+                                    <option value="current">Current</option>
                                 </select>
                                 @error('account_type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -403,8 +402,8 @@
                                 <label class="form-label">Product Upload Mode <span class="text-danger">*</span></label>
                                 <select class="form-select @error('product_upload_mode') is-invalid @enderror"
                                     wire:model="product_upload_mode">
-                                    <option value="existing">Existing Catalog</option>
-                                    <option value="new">New Products</option>
+                                    <option value="existing">Existing Products</option>
+                                    <option value="new">New Product</option>
                                     <option value="bulk">Bulk Upload</option>
                                 </select>
                                 @error('product_upload_mode')
@@ -430,8 +429,7 @@
                                     'Company Name' => $company_name,
                                     'GST Number' => $gst_number,
                                     'PAN Number' => $pan_number,
-                                    'Seller Type' => optional($sellerTypes->firstWhere('id', (int) $seller_type_id))->name,
-                                    'Business Type' => $business_type,
+                                    'Business Type' => optional($sellerTypes->firstWhere('id', (int) $seller_type_id))->name,
                                     'Constitution Type' => $constitution_type,
                                     'Years In Business' => $years_in_business,
                                     'City' => $city,
