@@ -418,28 +418,7 @@ class ProductController extends Controller
         }
 
         if (array_key_exists('variants', $data)) {
-            $variation = [];
-            $sizes = [];
-            $sizePrices = [];
-            $units = [];
-            foreach ((array) $data['variants'] as $row) {
-                if (empty($row['size']) && empty($row['unit'])) {
-                    continue;
-                }
-                $variation[] = [
-                    'size'   => $row['size'] ?? null,
-                    'unit'   => $row['unit'] ?? null,
-                    'charge' => $row['charge'] ?? null,
-                    'stock'  => $row['stock'] ?? null,
-                ];
-                $sizes[] = $row['size'] ?? null;
-                $sizePrices[] = ($row['charge'] ?? '') !== '' ? (float) $row['charge'] : null;
-                $units[] = $row['unit'] ?? null;
-            }
-            $record->variation = $variation;
-            $record->size = $sizes;
-            $record->size_price = $sizePrices;
-            $record->unit = $units;
+            $record->applyVariants((array) $data['variants']);
         }
 
         if (array_key_exists('loading_city', $data)) {

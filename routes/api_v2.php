@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\V2\Seller\DashboardController as SellerDashboardCon
 use App\Http\Controllers\Api\V2\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Api\V2\Seller\CommodityProductController as SellerCommodityProductController;
 use App\Http\Controllers\Api\V2\Seller\ProductController as SellerProductController;
+use App\Http\Controllers\Api\V2\Seller\ProductUpdateController as SellerProductUpdateController;
 use App\Http\Controllers\Api\V2\Seller\QuotationController as SellerQuotationController;
 use App\Http\Controllers\Api\V2\NotificationController;
 use App\Http\Controllers\Api\V2\StaffController;
@@ -183,6 +184,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('products/{id}/edit', [SellerProductController::class, 'editData'])->whereNumber('id');
         Route::get('products/{id}', [SellerProductController::class, 'show'])->whereNumber('id');
         Route::put('products/{id}/status', [SellerProductController::class, 'updateStatus'])->whereNumber('id');
+
+        // Day-to-day edits on an existing product (outside the request wizard).
+        Route::get('products/{id}/attributes', [SellerProductUpdateController::class, 'attributes'])->whereNumber('id');
+        Route::put('products/{id}/price', [SellerProductUpdateController::class, 'updatePrice'])->whereNumber('id');
+        Route::put('products/{id}/variants', [SellerProductUpdateController::class, 'updateVariants'])->whereNumber('id');
+        Route::put('products/{id}/quality', [SellerProductUpdateController::class, 'updateQuality'])->whereNumber('id');
+        Route::put('products/{id}/stock', [SellerProductUpdateController::class, 'updateStock'])->whereNumber('id');
 
         Route::get('commodity-products', [SellerCommodityProductController::class, 'index']);
         Route::get('commodity-products/{id}', [SellerCommodityProductController::class, 'show']);

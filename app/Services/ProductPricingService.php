@@ -94,6 +94,13 @@ class ProductPricingService
      */
     public function defaultVariationPrice(int $commodityProductId, ?int $brandId): float
     {
+        // Products created through the seller wizard are not linked to a catalog
+        // product, so there is no variation to look up — and no reason to run
+        // two queries per card to discover that.
+        if ($commodityProductId <= 0) {
+            return 0;
+        }
+
         $defaultVariation = CommodityProductVariation::where('commodity_product_id', $commodityProductId)
             ->where('is_default', 1)
             ->first();

@@ -81,6 +81,43 @@ class SellerCommodityProduct extends Model
         return $this->belongsTo(Admin::class, 'reviewed_by');
     }
 
+    /**
+     * Write a set of size variants onto the record.
+     *
+     * `variation` is the authoritative shape, but `size`, `size_price` and `unit`
+     * are flat mirrors that the older catalog/pricing screens still read from, so
+     * every writer has to keep all four in step — hence one place to do it.
+     *
+     * @param  array<int, array{size?: mixed, unit?: mixed, charge?: mixed, stock?: mixed}>  $rows
+     */
+    public function applyVariants(array $rows): void
+    {
+        $variation = [];
+        $sizes = [];
+        $sizePrices = [];
+        $units = [];
+
+        foreach ($rows as $row) {
+            if (empty($row['size']) && empty($row['unit'])) {
+                continue;
+            }
+            $variation[] = [
+                'size'   => $row['size'] ?? null,
+                'unit'   => $row['unit'] ?? null,
+                'charge' => $row['charge'] ?? null,
+                'stock'  => $row['stock'] ?? null,
+            ];
+            $sizes[] = $row['size'] ?? null;
+            $sizePrices[] = ($row['charge'] ?? '') !== '' ? (float) $row['charge'] : null;
+            $units[] = $row['unit'] ?? null;
+        }
+
+        $this->variation = $variation;
+        $this->size = $sizes;
+        $this->size_price = $sizePrices;
+        $this->unit = $units;
+    }
+
     public function appendTimeline(string $event, array $meta = []): void
     {
         $timeline = $this->timeline ?? [];
