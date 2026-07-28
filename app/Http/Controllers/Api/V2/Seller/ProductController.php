@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V2\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V2\Seller\SellerProductDetailResource;
 use App\Http\Resources\V2\Seller\SellerProductResource;
 use App\Mail\SellerProductSubmittedAdminMail;
 use App\Mail\SellerProductSubmittedUserMail;
@@ -68,7 +69,7 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => true,
-            'data'    => new SellerProductResource($product),
+            'data'    => new SellerProductDetailResource($product),
         ]);
     }
 
