@@ -303,17 +303,18 @@ class ProductPricingService
         $types = is_array($sellerProduct->packaging_type) ? $sellerProduct->packaging_type : [];
         $prices = is_array($sellerProduct->packaging_type_price) ? $sellerProduct->packaging_type_price : [];
 
+        $names = PackagingType::whereIn('id', $types)->pluck('name', 'id');
+
         $options = [];
         foreach ($types as $typeId) {
-            $type = PackagingType::find($typeId);
-            if (! $type) {
+            if (! isset($names[$typeId])) {
                 continue;
             }
 
             $options[] = [
-                'id'     => $type->id,
-                'name'   => $type->name,
-                'charge' => (float) ($prices[$type->id] ?? 0),
+                'id'     => (int) $typeId,
+                'name'   => $names[$typeId],
+                'charge' => (float) ($prices[$typeId] ?? 0),
             ];
         }
 

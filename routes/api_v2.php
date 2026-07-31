@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\V2\PriceController;
 use App\Http\Controllers\Api\V2\ContactController;
 use App\Http\Controllers\Api\V2\EnquiryController;
 use App\Http\Controllers\Api\V2\BrandController;
+use App\Http\Controllers\Api\V2\PackagingTypeController;
+use App\Http\Controllers\Api\V2\ProductUnitController;
 use App\Http\Controllers\Api\V2\AddressLookupController;
 use App\Http\Controllers\Api\V2\Customer\AddressController as CustomerAddressController;
 use App\Http\Controllers\Api\V2\Customer\CreditRequestController as CustomerCreditRequestController;
@@ -68,6 +70,8 @@ Route::get('categories/{categoryId}/sub-categories', [CategoryController::class,
     ->whereNumber('categoryId');
 Route::get('categories/{slug}', [CategoryController::class, 'show']);
 Route::get('brands', [BrandController::class, 'index']);
+Route::get('packaging-types', [PackagingTypeController::class, 'index']);
+Route::get('units', [ProductUnitController::class, 'index']);
 
 Route::get('products', [ProductController::class, 'index']);
 Route::get('products/{slug}', [ProductController::class, 'show']);

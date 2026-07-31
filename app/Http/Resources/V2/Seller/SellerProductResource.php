@@ -29,7 +29,9 @@ class SellerProductResource extends JsonResource
             'request_status'    => $this->request_status,
             'request_reference' => $this->request_reference,
             'review_note'       => $this->review_note,
-            'can_edit'          => in_array($this->request_status, ['draft', 'rejected'], true),
+            // Editable unless a reviewer is holding it. An approved product stays
+            // editable: step saves keep it approved and live.
+            'can_edit'          => $this->request_status !== 'pending_review',
             'thumbnail'   => $imageUrls[0] ?? null,
             'images'      => $imageUrls,
             'commodity_product' => $this->getCommodityProduct ? [
