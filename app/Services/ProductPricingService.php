@@ -8,6 +8,7 @@ use App\Models\CommodityProductVariation;
 use App\Models\PackagingType;
 use App\Models\SellerCommodityProduct;
 use App\Models\SellerCommodityProductHistory;
+use App\Models\SellerProductForPrice;
 use App\Models\TransporterAddressPrice;
 use App\Models\TransporterDetail;
 use Carbon\Carbon;
@@ -346,5 +347,54 @@ class ProductPricingService
     public function forPrice(float $exPrice, float $freight, float $otherCharges = 0): float
     {
         return $exPrice + $freight + $otherCharges;
+    }
+
+    /**
+     * The seller's own freight rate to this destination, or null when they have
+     * not quoted it.
+     *
+     * A seller who quotes a city is quoting what it costs them to move a tonne
+     * there, so this stands in for the transporter rate rather than for the
+     * whole price.
+     */
+    public function sellerFreight(SellerCommodityProduct $sellerProduct, ?string $state, ?string $city): ?float
+    {
+        if (! $state || ! $city) {
+            return null;
+        }
+
+        $row = SellerProductForPrice::where('product_id', $sellerProduct->id)
+            ->where('state', $state)
+            ->where('city', $city)
+            ->first();
+
+        // `price` on that table is the freight component, not a delivered price.
+        return $row ? (float) $row->price : null;
+    }
+
+    /**
+     * F.O.R for one unit at a destination: ex-works plus freight, where the
+     * seller's own rate for that city wins over the transporter's.
+     *
+     * Both the detail page and the offers list call this, so a card and the page
+     * it leads to can never disagree about which freight applied.
+     *
+     * @return array{for_price: float, freight: float, source: string}
+     */
+    public function destinationForPrice(
+        SellerCommodityProduct $sellerProduct,
+        float $exPrice,
+        float $freight,
+        ?string $state,
+        ?string $city
+    ): array {
+        $quoted = $this->sellerFreight($sellerProduct, $state, $city);
+        $applied = $quoted ?? $freight;
+
+        return [
+            'for_price' => $this->forPrice($exPrice, $applied),
+            'freight'   => $applied,
+            'source'    => $quoted !== null ? 'seller' : 'calculated',
+        ];
     }
 }

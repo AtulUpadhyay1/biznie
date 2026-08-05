@@ -42,7 +42,13 @@ class ProductDetailResource extends JsonResource
             : 0;
 
         $exPrice = $breakup ? (float) $breakup['ex_price'] : 0.0;
-        $forPrice = $pricing->forPrice($exPrice, $freight);
+        // A freight rate the seller quoted for this city wins over the
+        // transporter's, so the breakup below reports whichever applied.
+        $doorstep = $sellerProduct
+            ? $pricing->destinationForPrice($sellerProduct, $exPrice, (float) $freight, $state, $city)
+            : ['for_price' => $exPrice, 'freight' => 0.0, 'source' => 'calculated'];
+        $forPrice = $doorstep['for_price'];
+        $appliedFreight = (float) $doorstep['freight'];
 
         return [
             'id'           => $this->id,
@@ -73,9 +79,12 @@ class ProductDetailResource extends JsonResource
                 'tcs'              => (float) $breakup['tcs'],
                 'tax_amount'       => (float) $breakup['tax_amount'],
                 'ex_works_price'   => $exPrice,
-                'freight_charges'  => (float) $freight,
+                'freight_charges'  => $appliedFreight,
                 'other_charges'    => 0.0,
                 'for_price'        => $forPrice,
+                // 'seller' when the seller quoted this city, 'calculated' when
+                // it is ex-works plus the cheapest transporter rate.
+                'for_price_source' => $doorstep['source'],
                 'other_charges_breakup' => $pricing->otherCharges($sellerProduct),
                 'price_validity'   => $sellerProduct->price_validity ? dateTimeFormat($sellerProduct->price_validity) : null,
                 'last_updated'     => dateTimeFormat($sellerProduct->updated_at),
@@ -99,7 +108,7 @@ class ProductDetailResource extends JsonResource
             'delivery' => [
                 'city'  => $city,
                 'state' => $state,
-                'freight_available' => $freight > 0,
+                'freight_available' => $appliedFreight > 0,
                 'destinations' => $pricing->deliveryDestinations((int) $this->id),
             ],
 

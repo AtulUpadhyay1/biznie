@@ -30,6 +30,7 @@ use App\Http\Controllers\Api\V2\Seller\DashboardController as SellerDashboardCon
 use App\Http\Controllers\Api\V2\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Api\V2\Seller\CommodityProductController as SellerCommodityProductController;
 use App\Http\Controllers\Api\V2\Seller\ProductController as SellerProductController;
+use App\Http\Controllers\Api\V2\Seller\ProductForPriceController as SellerProductForPriceController;
 use App\Http\Controllers\Api\V2\Seller\ProductUpdateController as SellerProductUpdateController;
 use App\Http\Controllers\Api\V2\Seller\QuotationController as SellerQuotationController;
 use App\Http\Controllers\Api\V2\NotificationController;
@@ -195,6 +196,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('products/{id}/variants', [SellerProductUpdateController::class, 'updateVariants'])->whereNumber('id');
         Route::put('products/{id}/quality', [SellerProductUpdateController::class, 'updateQuality'])->whereNumber('id');
         Route::put('products/{id}/stock', [SellerProductUpdateController::class, 'updateStock'])->whereNumber('id');
+
+        // City-wise F.O.R prices. `store` is create-or-update on (state, city).
+        Route::get('products/{id}/for-prices', [SellerProductForPriceController::class, 'index'])->whereNumber('id');
+        Route::post('products/{id}/for-prices', [SellerProductForPriceController::class, 'store'])->whereNumber('id');
+        Route::delete('products/{id}/for-prices/{priceId}', [SellerProductForPriceController::class, 'destroy'])
+            ->whereNumber('id')->whereNumber('priceId');
 
         Route::get('commodity-products', [SellerCommodityProductController::class, 'index']);
         Route::get('commodity-products/{id}', [SellerCommodityProductController::class, 'show']);

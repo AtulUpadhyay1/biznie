@@ -90,8 +90,26 @@ class ProductController extends Controller
                     'min_order_qty' => (float) ($product->min_order_qty ?? 0),
                 ],
                 'destinations' => $pricing->deliveryDestinations((int) $product->id),
-                'offers'       => ProductOfferResource::collection($offers)->resolve(),
+                'offers'       => $this->cheapestFirst(ProductOfferResource::collection($offers)->resolve()),
             ],
         ]);
+    }
+
+    /**
+     * Order offers by the price the buyer actually pays at their door.
+     *
+     * `sellerOffers()` orders by ex-works, which used to be the same ordering:
+     * freight is per product and destination, so it shifted every offer equally.
+     * A seller-quoted city does not — one seller can undercut another at that
+     * destination while having the higher ex-works price.
+     *
+     * @param  array<int, array<string, mixed>>  $rows
+     * @return array<int, array<string, mixed>>
+     */
+    private function cheapestFirst(array $rows): array
+    {
+        usort($rows, fn ($a, $b) => ($a['for_price'] ?? 0) <=> ($b['for_price'] ?? 0));
+
+        return $rows;
     }
 }

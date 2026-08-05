@@ -140,6 +140,7 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('seller-product/{user_id}/price/{product_id}', AdminRoot\SellerProduct\Price::class)->name('seller-product.price');
         Route::get('seller-product/{user_id}/stock/{product_id}', AdminRoot\SellerProduct\Stock::class)->name('seller-product.stock');
         Route::get('seller-product/{user_id}/quality/{product_id}', AdminRoot\SellerProduct\Quality::class)->name('seller-product.quality');
+        Route::get('seller-product/{user_id}/for-price/{product_id}', AdminRoot\SellerProduct\ForPrice::class)->name('seller-product.for-price');
 
 
         //Business Listing

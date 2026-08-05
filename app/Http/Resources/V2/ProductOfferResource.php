@@ -30,6 +30,16 @@ class ProductOfferResource extends JsonResource
 
         $statePrice = $this->getStatePrice->first();
 
+        // A freight rate the seller quoted for this city replaces the
+        // transporter's, so this card matches the detail page it links to.
+        $doorstep = $pricing->destinationForPrice(
+            $this->resource,
+            (float) $breakup['ex_price'],
+            (float) $freight,
+            $state,
+            $city
+        );
+
         return [
             'id'                   => $this->id,
             'commodity_product_id' => $this->commodity_product_id,
@@ -53,8 +63,9 @@ class ProductOfferResource extends JsonResource
             'gst'             => (float) $breakup['gst'],
             'tax_amount'      => (float) $breakup['tax_amount'],
             'ex_works_price'  => (float) $breakup['ex_price'],
-            'freight_charges' => (float) $freight,
-            'for_price'       => $pricing->forPrice((float) $breakup['ex_price'], (float) $freight),
+            'freight_charges'  => (float) $doorstep['freight'],
+            'for_price'        => $doorstep['for_price'],
+            'for_price_source' => $doorstep['source'],
         ];
     }
 }

@@ -99,6 +99,10 @@
                                                     class="dropdown-item d-flex align-items-center" wire:navigate><i
                                                         class="bi bi-database icon-sm me-2"></i><span>Update
                                                         Stock</span></a>
+                                                <a href="{{ route('admin.seller-product.for-price', [$data->user_id, $data->id]) }}"
+                                                    class="dropdown-item d-flex align-items-center" wire:navigate><i
+                                                        class="bi bi-geo-alt icon-sm me-2"></i><span>F.O.R
+                                                        Price</span></a>
 
                                             </div>
                                         </td>
