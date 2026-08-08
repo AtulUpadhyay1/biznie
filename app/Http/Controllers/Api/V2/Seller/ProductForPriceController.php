@@ -51,6 +51,10 @@ class ProductForPriceController extends Controller
             return $product;
         }
 
+        if ($denied = $this->denyWithoutAccess($product)) {
+            return $denied;
+        }
+
         $data = $request->validate([
             'state' => ['required', 'string', 'max:120'],
             'city'  => ['required', 'string', 'max:120'],
@@ -97,6 +101,10 @@ class ProductForPriceController extends Controller
             return $product;
         }
 
+        if ($denied = $this->denyWithoutAccess($product)) {
+            return $denied;
+        }
+
         // Scoped to the product, so an id belonging to another listing — or
         // another seller — is a 404 rather than a delete.
         $row = SellerProductForPrice::where('product_id', $product->id)->find($priceId);
@@ -129,6 +137,26 @@ class ProductForPriceController extends Controller
                 'price' => (string) $row->price,
             ])
             ->all();
+    }
+
+    /**
+     * Admin grants this panel per seller (users.for_price_access), off by
+     * default. The frontend hides the card on the same flag, but the check has
+     * to live here too — hiding a card is not an authorisation control.
+     *
+     * F.O.B is a separate grant (users.fob_price_access) and is not consulted
+     * here; these endpoints only ever write F.O.R prices.
+     */
+    private function denyWithoutAccess(SellerCommodityProduct $product): ?JsonResponse
+    {
+        if ($product->getUser?->for_price_access) {
+            return null;
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'F.O.R price updates are not enabled for your account. Please contact Biznie support.',
+        ], 403);
     }
 
     /** The seller's own product, or a 404. */

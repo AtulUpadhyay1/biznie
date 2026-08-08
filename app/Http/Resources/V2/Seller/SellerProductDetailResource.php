@@ -55,6 +55,12 @@ class SellerProductDetailResource extends SellerProductResource
             'make'              => $this->make,
             'brand_name'        => $this->brand_name,
 
+            // Admin grants each price panel per seller, separately and off by
+            // default, so a card stays hidden until its own grant is turned on.
+            // `can_manage_fob_price` has no panel behind it yet.
+            'can_manage_for_price' => (bool) ($this->getUser?->for_price_access ?? false),
+            'can_manage_fob_price' => (bool) ($this->getUser?->fob_price_access ?? false),
+
             'submitted_at' => $this->submitted_at ? Carbon::parse($this->submitted_at)->toIso8601String() : null,
         ]);
     }

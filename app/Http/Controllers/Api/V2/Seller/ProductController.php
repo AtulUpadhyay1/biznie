@@ -97,6 +97,8 @@ class ProductController extends Controller
                 'getBrand:id,name',
                 'getCategory:id,name',
                 'getUnit:id,name',
+                // Carries the F.O.R / F.O.B panel grants onto the detail payload.
+                'getUser:id,for_price_access,fob_price_access',
             ])
             ->find($id);
 

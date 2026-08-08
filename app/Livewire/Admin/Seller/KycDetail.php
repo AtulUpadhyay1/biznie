@@ -14,11 +14,21 @@ class KycDetail extends Component
     public $showBlockModal = false;
     public $blockReason = '';
 
+    /**
+     * The two price grants, held separately: F.O.R and F.O.B are different
+     * commercial terms, so a seller can be trusted with one and not the other.
+     * Both off by default.
+     */
+    public $forPriceAccess = false;
+    public $fobPriceAccess = false;
+
     public function mount($id)
     {
         $this->data = User::where('type', 'seller')->with('getSellerKycDetail', 'getBusiness')->findOrFail($id);
         $this->status = $this->data->getSellerKycDetail->status;
         $this->user_status = $this->data->status;
+        $this->forPriceAccess = (bool) $this->data->for_price_access;
+        $this->fobPriceAccess = (bool) $this->data->fob_price_access;
     }
 
     public function render()
@@ -32,6 +42,43 @@ class KycDetail extends Component
         $kycDetail->status = $this->status;
         $kycDetail->save();
         session()->flash('success', 'Kyc Detail updated successfully !!');
+        return $this->redirect('/admin/seller-kyc-detail/'.$this->data->id, navigate: true);
+    }
+
+    /**
+     * Grant or revoke the seller's F.O.R price panel.
+     *
+     * A seller-quoted F.O.R price overrides the calculated one for every buyer
+     * in that city, so the panel stays hidden until admin turns this on. The
+     * API enforces the same flag — hiding the card is not the control.
+     */
+    public function updateForPriceAccess()
+    {
+        $this->data->for_price_access = (bool) $this->forPriceAccess;
+        $this->data->save();
+
+        session()->flash('success', $this->forPriceAccess
+            ? 'F.O.R price access enabled for this seller.'
+            : 'F.O.R price access disabled for this seller.');
+
+        return $this->redirect('/admin/seller-kyc-detail/'.$this->data->id, navigate: true);
+    }
+
+    /**
+     * Grant or revoke the seller's F.O.B price panel.
+     *
+     * The panel itself does not exist yet; the grant is stored now so the card
+     * can be mapped onto it when it is built.
+     */
+    public function updateFobPriceAccess()
+    {
+        $this->data->fob_price_access = (bool) $this->fobPriceAccess;
+        $this->data->save();
+
+        session()->flash('success', $this->fobPriceAccess
+            ? 'F.O.B price access enabled for this seller.'
+            : 'F.O.B price access disabled for this seller.');
+
         return $this->redirect('/admin/seller-kyc-detail/'.$this->data->id, navigate: true);
     }
 

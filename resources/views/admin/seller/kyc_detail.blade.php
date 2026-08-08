@@ -94,6 +94,44 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <h6 class="py-2 bg-orange-light">Seller Permissions</h6>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between border rounded p-3 mb-2">
+                                <div class="me-3">
+                                    <b>F.O.R Prices</b>
+                                    <p class="mb-0 text-muted small">
+                                        When enabled, the seller can add and update their own city-wise
+                                        F.O.R prices from their product page. Off by default — buyers
+                                        then see the calculated F.O.R price (Ex Price + freight).
+                                    </p>
+                                </div>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="forPriceAccess" wire:model="forPriceAccess"
+                                        wire:change="updateForPriceAccess">
+                                    <label class="form-check-label" for="forPriceAccess">
+                                        {{ $forPriceAccess ? 'Enabled' : 'Disabled' }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between border rounded p-3">
+                                <div class="me-3">
+                                    <b>F.O.B Price</b>
+                                    <p class="mb-0 text-muted small">
+                                        When enabled, the seller can add and update their own F.O.B
+                                        prices from their product page. Off by default.
+                                    </p>
+                                </div>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="fobPriceAccess" wire:model="fobPriceAccess"
+                                        wire:change="updateFobPriceAccess">
+                                    <label class="form-check-label" for="fobPriceAccess">
+                                        {{ $fobPriceAccess ? 'Enabled' : 'Disabled' }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <h6 class="py-2 bg-orange-light">Seller Details</h6>
                         <div class="table-responsive mb-4">
                             <table class="table table-sm table-bordered mt-2">

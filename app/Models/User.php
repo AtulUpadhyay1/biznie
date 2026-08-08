@@ -47,6 +47,8 @@ class User extends Authenticatable
         'password' => 'hashed',
         'business_interest' => 'array',
         'permission' => 'array',
+        'for_price_access' => 'boolean',
+        'fob_price_access' => 'boolean',
     ];
 
     public function scopeSearch($query, $value){
