@@ -202,6 +202,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('products/{id}/variants', [SellerProductUpdateController::class, 'updateVariants'])->whereNumber('id');
         Route::put('products/{id}/quality', [SellerProductUpdateController::class, 'updateQuality'])->whereNumber('id');
         Route::put('products/{id}/stock', [SellerProductUpdateController::class, 'updateStock'])->whereNumber('id');
+        // Which of ex / F.O.R / F.O.B the listing shows buyers.
+        Route::put('products/{id}/price-visibility', [SellerProductUpdateController::class, 'updatePriceVisibility'])
+            ->whereNumber('id');
 
         // City-wise F.O.R prices. `store` is create-or-update on (state, city).
         Route::get('products/{id}/for-prices', [SellerProductForPriceController::class, 'index'])->whereNumber('id');

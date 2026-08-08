@@ -61,6 +61,21 @@ class SellerProductDetailResource extends SellerProductResource
             'can_manage_for_price' => (bool) ($this->getUser?->for_price_access ?? false),
             'can_manage_fob_price' => (bool) ($this->getUser?->fob_price_access ?? false),
 
+            // The visibility panel is limited to the sellers listed in
+            // config/biznie.php while the feature is piloted.
+            'can_manage_price_visibility' => in_array(
+                (int) $this->user_id,
+                config('biznie.price_visibility_user_ids', []),
+                true
+            ),
+
+            // Which of the three prices this listing exposes to buyers. Separate
+            // from the grants above: those say what the seller may quote, these
+            // say what is shown once they have.
+            'show_ex_price'  => (bool) $this->show_ex_price,
+            'show_for_price' => (bool) $this->show_for_price,
+            'show_fob_price' => (bool) $this->show_fob_price,
+
             'submitted_at' => $this->submitted_at ? Carbon::parse($this->submitted_at)->toIso8601String() : null,
         ]);
     }

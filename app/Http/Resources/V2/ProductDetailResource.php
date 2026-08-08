@@ -37,15 +37,23 @@ class ProductDetailResource extends JsonResource
         $sellerProduct = $best['seller_product'] ?? null;
         $breakup = $best['breakup'] ?? null;
 
+        // Where the F.O.R price is quoted to: the buyer's destination, or the
+        // listing's first quoted city when they have not named one. `delivery`
+        // below still reports the buyer's own city, which is what the city
+        // picker and the "select a city" prompt read.
+        $priced = $sellerProduct
+            ? $pricing->effectiveDestination($sellerProduct, $state, $city)
+            : ['state' => $state, 'city' => $city];
+
         $freight = $sellerProduct
-            ? $pricing->freight((int) $this->id, $state, $city)
+            ? $pricing->freight((int) $this->id, $priced['state'], $priced['city'])
             : 0;
 
         $exPrice = $breakup ? (float) $breakup['ex_price'] : 0.0;
         // A freight rate the seller quoted for this city wins over the
         // transporter's, so the breakup below reports whichever applied.
         $doorstep = $sellerProduct
-            ? $pricing->destinationForPrice($sellerProduct, $exPrice, (float) $freight, $state, $city)
+            ? $pricing->destinationForPrice($sellerProduct, $exPrice, (float) $freight, $priced['state'], $priced['city'])
             : ['for_price' => $exPrice, 'freight' => 0.0, 'source' => 'calculated'];
         $forPrice = $doorstep['for_price'];
         $appliedFreight = (float) $doorstep['freight'];
@@ -89,6 +97,21 @@ class ProductDetailResource extends JsonResource
                 'price_validity'   => $sellerProduct->price_validity ? dateTimeFormat($sellerProduct->price_validity) : null,
                 'last_updated'     => dateTimeFormat($sellerProduct->updated_at),
             ] : null,
+
+            // What this seller chose to expose on their listing. The prices
+            // above are still computed either way — the card decides what it
+            // renders — so a hidden ex-works number never stops the F.O.R
+            // total that was built from it being correct.
+            'display' => [
+                'show_ex_price'  => (bool) ($sellerProduct?->show_ex_price ?? false),
+                'show_for_price' => (bool) ($sellerProduct?->show_for_price ?? false),
+                'show_fob_price' => (bool) ($sellerProduct?->show_fob_price ?? false),
+                // The city the F.O.R price above is quoted to, so the card can
+                // name the number it is showing. Matches `delivery.city` once
+                // the buyer picks one; before that it is the listing's first
+                // quoted city.
+                'for_price_city' => $priced['city'],
+            ],
 
             'offer' => $sellerProduct ? [
                 'seller_product_id' => $sellerProduct->id,

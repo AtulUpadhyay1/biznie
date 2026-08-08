@@ -26,7 +26,12 @@ class ProductOfferResource extends JsonResource
 
         $city = $request->string('city')->toString() ?: $request->user()?->getUserDetail?->city;
         $state = $request->string('state')->toString() ?: $request->user()?->getUserDetail?->state;
-        $freight = $pricing->freight((int) $this->commodity_product_id, $state, $city);
+
+        // Same fallback as the detail page: without a destination from the
+        // buyer, price to this listing's first quoted city rather than to
+        // nowhere. Both must agree — this card is the link to that page.
+        $priced = $pricing->effectiveDestination($this->resource, $state, $city);
+        $freight = $pricing->freight((int) $this->commodity_product_id, $priced['state'], $priced['city']);
 
         $statePrice = $this->getStatePrice->first();
 
@@ -36,8 +41,8 @@ class ProductOfferResource extends JsonResource
             $this->resource,
             (float) $breakup['ex_price'],
             (float) $freight,
-            $state,
-            $city
+            $priced['state'],
+            $priced['city']
         );
 
         return [

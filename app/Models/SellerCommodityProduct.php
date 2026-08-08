@@ -34,6 +34,10 @@ class SellerCommodityProduct extends Model
         'current_step'          => 'integer',
         'submitted_at'          => 'datetime',
         'reviewed_at'           => 'datetime',
+        // Which of the three prices the seller exposes on this listing.
+        'show_ex_price'         => 'boolean',
+        'show_for_price'        => 'boolean',
+        'show_fob_price'        => 'boolean',
     ];
 
     public function getCommodityProduct()

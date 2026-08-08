@@ -246,6 +246,52 @@ class ProductUpdateController extends Controller
         return $this->ok($product, 'Variation stock updated successfully.');
     }
 
+    /**
+     * Which of the three prices this listing shows buyers.
+     *
+     * `findOwned` rather than `findEditable`: this changes nothing a reviewer is
+     * assessing, so a seller can still take a price off their storefront while
+     * the product sits in review.
+     *
+     * Limited to the sellers in config/biznie.php while the feature is piloted;
+     * everyone else keeps whatever their listings are already set to. The panel
+     * is hidden for them too, but the check has to live here — hiding a card is
+     * not an authorisation control.
+     *
+     * Independent of `users.for_price_access` / `fob_price_access`. Those grants
+     * govern whether the seller may quote their own freight; the F.O.R price
+     * itself is derived from transporter rates for every listing, so gating its
+     * display on the grant would blank the storefront for sellers who never
+     * needed to quote a city.
+     */
+    public function updatePriceVisibility(Request $request, int $id): JsonResponse
+    {
+        $product = $this->findOwned($request, $id);
+        if ($product instanceof JsonResponse) {
+            return $product;
+        }
+
+        if (! in_array((int) $product->user_id, config('biznie.price_visibility_user_ids', []), true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Price visibility is not enabled for your account.',
+            ], 403);
+        }
+
+        $data = $request->validate([
+            'show_ex_price'  => ['required', 'boolean'],
+            'show_for_price' => ['required', 'boolean'],
+            'show_fob_price' => ['required', 'boolean'],
+        ]);
+
+        $product->show_ex_price  = (bool) $data['show_ex_price'];
+        $product->show_for_price = (bool) $data['show_for_price'];
+        $product->show_fob_price = (bool) $data['show_fob_price'];
+        $product->save();
+
+        return $this->ok($product, 'Price visibility updated successfully.');
+    }
+
     /* --------------------------------------------------------------------- */
     /* Panel payloads                                                        */
     /* --------------------------------------------------------------------- */

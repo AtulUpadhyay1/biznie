@@ -373,6 +373,53 @@ class ProductPricingService
     }
 
     /**
+     * The first destination this listing has quoted freight for, or null when it
+     * has quoted none.
+     *
+     * Ordered by state then city — the same order the seller's own F.O.R table
+     * uses — so "first" means the row at the top of the list they manage, not
+     * whichever one happened to be inserted first.
+     *
+     * @return array{state: string, city: string}|null
+     */
+    public function firstForPriceDestination(SellerCommodityProduct $sellerProduct): ?array
+    {
+        $row = SellerProductForPrice::where('product_id', $sellerProduct->id)
+            ->orderBy('state')
+            ->orderBy('city')
+            ->first(['state', 'city']);
+
+        return $row ? ['state' => $row->state, 'city' => $row->city] : null;
+    }
+
+    /**
+     * Where a listing's F.O.R price is quoted to.
+     *
+     * The buyer's own destination when they have named one. Otherwise the first
+     * city the seller quoted, so the card shows a real delivered price instead
+     * of ex-works with a zero freight leg — a number that was indistinguishable
+     * from the ex-works price sitting above it.
+     *
+     * @return array{state: ?string, city: ?string}
+     */
+    public function effectiveDestination(
+        SellerCommodityProduct $sellerProduct,
+        ?string $state,
+        ?string $city
+    ): array {
+        if ($state && $city) {
+            return ['state' => $state, 'city' => $city];
+        }
+
+        $first = $this->firstForPriceDestination($sellerProduct);
+
+        return [
+            'state' => $first['state'] ?? $state,
+            'city'  => $first['city'] ?? $city,
+        ];
+    }
+
+    /**
      * F.O.R for one unit at a destination: ex-works plus freight, where the
      * seller's own rate for that city wins over the transporter's.
      *
