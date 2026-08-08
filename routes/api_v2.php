@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\V2\Customer\WalletController as CustomerWalletContr
 use App\Http\Controllers\Api\V2\Customer\WatchlistController as CustomerWatchlistController;
 use App\Http\Controllers\Api\V2\Seller\DashboardController as SellerDashboardController;
 use App\Http\Controllers\Api\V2\Seller\OrderController as SellerOrderController;
+use App\Http\Controllers\Api\V2\Seller\CatalogProductController as SellerCatalogProductController;
 use App\Http\Controllers\Api\V2\Seller\CommodityProductController as SellerCommodityProductController;
 use App\Http\Controllers\Api\V2\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Api\V2\Seller\ProductForPriceController as SellerProductForPriceController;
@@ -182,6 +183,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('rfqs/{id}', [SellerQuotationController::class, 'show']);
         Route::get('rfqs/{id}/bidding', [SellerQuotationController::class, 'biddingList']);
         Route::post('rfqs/{id}/respond', [SellerQuotationController::class, 'respond']);
+
+        // The admin catalog behind the wizard's Product Name type-ahead.
+        // Declared before `products/{id}` so the literal segment wins.
+        Route::get('catalog-products', [SellerCatalogProductController::class, 'index']);
+        Route::get('catalog-products/{id}', [SellerCatalogProductController::class, 'show'])->whereNumber('id');
 
         Route::get('products', [SellerProductController::class, 'index']);
         Route::post('products/step', [SellerProductController::class, 'saveStep']);

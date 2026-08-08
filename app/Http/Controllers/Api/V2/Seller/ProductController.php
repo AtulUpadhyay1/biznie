@@ -350,6 +350,10 @@ class ProductController extends Controller
         return match ($step) {
             1 => [
                 'product_name'         => ['required', 'string', 'max:190'],
+                // Set when the seller picked a suggestion from the admin catalog
+                // instead of typing a product of their own. Blank means the
+                // product is the seller's, and nothing links back.
+                'commodity_product_id' => ['nullable', 'integer', Rule::exists('commodity_products', 'id')],
                 'category_id'          => ['required', 'integer', Rule::exists('product_categories', 'id')],
                 'sub_category_id'      => ['nullable', 'integer', Rule::exists('product_sub_categories', 'id')],
                 'product_type'         => ['required', Rule::in(['raw_material', 'finished_good', 'service'])],
@@ -435,6 +439,9 @@ class ProductController extends Controller
 
     private function applyProductData(SellerCommodityProduct $record, Request $request, array $data): void
     {
+        if (array_key_exists('commodity_product_id', $data)) {
+            $this->applyCatalogLink($record, $data['commodity_product_id'] ?: null);
+        }
         if (array_key_exists('product_name', $data)) {
             $record->name = $data['product_name'];
             if (! $record->slug) {
@@ -634,6 +641,54 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * Link the listing to an admin catalog product, or unlink it.
+     *
+     * The wizard prefills itself from `CatalogProductController@show`, so almost
+     * everything the catalog holds arrives back as ordinary form values the
+     * seller has already seen and can edit. Copied here is only what the form
+     * has no field for and would otherwise be lost: the catalog's third-level
+     * category, its unit, its photographs, its specification notes and its base
+     * price — the last as a starting point the seller adjusts from the Update
+     * Price dialog once the product is live.
+     *
+     * Unlinking clears the link alone. Whatever the seller has already filled in
+     * is theirs to keep; wiping it would punish a mis-click.
+     */
+    private function applyCatalogLink(SellerCommodityProduct $record, ?int $catalogId): void
+    {
+        if ((int) $record->commodity_product_id === (int) $catalogId) {
+            return;
+        }
+
+        $record->commodity_product_id = $catalogId;
+
+        if (! $catalogId) {
+            return;
+        }
+
+        $catalog = \App\Models\CommodityProduct::find($catalogId);
+        if (! $catalog) {
+            return;
+        }
+
+        $record->sub_sub_category_id = $catalog->sub_sub_category_id;
+        $record->unit_id = $catalog->unit_id;
+        $record->specification_notes = $catalog->specification_notes;
+
+        if (! $record->thumbnail) {
+            $record->thumbnail = $catalog->thumbnail;
+        }
+        // Ids, not files: one ImageUpload row already backs the catalog product
+        // and every seller listing copied from it — see keptImages().
+        if (empty($record->images) && is_array($catalog->images)) {
+            $record->images = array_slice(array_values($catalog->images), 0, 5);
+        }
+        if (! (float) $record->base_price) {
+            $record->base_price = $catalog->base_price;
+        }
+    }
+
     /** Returns the label of the first unmet requirement, or null when complete. */
     private function firstMissingRequirement(SellerCommodityProduct $record, Request $request, array $incoming): ?string
     {
@@ -694,6 +749,9 @@ class ProductController extends Controller
 
         return [
             'product_name'         => $record->name ?? '',
+            // Kept on the form so re-saving step 1 does not silently drop the
+            // link to the catalog product this listing was created from.
+            'commodity_product_id' => $record->commodity_product_id ? (string) $record->commodity_product_id : '',
             'category'             => $record->category_id ? (string) $record->category_id : '',
             'sub_category'         => $record->sub_category_id ? (string) $record->sub_category_id : '',
             'product_type'         => $record->product_type ?? 'raw_material',
