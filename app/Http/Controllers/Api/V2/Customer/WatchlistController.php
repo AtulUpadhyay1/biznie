@@ -40,6 +40,33 @@ class WatchlistController extends Controller
         ]);
     }
 
+    /**
+     * Whether one seller listing is on the caller's watchlist.
+     *
+     * The public product detail payload cannot carry this: that endpoint is
+     * served from a shared, unauthenticated cache, so a per-user flag on it
+     * would be handed to whoever warmed the entry. The detail page therefore
+     * asks for the flag separately, once it knows it has a token.
+     */
+    public function status(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'commodity_product_id'        => ['required', 'integer'],
+            'seller_commodity_product_id' => ['required', 'integer'],
+        ]);
+
+        $bookmark = BookmarkProduct::where('user_id', $this->ownerId($request))
+            ->where('commodity_product_id', $data['commodity_product_id'])
+            ->where('seller_commodity_product_id', $data['seller_commodity_product_id'])
+            ->first(['id']);
+
+        return response()->json([
+            'success'    => true,
+            'bookmarked' => (bool) $bookmark,
+            'data'       => ['id' => $bookmark?->id],
+        ]);
+    }
+
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([

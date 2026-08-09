@@ -138,8 +138,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Watchlist (bookmarks)
         Route::get('watchlist', [CustomerWatchlistController::class, 'index']);
+        // Declared before `watchlist/{id}` so the literal segment wins.
+        Route::get('watchlist/status', [CustomerWatchlistController::class, 'status']);
         Route::post('watchlist', [CustomerWatchlistController::class, 'store']);
-        Route::delete('watchlist/{id}', [CustomerWatchlistController::class, 'destroy']);
+        Route::delete('watchlist/{id}', [CustomerWatchlistController::class, 'destroy'])->whereNumber('id');
 
         // Credit wallet requests
         Route::get('credit-document-types', [CustomerCreditRequestController::class, 'documentTypes']);
