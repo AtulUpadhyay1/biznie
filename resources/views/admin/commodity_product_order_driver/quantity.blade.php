@@ -4,31 +4,27 @@
     <div class="row">
         <div class="col-md-12 grid-margin">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
-                                href="{{ route('admin.commodity-product-order.show', $order_id) }}" wire:navigate>
-                                <i class="bi bi-arrow-left btn-icon-prepend"></i>Back
-                            </a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a class="btn btn-secondary btn-sm" title="Back"
+                            href="{{ route('admin.commodity-product-order.show', $order_id) }}" wire:navigate>
+                            <i class="bi bi-arrow-left"></i>Back
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class="fw-bold">Note : Enter Final Quantity After Loading Material In Vehicle</p>
-                    <p class="fw-bold mt-2 mb-2">Vehicle Detail</p>
-                    <p><span class="fw-bold text-danger">Driver Name </span> : {{ $driver_data->name }} </p>
-                    <p><span class="fw-bold text-danger">Vehicle Number </span> : {{ $driver_data->vehicle_number }}
+                    <p>Note : Enter Final Quantity After Loading Material In Vehicle</p>
+                    <div class="bz-section-label">Vehicle Detail</div>
+                    <p><b>Driver Name:</b> {{ $driver_data->name }} </p>
+                    <p><b>Vehicle Number:</b> {{ $driver_data->vehicle_number }}
                     </p>
-                    <p><span class="fw-bold text-danger">Driver Number </span> : {{ $driver_data->phone }} </p>
-                    <p><span class="fw-bold text-danger">Alternate Number </span> :
+                    <p><b>Driver Number:</b> {{ $driver_data->phone }} </p>
+                    <p><b>Alternate Number:</b>
                         {{ $driver_data->alternate_phone_number }} </p>
-                    <p><span class="fw-bold text-danger">Transporter Name </span> : {{ $driver_data->transporter_name }}
+                    <p><b>Transporter Name:</b> {{ $driver_data->transporter_name }}
                     </p>
-                    <p><span class="fw-bold text-danger">Transporter Number </span> :
+                    <p><b>Transporter Number:</b>
                         {{ $driver_data->transporter_phone_number }} </p>
                     <hr>
 
@@ -83,8 +79,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="invoice">Amount</label>
-                                    <input type="number" class="form-control @error('amount') is-invalid @enderror"
+                                    <label class="form-label" for="amount">Amount</label>
+                                    <input type="number" id="amount" class="form-control @error('amount') is-invalid @enderror"
                                         placeholder="Enter Amount" wire:model="amount">
                                     @error('amount')
                                         <small class="text-danger">{{ $message }}</small>
@@ -213,7 +209,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="credit_note_amount">Credit Note Amount</label>
-                                    <input type="number" class="form-control @error('credit_note_amount') is-invalid @enderror"
+                                    <input type="number" id="credit_note_amount" class="form-control @error('credit_note_amount') is-invalid @enderror"
                                         placeholder="Enter Credit Note Amount" wire:model="credit_note_amount">
                                     @error('credit_note_amount')
                                         <small class="text-danger">{{ $message }}</small>
@@ -257,7 +253,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="debit_note_amount">Debit Note Amount</label>
-                                    <input type="number" class="form-control @error('debit_note_amount') is-invalid @enderror"
+                                    <input type="number" id="debit_note_amount" class="form-control @error('debit_note_amount') is-invalid @enderror"
                                         placeholder="Enter Debit Note Amount" wire:model="debit_note_amount">
                                     @error('debit_note_amount')
                                         <small class="text-danger">{{ $message }}</small>
@@ -302,8 +298,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="seller_invoice">Amount</label>
-                                    <input type="number" class="form-control @error('seller_amount') is-invalid @enderror"
+                                    <label class="form-label" for="seller_amount">Amount</label>
+                                    <input type="number" id="seller_amount" class="form-control @error('seller_amount') is-invalid @enderror"
                                         placeholder="Enter Amount" wire:model="seller_amount">
                                     @error('seller_amount')
                                         <small class="text-danger">{{ $message }}</small>
@@ -432,7 +428,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="seller_credit_note_amount">Credit Note Amount</label>
-                                    <input type="number" class="form-control @error('seller_credit_note_amount') is-invalid @enderror"
+                                    <input type="number" id="seller_credit_note_amount" class="form-control @error('seller_credit_note_amount') is-invalid @enderror"
                                         placeholder="Enter Credit Note Amount" wire:model="seller_credit_note_amount">
                                     @error('seller_credit_note_amount')
                                         <small class="text-danger">{{ $message }}</small>
@@ -476,7 +472,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="seller_debit_note_amount">Debit Note Amount</label>
-                                    <input type="number" class="form-control @error('seller_debit_note_amount') is-invalid @enderror"
+                                    <input type="number" id="seller_debit_note_amount" class="form-control @error('seller_debit_note_amount') is-invalid @enderror"
                                         placeholder="Enter Debit Note Amount" wire:model="seller_debit_note_amount">
                                     @error('seller_debit_note_amount')
                                         <small class="text-danger">{{ $message }}</small>
@@ -512,7 +508,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn btn-danger mt-2" wire:click="update()">Submit</button>
+                    <button class="btn btn-danger btn-sm mt-2" wire:click="update()"><i class="bi bi-check-lg"></i>Submit</button>
                 </div>
             </div>
         </div>

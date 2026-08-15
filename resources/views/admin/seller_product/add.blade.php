@@ -4,16 +4,11 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.seller-product.index', $user_id) }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i
-                                    class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.seller-product.index', $user_id) }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
             </div>
@@ -105,7 +100,7 @@
                             <div class="col-md-4 mb-3"></div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="city" class="form-label">Commission Type <span
+                                <label for="commission_type" class="form-label">Commission Type <span
                                         class="text-danger">*</span></label>
                                 <div>
                                     <div class="form-check form-check-inline">
@@ -138,22 +133,25 @@
                             </div>
 
 
-                            <h5>My Package Type</h5>
-                            <hr>
+                            <div class="col-12 mb-3">
+                                <h5 class="bz-section-label">My Package Type</h5>
+                            </div>
                             @foreach ($packaging_type_name as $packaging_types)
                                 <div class="col-md-4 mb-3">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">{{ $packaging_types }}</span>
-                                        <input type="number" class="form-control "
-                                            placeholder="Enter {{ $packaging_types }} Price"
-                                            wire:model="packaging_type_price.{{ $loop->iteration }}">
-                                    </div>
+                                    <label class="form-label"
+                                        for="packaging_type_price_{{ $loop->iteration }}">{{ $packaging_types }}</label>
+                                    <input type="number" class="form-control"
+                                        id="packaging_type_price_{{ $loop->iteration }}"
+                                        placeholder="Enter {{ $packaging_types }} Price"
+                                        wire:model="packaging_type_price.{{ $loop->iteration }}">
                                 </div>
                             @endforeach
 
-                            <p class="h5">Add Loading Address <button class="btn btn-orange btn-xs float-end mb-1"
-                                    type="button">Add</button></p>
-                            <hr>
+                            <div class="col-12 mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <h5 class="bz-section-label mb-0">Add Loading Address</h5>
+                                <button class="btn btn-secondary btn-sm" type="button"><i
+                                        class="bi bi-plus-lg"></i>Add</button>
+                            </div>
                             <div class="col-md-4 mb-3">
                                 <label for="pin_code" class="form-label">Pincode</label>
                                 <input type="number" class="form-control @error('pin_code') is-invalid @enderror"

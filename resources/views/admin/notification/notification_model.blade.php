@@ -6,8 +6,7 @@
                 <div class="modal-content">
                     <!-- Modal Header with Icon -->
                     <div class="modal-header border-0 text-center d-flex flex-column align-items-center">
-                        <div class="notification-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                            style="width: 60px; height: 60px; font-size: 24px;">
+                        <div class="bz-icon-circle">
                             <i class="bi bi-bell"></i>
                         </div>
                         <h5 class="modal-title mt-3" id="notificationModalLabel">New Enquiry</h5>
@@ -20,10 +19,10 @@
 
                     <!-- Modal Footer -->
                     <div class="modal-footer d-flex justify-content-center border-0">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
                             wire:click="markAsRead()">Dismiss</button>
-                        <a href="{{ route('admin.commodity-product-enquiry.index') }}" class="btn btn-primary" wire:navigate>View
-                            Enquiry</a>
+                        <a href="{{ route('admin.commodity-product-enquiry.index') }}" class="btn btn-danger btn-sm"
+                            wire:navigate><i class="bi bi-box-arrow-up-right"></i>View Enquiry</a>
                     </div>
                 </div>
             </div>

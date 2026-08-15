@@ -1,1 +1,3 @@
-<button class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="{{$text}}" wire:click="{{$function}}"><i class="bi bi-x-lg btn-icon-prepend"></i>{{$text}}</button>
+<button class="btn btn-secondary btn-sm" title="{{ $text }}" wire:click="{{ $function }}">
+    <i class="bi bi-x-lg"></i>{{ $text }}
+</button>

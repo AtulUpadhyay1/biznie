@@ -1,62 +1,36 @@
 <div>
-    <style>
-        hr {
-            margin: 0.5rem 0;
-        }
-
-        .table-sm>:not(caption)>*>* {
-            padding: 0.25rem .55rem;
-        }
-
-        .border-red {
-            border: 2px solid #fd7070;
-        }
-
-        .span-bd {
-            border-collapse: initial;
-            border: 1px solid #dee2e6;
-            padding: 5px;
-            margin: 1px;
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     @section('title', config('app.name') . ' | ' . $page_title)
 
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>All Sellers</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <li class="list-group-item border-0">
-                                    <div class="custom-search-bar">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                            <input type="text" class="form-control" placeholder="Search here..."
-                                                wire:model.live="search">
-                                        </div>
-                                    </div>
-                                </li>
-                                {{-- <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-                                    <span class="input-group-text input-group-addon bg-transparent border-danger"
-                                        data-toggle><i data-feather="calendar" class="text-danger"></i></span>
-                                    <input type="text" class="form-control bg-transparent border-danger"
-                                        placeholder="Select date" data-input>
-                                </div>
-                                <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download-cloud btn-icon-prepend"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg>
-                                    Download Report
-                                </button> --}}
-                                <a href="{{ route('admin.seller.create') }}"
-                                    class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0 ms-2" wire:navigate>
-                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                    Add Seller
-                                </a>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>All Sellers</h4>
+                    <div class="bz-toolbar">
+                        <div class="custom-search-bar">
+                            <label class="bz-filter-label" for="seller_search">Search sellers</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" id="seller_search" class="form-control"
+                                    placeholder="Search here..." wire:model.live="search">
                             </div>
                         </div>
+                        {{-- <div class="input-group flatpickr" id="dashboardDate">
+                            <span class="input-group-text input-group-addon bg-transparent border-danger"
+                                data-toggle><i data-feather="calendar" class="text-danger"></i></span>
+                            <input type="text" class="form-control bg-transparent border-danger"
+                                placeholder="Select date" data-input>
+                        </div>
+                        <button type="button" class="btn btn-danger btn-sm">
+                            <i class="bi bi-cloud-download"></i>
+                            Download Report
+                        </button> --}}
+                        <a href="{{ route('admin.seller.create') }}" class="btn btn-danger btn-sm"
+                            wire:navigate>
+                            <i class="bi bi-plus-lg"></i>
+                            Add Seller
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -110,33 +84,27 @@
                             </thead>
                             <tbody>
                                 @forelse ($list as $key => $data )
-                                    <tr class="border-red">
-                                        <th>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</th>
+                                    <tr>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>
-                                            <table class="table table-sm table-bordered mb-0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td><b>User Name:</b></td>
-                                                        <td>{{ $data->name }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>Phone:</b></td>
-                                                        <td>{{ $data->phone }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>Email:</b></td>
-                                                        <td>{{ $data->email }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>Priority:</b></td>
-                                                        <td>{{ $data->getUserDetail->priority ?? 0 }}⭐
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <dl class="bz-kv-list">
+                                                <div>
+                                                    <dt>User Name</dt>
+                                                    <dd>{{ $data->name }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>Phone</dt>
+                                                    <dd>{{ $data->phone }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>Email</dt>
+                                                    <dd>{{ $data->email }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>Priority</dt>
+                                                    <dd>{{ $data->getUserDetail->priority ?? 0 }}⭐</dd>
+                                                </div>
+                                            </dl>
                                             {{-- <b>User Name:</b>
                                             <span>{{ $data->name }}</span>
                                             <br>
@@ -183,83 +151,72 @@
                                                     {{ $data->getSellerOrders->count() }} </b></span>
                                             <br>
                                             <hr />
-                                            <table class="table table-sm table-bordered mb-0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td><b>Company Name:</b></td>
-                                                        <td>{{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>GSTIN:</b></td>
-                                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->gst_number : '--' }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>PAN:</b></td>
-                                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '--' }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>City:</b></td>
-                                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '--' }}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <dl class="bz-kv-list">
+                                                <div>
+                                                    <dt>Company Name</dt>
+                                                    <dd>{{ $data->getUserDetail ? $data->getUserDetail->company_name : '--' }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>GSTIN</dt>
+                                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->gst_number : '--' }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>PAN</dt>
+                                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '--' }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>City</dt>
+                                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '--' }}</dd>
+                                                </div>
+                                            </dl>
                                         </td>
                                         <td>
-                                            <table class="table table-sm table-bordered mb-0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td><b>Registration On:</b></td>
-                                                        <td>{{ dateFormat($data->getBusiness->created_at) }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>Updation On:</b></td>
-                                                        <td>{{ dateFormat($data->getBusiness->updated_at) }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>Last Active:</b></td>
-                                                        <td>{{ lastActive($data->id) }}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <dl class="bz-kv-list">
+                                                <div>
+                                                    <dt>Registration On</dt>
+                                                    <dd>{{ dateFormat($data->getBusiness->created_at) }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>Updation On</dt>
+                                                    <dd>{{ dateFormat($data->getBusiness->updated_at) }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>Last Active</dt>
+                                                    <dd>{{ lastActive($data->id) }}</dd>
+                                                </div>
+                                            </dl>
                                         </td>
                                         <td>
                                             {{ $data->getSellerKycDetail ? $data->getSellerKycDetail->address : '' }}
                                         </td>
                                         <td class="text-center">
-                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                            <a type="button" class="bz-row-action" id="actionBtn{{ $data->id }}"
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
                                             </a>
-                                            <div class="dropdown-menu" aria-labelledby="ActionBtn">
+                                            <div class="dropdown-menu" aria-labelledby="actionBtn{{ $data->id }}">
                                                 <a class="dropdown-item d-flex align-items-center"
                                                     href="{{ route('admin.seller-kyc-detail', $data->id) }}"
                                                     wire:navigate><i
-                                                        class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                        class="bi bi-eye me-2"></i><span>View</span></a>
                                                 {{-- <a href="{{route('admin.edit-seller')}}" wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a> --}}
+                                                        class="bi bi-pencil-square me-2"></i><span>Edit</span></a> --}}
                                                 <a href="{{ route('admin.tag-priority', $data->id) }}" wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-bookmarks icon-sm me-2"></i><span>Tag &
+                                                        class="bi bi-bookmarks me-2"></i><span>Tag &
                                                         Priority</span></a>
                                                 {{-- <a href="javascript:;"
                                                     class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
+                                                        class="bi bi-trash me-2"></i><span>Delete</span></a> --}}
                                                 <a href="{{ route('admin.seller-product.index', $data->id) }}"
                                                     class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-box icon-sm me-2"></i><span>Product
+                                                        class="bi bi-box me-2"></i><span>Product
                                                         Section</span></a>
                                                 <a href="{{ route('admin.seller-product-request.create', $data->id) }}"
                                                     wire:navigate
                                                     class="dropdown-item d-flex align-items-center"><i
-                                                        class="bi bi-clipboard-plus icon-sm me-2"></i><span>Product
+                                                        class="bi bi-clipboard-plus me-2"></i><span>Product
                                                         Request</span></a>
                                             </div>
                                         </td>
@@ -271,15 +228,6 @@
                         </table>
                     </div>
                     {{ $list->links() }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-
                 </div>
             </div>
         </div>

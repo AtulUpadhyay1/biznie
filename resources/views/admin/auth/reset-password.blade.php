@@ -1,112 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>{{config('app.name')}} | {{isset($page_title) ? $page_title : ""}}</title>
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com/">
-        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
-        <!-- End fonts -->
-        <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/custom.min.css')}}">
-        <!--Bootstrap icons-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <!-- core:css -->
-        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/core/core.css')}}">
-        <!-- Layout styles -->
-        <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
-        <!-- End layout styles -->
-        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
-        <link rel="shortcut icon" href="{{asset('admin_css/assets/images/favicon.png')}}" />
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    </head>
+@extends('admin.layouts.auth')
 
-    <body>
-        <div class="main-wrapper">
-            <div class="page-wrapper full-page login-page-wrapper">
-                <img src="{{asset('admin_css/assets/images/wave.png')}}" class="wave">
-                <div class="container">
-                    <div class="bg-img">
-                        <img src="{{asset('admin_css/assets/images/bg.png')}}">
-                    </div>
-                    <div class="login-content">
-                        <div>
-                            <img src="{{asset('admin_css/assets/images/avatar.png')}}">
-                            <h2 class="admin-title">Reset Password</h2>
-                            <p style="color: #666; margin-bottom: 20px;">Enter your new password</p>
+@section('title', $page_title ?? 'Reset password')
+@section('heading', 'Set a new password')
+@section('subheading', 'Choose a password of at least 8 characters. You will use it the next time you sign in.')
 
-                            <form class="admin-login-form forms-sample" method="POST" action="{{ route('admin.password.reset.submit') }}">
-                                @csrf
-                                <input type="hidden" name="email" value="{{ session('verified_email') }}">
+@section('form')
+    <form method="POST" action="{{ route('admin.password.reset.submit') }}" novalidate>
+        @csrf
+        <input type="hidden" name="email" value="{{ session('verified_email') }}">
 
-                                <div class="input-area pass" x-data="{ showPassword: false }">
-                                    <div class="input-icon">
-                                        <i x-bind:class="showPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'" x-bind:title="showPassword ? 'Hide Password' : 'Show Password'" x-on:click="showPassword = ! showPassword"></i>
-                                    </div>
-                                    <div class="input-text-area">
-                                        <input x-bind:type="showPassword ? 'text' : 'password'" class="input @error('password') is-invalid @enderror" id="password" name="password" placeholder="New Password" minlength="8" required>
-                                    </div>
-                                </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-
-                                <div class="input-area pass" x-data="{ showPassword: false }" style="margin-top: 15px;">
-                                    <div class="input-icon">
-                                        <i x-bind:class="showPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'" x-bind:title="showPassword ? 'Hide Password' : 'Show Password'" x-on:click="showPassword = ! showPassword"></i>
-                                    </div>
-                                    <div class="input-text-area">
-                                        <input x-bind:type="showPassword ? 'text' : 'password'" class="input @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" placeholder="Confirm New Password" minlength="8" required>
-                                    </div>
-                                </div>
-                                @error('password_confirmation')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-
-                                <input type="submit" class="submit-btn" value="Reset Password" style="margin-top: 20px;">
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        <div class="bz-auth__field">
+            <label class="form-label" for="password">New password</label>
+            <div class="bz-auth__control">
+                <i class="bi bi-lock bz-auth__icon"></i>
+                <input type="password" id="password" name="password"
+                    class="form-control has-toggle @error('password') is-invalid @enderror"
+                    placeholder="At least 8 characters" minlength="8" autocomplete="new-password" autofocus required>
+                <button type="button" class="bz-auth__toggle" data-bz-toggle-password="password"
+                    aria-label="Show password">
+                    <i class="bi bi-eye"></i>
+                </button>
             </div>
+            @error('password')
+                <span class="bz-auth__error" role="alert">{{ $message }}</span>
+            @enderror
         </div>
 
-        <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
-        <script src="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.js')}}"></script>
-        <script>
-            $(function () {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                });
+        <div class="bz-auth__field">
+            <label class="form-label" for="password_confirmation">Confirm new password</label>
+            <div class="bz-auth__control">
+                <i class="bi bi-lock-fill bz-auth__icon"></i>
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                    class="form-control has-toggle @error('password_confirmation') is-invalid @enderror"
+                    placeholder="Re-enter the password" minlength="8" autocomplete="new-password" required>
+                <button type="button" class="bz-auth__toggle" data-bz-toggle-password="password_confirmation"
+                    aria-label="Show password">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+            @error('password_confirmation')
+                <span class="bz-auth__error" role="alert">{{ $message }}</span>
+            @enderror
+        </div>
 
-                $( document ).ready(function() {
-                    var success_message = "{{Session::get('success')}}";
-                    var error_message = "{{Session::get('error')}}";
+        <button type="submit" class="btn btn-danger bz-auth__submit mt-2">
+            Reset password <i class="bi bi-check-lg"></i>
+        </button>
+    </form>
+@endsection
 
-                    if(success_message != ""){
-                        Toast.fire({
-                            icon: 'success',
-                            title: success_message
-                        });
-                    }
-                    if(error_message !=""){
-                        Toast.fire({
-                            icon: 'error',
-                            title: error_message
-                        });
-                    }
-                });
-            });
-        </script>
-    </body>
-</html>
+@section('foot')
+    <a class="bz-auth__link" href="{{ route('admin.login') }}">
+        <i class="bi bi-arrow-left"></i> Back to sign in
+    </a>
+@endsection

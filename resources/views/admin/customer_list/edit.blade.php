@@ -9,21 +9,17 @@
         </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h5 class="mt-2">Edit Customer Info</h5>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center"
-                                title="Cancel" href="{{route('admin.customer-profile', $data->id)}}" wire:navigate>
-                                <i class="bi bi-x-lg btn-icon-prepend"></i>
-                                Cancel
-                            </a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Edit Customer Info</h4>
+                    <div class="bz-toolbar">
+                        <a type="button" class="btn btn-secondary btn-sm"
+                            title="Cancel" href="{{route('admin.customer-profile', $data->id)}}" wire:navigate>
+                            <i class="bi bi-x-lg"></i>
+                            Cancel
+                        </a>
                     </div>
                 </div>
-                <div class="card-body pt-1">
+                <div class="card-body">
                     <form>
                         <div class="row mb-3">
                             <h5 class="card-heading-h5">Customer Details</h5>

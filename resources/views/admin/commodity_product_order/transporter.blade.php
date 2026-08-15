@@ -4,23 +4,20 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <small> ( {{ $data->order_id }} ) </small>
-                            <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
-                            </span>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-order.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
-                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
-                        <div class="col-12 text-center">
-                            @include('admin.commodity_product_order.menu', ['is_active' => 'transporter'])
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <small> ( {{ $data->order_id }} ) </small>
+                        <span
+                            class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--info') }} ms-1">{{ $data->status }}
+                        </span>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-order.index') }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
+                    </div>
+                    <div class="w-100 text-center">
+                        @include('admin.commodity_product_order.menu', ['is_active' => 'transporter'])
                     </div>
                 </div>
                 <div class="card-body">
@@ -29,10 +26,10 @@
                             <h5 class="my-3">Available Transporter</h5>
                         </div>
 
-                        <div class="col-4 text-end">
+                        <div class="col-4 d-flex align-items-center justify-content-end">
                             @if (count($this->transporter_user_id))
-                                <button class="btn btn-success btn-xs my-2" title="Send enquiry to seller"
-                                    wire:click="sendTransporterEnquiry()">Send Enquiry</button>
+                                <button class="btn btn-danger btn-sm" title="Send enquiry to seller"
+                                    wire:click="sendTransporterEnquiry()"><i class="bi bi-send"></i>Send Enquiry</button>
                             @endif
                         </div>
                     </div>
@@ -54,76 +51,75 @@
                                             <input type="checkbox" id="transporter_{{ $transporter_data->user_id }}"
                                                 class="form-check-input" value="{{ $transporter_data->user_id }}"
                                                 wire:model.live="transporter_user_id">
+                                            <label class="visually-hidden"
+                                                for="transporter_{{ $transporter_data->user_id }}">Select
+                                                transporter</label>
                                         </td>
                                         <td>{{ $transporter_data->getUser->name }}</td>
                                         <td>{{ $transporter_data->getUser->phone }}</td>
                                         <td>
-                                            <table class="table table-sm table-bordered">
-                                                <tbody>
-                                                    <tr>
-                                                        <td><strong>State</strong></td>
-                                                        <td>{{ $transporter_data->state }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>City</strong></td>
-                                                        <td>{{ $transporter_data->city }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <dl class="bz-kv-list">
+                                                <div>
+                                                    <dt>State</dt>
+                                                    <dd>{{ $transporter_data->state }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>City</dt>
+                                                    <dd>{{ $transporter_data->city }}</dd>
+                                                </div>
+                                            </dl>
                                         </td>
                                         <td>
-                                            <table class="table table-sm table-bordered">
-                                                <tbody>
-                                                    <!-- Price Range -->
-                                                    <tr>
-                                                        <td><strong>Price Range</strong></td>
-                                                        <td>
-                                                            ₹ {{ number_format($transporter_data->min_price) }} -
-                                                            ₹ {{ number_format($transporter_data->max_price) }}
-                                                        </td>
-                                                    </tr>
+                                            <dl class="bz-kv-list">
+                                                <!-- Price Range -->
+                                                <div>
+                                                    <dt>Price Range</dt>
+                                                    <dd>
+                                                        ₹ {{ number_format($transporter_data->min_price) }} -
+                                                        ₹ {{ number_format($transporter_data->max_price) }}
+                                                    </dd>
+                                                </div>
 
-                                                    <!-- Updated Price & Status (Conditional) -->
-                                                    @if ($transporter_data->enquiry_data && $transporter_data->enquiry_data->price)
-                                                        <tr>
-                                                            <td><strong>Updated Price</strong></td>
-                                                            <td>
-                                                                ₹
-                                                                {{ number_format($transporter_data->enquiry_data->price) }}
-                                                                <button class="btn btn-info btn-sm p-0"
-                                                                    title="Update Price" data-bs-toggle="modal"
-                                                                    data-bs-target="#updateTransporterPrice_{{ $transporter_data->enquiry_data->id }}"
-                                                                    wire:click="setTransporterPrice({{ $transporter_data->enquiry_data->id }})">
-                                                                    <i class="bi bi-pencil-square"></i>
-                                                                </button>
-                                                                <br>
-                                                                <span class="badge bg-info">
-                                                                    {{ ucfirst($transporter_data->enquiry_data->status) }}
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    @elseif ($transporter_data->enquiry_data)
-                                                        <tr>
-                                                            <td><strong>Update Price</strong></td>
-                                                            <td>
-                                                                <button class="btn btn-info btn-sm p-0"
-                                                                    title="Update Price" data-bs-toggle="modal"
-                                                                    data-bs-target="#updateTransporterPrice_{{ $transporter_data->enquiry_data->id }}"
-                                                                    wire:click="setTransporterPrice({{ $transporter_data->enquiry_data->id }})">
-                                                                    <i class="bi bi-pencil-square"></i> Update Price
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-                                                </tbody>
-                                            </table>
+                                                <!-- Updated Price & Status (Conditional) -->
+                                                @if ($transporter_data->enquiry_data && $transporter_data->enquiry_data->price)
+                                                    <div>
+                                                        <dt>Updated Price</dt>
+                                                        <dd>
+                                                            ₹
+                                                            {{ number_format($transporter_data->enquiry_data->price) }}
+                                                            <button class="btn btn-secondary btn-sm btn-icon"
+                                                                title="Update Price" data-bs-toggle="modal"
+                                                                data-bs-target="#updateTransporterPrice_{{ $transporter_data->enquiry_data->id }}"
+                                                                wire:click="setTransporterPrice({{ $transporter_data->enquiry_data->id }})">
+                                                                <i class="bi bi-pencil-square"></i>
+                                                            </button>
+                                                            <br>
+                                                            <span class="bz-status bz-status--info">
+                                                                {{ ucfirst($transporter_data->enquiry_data->status) }}
+                                                            </span>
+                                                        </dd>
+                                                    </div>
+                                                @elseif ($transporter_data->enquiry_data)
+                                                    <div>
+                                                        <dt>Update Price</dt>
+                                                        <dd>
+                                                            <button class="btn btn-secondary btn-sm"
+                                                                title="Update Price" data-bs-toggle="modal"
+                                                                data-bs-target="#updateTransporterPrice_{{ $transporter_data->enquiry_data->id }}"
+                                                                wire:click="setTransporterPrice({{ $transporter_data->enquiry_data->id }})">
+                                                                <i class="bi bi-pencil-square"></i> Update Price
+                                                            </button>
+                                                        </dd>
+                                                    </div>
+                                                @endif
+                                            </dl>
                                         </td>
                                         <td>
                                             @if (
                                                 $transporter_data->enquiry_data &&
                                                     $transporter_data->enquiry_data->status == 'replied' &&
                                                     !$transporter_data->enquiry_data->is_mark)
-                                                <button class="btn btn-primary btn-xs my-2"
+                                                <button class="btn btn-sm btn-inverse-primary my-2"
                                                     title="Mark order to transporter"
                                                     wire:click="markTransporter({{ $transporter_data->enquiry_data->id }})">Mark
                                                     Transporter</button>
@@ -159,9 +155,9 @@
                                                         @enderror
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger"
+                                                        <button type="button" class="btn btn-secondary btn-sm"
                                                             data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary"
+                                                        <button type="button" class="btn btn-danger btn-sm"
                                                             wire:click="updateTransporterPrice()">Update</button>
                                                     </div>
                                                 </div>
@@ -169,10 +165,8 @@
                                         </div>
                                     @endif
                                 @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center">No Transporter Available for this Order
-                                        </td>
-                                    </tr>
+                                    <x-table-no-data colspan="6" icon="bi-truck" title="No transporters available"
+                                        text="No transporter is available for this order yet." />
                                 @endforelse
                             </tbody>
                         </table>

@@ -9,7 +9,7 @@
                             <h4>Edit Profile</h4>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Back"
+                            <a class="btn btn-secondary btn-sm btn-icon-text float-end align-items-center" title="Back"
                                 href="{{ route('admin.dashboard') }}" wire:navigate>
                                 <i class="bi bi-arrow-left btn-icon-prepend"></i>Back
                             </a>
@@ -55,7 +55,7 @@
                                         value="{{ auth('admin')->user()->recovery_email ?? 'Not Set' }}"
                                         disabled readonly>
                                     <a href="{{ route('admin.recovery-email.change') }}"
-                                        class="btn btn-sm btn-outline-warning text-nowrap"
+                                        class="btn btn-sm btn-secondary text-nowrap"
                                         title="Change Recovery Email">
                                         <i class="bi bi-pencil-square"></i> Change
                                     </a>

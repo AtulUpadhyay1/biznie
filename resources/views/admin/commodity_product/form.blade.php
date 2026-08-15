@@ -1,30 +1,14 @@
 <div>
     @section('title', config('app.name') . ' | '.$page_title)
-    <style>
-        .select2-container--default .select2-selection--single{
-            height: 42px !important;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            top: 8px;
-        }
-
-        .select2.is-invalid {
-            border-color: #dc3545 !important; /* Set the border color to the invalid state color */
-        }
-
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     <div class="row">
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.commodity-product.index')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
             </div>
@@ -88,7 +72,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+                                    <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
                                     <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
                                         <option value="">Select Category</option>
                                         @foreach ($category_list as $category_data)
@@ -173,9 +157,10 @@
 
                             @foreach ($packaging_type_name as $packaging_types)
                                 <div class="col-md-4 mb-3">
-                                    <div class="input-group mb-3">
+                                    <label class="form-label" for="packaging_type_price_{{$loop->iteration}}">{{$packaging_types}} Price</label>
+                                    <div class="input-group">
                                         <span class="input-group-text">{{$packaging_types}}</span>
-                                        <input type="number" class="form-control " placeholder="Enter {{$packaging_types}} Price" wire:model="packaging_type_price.{{$loop->iteration}}">
+                                        <input type="number" id="packaging_type_price_{{$loop->iteration}}" class="form-control" placeholder="Enter {{$packaging_types}} Price" wire:model="packaging_type_price.{{$loop->iteration}}">
                                     </div>
                                 </div>
                             @endforeach
@@ -187,7 +172,7 @@
                 <div class="row mt-3">
                     <div class="col-md-4">
                         <div class="card card-body">
-                            <label for="thumbnail">
+                            <label class="form-label" for="thumbnail">
                                 Product Thumbnail <span class="text-danger">*</span>
                                 <br>
                                 @if ($thumbnail)
@@ -205,7 +190,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card card-body">
-                            <label for="images">
+                            <label class="form-label" for="images">
                                 Product Images
                                 <br>
                                 @if ($images)
@@ -256,7 +241,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 ps-5">
-                                <label for="meta_image">
+                                <label class="form-label" for="meta_image">
                                     Meta Image
                                     <br>
                                     @if ($meta_image)

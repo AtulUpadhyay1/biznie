@@ -1,18 +1,10 @@
 <div>
-    <style>
-        .card-header.customer-profile-header{
-            background: url("{{asset('admin_css/assets/images/doodle.jpg')}}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: repeat;
-            border: 0;
-        }
-    </style>
-    <div class="card ">
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
+    <div class="card">
         <div class="card-header customer-profile-header">
             <div class="text-center">
                 <img src="{{asset('admin_css/assets/images/avatar.png')}}" alt="" class="w-25 h-25">
-                <h5 class="text-dark mt-3"> {{ $data->name }} </h5>
+                <h5 class="mt-3"> {{ $data->name }} </h5>
                 <small>( {{ $data->getUserDetail ? $data->getUserDetail->priority : 0 }} ⭐ )</small>
             </div>
         </div>

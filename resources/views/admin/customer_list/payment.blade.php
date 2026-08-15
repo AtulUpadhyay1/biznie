@@ -9,58 +9,59 @@
         </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-4 card-title">
-                            <h5 class="mt-2">All Payments</h5>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>All Payments</h4>
+                    <div class="bz-toolbar">
+                        <label for="credit_availability" class="form-check-label">Credit Availability</label>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="form-check-input status_update" id="credit_availability" wire:model="credit_availability" value="1" {{$data->credit_availability == 1 ? 'checked' : ''}}>
                         </div>
-                        <div class="col-8">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <label for="credit_availability" class="form-check-label me-1">Credit Availability</label>
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input status_update" id="credit_availability" wire:model="credit_availability" value="1" {{$data->credit_availability == 1 ? 'checked' : ''}}>
-                                </div>
-                                <label for="credit_days" class="form-check-label me-1">Credit Days</label>
-                                <input type="number" class="form-control form-control-sm w-25 @error('credit_days') is-invalid @enderror" id="credit_days" wire:model="credit_days" placeholder="Credit Days" min="0">
-                                @error('credit_days')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                                <button class="btn btn-xs btn-success ms-2" wire:click="updateCreditAvailability()">Update</button>
-                                {{-- <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download-cloud btn-icon-prepend"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg>
-                                    Download Report
-                                </button> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6 text-end">
-                        <a href="{{route('admin.customer-payment-list', $data->id)}}?mode=cashwallet" wire:navigate>
-                            <span class="badge {{$mode == 'cashwallet' ? 'bg-success text-white' : ''}} border border-success text-success p-3">
-                                <h6>Cash Balance</h6>
-                                <h3> ₹ {{ formatIndianNumber($data->cash_balance) }} </h3>
-                            </span>
-                        </a>
-                        @if ($mode == 'cashwallet')
-                            <br>
-                            <button class="btn btn-xs btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#addBalance">Add Balance</button>
-                        @endif
-                    </div>
-                    <div class="col-6">
-                        <a href="{{route('admin.customer-payment-list', $data->id)}}?mode=creditwallet" wire:navigate>
-                            <span class="badge {{$mode == 'creditwallet' ? 'bg-primary text-white' : ''}} border border-primary text-primary p-3">
-                                <h6>Credit Balance</h6>
-                                <h3> ₹ {{ formatIndianNumber($data->credit_balance) }} </h3>
-                            </span>
-                        </a>
-                        @if ($mode == 'creditwallet')
-                            <br>
-                            <button class="btn btn-xs btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#addBalance">Add Balance</button>
-                        @endif
+                        <label for="credit_days" class="form-check-label">Credit Days</label>
+                        <input type="number" class="form-control @error('credit_days') is-invalid @enderror" id="credit_days" wire:model="credit_days" placeholder="Credit Days" min="0">
+                        @error('credit_days')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                        <button class="btn btn-sm btn-inverse-primary" wire:click="updateCreditAvailability()">
+                            <i class="bi bi-check-lg"></i>
+                            Update
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <a class="bz-stat {{ $mode == 'cashwallet' ? 'bz-stat--green' : 'bz-stat--slate' }}"
+                                href="{{route('admin.customer-payment-list', $data->id)}}?mode=cashwallet" wire:navigate>
+                                <div class="bz-stat__top">
+                                    <span class="bz-stat__label">Cash Balance</span>
+                                    <span class="bz-stat__icon"><i class="bi bi-wallet2"></i></span>
+                                </div>
+                                <div class="bz-stat__value">₹ {{ formatIndianNumber($data->cash_balance) }}</div>
+                            </a>
+                            @if ($mode == 'cashwallet')
+                                <button class="btn btn-secondary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#addBalance">
+                                    <i class="bi bi-plus-lg"></i>
+                                    Add Balance
+                                </button>
+                            @endif
+                        </div>
+                        <div class="col-md-6">
+                            <a class="bz-stat {{ $mode == 'creditwallet' ? 'bz-stat--blue' : 'bz-stat--slate' }}"
+                                href="{{route('admin.customer-payment-list', $data->id)}}?mode=creditwallet" wire:navigate>
+                                <div class="bz-stat__top">
+                                    <span class="bz-stat__label">Credit Balance</span>
+                                    <span class="bz-stat__icon"><i class="bi bi-credit-card"></i></span>
+                                </div>
+                                <div class="bz-stat__value">₹ {{ formatIndianNumber($data->credit_balance) }}</div>
+                            </a>
+                            @if ($mode == 'creditwallet')
+                                <button class="btn btn-secondary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#addBalance">
+                                    <i class="bi bi-plus-lg"></i>
+                                    Add Balance
+                                </button>
+                            @endif
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="custom-table">
                             <thead>
@@ -74,17 +75,17 @@
                             </thead>
                             <tbody>
                                 @if ($mode == 'cashwallet')
-                                    @foreach ($cash_transactions as $cash_transaction)
+                                    @forelse ($cash_transactions as $cash_transaction)
                                         <tr>
                                             <td>{{$cash_transaction->transaction_id}}</td>
-                                            <td><b>₹ {{formatIndianNumber($cash_transaction->amount)}}</b></td>
+                                            <td><b class="bz-num">₹ {{formatIndianNumber($cash_transaction->amount)}}</b></td>
                                             <td>
                                                 @if(strtolower($cash_transaction->status) == 'credit')
-                                                    <span class="badge bg-success">Credit</span>
+                                                    <span class="bz-status bz-status--success">Credit</span>
                                                 @elseif(strtolower($cash_transaction->status) == 'debit')
-                                                    <span class="badge bg-danger">Debit</span>
+                                                    <span class="bz-status bz-status--danger">Debit</span>
                                                 @else
-                                                    <span class="badge bg-secondary">{{ ucfirst($cash_transaction->status) }}</span>
+                                                    <span class="bz-status bz-status--muted">{{ ucfirst($cash_transaction->status) }}</span>
                                                 @endif
                                             </td>
                                             <td>{{$cash_transaction->created_at}}</td>
@@ -92,7 +93,8 @@
                                                 {{$cash_transaction->description}}
                                                 @if ($cash_transaction->notes)
                                                     <hr>
-                                                    <button class="btn btn-xs btn-info" type="button" data-bs-toggle="modal" data-bs-target="#notesModal-{{$cash_transaction->id}}">
+                                                    <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#notesModal-{{$cash_transaction->id}}">
+                                                        <i class="bi bi-journal-text"></i>
                                                         View Notes
                                                     </button>
 
@@ -108,7 +110,7 @@
                                                                     <p>{{($cash_transaction->notes)}}</p>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-xs btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -116,20 +118,22 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <x-table-no-data colspan="5" />
+                                    @endforelse
                                 @endif
                                 @if ($mode == 'creditwallet')
-                                    @foreach ($credit_transactions as $credit_transaction)
+                                    @forelse ($credit_transactions as $credit_transaction)
                                         <tr>
                                             <td>{{$credit_transaction->transaction_id}}</td>
-                                            <td><b>₹ {{formatIndianNumber($credit_transaction->amount)}}</b></td>
+                                            <td><b class="bz-num">₹ {{formatIndianNumber($credit_transaction->amount)}}</b></td>
                                             <td>
                                                 @if(strtolower($credit_transaction->status) == 'credit')
-                                                    <span class="badge bg-success">Credit</span>
+                                                    <span class="bz-status bz-status--success">Credit</span>
                                                 @elseif(strtolower($credit_transaction->status) == 'debit')
-                                                    <span class="badge bg-danger">Debit</span>
+                                                    <span class="bz-status bz-status--danger">Debit</span>
                                                 @else
-                                                    <span class="badge bg-secondary">{{ ucfirst($credit_transaction->status) }}</span>
+                                                    <span class="bz-status bz-status--muted">{{ ucfirst($credit_transaction->status) }}</span>
                                                 @endif
                                             </td>
                                             <td>{{$credit_transaction->created_at}}</td>
@@ -137,7 +141,8 @@
                                                 {{$credit_transaction->description}}
                                                 @if ($credit_transaction->notes)
                                                     <hr>
-                                                    <button class="btn btn-xs btn-info" type="button" data-bs-toggle="modal" data-bs-target="#notesModal-{{$credit_transaction->id}}">
+                                                    <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#notesModal-{{$credit_transaction->id}}">
+                                                        <i class="bi bi-journal-text"></i>
                                                         View Notes
                                                     </button>
 
@@ -153,7 +158,7 @@
                                                                     <p>{{($credit_transaction->notes)}}</p>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-xs btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -161,7 +166,9 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <x-table-no-data colspan="5" />
+                                    @endforelse
                                 @endif
                             </tbody>
                         </table>
@@ -231,8 +238,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-xs btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-xs btn-primary" wire:click="{{ $mode == 'cashwallet' ? 'addCashWalletBalanace()' : 'addCreditWalletBalanace()' }}">Add Balance</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger btn-sm" wire:click="{{ $mode == 'cashwallet' ? 'addCashWalletBalanace()' : 'addCreditWalletBalanace()' }}">Add Balance</button>
                 </div>
             </div>
         </div>

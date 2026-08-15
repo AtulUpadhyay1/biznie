@@ -4,25 +4,21 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <small> ( {{ $data->order_id }} ) </small>
-                            <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
-                            </span>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-order.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
-                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
-                        <div class="col-12 text-center">
-                            {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
-                            @include('admin.commodity_product_order.menu', ['is_active' => 'history'])
-                        </div>
-
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <small> ( {{ $data->order_id }} ) </small>
+                        <span
+                            class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--info') }} ms-1">{{ $data->status }}
+                        </span>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-order.index') }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
+                    </div>
+                    <div class="w-100 text-center">
+                        {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
+                        @include('admin.commodity_product_order.menu', ['is_active' => 'history'])
                     </div>
                 </div>
                 <div class="card-body">
@@ -36,13 +32,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data->history ?? [] as $history)
+                                @forelse ($data->history ?? [] as $history)
                                     <tr>
-                                        <th>{{ $loop->iteration }}</th>
-                                        <td>{{ ucwords($history['status']) }}</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            <span
+                                                class="bz-status {{ $history['status'] == 'cancel' ? 'bz-status--danger' : ($history['status'] == 'delivered' ? 'bz-status--success' : ($history['status'] == 'pending' ? 'bz-status--warning' : 'bz-status--info')) }}">{{ ucwords($history['status']) }}</span>
+                                        </td>
                                         <td>{{ dateTimeFormat($history['created_at']) }}</td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <x-table-no-data colspan="3" title="No history yet"
+                                        text="No status changes have been recorded for this order." />
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

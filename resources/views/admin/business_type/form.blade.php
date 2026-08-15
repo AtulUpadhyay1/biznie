@@ -3,17 +3,13 @@
     <div class="row">
         <div class="col-md-12 grid-margin">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>Add Business Type</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
-                                href="{{ route('admin.business-type') }}" wire:navigate>
-                                <i class="bi bi-x-lg btn-icon-prepend"></i>Cancel
-                            </a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Add Business Type</h4>
+                    <div class="bz-toolbar">
+                        <a class="btn btn-secondary btn-sm" title="Cancel"
+                            href="{{ route('admin.business-type') }}" wire:navigate>
+                            <i class="bi bi-x-lg"></i>Cancel
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -36,7 +32,7 @@
                                         <label class="form-label" for="icon">Icon <span
                                                 class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <span class="input-group-text">{!! $icon ? $icon : '<i class="fa fa-circle-o" aria-hidden="true"></i>' !!}</span>
+                                            <span class="input-group-text">{!! $icon ? $icon : '<i class="bi bi-circle" aria-hidden="true"></i>' !!}</span>
                                             <input type="text" id="icon"
                                                 class="form-control @error('icon') is-invalid @enderror"
                                                 wire:model="icon" placeholder="Enter fa icon">
@@ -77,7 +73,7 @@
                             <div class="col-md-4 border-start">
                                 <div class="row">
                                     <h5 class="card-heading-h5">Images:</h5>
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 mb-3">
                                         <label class="form-label" for="vendor_thumbnail">Thumbnail Image <span
                                                 class="text-danger">*</span></label>
                                         <input type='file' id="vendor_thumbnail"
@@ -98,7 +94,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 mb-3">
                                         <label class="form-label" for="vendor_banner">Banner Image <span
                                                 class="text-danger">*</span></label>
                                         <input type='file' id="vendor_banner"

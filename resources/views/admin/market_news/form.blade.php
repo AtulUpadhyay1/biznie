@@ -3,17 +3,14 @@
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
-                                href="{{ route('admin.market-news.index') }}" wire:navigate>
-                                <i class="bi bi-x-lg btn-icon-prepend"></i>Cancel
-                            </a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+
+                    <div class="bz-toolbar">
+                        <a class="btn btn-secondary btn-sm" title="Cancel"
+                            href="{{ route('admin.market-news.index') }}" wire:navigate>
+                            <i class="bi bi-x-lg"></i>Cancel
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -21,7 +18,7 @@
                         <div class="row mb-3">
                             <div class="col-md-12 mb-3">
                                 <label class="form-label" for="title">Title <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control  @error('title') is-invalid @enderror"
+                                <input type="text" class="form-control @error('title') is-invalid @enderror"
                                     id="title" wire:model="title" placeholder="Enter title">
                                 @error('title')
                                     <small class="text-danger">{{ $message }}</small>
@@ -41,8 +38,8 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
-                                <label for="image">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="image">
                                     Banner <span class="text-danger">*</span>
                                     <br>
                                     @if ($image)

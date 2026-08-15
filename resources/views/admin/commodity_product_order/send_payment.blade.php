@@ -4,81 +4,86 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <small> ( {{ $data->order_id }} ) </small>
-                            <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
-                            </span>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-order.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
-                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
-                        <div class="col-12 text-center">
-                            @include('admin.commodity_product_order.menu', ['is_active' => 'send-payment'])
-                        </div>
-
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <small> ( {{ $data->order_id }} ) </small>
+                        <span
+                            class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--info') }} ms-1">{{ $data->status }}
+                        </span>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-order.index') }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
+                    </div>
+                    <div class="w-100 text-center">
+                        @include('admin.commodity_product_order.menu', ['is_active' => 'send-payment'])
                     </div>
                 </div>
                 <form wire:submit.prevent="save()">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6 mb-3">
-                                <div class="border rounded p-3 bg-light">
-                                    <div class="row g-2">
-                                        <div class="col-5 text-muted">Company Name</div>
-                                        <div class="col-7 fw-semibold">
-                                            {{ $data->getSeller?->getBusiness?->name ?? '--' }}
+                                <div class="bz-panel">
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company Name</dt>
+                                            <dd class="fw-semibold">
+                                                {{ $data->getSeller?->getBusiness?->name ?? '--' }}
+                                            </dd>
                                         </div>
 
-                                        <div class="col-5 text-muted">User</div>
-                                        <div class="col-7 fw-semibold">
-                                            {{ $data->getSeller?->name ?? '--' }}
+                                        <div>
+                                            <dt>User</dt>
+                                            <dd class="fw-semibold">
+                                                {{ $data->getSeller?->name ?? '--' }}
+                                            </dd>
                                         </div>
 
-                                        <div class="col-5 text-muted">GST</div>
-                                        <div class="col-7 fw-semibold">
-                                            {{ $data->getSeller?->getUserDetail?->gst_number ?? '--' }}
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd class="fw-semibold">
+                                                {{ $data->getSeller?->getUserDetail?->gst_number ?? '--' }}
+                                            </dd>
                                         </div>
 
-                                        <div class="col-5 text-muted">Phone</div>
-                                        <div class="col-7 fw-semibold">
-                                            {{ $data->getSeller?->phone ?? '--' }}
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd class="fw-semibold">
+                                                {{ $data->getSeller?->phone ?? '--' }}
+                                            </dd>
                                         </div>
-                                    </div>
+                                    </dl>
                                 </div>
 
                             </div>
                             <div class="col-4 mb-3">
-                                <div class="border rounded p-3 bg-light">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="text-muted">Total Amount</span>
-                                        <strong>₹ {{ formatIndianNumber($total_amount) }}</strong>
-                                    </div>
+                                <div class="bz-panel">
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Total Amount</dt>
+                                            <dd><strong>₹ {{ formatIndianNumber($total_amount) }}</strong></dd>
+                                        </div>
 
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="text-muted">Paid Amount</span>
-                                        <strong class="text-success">₹ {{ formatIndianNumber($paid_amount) }}</strong>
-                                    </div>
+                                        <div>
+                                            <dt>Paid Amount</dt>
+                                            <dd><strong class="text-success">₹
+                                                    {{ formatIndianNumber($paid_amount) }}</strong></dd>
+                                        </div>
 
-                                    <hr class="my-2">
-
-                                    <div class="d-flex justify-content-between">
-                                        <span class="text-muted">Remaining Amount</span>
-                                        <strong class="text-danger">₹
-                                            {{ formatIndianNumber($remaining_balance) }}</strong>
-                                    </div>
+                                        <div>
+                                            <dt>Remaining Amount</dt>
+                                            <dd><strong class="text-danger">₹
+                                                    {{ formatIndianNumber($remaining_balance) }}</strong></dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                             <div class="col-2 mb-3 text-end">
                                 <a href="{{ route('admin.seller.payments', $data->getSeller?->id) }}?mode=cashwallet"
-                                    class="btn btn-outline-success btn-sm" wire:navigate>Cash Wallet</a>
+                                    class="btn btn-secondary btn-sm" wire:navigate>Cash Wallet</a>
                                 <a href="{{ route('admin.seller.payments', $data->getSeller?->id) }}?mode=creditwallet"
-                                    class="btn btn-outline-primary btn-sm" wire:navigate>Credit Wallet</a>
+                                    class="btn btn-secondary btn-sm" wire:navigate>Credit Wallet</a>
                             </div>
                         </div>
                         <div class="row">
@@ -147,7 +152,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="payment_method" class="form-label">Payment Method <span
                                         class="text-danger">*</span></label>
-                                <select class="form-control @error('payment_method') is-invalid @enderror"
+                                <select class="form-select @error('payment_method') is-invalid @enderror"
                                     id="payment_method" wire:model="payment_method">
                                     <option value="">Select Payment Method</option>
                                     <option value="Cash">Cash</option>
@@ -197,7 +202,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="status" class="form-label">Status <span
                                         class="text-danger">*</span></label>
-                                <select class="form-control @error('status') is-invalid @enderror" id="status"
+                                <select class="form-select @error('status') is-invalid @enderror" id="status"
                                     wire:model="status">
                                     <option value="">Select Status</option>
                                     <option value="pending">Pending</option>
@@ -209,8 +214,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer text-end">
-                        <button type="submit" class="btn btn-success">Save</button>
+                    <div class="card-footer d-flex justify-content-end">
+                        <x-submit-btn text="Save" />
                     </div>
                 </form>
             </div>

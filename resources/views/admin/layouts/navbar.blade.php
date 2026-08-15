@@ -1,9 +1,22 @@
 <!-- partial:partials/_navbar.html -->
+@php
+    $bzUser = auth()->user();
+    $bzRole = method_exists($bzUser, 'getRoleNames') ? ($bzUser->getRoleNames()->first() ?? 'Administrator') : 'Administrator';
+    $bzInitials = collect(preg_split('/\s+/', trim($bzUser->name ?? 'A')))
+        ->filter()
+        ->take(2)
+        ->map(fn ($part) => mb_substr($part, 0, 1))
+        ->implode('');
+@endphp
 <nav class="navbar">
-    <a href="#" class="sidebar-toggler">
-        <i data-feather="menu"></i>
+    <a href="#" class="sidebar-toggler" title="Toggle menu" aria-label="Toggle menu">
+        <i class="bi bi-list"></i>
     </a>
     <div class="navbar-content">
+        <div class="bz-topbar-title">
+            <span class="bz-topbar-title__eyebrow">Biznie Admin</span>
+            <span class="bz-topbar-title__main">Dashboard</span>
+        </div>
         {{-- <form class="search-form">
             <div class="input-group">
                 <div class="input-group-text">
@@ -107,60 +120,56 @@
                 </div>
             </li> --}}
             <li class="head-btn nav-item">
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#productAddProcess">
-                    Product Add Process
+                <button type="button" class="bz-quick-btn" data-bs-toggle="modal"
+                    data-bs-target="#productAddProcess" title="Product Add Process">
+                    <i class="bi bi-info-circle"></i>
+                    <span>Product Add Process</span>
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#freightFinderModal">
-                    Freight Finder
+                <button type="button" class="bz-quick-btn" data-bs-toggle="modal"
+                    data-bs-target="#freightFinderModal" title="Freight Finder">
+                    <i class="bi bi-truck"></i>
+                    <span>Freight Finder</span>
                 </button>
             </li>
             <livewire:Admin.Notification.NavbarNotification />
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                <a class="bz-profile-trigger dropdown-toggle" href="#" id="profileDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="wd-30 ht-30 rounded-circle" src="{{ asset('admin_css/assets/images/avatar.png') }}"
-                        alt="profile">
+                    <span class="bz-avatar">{{ $bzInitials }}</span>
+                    <span class="bz-profile-trigger__meta">
+                        <span class="bz-profile-trigger__name d-block">{{ $bzUser->name }}</span>
+                        <span class="bz-profile-trigger__role d-block">{{ $bzRole }}</span>
+                    </span>
+                    <i class="bi bi-chevron-down text-muted" style="font-size:.7rem"></i>
                 </a>
-                <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
-                    <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
-                        <div class="mb-3">
-                            <img class="wd-80 ht-80 rounded-circle"
-                                src="{{ asset('admin_css/assets/images/avatar.png') }}" alt="">
-                        </div>
-                        <div class="text-center">
-                            <p class="tx-16 fw-bolder">{{ auth()->user()->name }}</p>
-                            <p class="tx-12 text-muted">{{ auth()->user()->email }}</p>
+                <div class="dropdown-menu dropdown-menu-end bz-profile-menu" aria-labelledby="profileDropdown">
+                    <div class="bz-profile-menu__head">
+                        <span class="bz-avatar" style="flex:0 0 40px;width:40px;height:40px;font-size:.875rem">{{ $bzInitials }}</span>
+                        <div class="min-w-0">
+                            <div class="bz-profile-menu__name">{{ $bzUser->name }}</div>
+                            <div class="bz-profile-menu__mail">{{ $bzUser->email }}</div>
                         </div>
                     </div>
-                    <ul class="list-unstyled p-1">
-                        <li class="dropdown-item py-2">
-                            <a href="{{ route('admin.profile.edit') }}" class="text-body ms-0">
-                                <i class="bi bi-person me-2 icon-md"></i>
-                                <span>Profile</span>
-                            </a>
-                        </li>
-                        <li class="dropdown-item py-2">
-                            <a href="{{ route('admin.profile.edit') }}" class="text-body ms-0">
-                                <i class="bi bi-pencil-square me-2 icon-md"></i>
-                                <span>Edit Profile</span>
-                            </a>
-                        </li>
-                        <li class="dropdown-item py-2">
-                            <a href="{{ route('admin.logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                class="text-body ms-0">
-                                <i class="bi bi-box-arrow-right me-2 icon-md"></i>
-                                <span>Log Out</span>
-                            </a>
-                            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
+                    <a href="{{ route('admin.profile.edit') }}" class="dropdown-item">
+                        <i class="bi bi-person"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="{{ route('admin.profile.edit') }}" class="dropdown-item">
+                        <i class="bi bi-pencil-square"></i>
+                        <span>Edit Profile</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ route('admin.logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        class="dropdown-item text-danger">
+                        <i class="bi bi-box-arrow-right text-danger"></i>
+                        <span>Log Out</span>
+                    </a>
+                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
                 </div>
             </li>
         </ul>

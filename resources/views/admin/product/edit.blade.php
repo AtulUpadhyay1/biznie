@@ -3,17 +3,13 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>Edit Product</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
-                                href="{{ route('admin.product-list') }}" wire:navigate>
-                                <i class="bi bi-x-lg btn-icon-prepend"></i>Cancel
-                            </a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Edit Product</h4>
+                    <div class="bz-toolbar">
+                        <a class="btn btn-secondary btn-sm" title="Cancel"
+                            href="{{ route('admin.product-list') }}" wire:navigate>
+                                <i class="bi bi-x-lg"></i>Cancel
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -72,10 +68,10 @@
                             <div class="col-md-3 mb-3">
                                 <label class="form-label" for="icon">Icon</label>
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="fa fa-circle-o"
+                                    <span class="input-group-text"><i class="bi bi-circle"
                                             aria-hidden="true"></i></span>
                                     <input type="text" class="form-control" id="icon"
-                                        placeholder="Enter fa icons">
+                                        placeholder="Enter icon class">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -83,14 +79,14 @@
                                 <input type="text" class="form-control" id="tag" placeholder="Enter tags">
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label" for="form-check">Refundable</label>
+                                <label class="form-label" for="refundable">Refundable</label>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" id="form-check" value="20"
+                                    <input type="checkbox" class="form-check-input" id="refundable" value="20"
                                         checked="">
                                 </div>
                             </div>
                             <h5 class="card-heading-h5">Product Images</h5>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label" for="product-thumbnail">Thumbnail Image</label>
                                 <input type="file" id="product-thumbnail" class="form-control">
                                 <label for="product-thumbnail">
@@ -98,7 +94,7 @@
                                         src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
                                 </label>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-8 mb-3">
                                 <label class="form-label" for="gallery">Gallery</label>
                                 <div class="input-images">
                                     <div class="image-uploader has-files">
@@ -107,11 +103,11 @@
                                         <div class="uploaded">
                                             <div class="uploaded-image" data-preloaded="true">
                                                 <img  src="{{ asset('admin_css/assets/images/others/placeholder.jpg') }}">
-                                                <button class="delete-image"><i class="bx bx-x-circle"></i></button>
+                                                <button class="delete-image"><i class="bi bi-x-circle"></i></button>
                                                 <input type="hidden" name="old[]" value="257">
                                             </div>
                                         </div>
-                                        <div class="upload-text"><i class="bx bx-cloud-upload"></i><span>Drag &amp;
+                                        <div class="upload-text"><i class="bi bi-cloud-upload"></i><span>Drag &amp;
                                                 Drop files here or click to browse</span></div>
                                     </div>
                                 </div>
@@ -148,25 +144,25 @@
                                     <tbody>
                                         <tr>
                                             <td><b>Free Shipping</b></td>
-                                            <td><span>Status</span></td>
+                                            <td><label class="form-label mb-0" for="free-shipping">Status</label></td>
                                             <td>
                                                 <div class="form-check form-switch">
-                                                    <input type="checkbox" class="form-check-input" id="form-check" value="20">
+                                                    <input type="checkbox" class="form-check-input" id="free-shipping" value="20">
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><b>Flat Rate</b></td>
-                                            <td><span>Status</span></td>
+                                            <td><label class="form-label mb-0" for="flat-rate">Status</label></td>
                                             <td>
                                                 <div class="form-check form-switch">
-                                                    <input type="checkbox" class="form-check-input" id="form-check" value="20" checked="">
+                                                    <input type="checkbox" class="form-check-input" id="flat-rate" value="20" checked="">
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="1"></td>
-                                            <td><label for="Scost">Shipping Cost</label></td>
+                                            <td><label class="form-label mb-0" for="Scost">Shipping Cost</label></td>
                                             <td>
                                                 <input type="number" class="form-control" id="Scost" placeholder="0">
                                             </td>

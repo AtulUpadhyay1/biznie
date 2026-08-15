@@ -3,21 +3,15 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                @can('vehicle-create')
-                                    <a href="{{ route('admin.vehicle.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
-                                        <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                        Add
-                                    </a>
-                                @endcan
-                            </div>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        @can('vehicle-create')
+                            <a href="{{ route('admin.vehicle.create') }}" class="btn btn-danger btn-sm" wire:navigate>
+                                <i class="bi bi-plus-lg"></i>
+                                Add
+                            </a>
+                        @endcan
                     </div>
                 </div>
 
@@ -38,7 +32,7 @@
                             <tbody>
                                 @forelse ($list as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>
                                             <img src="{{ imageUrl($data->photo) }}">
                                         </td>
@@ -58,8 +52,8 @@
                                                     <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="actionBtn_{{$data->id}}">
-                                                    <a class="dropdown-item d-flex align-items-center" href="{{route('admin.vehicle.edit', $data->id)}}" wire:navigate><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                    <a class="dropdown-item" href="{{route('admin.vehicle.edit', $data->id)}}" wire:navigate><i
+                                                        class="bi bi-pencil-square"></i><span>Edit</span></a>
                                                 </div>
                                             @endcan
                                         </td>

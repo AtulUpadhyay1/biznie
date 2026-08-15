@@ -4,33 +4,33 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <small> ( {{ $data->order_id }} ) </small>
-                            <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
-                            </span>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-order.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
-                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
-                        <div class="col-12 text-center">
-                            @include('admin.commodity_product_order.menu', ['is_active' => 'status'])
-                        </div>
-
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <small> ( {{ $data->order_id }} ) </small>
+                        <span
+                            class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--info') }} ms-1">{{ $data->status }}
+                        </span>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-order.index') }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
+                    </div>
+                    <div class="w-100 text-center">
+                        @include('admin.commodity_product_order.menu', ['is_active' => 'status'])
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-8">
-                            <p><b>Current Status : </b> {{ ucwords($data->status) }}</p>
+                            <p><b>Current Status : </b>
+                                <span
+                                    class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'delivered' ? 'bz-status--success' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--info')) }}">{{ ucwords($data->status) }}</span>
+                            </p>
                         </div>
                         @if ($data->status != 'cancel')
-                            <div class="col-4 text-end mb-2">
+                            <div class="col-4 mb-3">
+                                <label class="form-label" for="status">Update Status</label>
                                 <select class="form-select" wire:model="status" id="status">
                                     <option value="pending" disabled="">Pending</option>
                                     <option value="confirm">Confirm</option>
@@ -54,73 +54,71 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Enquiry ID</strong></td>
-                                                <td>{{ $enquiry_data->unique_id }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Enquiry ID</dt>
+                                            <dd>{{ $enquiry_data->unique_id }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Category</strong></td>
-                                                <td>{{ $enquiry_data->getCommodityProduct->getCategory->name }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Category</dt>
+                                            <dd>{{ $enquiry_data->getCommodityProduct->getCategory->name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Product</strong></td>
-                                                <td>{{ $enquiry_data->getCommodityProduct->name }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Product</dt>
+                                            <dd>{{ $enquiry_data->getCommodityProduct->name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Brand</strong></td>
-                                                <td>{{ $enquiry_data->getBrand->name }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Brand</dt>
+                                            <dd>{{ $enquiry_data->getBrand->name }}</dd>
+                                        </div>
 
-                                            {{-- Delivery Location (Uncomment if needed)
-        <tr>
-            <td><strong>Delivery Location</strong></td>
-            <td>
+                                        {{-- Delivery Location (Uncomment if needed)
+        <div>
+            <dt>Delivery Location</dt>
+            <dd>
                 {{ $enquiry_data->consignee_detail['address_line_one'] }},
                 {{ $enquiry_data->consignee_detail['address_line_two'] }},
                 {{ $enquiry_data->consignee_detail['city'] }},
-                {{ $enquiry_data->consignee_detail['pin_code'] 
+                {{ $enquiry_data->consignee_detail['pin_code']
                     ?? $enquiry_data->consignee_detail['pincode'] }}
-            </td>
-        </tr>
+            </dd>
+        </div>
         --}}
 
-                                            <tr>
-                                                <td><strong>Purpose</strong></td>
-                                                <td>{{ $enquiry_data->purpose }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Purpose</dt>
+                                            <dd>{{ $enquiry_data->purpose }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Description</strong></td>
-                                                <td>{{ $enquiry_data->description }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Description</dt>
+                                            <dd>{{ $enquiry_data->description }}</dd>
+                                        </div>
 
-                                            @if ($enquiry_data->quality)
-                                                <tr>
-                                                    <td><strong>Quality</strong></td>
-                                                    <td>
-                                                        {{ $enquiry_data->quality['name'] }} –
-                                                        ₹ {{ formatIndianNumber($enquiry_data->quality['price']) }}
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                        @if ($enquiry_data->quality)
+                                            <div>
+                                                <dt>Quality</dt>
+                                                <dd>
+                                                    {{ $enquiry_data->quality['name'] }} –
+                                                    ₹ {{ formatIndianNumber($enquiry_data->quality['price']) }}
+                                                </dd>
+                                            </div>
+                                        @endif
 
-                                            @if ($enquiry_data->packaging_charge)
-                                                <tr>
-                                                    <td><strong>Packaging Charge</strong></td>
-                                                    <td>
-                                                        {{ $enquiry_data->packaging_charge['name'] }} –
-                                                        ₹
-                                                        {{ formatIndianNumber($enquiry_data->packaging_charge['charge']) }}
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
+                                        @if ($enquiry_data->packaging_charge)
+                                            <div>
+                                                <dt>Packaging Charge</dt>
+                                                <dd>
+                                                    {{ $enquiry_data->packaging_charge['name'] }} –
+                                                    ₹
+                                                    {{ formatIndianNumber($enquiry_data->packaging_charge['charge']) }}
+                                                </dd>
+                                            </div>
+                                        @endif
+                                    </dl>
 
                                 </div>
                             </div>
@@ -134,54 +132,52 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->company_name }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->company_name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $enquiry_data->getUser->phone }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $enquiry_data->getUser->phone }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->address_line_one }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->address_line_one }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->address_line_two }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->address_line_two }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->city }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->city }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->state }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->state }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->postal_code }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->postal_code }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Credit Days</strong></td>
-                                                <td>{{ $enquiry_data->getUser->credit_days }} Days</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Credit Days</dt>
+                                            <dd>{{ $enquiry_data->getUser->credit_days }} Days</dd>
+                                        </div>
+                                    </dl>
 
                                 </div>
                             </div>
@@ -199,54 +195,52 @@
                                         $seller = $enquiry_data->getMarkedSellerProductEnquiry->getUser;
                                         $sellerDetail = $seller->getSellerKycDetail;
                                     @endphp
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $seller->getBusiness->name }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $seller->getBusiness->name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $seller->phone }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $seller->phone }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $sellerDetail->gst_number }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $sellerDetail->gst_number }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line One</strong></td>
-                                                <td>{{ $sellerDetail->address_line_one }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line One</dt>
+                                            <dd>{{ $sellerDetail->address_line_one }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line Two</strong></td>
-                                                <td>{{ $sellerDetail->address_line_two }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line Two</dt>
+                                            <dd>{{ $sellerDetail->address_line_two }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $sellerDetail->city }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $sellerDetail->city }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $sellerDetail->state }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $sellerDetail->state }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>{{ $sellerDetail->postal_code }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ $sellerDetail->postal_code }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Credit Days</strong></td>
-                                                <td>{{ $seller_enquiry_data->seller_credit_days }} Days</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Credit Days</dt>
+                                            <dd>{{ $seller_enquiry_data->seller_credit_days }} Days</dd>
+                                        </div>
+                                    </dl>
 
                                 </div>
                             </div>
@@ -260,51 +254,49 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['company_name'] }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $enquiry_data->billing_address['company_name'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['phone'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $enquiry_data->billing_address['phone'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['gst'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $enquiry_data->billing_address['gst'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['address_line_one'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $enquiry_data->billing_address['address_line_one'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['address_line_two'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $enquiry_data->billing_address['address_line_two'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['state'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $enquiry_data->billing_address['state'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['city'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $enquiry_data->billing_address['city'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>
-                                                    {{ $enquiry_data->consignee_detail['pin_code'] ?? ($enquiry_data->billing_address['pincode'] ?? '') }}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>
+                                                {{ $enquiry_data->consignee_detail['pin_code'] ?? ($enquiry_data->billing_address['pincode'] ?? '') }}
+                                            </dd>
+                                        </div>
+                                    </dl>
 
                                 </div>
                             </div>
@@ -318,51 +310,49 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['company_name'] }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['company_name'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['phone'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['phone'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['gst'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['gst'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['address_line_one'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['address_line_one'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['address_line_two'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['address_line_two'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['state'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['state'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['city'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['city'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>
-                                                    {{ $enquiry_data->consignee_detail['pin_code'] ?? ($enquiry_data->billing_address['pincode'] ?? '') }}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>
+                                                {{ $enquiry_data->consignee_detail['pin_code'] ?? ($enquiry_data->billing_address['pincode'] ?? '') }}
+                                            </dd>
+                                        </div>
+                                    </dl>
 
                                 </div>
                             </div>
@@ -377,34 +367,32 @@
                                 </div>
                                 <div class="card-body p-3">
                                     @if ($loading_address)
-                                        <table class="table table-sm table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Address Line One</strong></td>
-                                                    <td>{{ $loading_address->address_line_one }}</td>
-                                                </tr>
+                                        <dl class="bz-kv-list">
+                                            <div>
+                                                <dt>Address Line One</dt>
+                                                <dd>{{ $loading_address->address_line_one }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>Address Line Two</strong></td>
-                                                    <td>{{ $loading_address->address_line_two }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>Address Line Two</dt>
+                                                <dd>{{ $loading_address->address_line_two }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>City</strong></td>
-                                                    <td>{{ $loading_address->city }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>City</dt>
+                                                <dd>{{ $loading_address->city }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>State</strong></td>
-                                                    <td>{{ $loading_address->state }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>State</dt>
+                                                <dd>{{ $loading_address->state }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>Pincode</strong></td>
-                                                    <td>{{ $loading_address->pincode }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                            <div>
+                                                <dt>Pincode</dt>
+                                                <dd>{{ $loading_address->pincode }}</dd>
+                                            </div>
+                                        </dl>
                                     @endif
                                 </div>
                             </div>
@@ -472,7 +460,7 @@
                     <h5 class="modal-title" id="orderCancelLabel">Cancel Reason</h5>
                 </div>
                 <div class="modal-body">
-                    <lable for="cancel_reason">Please Select Reason <span class="text-danger">*</span></lable>
+                    <span class="bz-section-label">Please Select Reason <span class="text-danger">*</span></span>
                     <div class="form-check mt-3">
                         <input class="form-check-input" type="radio" name="cancel_reason" id="price_increased"
                             value="Price Increased" wire:model.live="cancel_reason">
@@ -509,14 +497,17 @@
                         </label>
                     </div>
                     @if ($this->cancel_reason == 'Other')
-                        <textarea class="form-control" id="cancel_reason" rows="5" wire:model="cancel_reason_text"
-                            placeholder="Please provide a brief description of why you want to cancel this order."></textarea>
+                        <div class="mb-3">
+                            <label class="form-label" for="cancel_reason">Reason Details</label>
+                            <textarea class="form-control" id="cancel_reason" rows="5" wire:model="cancel_reason_text"
+                                placeholder="Please provide a brief description of why you want to cancel this order."></textarea>
+                        </div>
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <a href="" class="btn btn-secondary" wire:navigate>Close</a>
+                    <a href="" class="btn btn-secondary btn-sm" wire:navigate>Close</a>
                     @if ($this->cancel_reason)
-                        <button type="button" class="btn btn-danger" wire:click="updateStatus()"
+                        <button type="button" class="btn btn-danger btn-sm" wire:click="updateStatus()"
                             data-bs-dismiss="modal">Update</button>
                     @endif
                 </div>
@@ -533,7 +524,7 @@
                     {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                 </div>
                 <div class="modal-body">
-                    <label for="otp">Otp Send On {{ $data->getCustomer?->phone }}</label>
+                    <label class="form-label" for="otp">Otp Send On {{ $data->getCustomer?->phone }}</label>
                     <input type="number" class="form-control" id="otp" placeholder="Enter OTP"
                         wire:model="otp">
                     <div class="text-end">
@@ -544,8 +535,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="" class="btn btn-danger btn-sm" wire:navigate>Close</a>
-                    <button type="button" class="btn btn-success btn-sm" wire:click="verifyOtp()"
+                    <a href="" class="btn btn-secondary btn-sm" wire:navigate>Close</a>
+                    <button type="button" class="btn btn-danger btn-sm" wire:click="verifyOtp()"
                         wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="verifyOtp">Verify</span>
                         <span wire:loading wire:target="verifyOtp">Verifying...</span>

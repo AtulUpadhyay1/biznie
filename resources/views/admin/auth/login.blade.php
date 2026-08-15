@@ -1,128 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>{{config('app.name')}} | {{isset($page_title) ? $page_title : ""}}</title>
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com/">
-        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
-        <!-- End fonts -->
-        <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/custom.min.css')}}">
-        <!--Bootstrap icons-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <!-- core:css -->
-        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/core/core.css')}}">
-        <!-- Layout styles -->
-        @if(session()->has('selected_theme') && session()->get('selected_theme') == "Dark")
-            <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
-        @else
-            <link rel="stylesheet" href="{{asset('admin_css/assets/css/demo2/style.min.css')}}">
-        @endif
-        <!-- End layout styles -->
-        <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
-        {{-- @if(websiteSetupValue('favicon'))
-            <link rel="shortcut icon" href="{{asset('admin/admin/website_setup/'.websiteSetupValue('favicon'))}}" />
-        @else
-            <link rel="shortcut icon" href="{{asset('admin/assets/images/favicon.png')}}" />
-        @endif --}}
-        <link rel="shortcut icon" href="{{asset('admin_css/assets/images/favicon.png')}}" />
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    </head>
+@extends('admin.layouts.auth')
 
-    <body>
-        <div class="main-wrapper">
-            <div class="page-wrapper full-page login-page-wrapper">
-                <img src="{{asset('admin_css/assets/images/wave.png')}}" class="wave">
-                <div class="container">
-                    <div class="bg-img">
-                        <img src="{{asset('admin_css/assets/images/bg.png')}}">
-                    </div>
-                    <div class="login-content">
-                        <div>
-                            <img src="{{asset('admin_css/assets/images/avatar.png')}}">
-                            <h2 class="admin-title">Welcome Admin </h2>
-                            <form class="admin-login-form forms-sample" method="POST" action="{{ route('admin.login') }}">
-                                @csrf
-                                <div class="input-area one">
-                                    <div class="input-icon">
-                                        <i class="bi bi-person-fill"></i>
-                                    </div>
-                                    <div class="input-text-area">
-                                        <input type="email" class="input @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="Username">
-                                    </div>
-                                </div>
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+@section('title', $page_title ?? 'Sign in')
+@section('heading', 'Sign in to your account')
+@section('subheading', 'Enter your admin credentials to open the Biznie console.')
 
-                                <div class="input-area pass" x-data="{ showPassword: false }">
-                                    <div class="input-icon">
-                                        <i x-bind:class="showPassword ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'" x-bind:title="showPassword ? 'Hide Password' : 'Show Password'" x-on:click="showPassword = ! showPassword"></i>
-                                    </div>
-                                    <div class="input-text-area">
-                                        <input x-bind:type="showPassword ? 'text' : 'password'" class="input @error('password') is-invalid @enderror" id="password" autocomplete="current-password" name="password" placeholder="Password">
-                                    </div>
-                                </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+@section('form')
+    <form method="POST" action="{{ route('admin.login') }}" novalidate>
+        @csrf
 
-                                <a href="{{ route('admin.password.request') }}">Forgot Password?</a>
-				                <input type="submit" class="submit-btn" value="Login">
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        <div class="bz-auth__field">
+            <label class="form-label" for="email">Email address</label>
+            <div class="bz-auth__control">
+                <i class="bi bi-envelope bz-auth__icon"></i>
+                <input type="email" id="email" name="email" value="{{ old('email') }}"
+                    class="form-control @error('email') is-invalid @enderror"
+                    placeholder="you@company.com" autocomplete="username" autofocus required>
             </div>
+            @error('email')
+                <span class="bz-auth__error" role="alert">{{ $message }}</span>
+            @enderror
         </div>
 
+        <div class="bz-auth__field">
+            <label class="form-label" for="password">Password</label>
+            <div class="bz-auth__control">
+                <i class="bi bi-lock bz-auth__icon"></i>
+                <input type="password" id="password" name="password"
+                    class="form-control has-toggle @error('password') is-invalid @enderror"
+                    placeholder="Enter your password" autocomplete="current-password" required>
+                <button type="button" class="bz-auth__toggle" data-bz-toggle-password="password"
+                    aria-label="Show password">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+            @error('password')
+                <span class="bz-auth__error" role="alert">{{ $message }}</span>
+            @enderror
+        </div>
 
-        <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
-        <script src="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.js')}}"></script>
-        <script>
-            $(function () {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                });
+        <div class="bz-auth__row">
+            <div class="form-check mb-0">
+                <input class="form-check-input" type="checkbox" id="remember" name="remember"
+                    {{ old('remember') ? 'checked' : '' }}>
+                <label class="form-check-label" for="remember">Keep me signed in</label>
+            </div>
+            <a class="bz-auth__link" href="{{ route('admin.password.request') }}">Forgot password?</a>
+        </div>
 
-                $( document ).ready(function() {
-                    var success_message = "{{Session::get('success')}}";
-                    var error_message = "{{Session::get('error')}}";
+        <button type="submit" class="btn btn-danger bz-auth__submit">
+            Sign in <i class="bi bi-arrow-right"></i>
+        </button>
+    </form>
+@endsection
 
-                    if(success_message != ""){
-                        success_sweet_alert(success_message);
-                    }
-                    if(error_message !=""){
-                        error_sweet_alert(error_message)
-                    }
-
-                });
-
-                function success_sweet_alert(success_message){
-                    Toast.fire({
-                        icon: 'success',
-                        title: success_message
-                    });
-                }
-
-                function error_sweet_alert(error_message){
-                    Toast.fire({
-                        icon: 'error',
-                        title: error_message
-                    });
-                }
-            });
-        </script>
-    </body>
-</html>
+@section('foot')
+    Trouble signing in? Contact your system administrator.
+@endsection

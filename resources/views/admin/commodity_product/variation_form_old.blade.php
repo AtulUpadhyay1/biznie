@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.commodity-product.index')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <form wire:submit.prevent="save()">
@@ -30,7 +26,7 @@
                             </div>
 
                             {{--<div class="col-md-6 mb-3">
-                                <div class="input-group mb-3">
+                                <div class="input-group">
                                     <span class="input-group-text">Dimension</span>
                                     <input type="text" class="form-control @error('dimension.0') is-invalid @enderror" placeholder="Enter Dimension" wire:model="dimension.0">
                                     <span class="input-group-text">Price</span>
@@ -41,7 +37,7 @@
                             </div> --}}
 
                             <div class="col-md-6 mb-3">
-                                <div class="input-group mb-3">
+                                <div class="input-group">
                                     <span class="input-group-text">Specification</span>
                                     <textarea class="form-control @error('specification.0') is-invalid @enderror" wire:model="specification.0" rows="1"></textarea>
                                 </div>
@@ -66,7 +62,7 @@
                                 </div>
 
                                 {{-- <div class="col-md-6 mb-3">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text">Dimension</span>
                                         <input type="text" class="form-control @error('dimension.'.$variation_input) is-invalid @enderror" placeholder="Enter Dimension" wire:model="dimension.{{$variation_input}}">
                                         <span class="input-group-text">Price</span>
@@ -77,7 +73,7 @@
                                 </div> --}}
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text">Specification</span>
                                         <textarea class="form-control @error('specification.'.$variation_input) is-invalid @enderror" wire:model="specification.{{$variation_input}}" rows="1"></textarea>
                                     </div>
@@ -85,12 +81,12 @@
                                 </div>
 
                                 <div class="col-md-1 mb-3">
-                                    <button type="button" class="btn btn-inverse-danger" wire:click="removeVariationField({{$variation_key}})">Remove</button>
+                                    <button type="button" class="btn btn-sm btn-inverse-danger" wire:click="removeVariationField({{$variation_key}})"><i class="bi bi-trash"></i>Remove</button>
                                 </div>
                             @endforeach
 
-                            <div style="margin-top: -30px;">
-                                <button type="button" class="btn btn-inverse-success btn-sm py-1" wire:click="addVariationField({{$variation}}, false)">Add More</button>
+                            <div class="col-12 mb-3">
+                                <button type="button" class="btn btn-sm btn-inverse-success" wire:click="addVariationField({{$variation}}, false)"><i class="bi bi-plus-lg"></i>Add More</button>
                             </div>
 
                         </div>

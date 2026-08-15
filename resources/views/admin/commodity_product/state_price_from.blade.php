@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a @if($state_price_id) href="{{route('admin.commodity-product.show', $hidden_id)}}" @else href="{{route('admin.commodity-product.index')}}" @endif class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a @if($state_price_id) href="{{route('admin.commodity-product.show', $hidden_id)}}" @else href="{{route('admin.commodity-product.index')}}" @endif class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <form wire:submit.prevent="save()">
@@ -100,7 +96,7 @@
                                                     ({{getProductUnit($data->unit[getAttribute($attribute)->name])->short_name}})
                                                 @endif
                                                 {{-- <br> <hr style="margin: 3px; border: 0; border-top: 1px solid; opacity: 1.1;"> --}}
-                                                <select class="form-control form-control-sm text-center d-none" wire:model="unit.{{getAttribute($attribute)->name}}">
+                                                <select class="form-select form-select-sm text-center d-none" wire:model="unit.{{getAttribute($attribute)->name}}">
                                                     <option value="">Select Unit</option>
                                                     @foreach ($unit_list as $unit_data)
                                                         <option value="{{$unit_data->id}}">{{$unit_data->name}} ({{$unit_data->short_name}})</option>

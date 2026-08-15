@@ -1,33 +1,25 @@
 <div>
-    <style>
-        .table-sm>:not(caption)>*>* {
-            padding: 0.25rem .55rem;
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <small> ( {{ $data->order_id }} ) </small>
-                            <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
-                            </span>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-order.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
-                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
-                        <div class="col-12 text-center">
-                            {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
-                            @include('admin.commodity_product_order.menu', ['is_active' => 'show'])
-                        </div>
-
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <small> ( {{ $data->order_id }} ) </small>
+                        <span
+                            class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--info') }} ms-1">{{ $data->status }}
+                        </span>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-order.index') }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
+                    </div>
+                    <div class="w-100 text-center">
+                        {{-- <a href="javasript:;" class="btn btn-info btn-icon me-1" wire:click="invoicePrint()" title="Print Invoice"><i class="bi bi-printer-fill"></i></a> --}}
+                        @include('admin.commodity_product_order.menu', ['is_active' => 'show'])
                     </div>
                 </div>
 
@@ -406,50 +398,48 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Enquiry Id</strong></td>
-                                                <td>{{ $enquiry_data->unique_id }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Category</strong></td>
-                                                <td>{{ $enquiry_data->getCommodityProduct->getCategory->name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Product</strong></td>
-                                                <td>{{ $enquiry_data->getCommodityProduct->name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Brand</strong></td>
-                                                <td>{{ $enquiry_data->getBrand->name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Purpose</strong></td>
-                                                <td>{{ $enquiry_data->purpose }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Description</strong></td>
-                                                <td>{{ $enquiry_data->description }}</td>
-                                            </tr>
-                                            @if ($custmoer_enq_data['selected_quality'])
-                                                <tr>
-                                                    <td><strong>Quality</strong></td>
-                                                    <td>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
-                                                        {{ $custmoer_enq_data['selected_quality']['price'] }}</td>
-                                                </tr>
-                                            @endif
-                                            @if ($custmoer_enq_data['selected_packaging_charge'])
-                                                <tr>
-                                                    <td><strong>Packaging</strong></td>
-                                                    <td>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }} :
-                                                        ₹
-                                                        {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Enquiry Id</dt>
+                                            <dd>{{ $enquiry_data->unique_id }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Category</dt>
+                                            <dd>{{ $enquiry_data->getCommodityProduct->getCategory->name }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Product</dt>
+                                            <dd>{{ $enquiry_data->getCommodityProduct->name }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Brand</dt>
+                                            <dd>{{ $enquiry_data->getBrand->name }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Purpose</dt>
+                                            <dd>{{ $enquiry_data->purpose }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Description</dt>
+                                            <dd>{{ $enquiry_data->description }}</dd>
+                                        </div>
+                                        @if ($custmoer_enq_data['selected_quality'])
+                                            <div>
+                                                <dt>Quality</dt>
+                                                <dd>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
+                                                    {{ $custmoer_enq_data['selected_quality']['price'] }}</dd>
+                                            </div>
+                                        @endif
+                                        @if ($custmoer_enq_data['selected_packaging_charge'])
+                                            <div>
+                                                <dt>Packaging</dt>
+                                                <dd>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }} :
+                                                    ₹
+                                                    {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
+                                                </dd>
+                                            </div>
+                                        @endif
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -462,46 +452,44 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->company_name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $enquiry_data->getUser->phone }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Address Line1</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->address_line_one }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Address Line2</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->address_line_two }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->city }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->state }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>{{ $enquiry_data->getUser->getUserDetail->postal_code }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Credit Days</strong></td>
-                                                <td>{{ $custmoer_enq_data['credit_days'] }} Days</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->company_name }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $enquiry_data->getUser->phone }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line1</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->address_line_one }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line2</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->address_line_two }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->city }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->state }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ $enquiry_data->getUser->getUserDetail->postal_code }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Credit Days</dt>
+                                            <dd>{{ $custmoer_enq_data['credit_days'] }} Days</dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -518,46 +506,44 @@
                                         $seller = $enquiry_data->getMarkedSellerProductEnquiry->getUser;
                                         $sellerDetail = $seller->getSellerKycDetail;
                                     @endphp
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $seller->getBusiness->name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $seller->phone }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $sellerDetail->gst_number }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Address Line One</strong></td>
-                                                <td>{{ $sellerDetail->address_line_one }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Address Line Two</strong></td>
-                                                <td>{{ $sellerDetail->address_line_two }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $sellerDetail->city }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $sellerDetail->state }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>{{ $sellerDetail->postal_code }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Credit Days</strong></td>
-                                                <td>{{ $seller_enq_data['credit_days'] }} Days</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $seller->getBusiness->name }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $seller->phone }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $sellerDetail->gst_number }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line One</dt>
+                                            <dd>{{ $sellerDetail->address_line_one }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line Two</dt>
+                                            <dd>{{ $sellerDetail->address_line_two }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $sellerDetail->city }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $sellerDetail->state }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ $sellerDetail->postal_code }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Credit Days</dt>
+                                            <dd>{{ $seller_enq_data['credit_days'] }} Days</dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -570,43 +556,41 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['company_name'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['phone'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['gst'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Address Line1</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['address_line_one'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Address Line2</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['address_line_two'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['state'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $enquiry_data->billing_address['city'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>{{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $enquiry_data->billing_address['company_name'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $enquiry_data->billing_address['phone'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $enquiry_data->billing_address['gst'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line1</dt>
+                                            <dd>{{ $enquiry_data->billing_address['address_line_one'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line2</dt>
+                                            <dd>{{ $enquiry_data->billing_address['address_line_two'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $enquiry_data->billing_address['state'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $enquiry_data->billing_address['city'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }}
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -619,43 +603,41 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['company_name'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['phone'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['gst'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Address Line1</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['address_line_one'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Address Line2</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['address_line_two'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['state'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $enquiry_data->consignee_detail['city'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>{{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['company_name'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['phone'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['gst'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line1</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['address_line_one'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line2</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['address_line_two'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['state'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['city'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : (isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : '') }}
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -669,30 +651,28 @@
                                 </div>
                                 <div class="card-body p-3">
                                     @if ($loading_address)
-                                        <table class="table table-sm table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Address Line One</strong></td>
-                                                    <td>{{ $loading_address->address_line_one }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Address Line Two</strong></td>
-                                                    <td>{{ $loading_address->address_line_two }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>City</strong></td>
-                                                    <td>{{ $loading_address->city }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>State</strong></td>
-                                                    <td>{{ $loading_address->state }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Pincode</strong></td>
-                                                    <td>{{ $loading_address->pincode }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <dl class="bz-kv-list">
+                                            <div>
+                                                <dt>Address Line One</dt>
+                                                <dd>{{ $loading_address->address_line_one }}</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Address Line Two</dt>
+                                                <dd>{{ $loading_address->address_line_two }}</dd>
+                                            </div>
+                                            <div>
+                                                <dt>City</dt>
+                                                <dd>{{ $loading_address->city }}</dd>
+                                            </div>
+                                            <div>
+                                                <dt>State</dt>
+                                                <dd>{{ $loading_address->state }}</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Pincode</dt>
+                                                <dd>{{ $loading_address->pincode }}</dd>
+                                            </div>
+                                        </dl>
                                     @endif
                                 </div>
                             </div>
@@ -708,34 +688,32 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-sm table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Basic Price</strong></td>
-                                                    <td>₹ {{ $custmoer_enq_data['base_price'] }} / Metric Ton</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Freight</strong></td>
-                                                    <td>₹ {{ $custmoer_enq_data['transport_price'] }} / Metric Ton</td>
-                                                </tr>
-                                                @if ($custmoer_enq_data['selected_quality'])
-                                                    <tr>
-                                                        <td><strong>Quality</strong></td>
-                                                        <td>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
-                                                            {{ $custmoer_enq_data['selected_quality']['price'] }}</td>
-                                                    </tr>
-                                                @endif
-                                                @if ($custmoer_enq_data['selected_packaging_charge'])
-                                                    <tr>
-                                                        <td><strong>Packaging</strong></td>
-                                                        <td>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }}
-                                                            : ₹
-                                                            {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
+                                        <dl class="bz-kv-list">
+                                            <div>
+                                                <dt>Basic Price</dt>
+                                                <dd>₹ {{ $custmoer_enq_data['base_price'] }} / Metric Ton</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Freight</dt>
+                                                <dd>₹ {{ $custmoer_enq_data['transport_price'] }} / Metric Ton</dd>
+                                            </div>
+                                            @if ($custmoer_enq_data['selected_quality'])
+                                                <div>
+                                                    <dt>Quality</dt>
+                                                    <dd>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
+                                                        {{ $custmoer_enq_data['selected_quality']['price'] }}</dd>
+                                                </div>
+                                            @endif
+                                            @if ($custmoer_enq_data['selected_packaging_charge'])
+                                                <div>
+                                                    <dt>Packaging</dt>
+                                                    <dd>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }}
+                                                        : ₹
+                                                        {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
+                                                    </dd>
+                                                </div>
+                                            @endif
+                                        </dl>
                                         <table class="table table-hover mt-3">
                                             <thead>
                                                 <tr>
@@ -759,7 +737,7 @@
                                                         <td>
                                                             ₹ {{ formatIndianNumber($variation['per_unit_price']) }} /
                                                             MT
-                                                            <button type="button" class="btn btn-xs btn-icon"
+                                                            <button type="button" class="btn btn-sm btn-icon"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#customerPriceCalculationModal{{ $loop->index }}"
                                                                 title="View Calculation">
@@ -820,7 +798,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button"
-                                                                        class="btn btn-secondary btn-xs"
+                                                                        class="btn btn-secondary btn-sm"
                                                                         data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                             </div>
@@ -841,34 +819,32 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-sm table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Basic Price</strong></td>
-                                                    <td>₹ {{ $seller_enq_data['base_price'] }} / Metric Ton</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Freight</strong></td>
-                                                    <td>₹ {{ $custmoer_enq_data['transport_price'] }} / Metric Ton</td>
-                                                </tr>
-                                                @if ($custmoer_enq_data['selected_quality'])
-                                                    <tr>
-                                                        <td><strong>Quality</strong></td>
-                                                        <td>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
-                                                            {{ $custmoer_enq_data['selected_quality']['price'] }}</td>
-                                                    </tr>
-                                                @endif
-                                                @if ($custmoer_enq_data['selected_packaging_charge'])
-                                                    <tr>
-                                                        <td><strong>Packaging</strong></td>
-                                                        <td>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }}
-                                                            : ₹
-                                                            {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
+                                        <dl class="bz-kv-list">
+                                            <div>
+                                                <dt>Basic Price</dt>
+                                                <dd>₹ {{ $seller_enq_data['base_price'] }} / Metric Ton</dd>
+                                            </div>
+                                            <div>
+                                                <dt>Freight</dt>
+                                                <dd>₹ {{ $custmoer_enq_data['transport_price'] }} / Metric Ton</dd>
+                                            </div>
+                                            @if ($custmoer_enq_data['selected_quality'])
+                                                <div>
+                                                    <dt>Quality</dt>
+                                                    <dd>{{ $custmoer_enq_data['selected_quality']['name'] }} : ₹
+                                                        {{ $custmoer_enq_data['selected_quality']['price'] }}</dd>
+                                                </div>
+                                            @endif
+                                            @if ($custmoer_enq_data['selected_packaging_charge'])
+                                                <div>
+                                                    <dt>Packaging</dt>
+                                                    <dd>{{ $custmoer_enq_data['selected_packaging_charge']['name'] }}
+                                                        : ₹
+                                                        {{ $custmoer_enq_data['selected_packaging_charge']['charge'] }}
+                                                    </dd>
+                                                </div>
+                                            @endif
+                                        </dl>
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -892,7 +868,7 @@
                                                         <td>
                                                             ₹ {{ formatIndianNumber($variation['per_unit_price']) }} /
                                                             MT
-                                                            <button type="button" class="btn btn-xs btn-icon"
+                                                            <button type="button" class="btn btn-sm btn-icon"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#sellerPriceCalculationModal{{ $loop->index }}"
                                                                 title="View Calculation">
@@ -950,7 +926,7 @@
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button"
-                                                                                class="btn btn-secondary btn-xs"
+                                                                                class="btn btn-secondary btn-sm"
                                                                                 data-bs-dismiss="modal">Close</button>
                                                                         </div>
                                                                     </div>
@@ -1169,30 +1145,28 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <div class="p-3 border rounded bg-light">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="fw-semibold text-muted">Total Amount</span>
-                                    <span class="fw-bold">₹
-                                        {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }}</span>
-                                </div>
-
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="fw-semibold text-muted">Paid Amount</span>
-                                    <span class="text-success fw-bold">₹
-                                        {{ formatIndianNumber($data->paid_amount) }}</span>
-                                </div>
-
-                                <hr class="my-2">
-
-                                <div class="d-flex justify-content-between">
-                                    <span class="fw-semibold text-muted">Remaining Amount</span>
-                                    <span class="text-danger fw-bold">
-                                        ₹
-                                        {{ formatIndianNumber($data->buyer_invoice_amount)
-                                            ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount)
-                                            : formatIndianNumber($data->due_amount) }}
-                                    </span>
-                                </div>
+                            <div class="bz-panel">
+                                <dl class="bz-kv-list">
+                                    <div>
+                                        <dt>Total Amount</dt>
+                                        <dd class="fw-bold">₹
+                                            {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Paid Amount</dt>
+                                        <dd class="text-success fw-bold">₹
+                                            {{ formatIndianNumber($data->paid_amount) }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Remaining Amount</dt>
+                                        <dd class="text-danger fw-bold">
+                                            ₹
+                                            {{ formatIndianNumber($data->buyer_invoice_amount)
+                                                ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount)
+                                                : formatIndianNumber($data->due_amount) }}
+                                        </dd>
+                                    </div>
+                                </dl>
                             </div>
                         </div>
                         <div class="col-6 text-end">
@@ -1223,33 +1197,37 @@
                                     @if ($data->quality_check_image && count($data->quality_check_image) > 0)
                                         @foreach ($data->quality_check_image as $check_image)
                                             <a href="{{ imageUrl($check_image) }}" target="_blank">
-                                                <img src="{{ imageUrl($check_image) }}" class="img-thumbnail mr-1"
+                                                <img src="{{ imageUrl($check_image) }}" class="img-thumbnail"
                                                     alt="Quality Check Image" title="Quality Check Image">
                                             </a>
                                         @endforeach
                                     @else
                                         <div class="text-center p-4">
-                                            <button class="btn btn-inverse-primary btn-xs" type="button"
+                                            <button class="btn btn-sm btn-inverse-primary" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#fileUploadModal"
                                                 wire:click="setUploadType('quality_check_image')">Upload</button>
                                         </div>
                                     @endif
                                 </div>
-                                <div class="card-footer">
-                                    Quality Check
-                                    @if ($data->quality_check_image_status && $data->quality_check_image_status != 'pending')
-                                        <span
-                                            class="badge {{ $data->quality_check_image_status == 'approved' ? 'bg-success' : 'bg-danger' }}">
-                                            {{ ucfirst($data->quality_check_image_status) }} </span>
-                                        By {{ ucfirst($data->quality_check_image_status_updated_by) }}
-                                    @endif
+                                <div class="card-footer d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <span>
+                                        Quality Check
+                                        @if ($data->quality_check_image_status && $data->quality_check_image_status != 'pending')
+                                            <span
+                                                class="bz-status {{ $data->quality_check_image_status == 'approved' ? 'bz-status--success' : 'bz-status--danger' }}">
+                                                {{ ucfirst($data->quality_check_image_status) }} </span>
+                                            By {{ ucfirst($data->quality_check_image_status_updated_by) }}
+                                        @endif
+                                    </span>
                                     @if (!$data->quality_check_image_status || $data->quality_check_image_status == 'pending')
-                                        <button class="btn p-0 float-end ms-1" title="Rejected"
-                                            wire:click="qualityCheckImageStatus('rejected')"><i
-                                                class="bi bi-x-square-fill text-danger"></i></button>
-                                        <button class="btn p-0 float-end" title="Approved"
-                                            wire:click="qualityCheckImageStatus('approved')"><i
-                                                class="bi bi-check-square-fill text-success"></i></button>
+                                        <span class="d-flex align-items-center gap-1">
+                                            <button class="btn btn-icon btn-sm btn-secondary" title="Approved"
+                                                wire:click="qualityCheckImageStatus('approved')"><i
+                                                    class="bi bi-check-lg"></i></button>
+                                            <button class="btn btn-icon btn-sm btn-danger" title="Rejected"
+                                                wire:click="qualityCheckImageStatus('rejected')"><i
+                                                    class="bi bi-x-lg"></i></button>
+                                        </span>
                                     @endif
                                 </div>
                             </div>
@@ -1266,7 +1244,7 @@
                                         </a>
                                     @else
                                         <div class="text-center p-4">
-                                            <button class="btn btn-inverse-primary btn-xs" type="button"
+                                            <button class="btn btn-sm btn-inverse-primary" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#fileUploadModal"
                                                 wire:click="setUploadType('quality_check_certificate')">Upload</button>
                                         </div>
@@ -1279,21 +1257,21 @@
                         </div>
 
                         <div class="col-md-4">
-                            <div class="form-group">
-                                <div class="d-flex justify-content-between align-items-center gap-10 form-control">
-                                    <span class="fs-5">
+                            <div class="bz-toggle-row">
+                                <span class="bz-toggle-row__label">
+                                    <label class="form-label mb-0" for="customer_quality_check_visibility">
                                         Customer Quality Check Visibility
-                                        <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            title="It enable product order quality check visible to customer.">
-                                            <i class="bi bi-info-circle"></i>
-                                        </span>
+                                    </label>
+                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="It enable product order quality check visible to customer.">
+                                        <i class="bi bi-info-circle"></i>
                                     </span>
-                                    <div class="form-check form-switch">
-                                        <input type="checkbox" class="form-check-input"
-                                            wire:click="customerQualityCheck()"
-                                            {{ $data->customer_quality_check_visibility ? 'checked' : '' }}>
-                                    </div>
+                                </span>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input"
+                                        id="customer_quality_check_visibility" wire:click="customerQualityCheck()"
+                                        {{ $data->customer_quality_check_visibility ? 'checked' : '' }}>
                                 </div>
                             </div>
                         </div>
@@ -1302,15 +1280,16 @@
                     <div class="row mt-3">
                         <div class="col-md-12 mb-2">
                             <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <div class="card-title mb-0">
-                                        <h5 class="mb-0">Buyer Invoice List</h5>
-                                    </div>
+                                <div
+                                    class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <h5 class="mb-0">Buyer Invoice List</h5>
                                     @if ($data->getDrivers->sum('amount') == 0)
-                                        <button type="button" class="btn btn-secondary btn-xs btn-icon-text"
-                                            data-bs-toggle="modal" data-bs-target="#invoiceModal">
-                                            <i class="bi bi-receipt-cutoff btn-icon-prepend"></i>Add Invoice
-                                        </button>
+                                        <div class="bz-toolbar">
+                                            <button type="button" class="btn btn-secondary btn-sm"
+                                                data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                                                <i class="bi bi-receipt-cutoff"></i>Add Invoice
+                                            </button>
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="card-body">
@@ -1508,9 +1487,9 @@
                                                         </tr>
                                                     @endforeach
                                                 @else
-                                                    <tr>
-                                                        <td colspan="15" class="text-center">No Invoices Found</td>
-                                                    </tr>
+                                                    <x-table-no-data colspan="10" icon="bi-receipt"
+                                                        title="No invoices yet"
+                                                        text="No invoices have been added for this order." />
                                                 @endif
                                             </tbody>
                                         </table>
@@ -1523,15 +1502,16 @@
                     <div class="row mt-3">
                         <div class="col-md-12 mb-2">
                             <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <div class="card-title mb-0">
-                                        <h5 class="mb-0">Seller Invoice List</h5>
-                                    </div>
+                                <div
+                                    class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <h5 class="mb-0">Seller Invoice List</h5>
                                     @if ($data->getDrivers->sum('amount') == 0)
-                                        <button type="button" class="btn btn-secondary btn-xs btn-icon-text"
-                                            data-bs-toggle="modal" data-bs-target="#sellerInvoiceModal">
-                                            <i class="bi bi-receipt-cutoff btn-icon-prepend"></i>Add Invoice
-                                        </button>
+                                        <div class="bz-toolbar">
+                                            <button type="button" class="btn btn-secondary btn-sm"
+                                                data-bs-toggle="modal" data-bs-target="#sellerInvoiceModal">
+                                                <i class="bi bi-receipt-cutoff"></i>Add Invoice
+                                            </button>
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="card-body">
@@ -1736,9 +1716,9 @@
                                                         </tr>
                                                     @endforeach
                                                 @else
-                                                    <tr>
-                                                        <td colspan="15" class="text-center">No Invoices Found</td>
-                                                    </tr>
+                                                    <x-table-no-data colspan="10" icon="bi-receipt"
+                                                        title="No invoices yet"
+                                                        text="No invoices have been added for this order." />
                                                 @endif
                                             </tbody>
                                         </table>
@@ -1751,15 +1731,16 @@
                     <div class="row mt-3">
                         <div class="col-md-12 mb-2">
                             <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <div class="card-title mb-0">
-                                        <h5 class="mb-0">Transporter Invoice List</h5>
-                                    </div>
+                                <div
+                                    class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <h5 class="mb-0">Transporter Invoice List</h5>
                                     @if ($data->getDrivers->sum('amount') == 0)
-                                        <button type="button" class="btn btn-secondary btn-xs btn-icon-text"
-                                            data-bs-toggle="modal" data-bs-target="#transporterInvoiceModal">
-                                            <i class="bi bi-receipt-cutoff btn-icon-prepend"></i>Add Invoice
-                                        </button>
+                                        <div class="bz-toolbar">
+                                            <button type="button" class="btn btn-secondary btn-sm"
+                                                data-bs-toggle="modal" data-bs-target="#transporterInvoiceModal">
+                                                <i class="bi bi-receipt-cutoff"></i>Add Invoice
+                                            </button>
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="card-body">
@@ -1869,9 +1850,9 @@
                                                         </tr>
                                                     @endforeach
                                                 @else
-                                                    <tr>
-                                                        <td colspan="15" class="text-center">No Invoices Found</td>
-                                                    </tr>
+                                                    <x-table-no-data colspan="10" icon="bi-receipt"
+                                                        title="No invoices yet"
+                                                        text="No invoices have been added for this order." />
                                                 @endif
                                             </tbody>
                                         </table>
@@ -1882,23 +1863,15 @@
                     </div>
 
                     <div class="card mt-3">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="card-title">
-                                        <h5>Vehicle List</h5>
-                                    </div>
-                                </div>
-                                <div class="col-4 float-end">
-                                    <a href="{{ route('admin.commodity-product-order-driver.create', $data->id) }}"
-                                        class="btn btn-secondary btn-xs btn-icon-text float-end align-items-center"
-                                        wire:navigate><i class="bi bi-plus-lg btn-icon-prepend"></i>Add</a>
-                                    <button type="button"
-                                        class="btn btn-light btn-xs btn-icon-text float-end align-items-center me-2"
-                                        data-bs-toggle="modal" data-bs-target="#notesModal">
-                                        <i class="bi bi-journal-text btn-icon-prepend"></i>Notes
-                                    </button>
-                                </div>
+                        <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <h5>Vehicle List</h5>
+                            <div class="bz-toolbar">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#notesModal">
+                                    <i class="bi bi-journal-text"></i>Notes
+                                </button>
+                                <a href="{{ route('admin.commodity-product-order-driver.create', $data->id) }}"
+                                    class="btn btn-danger btn-sm" wire:navigate><i class="bi bi-plus-lg"></i>Add</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -1908,7 +1881,7 @@
                                         <div class="card rounded">
                                             <div class="card-body p-3">
                                                 <div class="text-center mb-1">
-                                                    <img class="wd-70 rounded-circle profile-img"
+                                                    <img class="bz-avatar-img bz-avatar-img--lg"
                                                         src="{{ imageUrl($driver->photo) }}"
                                                         onerror="this.onerror=null; this.src='{{ asset('admin_css/assets/images/avatar.png') }}'"
                                                         alt="profile">
@@ -1917,20 +1890,20 @@
                                                     <h6 class="card-title mb-0">{{ $driver->vehicle_number }}</h6>
                                                 </div>
                                                 <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Transporter
+                                                    <label class="bz-section-label">Transporter
                                                         Name:</label>
                                                     <p class="text-muted">{{ $driver->transporter_name ?? '--' }}</p>
                                                 </div>
 
                                                 <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Transporter
+                                                    <label class="bz-section-label">Transporter
                                                         Phone Number:</label>
                                                     <p class="text-muted">
                                                         {{ $driver->transporter_phone_number ?? '--' }}</p>
                                                 </div>
 
                                                 <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Total
+                                                    <label class="bz-section-label">Total
                                                         Quantity:</label>
                                                     <p class="text-muted">
                                                         {{ $driver->final_quantity_by_seller ? array_sum($driver->final_quantity_by_seller) : 0 }}
@@ -1938,32 +1911,32 @@
                                                 </div>
 
                                                 <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Amount:</label>
+                                                    <label class="bz-section-label">Amount:</label>
                                                     <p class="text-muted">
                                                         {{ formatIndianNumber($driver->amount) ?? 0 }}</p>
                                                 </div>
 
                                                 <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Driver
+                                                    <label class="bz-section-label">Driver
                                                         Name:</label>
                                                     <p class="text-muted">{{ $driver->name ?? '--' }}</p>
                                                 </div>
 
                                                 <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Driver Phone
+                                                    <label class="bz-section-label">Driver Phone
                                                         Number:</label>
                                                     <p class="text-muted">{{ $driver->phone }}</p>
                                                 </div>
 
                                                 <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Tracking
+                                                    <label class="bz-section-label">Tracking
                                                         Number:</label>
                                                     <p class="text-muted">{{ $driver->tracking_number ?? '--' }}</p>
                                                 </div>
 
 
                                                 <div class="mt-1">
-                                                    <label class="tx-11 fw-bolder mb-0 text-uppercase">Advance
+                                                    <label class="bz-section-label">Advance
                                                         Amount:</label>
                                                     <p class="text-muted">₹
                                                         {{ formatIndianNumber($driver->advance_amount) ?? '--' }}</p>
@@ -1971,30 +1944,30 @@
                                             </div>
                                             <div class="card-footer p-1">
                                                 <a href="{{ route('admin.commodity-product-order-driver.show', [$data->id, $driver->id]) }}"
-                                                    class="btn btn-icon border btn-xs m-1 btn-light" title="View"
+                                                    class="btn btn-icon btn-sm m-1 btn-secondary" title="View"
                                                     wire:navigate>
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                                 <a href="{{ route('admin.commodity-product-order-driver.edit', [$data->id, $driver->id]) }}"
-                                                    class="btn btn-icon border btn-xs m-1 btn-info" title="Edit"
+                                                    class="btn btn-icon btn-sm m-1 btn-secondary" title="Edit"
                                                     wire:navigate>
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
                                                 <a href="javascript:;"
-                                                    class="btn btn-icon border btn-xs m-1 btn-danger" title="Remove"
+                                                    class="btn btn-icon btn-sm m-1 btn-danger" title="Remove"
                                                     wire:click="driverDelete({{ $driver->id }})">
                                                     <i class="bi bi-trash3"></i>
                                                 </a>
                                                 @if ($driver->generate_invoice)
                                                     <button type="button"
-                                                        class="btn btn-icon border btn-xs m-1 btn-success"
+                                                        class="btn btn-icon btn-sm m-1 btn-secondary"
                                                         title="Print Invoice"
                                                         wire:click="generateInvoice({{ $driver->id }})">
                                                         <i class="bi bi-printer"></i>
                                                     </button>
                                                 @else
                                                     <button type="button"
-                                                        class="btn btn-icon border btn-xs m-1 btn-primary"
+                                                        class="btn btn-icon btn-sm m-1 btn-secondary"
                                                         title="Generate Invoice" type="button"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#invoiceGenrateModal_{{ $driver->id }}">
@@ -2002,16 +1975,16 @@
                                                     </button>
                                                 @endif
                                                 <button type="button"
-                                                    class="btn btn-icon border btn-xs m-1 btn-primary" title="eBill"
+                                                    class="btn btn-icon btn-sm m-1 btn-secondary" title="eBill"
                                                     type="button" data-bs-toggle="modal"
                                                     data-bs-target="#eBillModal_{{ $driver->id }}">
                                                     <i class="bi bi-receipt"></i>
                                                 </button>
 
                                                 <a href="{{ route('admin.commodity-product-order-driver.quantity', [$data->id, $driver->id]) }}"
-                                                    class="btn btn-secondary btn-xs btn-icon-text m-1" title="View"
+                                                    class="btn btn-secondary btn-sm m-1" title="View"
                                                     wire:navigate>
-                                                    <i class="bi bi-clipboard2-data btn-icon-prepend"></i> Update
+                                                    <i class="bi bi-clipboard2-data"></i> Update
                                                     Quantity / Invoice
                                                 </a>
 
@@ -2036,17 +2009,17 @@
                                                         <div>
                                                             <div class="form-check form-check-inline">
                                                                 <input type="radio" class="form-check-input"
-                                                                    name="generate_invoice" id="seller"
+                                                                    name="generate_invoice_{{ $driver->id }}" id="generate_invoice_seller_{{ $driver->id }}"
                                                                     value="seller" wire:model="generate_invoice">
-                                                                <label class="form-check-label" for="seller">
+                                                                <label class="form-check-label" for="generate_invoice_seller_{{ $driver->id }}">
                                                                     By Seller
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
                                                                 <input type="radio" class="form-check-input"
-                                                                    name="generate_invoice" id="biznie"
+                                                                    name="generate_invoice_{{ $driver->id }}" id="generate_invoice_biznie_{{ $driver->id }}"
                                                                     value="biznie" wire:model="generate_invoice">
-                                                                <label class="form-check-label" for="biznie">
+                                                                <label class="form-check-label" for="generate_invoice_biznie_{{ $driver->id }}">
                                                                     By Biznie
                                                                 </label>
                                                             </div>
@@ -2056,9 +2029,9 @@
                                                         @enderror
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="reset" class="btn btn-danger btn-xs"
+                                                        <button type="reset" class="btn btn-secondary btn-sm"
                                                             data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary btn-xs"
+                                                        <button type="submit" class="btn btn-danger btn-sm"
                                                             data-bs-dismiss="modal">Save</button>
                                                     </div>
                                                 </form>
@@ -2079,10 +2052,12 @@
                                                         {{-- <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button> --}}
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="file" id="eBill_file"
+                                                        <label class="form-label"
+                                                            for="eBill_file_{{ $driver->id }}">eBill File</label>
+                                                        <input type="file" id="eBill_file_{{ $driver->id }}"
                                                             class="form-control @error('eBill_file') is-invalid @enderror"
                                                             wire:model="eBill_file">
-                                                        <label for="eBill_file">
+                                                        <label for="eBill_file_{{ $driver->id }}">
                                                             @if ($eBill_file)
                                                                 @php
                                                                     $extension = strtolower(
@@ -2122,10 +2097,10 @@
                                                         @enderror
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="reset" class="btn btn-danger btn-xs"
+                                                        <button type="reset" class="btn btn-secondary btn-sm"
                                                             data-bs-dismiss="modal">Close</button>
                                                         <button type="submit"
-                                                            class="btn btn-primary btn-xs">Save</button>
+                                                            class="btn btn-danger btn-sm">Save</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -2150,15 +2125,19 @@
                         {{-- <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button> --}}
                     </div>
                     <div class="modal-body">
-                        <input type="file" class="form-control @error('uploaded_file') is-invalid @enderror"
-                            wire:model="uploaded_file">
-                        @error('uploaded_file')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                        <div class="mb-3">
+                            <label class="form-label" for="uploaded_file">File</label>
+                            <input type="file" id="uploaded_file"
+                                class="form-control @error('uploaded_file') is-invalid @enderror"
+                                wire:model="uploaded_file">
+                            @error('uploaded_file')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="reset" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                        <button type="reset" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Save</button>
                     </div>
                 </form>
             </div>
@@ -2174,12 +2153,15 @@
                         <h1 class="modal-title fs-5" id="notesModalLabel">Vehicle Notes</h1>
                     </div>
                     <div class="modal-body">
-                        <textarea class="form-control" cols="30" rows="10" placeholder="Enter Vehicle Notes..."
-                            wire:model="vehicle_notes"></textarea>
+                        <div class="mb-3">
+                            <label class="form-label" for="vehicle_notes">Vehicle Notes</label>
+                            <textarea class="form-control" id="vehicle_notes" cols="30" rows="10" placeholder="Enter Vehicle Notes..."
+                                wire:model="vehicle_notes"></textarea>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Save</button>
                     </div>
                 </form>
             </div>
@@ -2294,8 +2276,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Save</button>
                     </div>
                 </form>
             </div>
@@ -2413,8 +2395,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Save</button>
                     </div>
                 </form>
             </div>
@@ -2537,8 +2519,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-xs" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Save</button>
                     </div>
                 </form>
             </div>

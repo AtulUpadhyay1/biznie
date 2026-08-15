@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.credit-wallet-request.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.credit-wallet-request.index')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <form wire:submit.prevent="{{ isset($hidden_id) ? 'update()' : 'save()' }}">
@@ -54,11 +50,11 @@
                                 @if ($document_type)
                                     @foreach ($forms ?? [] as $index => $form)
                                         <div class="col-md-4 mb-3">
-                                            <label class="form-label">{{ $form['label'] }} @if($form['required'])<span class="text-danger">*</span>@endif</label>
+                                            <label class="form-label" for="form_value_{{ $index }}">{{ $form['label'] }} @if($form['required'])<span class="text-danger">*</span>@endif</label>
                                             @if($form['type'] == 'file')
-                                                <input type="file" class="form-control" wire:model="form_values.{{ $index }}" @if($form['required']) required @endif>
+                                                <input type="file" id="form_value_{{ $index }}" class="form-control" wire:model="form_values.{{ $index }}" @if($form['required']) required @endif>
                                             @else
-                                                <input type="{{ $form['type'] }}" class="form-control" placeholder="Enter {{ $form['label'] }}" wire:model="form_values.{{ $index }}" @if($form['required']) required @endif>
+                                                <input type="{{ $form['type'] }}" id="form_value_{{ $index }}" class="form-control" placeholder="Enter {{ $form['label'] }}" wire:model="form_values.{{ $index }}" @if($form['required']) required @endif>
                                             @endif
                                             <small class="form-text text-muted">{{ $form['description'] }}</small>
                                             @error('form_values.'.$index) <small class="text-danger">{{ $message }}</small>@enderror
@@ -69,7 +65,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="reference_number">Reference Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control  @error('reference_number') is-invalid @enderror" id="reference_number" wire:model="reference_number" placeholder="Enter Reference Number">
+                                <input type="text" class="form-control @error('reference_number') is-invalid @enderror" id="reference_number" wire:model="reference_number" placeholder="Enter Reference Number">
                                 @error('reference_number')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -119,7 +115,7 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-12 text-end">
-                                <x-submit-btn text=" Save" />
+                                <x-submit-btn text="Save" />
                             </div>
                         </div>
                     </div>

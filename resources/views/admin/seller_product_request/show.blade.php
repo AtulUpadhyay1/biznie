@@ -6,7 +6,7 @@
             'approved' => 'success',
             'rejected' => 'danger',
             'pending_review' => 'warning',
-            default => 'secondary',
+            default => 'muted',
         };
         $images = is_array($requestRecord->images ?? null) ? $requestRecord->images : [];
         $physical = is_array($requestRecord->physical_specification ?? null) ? $requestRecord->physical_specification : [];
@@ -19,19 +19,7 @@
         $quality = is_array($requestRecord->quality ?? null) ? implode(', ', $requestRecord->quality) : ($requestRecord->quality ?? '--');
     @endphp
 
-    <style>
-        .sr-gradient-card { border: 0; border-radius: 16px; background: linear-gradient(135deg, #f8fff8 0%, #f2f8ff 100%); box-shadow: 0 8px 24px rgba(20, 33, 61, 0.08); }
-        .sr-soft-card { border: 1px solid #e8edf3; border-radius: 14px; box-shadow: 0 4px 14px rgba(17, 24, 39, 0.04); }
-        .sr-section-title { font-size: 1rem; font-weight: 700; color: #15223b; margin-bottom: 14px; }
-        .sr-kv { border: 1px solid #eef1f6; border-radius: 10px; padding: 10px 12px; height: 100%; background: #fff; }
-        .sr-kv-label { font-size: .75rem; color: #64748b; text-transform: uppercase; letter-spacing: .02em; margin-bottom: 3px; }
-        .sr-kv-value { font-size: .92rem; color: #0f172a; font-weight: 600; line-height: 1.35; word-break: break-word; }
-        .sr-thumb { width: 84px; height: 84px; object-fit: cover; border-radius: 10px; border: 1px solid #e8edf3; }
-        .sr-timeline-item { position: relative; padding-left: 22px; }
-        .sr-timeline-item::before { content: ''; position: absolute; left: 0; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: #198754; }
-        .sr-timeline-item::after { content: ''; position: absolute; left: 4px; top: 20px; width: 2px; height: calc(100% - 12px); background: #dbe3ee; }
-        .sr-timeline-item:last-child::after { display: none; }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
 
     <div class="row">
         <div class="col-12">
@@ -42,20 +30,20 @@
                             <h3 class="mb-1">Product Request Review</h3>
                             <div class="text-muted">Review the submitted product and approve or reject it.</div>
                         </div>
-                        <a href="{{ route('admin.seller-product-request.index') }}" class="btn btn-outline-danger btn-sm" wire:navigate>
-                            <i class="fa fa-arrow-left me-1"></i> Back to List
+                        <a href="{{ route('admin.seller-product-request.index') }}" class="btn btn-secondary btn-sm" wire:navigate>
+                            <i class="bi bi-arrow-left"></i> Back to List
                         </a>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">Reference</div><div class="sr-kv-value">{{ $requestRecord->request_reference ?? 'Draft' }}</div></div></div>
-                        <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">Status</div><div class="sr-kv-value"><span class="badge text-bg-{{ $statusBadgeClass }} text-uppercase px-3 py-2">{{ str_replace('_', ' ', $requestRecord->request_status ?? 'draft') }}</span></div></div></div>
+                        <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">Status</div><div class="sr-kv-value"><span class="bz-status bz-status--{{ $statusBadgeClass }}">{{ str_replace('_', ' ', $requestRecord->request_status ?? 'draft') }}</span></div></div></div>
                         <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">Seller</div><div class="sr-kv-value">{{ $requestRecord->getUser?->name ?? '--' }}</div></div></div>
                         <div class="col-md-3"><div class="sr-kv"><div class="sr-kv-label">Submitted</div><div class="sr-kv-value">{{ $requestRecord->submitted_at ? dateFormat($requestRecord->submitted_at) : '--' }}</div></div></div>
                     </div>
 
                     @if (session('success'))
-                        <div class="alert alert-success border-0 shadow-sm mb-4"><i class="fa fa-check-circle me-1"></i> {{ session('success') }}</div>
+                        <div class="alert alert-success border-0 shadow-sm mb-4"><i class="bi bi-check-circle me-1"></i> {{ session('success') }}</div>
                     @endif
 
                     <div class="row g-3">
@@ -190,16 +178,16 @@
                                     <h5 class="sr-section-title mb-2">Review Action</h5>
                                     <p class="text-muted small mb-3">Add a clear reason for approval or rejection for better audit history.</p>
                                     <div class="mb-3">
-                                        <label class="form-label">Review Note / Rejection Reason</label>
-                                        <textarea class="form-control" rows="5" wire:model.live="reviewNote" placeholder="Write your note here..."></textarea>
+                                        <label class="form-label" for="reviewNote">Review Note / Rejection Reason</label>
+                                        <textarea class="form-control" id="reviewNote" rows="5" wire:model.live="reviewNote" placeholder="Write your note here..."></textarea>
                                         @error('reviewNote') <small class="text-danger">{{ $message }}</small> @enderror
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="button" class="btn btn-success" wire:click="approve" @disabled(($requestRecord->request_status ?? '') === 'approved')>
-                                            <i class="fa fa-check me-1"></i> Approve & Publish
+                                        <button type="button" class="btn btn-danger btn-sm" wire:click="approve" @disabled(($requestRecord->request_status ?? '') === 'approved')>
+                                            <i class="bi bi-check-lg"></i> Approve & Publish
                                         </button>
-                                        <button type="button" class="btn btn-outline-danger" wire:click="reject">
-                                            <i class="fa fa-times me-1"></i> Reject Product
+                                        <button type="button" class="btn btn-secondary btn-sm" wire:click="reject">
+                                            <i class="bi bi-x-lg"></i> Reject Product
                                         </button>
                                     </div>
                                 </div>

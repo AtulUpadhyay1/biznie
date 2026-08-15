@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.commodity-product.index')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <form wire:submit.prevent="save()">
@@ -24,8 +20,8 @@
                                         <th>#</th>
                                         @foreach ($selected_attributes as $attribute)
                                             <th class="text-center">
-                                                {{getAttribute($attribute)->name}} <br> <hr style="margin: 3px; border: 0; border-top: 1px solid; opacity: 1.1;">
-                                                <select class="form-control form-control-sm text-center" wire:model="unit.{{getAttribute($attribute)->name}}" wire:change="updateUnit()">
+                                                {{getAttribute($attribute)->name}} <br><hr>
+                                                <select class="form-select form-select-sm text-center" wire:model="unit.{{getAttribute($attribute)->name}}" wire:change="updateUnit()">
                                                     <option value="">Select Unit</option>
                                                     @foreach ($unit_list as $unit_data)
                                                         <option value="{{$unit_data->id}}">{{$unit_data->name}} ({{$unit_data->short_name}})</option>
@@ -51,16 +47,16 @@
                                             <td>
                                                 <div class="text-center">
                                                     @if ($variation->is_default == 1)
-                                                        <span class="badge border border-primary text-primary">Default</span>
+                                                        <span class="bz-status bz-status--info">Default</span>
                                                     @else
-                                                        <button type="button" class="btn btn-inverse-primary btn-sm btn-icon" wire:click="makeDefaultVariation({{$variation->id}})" title="Make Default"><i class="bi bi-check2-circle"></i></button>
+                                                        <button type="button" class="btn btn-sm btn-inverse-primary btn-icon" wire:click="makeDefaultVariation({{$variation->id}})" title="Make Default"><i class="bi bi-check2-circle"></i></button>
                                                     @endif
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <div class="text-center">
-                                                    <button type="button" class="btn btn-inverse-danger btn-sm btn-icon" wire:click="removeVariation({{$variation->id}})" title="Remove Variation"><i class="bi bi-x-circle"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-inverse-danger btn-icon" wire:click="removeVariation({{$variation->id}})" title="Remove Variation"><i class="bi bi-x-circle"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -80,7 +76,7 @@
                                 </tbody>
                             </table>
                             <div>
-                                <button type="button" class="btn btn-inverse-success btn-sm py-1" wire:click="addVariation(false)" title="Add Field">Add More</button>
+                                <button type="button" class="btn btn-sm btn-inverse-success" wire:click="addVariation(false)" title="Add Field"><i class="bi bi-plus-lg"></i>Add More</button>
                             </div>
                         </div>
                     </div>

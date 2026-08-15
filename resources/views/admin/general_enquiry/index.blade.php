@@ -3,22 +3,15 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>
-                                {{ $page_title }}
-                            </h4>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
 
-                        <div class="col-6">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <div class="custom-search-bar">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                        <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
-                                    </div>
-                                </div>
+                    <div class="bz-toolbar">
+                        <div class="custom-search-bar">
+                            <label class="bz-filter-label" for="general_enquiry_search">Search enquiries</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" id="general_enquiry_search" class="form-control" placeholder="Search here..." wire:model.live="search">
                             </div>
                         </div>
                     </div>
@@ -41,27 +34,27 @@
                             <tbody>
                                 @forelse ($list as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>{{ $data->unique_id }}</td>
                                         <td>{{ $data->getBrand?->name }}</td>
                                         <td>{{ $data->getSellerCommodityProduct?->name}}</td>
                                         <td>
-                                            {{ $data->company_name }}<br>
-                                            <small>{{ $data->name }}</small>
+                                            <div class="bz-cell-title">{{ $data->company_name }}</div>
+                                            <div class="bz-cell-sub">{{ $data->name }}</div>
                                         </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td>
-                                            {{ ucfirst($data->status) }}
+                                            <span class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--success') }}">{{ ucfirst($data->status) }}</span>
                                             @if ($data->status == 'ordered' && $data->getCommodityProductOrder)
                                                 <br><small><a href="{{route('admin.commodity-product-order.show', $data->getCommodityProductOrder->id)}}" wire:navigate>{{ $data->getCommodityProductOrder->order_id }}</a></small>
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            <a type="button" id="ActionBtn{{$data->id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-light btn-xs px-2">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-dark"></i>
+                                            <a class="bz-row-action" type="button" id="ActionBtn{{$data->id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn{{$data->id}}">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.general-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a class="dropdown-item" href="{{route('admin.general-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye"></i><span>View</span></a>
 
                                             </div>
                                         </td>
@@ -71,7 +64,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <div class="float-end">
+                        <div class="bz-pagination">
                             {{ $list->links() }}
                         </div>
                     </div>

@@ -1,30 +1,14 @@
 <div>
     @section('title', config('app.name') . ' | '.$page_title)
-    <style>
-        .select2-container--default .select2-selection--single{
-            height: 42px !important;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            top: 8px;
-        }
-
-        .select2.is-invalid {
-            border-color: #dc3545 !important; /* Set the border color to the invalid state color */
-        }
-
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     <div class="row">
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.seller-product.index', $user_id)}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.seller-product.index', $user_id)}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
             </div>
@@ -40,7 +24,7 @@
 
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label class="packaging_type">Packaging Type</label>
+                                    <label class="form-label" for="packaging_type">Packaging Type</label>
                                     <select class="form-select select2 @error('packaging_type') is-invalid @enderror" id="packaging_type" wire:model="packaging_type" data-placeholder="Select packaging type" multiple>
                                         @foreach ($packaging_type_list as $packaging_type_data)
                                             <option value="{{ $packaging_type_data->id }}">{{ $packaging_type_data->name }}</option>
@@ -52,15 +36,13 @@
 
                             @foreach ($packaging_type_name as $packaging_types)
                                 <div class="col-md-4 mb-3">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">{{$packaging_types}}</span>
-                                        <input type="number" class="form-control " placeholder="Enter {{$packaging_types}} Price" wire:model="packaging_type_price.{{$loop->iteration}}">
-                                    </div>
+                                    <label class="form-label" for="packaging_type_price_{{$loop->iteration}}">{{$packaging_types}}</label>
+                                    <input type="number" class="form-control" id="packaging_type_price_{{$loop->iteration}}" placeholder="Enter {{$packaging_types}} Price" wire:model="packaging_type_price.{{$loop->iteration}}">
                                 </div>
                             @endforeach
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label for="city" class="form-label">Commission Type <span class="text-danger">*</span></label>
+                                    <label for="commission_type" class="form-label">Commission Type <span class="text-danger">*</span></label>
                                     <div>
                                         <div class="form-check form-check-inline">
                                             <input type="radio" class="form-check-input" name="commission_type" id="commission_type" wire:model="commission_type" value="exclude">
@@ -84,29 +66,31 @@
                                 </div>
                             </div>
 
-                            <p class="h5">Update Loading Address <button class="btn btn-primary btn-xs float-end mb-1" type="button">Add</button></p>
-                            <hr>
+                            <div class="col-12 mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <h5 class="bz-section-label mb-0">Update Loading Address</h5>
+                                <button class="btn btn-secondary btn-sm" type="button"><i class="bi bi-plus-lg"></i>Add</button>
+                            </div>
 
                             @foreach ($loading_address as $address)
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
-                                        <label for="pin_code" class="form-label">Pincode</label>
-                                        <input type="number" class="form-control @error('pin_code') is-invalid @enderror" id="pin_code" placeholder="Enter product pin code" wire:model="loading_address.{{$loop->index }}.pin_code">
+                                        <label for="pin_code_{{$loop->index }}" class="form-label">Pincode</label>
+                                        <input type="number" class="form-control @error('pin_code') is-invalid @enderror" id="pin_code_{{$loop->index }}" placeholder="Enter product pin code" wire:model="loading_address.{{$loop->index }}.pin_code">
                                         @error('pin_code') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        <label for="address_line_one" class="form-label">Address Line 1 (Plot No/House No/Street)</label>
-                                        <input type="text" class="form-control @error('address_line_one') is-invalid @enderror" id="address_line_one" placeholder="Enter product pin code" wire:model="loading_address.{{$loop->index }}.address_line_one">
+                                        <label for="address_line_one_{{$loop->index }}" class="form-label">Address Line 1 (Plot No/House No/Street)</label>
+                                        <input type="text" class="form-control @error('address_line_one') is-invalid @enderror" id="address_line_one_{{$loop->index }}" placeholder="Enter product pin code" wire:model="loading_address.{{$loop->index }}.address_line_one">
                                         @error('address_line_one') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        <label for="address_line_two" class="form-label">Address Line 2 (Area)</label>
-                                        <input type="text" class="form-control @error('address_line_two') is-invalid @enderror" id="address_line_two" placeholder="Enter product pin code" wire:model="loading_address.{{$loop->index }}.address_line_two">
+                                        <label for="address_line_two_{{$loop->index }}" class="form-label">Address Line 2 (Area)</label>
+                                        <input type="text" class="form-control @error('address_line_two') is-invalid @enderror" id="address_line_two_{{$loop->index }}" placeholder="Enter product pin code" wire:model="loading_address.{{$loop->index }}.address_line_two">
                                         @error('address_line_two') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        <label for="loading_position" class="form-label">Loading Position (In Days)</label>
-                                        <input type="number" class="form-control @error('loading_position') is-invalid @enderror" id="loading_position" placeholder="Enter product pin code" wire:model="loading_address.{{$loop->index }}.loading_position">
+                                        <label for="loading_position_{{$loop->index }}" class="form-label">Loading Position (In Days)</label>
+                                        <input type="number" class="form-control @error('loading_position') is-invalid @enderror" id="loading_position_{{$loop->index }}" placeholder="Enter product pin code" wire:model="loading_address.{{$loop->index }}.loading_position">
                                         @error('loading_position') <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                 </div>

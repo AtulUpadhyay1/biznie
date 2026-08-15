@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.credit-wallet-request.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.credit-wallet-request.index')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -25,20 +21,20 @@
                                     <div class="card-body">
                                         @foreach ($data->form_data as $key => $form_value)
                                             <div class="mb-3">
-                                                <label class="form-label">{{ $form_value['label'] }} @if($form_value['required'])<span class="text-danger">*</span>@endif</label>
+                                                <label class="form-label" for="form_data_{{ $key }}">{{ $form_value['label'] }} @if($form_value['required'])<span class="text-danger">*</span>@endif</label>
                                                 @if(is_array($form_value) && isset($form_value['type']) && $form_value['type'] == 'file' && isset($form_value['value']))
                                                     <div>
-                                                        <a href="{{imageUrl($form_value['value'])}}" target="_blank">View Document</a>
+                                                        <a id="form_data_{{ $key }}" class="btn btn-secondary btn-sm sr-doc-btn" href="{{imageUrl($form_value['value'])}}" target="_blank"><i class="bi bi-file-earmark-text"></i>View Document</a>
                                                     </div>
                                                 @else
-                                                    <input type="text" class="form-control" value="{{ is_array($form_value) && isset($form_value['value']) ? $form_value['value'] : $form_value }}" readonly>
+                                                    <input type="text" id="form_data_{{ $key }}" class="form-control" value="{{ is_array($form_value) && isset($form_value['value']) ? $form_value['value'] : $form_value }}" readonly>
                                                 @endif
                                             </div>
                                         @endforeach
 
                                         <div class="mb-3">
                                             <label class="form-label" for="reference_number">Reference Number</label>
-                                            <input type="text" class="form-control  @error('reference_number') is-invalid @enderror" id="reference_number" wire:model="reference_number" placeholder="Enter Reference Number">
+                                            <input type="text" class="form-control @error('reference_number') is-invalid @enderror" id="reference_number" wire:model="reference_number" placeholder="Enter Reference Number">
                                             @error('reference_number')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -103,19 +99,21 @@
                                     <p><b>Company Name : </b> {{ $data->getUser?->getUserDetail?->company_name }}</p>
                                     <p><b>Name : </b> {{ $data->getUser->name }} ({{ $data->getUser->type }})</p>
                                     <p><b>Phone : </b> {{ $data->getUser->phone }}</p>
-                                    <div class="d-flex mt-2">
-                                        <div class="me-1">
-                                            <span class="badge border border-primary text-primary p-3">
-                                                <h6>Credit Balance</h6>
-                                                <h3> ₹ {{ formatIndianNumber($data->getUser->credit_balance) }} </h3>
-                                            </span>
+                                    <div class="bz-stat-grid">
+                                        <div class="bz-stat bz-stat--brand">
+                                            <div class="bz-stat__top">
+                                                <span class="bz-stat__label">Credit Balance</span>
+                                                <span class="bz-stat__icon"><i class="bi bi-wallet2"></i></span>
+                                            </div>
+                                            <div class="bz-stat__value">₹ {{ formatIndianNumber($data->getUser->credit_balance) }}</div>
                                         </div>
 
-                                        <div class="ms-1">
-                                            <span class="badge border border-success text-success p-3">
-                                                <h6>Cash Balance</h6>
-                                                <h3> ₹ {{ formatIndianNumber($data->getUser->cash_balance) }} </h3>
-                                            </span>
+                                        <div class="bz-stat bz-stat--green">
+                                            <div class="bz-stat__top">
+                                                <span class="bz-stat__label">Cash Balance</span>
+                                                <span class="bz-stat__icon"><i class="bi bi-cash-coin"></i></span>
+                                            </div>
+                                            <div class="bz-stat__value">₹ {{ formatIndianNumber($data->getUser->cash_balance) }}</div>
                                         </div>
                                     </div>
                                 </div>

@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            {{-- <a href="{{route('admin.commodity-product.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a> --}}
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        {{-- <a href="{{route('admin.commodity-product.index')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a> --}}
                     </div>
                 </div>
                 <div class="card-body">
@@ -24,7 +20,7 @@
                                 <form wire:submit.prevent="save()">
 
                                     <div class="card-body">
-                                        <div class="mb-2">
+                                        <div class="mb-3">
                                             <div wire:ignore>
                                                 <label for="user_id" class="form-label">User <span class="text-danger">*</span></label>
                                                 <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
@@ -37,14 +33,16 @@
                                             @error('user_id') <small class="text-danger">{{ $message }}</small>@enderror
                                         </div>
 
-                                        <div class="mb-2">
+                                        <div class="mb-3">
                                             <label for="amount" class="form-label">Amount <span class="text-danger">*</span></label>
                                             <input type="number" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="Enter Amount" wire:model="amount">
                                             @error('amount') <small class="text-danger">{{ $message }}</small>@enderror
                                         </div>
 
-                                        <div class="mb-2">
-                                            <label for="mode" class="form-label">Mode</label>
+                                        <div class="mb-3">
+                                            {{-- Group caption, not a control label: the radios below each carry
+                                                 their own <label for="cash|online|cheque|other">. --}}
+                                            <span class="form-label d-block">Mode</span>
                                             <div>
                                                 <div class="form-check form-check-inline">
                                                     <input type="radio" class="form-check-input" name="mode" id="cash" wire:model="mode" value="cash">
@@ -100,29 +98,31 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>User Details <span class="text-danger">*</span></h5>
+                                    <h5>User Details</h5>
                                 </div>
                                 <div class="card-body">
                                     @if ($user_detail)
                                         <p><b>Company Name : </b> {{ $user_detail?->getUserDetail?->company_name }}</p>
                                         <p><b>Name : </b> {{ $user_detail->name }} ({{ $user_detail->type }})</p>
                                         <p><b>Phone : </b> {{ $user_detail->phone }}</p>
-                                        <div class="d-flex mt-2">
-                                            <div class="me-1">
-                                                <span class="badge border border-success text-success p-3">
-                                                    <h6>Cash Balance</h6>
-                                                    <h3> ₹ {{ formatIndianNumber($user_detail->cash_balance) }} </h3>
-                                                </span>
+                                        <div class="bz-stat-grid mt-3">
+                                            <div class="bz-stat bz-stat--green">
+                                                <div class="bz-stat__top">
+                                                    <span class="bz-stat__label">Cash Balance</span>
+                                                    <span class="bz-stat__icon"><i class="bi bi-cash-stack"></i></span>
+                                                </div>
+                                                <div class="bz-stat__value bz-num">₹ {{ formatIndianNumber($user_detail->cash_balance) }}</div>
                                             </div>
 
-                                            <div class="ms-1">
-                                                <span class="badge border border-primary text-primary p-3">
-                                                    <h6>Credit Balance</h6>
-                                                    <h3> ₹ {{ formatIndianNumber($user_detail->credit_balance) }} </h3>
-                                                </span>
+                                            <div class="bz-stat bz-stat--blue">
+                                                <div class="bz-stat__top">
+                                                    <span class="bz-stat__label">Credit Balance</span>
+                                                    <span class="bz-stat__icon"><i class="bi bi-credit-card"></i></span>
+                                                </div>
+                                                <div class="bz-stat__value bz-num">₹ {{ formatIndianNumber($user_detail->credit_balance) }}</div>
                                             </div>
                                         </div>
-                                        <div class="mt-4">
+                                        <div class="bz-section-gap">
                                             <table class="custom-table">
                                                 <thead>
                                                     <tr>
@@ -147,7 +147,11 @@
                                             </table>
                                         </div>
                                     @else
-                                        <p class="text-danger text-center h6">Please select an user.</p>
+                                        <div class="bz-empty">
+                                            <span class="bz-empty__icon"><i class="bi bi-person"></i></span>
+                                            <span class="bz-empty__title">No user selected</span>
+                                            <p class="bz-empty__text">Please select a user to see their wallet details.</p>
+                                        </div>
                                     @endif
                                 </div>
                             </div>

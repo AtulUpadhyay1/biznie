@@ -3,17 +3,13 @@
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
-                                href="{{ route('admin.transporter.index') }}" wire:navigate>
-                                <i class="bi bi-arrow-left btn-icon-prepend"></i>Back
-                            </a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a class="btn btn-secondary btn-sm" title="Cancel"
+                            href="{{ route('admin.transporter.index') }}" wire:navigate>
+                            <i class="bi bi-arrow-left"></i>Back
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">

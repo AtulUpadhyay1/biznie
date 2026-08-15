@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.seller-product.index', $user_id)}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.seller-product.index', $user_id)}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
             </div>
@@ -42,9 +38,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($list as $data)
+                                    @forelse ($list as $data)
                                         <tr>
-                                            <th>
+                                            <td>
                                                 <div class="form-check">
                                                     <label class="form-check-label" for="exampleCheck{{$loop->iteration}}">
                                                         {{ $loop->iteration }}
@@ -52,18 +48,21 @@
                                                     <input type="checkbox" class="form-check-input" id="exampleCheck{{$loop->iteration}}" wire:model="variation_price.{{$data->id}}.is_selected" value="1" @if($variation_price[$data->id]['is_selected']) checked @endif wire:click="checkSelectAll()">
                                                 </div>
                                                 {{-- @if($data->is_selected)
-                                                    <i class="bi bi-check2-circle text-success fs-5"></i>
+                                                    <i class="bi bi-check2-circle text-success"></i>
                                                 @endif --}}
-                                            </th>
+                                            </td>
                                             @foreach ($data->value as $price_value)
                                                 <td> {{ $price_value['value'] }} </td>
                                             @endforeach
                                             <td>
-                                                <input type="number" class="form-control form-control-sm @error('variation_price.'.$data->id.'.price') is-invalid @enderror" wire:model="variation_price.{{$data->id}}.price">
+                                                <label class="form-label visually-hidden" for="variation_price_{{$data->id}}">Guage Difference</label>
+                                                <input type="number" id="variation_price_{{$data->id}}" class="form-control form-control-sm @error('variation_price.'.$data->id.'.price') is-invalid @enderror" wire:model="variation_price.{{$data->id}}.price">
                                                 @error('variation_price.'.$data->id.'.price') <small class="text-danger">{{ $message }}</small>@enderror
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <x-table-no-data />
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

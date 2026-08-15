@@ -1,13 +1,10 @@
 <div>
     @section('title', config('app.name') . ' | ' . $page_title)
 
-    <!-- Enhanced Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="bz-page-head">
         <div>
-            <h2 class="fw-bold text-primary mb-1">
-                <i class="bi bi-stopwatch me-2"></i>{{ $page_title }}
-            </h2>
-            <p class="text-muted mb-0">Latest price information for commodity products</p>
+            <h1 class="bz-page-head__title">{{ $page_title }}</h1>
+            <p class="bz-page-head__sub">Latest price information for commodity products</p>
         </div>
     </div>
 
@@ -127,13 +124,13 @@
             </div> --}}
 
             <!-- Enhanced Data Display Card -->
-            <div class="card shadow-sm border-0">
+            <div class="card">
                 <div class="card-body p-0">
                     <!-- Modern Tab Navigation -->
                     <div class="border-bottom">
-                        <ul class="nav nav-tabs border-0" id="dataTab" role="tablist">
+                        <ul class="nav nav-tabs" id="dataTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active px-4 py-3 fw-semibold" id="seller-tab"
+                                <button class="nav-link active" id="seller-tab"
                                     data-bs-toggle="tab" data-bs-target="#seller" type="button" role="tab"
                                     aria-controls="seller" aria-selected="true">
                                     <i class="bi bi-shop me-2"></i>
@@ -158,9 +155,9 @@
                             @if (count($seller_list ?? []) > 0)
                                 <div class="accordion" id="sellerAccordion">
                                     @foreach ($seller_list ?? [] as $seller_data)
-                                        <div class="accordion-item border rounded mb-3 shadow-sm">
+                                        <div class="accordion-item mb-3">
                                             <h2 class="accordion-header" id="seller_heading_{{ $seller_data->id }}">
-                                                <button class="accordion-button collapsed shadow-sm p-3 rounded"
+                                                <button class="accordion-button collapsed"
                                                     type="button" data-bs-toggle="collapse"
                                                     data-bs-target="#seller_collapse_{{ $seller_data->id }}"
                                                     aria-expanded="false"
@@ -171,30 +168,26 @@
                                                         <!-- Business Info Row -->
                                                         <div class="d-flex flex-wrap align-items-center gap-3 mb-2">
                                                             <div class="d-flex align-items-center">
-                                                                <i class="bi bi-building text-primary me-2 fs-5"></i>
-                                                                <strong
-                                                                    class="text-dark fs-6">{{ $seller_data->getUser->getBusiness->name }}</strong>
+                                                                <i class="bi bi-building me-2"></i>
+                                                                <strong>{{ $seller_data->getUser?->getBusiness?->name ?? '—' }}</strong>
                                                             </div>
 
                                                             <div class="d-flex align-items-center text-muted">
-                                                                <i class="bi bi-person me-2 fs-6"></i>
-                                                                <small>{{ $seller_data->getUser->name }} -
-                                                                    {{ $seller_data->getUser->phone }}</small>
+                                                                <i class="bi bi-person me-1"></i>
+                                                                <small>{{ $seller_data->getUser?->name ?? '—' }} -
+                                                                    {{ $seller_data->getUser?->phone ?? '—' }}</small>
                                                             </div>
 
                                                             <div class="d-flex align-items-center">
-                                                                <i class="bi bi-star-fill text-warning me-2 fs-6"></i>
-                                                                <small
-                                                                    class="fw-semibold">{{ $seller_data->getUser?->getUserDetail?->priority ?? 0 }}</small>
+                                                                <i class="bi bi-star-fill text-warning me-1"></i>
+                                                                <small>{{ $seller_data->getUser?->getUserDetail?->priority ?? 0 }}</small>
                                                             </div>
 
                                                             @if ($seller_data->getCommodityProduct)
-                                                                <div>
-                                                                    <span
-                                                                        class="badge {{ $seller_data->getCommodityProduct->status == 'active' ? 'bg-success' : 'bg-danger' }} rounded-pill px-3 py-1">
-                                                                        {{ ucfirst($seller_data->getCommodityProduct->status) }}
-                                                                    </span>
-                                                                </div>
+                                                                <span
+                                                                    class="bz-status {{ $seller_data->getCommodityProduct->status == 'active' ? 'bz-status--success' : 'bz-status--danger' }}">
+                                                                    {{ ucfirst($seller_data->getCommodityProduct->status) }}
+                                                                </span>
                                                             @endif
                                                         </div>
 
@@ -206,14 +199,14 @@
                                                             <div class="col-md-3 d-flex align-items-center">
                                                                 <i class="bi bi-tag text-info me-1"></i>
                                                                 <span><strong>Brand:</strong>
-                                                                    {{ $seller_data->getBrand->name }}</span>
+                                                                    {{ $seller_data->getBrand?->name ?? '—' }}</span>
                                                             </div>
 
                                                             <div class="col-md-3 d-flex align-items-center">
                                                                 <i class="bi bi-geo-alt text-success me-1"></i>
                                                                 <span><strong>Location:</strong>
-                                                                    {{ $seller_data->getStatePrice[0]->state }},
-                                                                    {{ $seller_data->getStatePrice[0]->city }}</span>
+                                                                    {{ $seller_data->getStatePrice->first()?->state ?? '—' }},
+                                                                    {{ $seller_data->getStatePrice->first()?->city ?? '—' }}</span>
                                                             </div>
 
                                                             <div class="col-md-3 d-flex align-items-center">
@@ -270,7 +263,7 @@
                                                                     <th class="text-center">#</th>
                                                                     @php
                                                                         $attributes =
-                                                                            $seller_data->getStatePrice[0]->value;
+                                                                            $seller_data->getStatePrice->first()->value ?? [];
                                                                     @endphp
                                                                     @foreach ($attributes as $attribute)
                                                                         <th class="text-center">
@@ -300,7 +293,7 @@
                                                                                 {{ $price_value['value'] }}</td>
                                                                         @endforeach
                                                                         <td
-                                                                            class="text-center fw-semibold text-primary">
+                                                                            class="text-center bz-num">
                                                                             ₹{{ number_format($state_price->price, 2) }}
                                                                         </td>
                                                                         <td class="text-center">
@@ -308,7 +301,7 @@
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
-                                                            <tfoot class="table-white">
+                                                            <tfoot class="table-secondary">
                                                                 <tr>
                                                                     <th colspan="{{ count($attributes) + 2 }}"
                                                                         class="text-end">
@@ -363,7 +356,7 @@
                                                                     <div>
                                                                         @foreach ($seller_data->quality as $key => $quality)
                                                                             <span
-                                                                                class="badge bg-orange text-dark rounded-pill me-1 mb-1">{{ $quality }}
+                                                                                class="bz-chip">{{ $quality }}
                                                                                 - ₹
                                                                                 {{ $seller_data->quality_price[$key] ?? 0 }}</span>
                                                                         @endforeach
@@ -372,7 +365,7 @@
                                                             </div>
                                                             <div class="col-2">
                                                                 <button type="button"
-                                                                    class="btn btn-outline-danger btn-xs btn-icon"
+                                                                    class="btn btn-sm btn-secondary"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#exampleModal"
                                                                     title="View Calculation"
@@ -392,10 +385,10 @@
                                     {{ $seller_list->links() }}
                                 </div>
                             @else
-                                <div class="text-center py-5">
-                                    <i class="bi bi-shop display-1 text-muted"></i>
-                                    <h5 class="text-muted mt-3">No Sellers Found</h5>
-                                    <p class="text-muted">Try adjusting your search filters to find sellers.</p>
+                                <div class="bz-empty">
+                                    <span class="bz-empty__icon"><i class="bi bi-shop"></i></span>
+                                    <span class="bz-empty__title">No Sellers Found</span>
+                                    <p class="bz-empty__text">Try adjusting your search filters to find sellers.</p>
                                 </div>
                             @endif
                         </div>
@@ -532,64 +525,17 @@
                         <b>Ex Price:</b> Rs {{ formatIndianNumber($detail['ex_price']) }}
                     @else
                         <div class="text-center">
-                            <div class="spinner-border text-danger" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
+                            <span class="bz-spinner" role="status" aria-label="Loading"></span>
                         </div>
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal"
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
                         wire:click="closeModal()">Close</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- Custom Styles -->
-    <style>
-        .form-floating>.form-select {
-            padding-top: 1.625rem;
-            padding-bottom: 0.625rem;
-        }
-
-        .form-floating>label {
-            opacity: 0.65;
-            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
-        }
-
-        .accordion-button:not(.collapsed) {
-            background-color: rgba(13, 110, 253, 0.1);
-            border-color: rgba(13, 110, 253, 0.25);
-        }
-
-        .nav-tabs .nav-link {
-            border: none;
-            border-bottom: 3px solid transparent;
-            background: none;
-        }
-
-        .nav-tabs .nav-link.active {
-            border-bottom-color: #0d6efd;
-            background: none;
-        }
-
-        .table th {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.875rem;
-            letter-spacing: 0.5px;
-        }
-
-        .custom-shadow {
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-        }
-
-        .hover-lift {
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-2px);
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
 </div>

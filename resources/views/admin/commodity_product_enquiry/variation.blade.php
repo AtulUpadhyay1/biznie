@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $data->getSellerCommodityProduct->name }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product-enquiry.create')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $data->getSellerCommodityProduct->name }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.commodity-product-enquiry.create')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <form wire:submit.prevent="save()">
@@ -22,12 +18,12 @@
                                 <p>Category: {{ $data->getSellerCommodityProduct->getCategory->name }}</p>
                                 <p>Brand: {{ $data->getSellerCommodityProduct->getBrand->name }}</p>
                             </div>
-                            <div class="col-md-2 text-end">
-                                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                            <div class="col-md-2 d-flex align-items-start justify-content-end">
+                                <x-submit-btn text="Save" />
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-8 border-end border-danger">
+                            <div class="col-md-8 border-end">
                                 <div class="table-responsive mt-2">
                                     <table class="custom-table">
                                         @php
@@ -46,7 +42,7 @@
                                         <tbody>
                                             @foreach ($variations as $variation)
                                                 <tr>
-                                                    <th>
+                                                    <td>
                                                         <div class="form-check mb-3">
                                                             <input type="checkbox" class="form-check-input" id="check_{{ $loop->iteration }}" value="{{ $variation->id }}" wire:model.live="variation_id">
                                                             <label class="form-check-label" for="check_{{ $loop->iteration }}">
@@ -54,7 +50,7 @@
                                                             </label>
 
                                                         </div>
-                                                    </th>
+                                                    </td>
                                                     @foreach ($variation->value as $value)
 
                                                         @php
@@ -83,10 +79,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="mb-2">
+                                <div class="mb-3">
                                     <div class="row">
-                                        <div class="mb-2">
-                                            <label for="billing_address_line_one">Select Quality</label>
+                                        <div class="mb-3">
+                                            <div class="bz-section-label">Select Quality</div>
                                             @foreach ($data->getCommodityProduct->quality as $quality_key => $quality)
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="quality" value="{{ $quality }}" id="quality_{{ $quality_key }}" wire:model.live="selected_quality">
@@ -99,8 +95,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="mb-2">
-                                            <label for="billing_address_line_one">Select Packaging Type</label>
+                                        <div class="mb-3">
+                                            <div class="bz-section-label">Select Packaging Type</div>
                                             @foreach ($package_type_array as $packaging)
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="packaging_type" value="{{ $packaging['id'] }}" id="packaging_type_{{ $packaging['id'] }}" wire:model.live="selected_packaging_type">
@@ -116,8 +112,8 @@
                                             <div class="col-6">
                                                 <label for="user_id" class="form-label">Company (User) <span class="text-danger">*</span></label>
                                             </div>
-                                            <div class="col-6 text-end">
-                                                <a href="#" class="btn btn-xs btn-light mb-1">Add</a>
+                                            <div class="col-6 d-flex align-items-center justify-content-end">
+                                                <a href="#" class="btn btn-secondary btn-sm mb-1">Add</a>
                                             </div>
                                         </div>
                                         <select class="form-select select2 @error('user_id') is-invalid @enderror" id="user_id" wire:model="user_id">
@@ -130,7 +126,7 @@
                                     @error('user_id') <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
 
-                                <div class="card card-body p-2 mb-2">
+                                <div class="card card-body p-2 mb-3">
                                     <h6>Billing Address (Bill To)</h6>
                                     @forelse ($user_address_list as $user_address_data) 
                                         <div class="card">
@@ -138,18 +134,44 @@
                                                 <div class="form-check mb-2">
                                                     <input type="checkbox" class="form-check-input" id="billing_address_{{ $user_address_data->id }}" wire:model.live="billing_address_id" value="{{ $user_address_data->id }}">
                                                     <label class="form-check-label" for="billing_address_{{ $user_address_data->id }}">
-                                                        <span class="badge bg-light text-black">Select</span>
+                                                        <span class="bz-chip">Select</span>
                                                     </label>
                                                 </div>
                                                 <hr>
-                                                <b>Company Name:</b> {{ $user_address_data->company_name }} <br>
-                                                <b>Phone Number:</b> {{ $user_address_data->phone }} <br>
-                                                <b>Gst Number:</b> {{ $user_address_data->gst }} <br>
-                                                <b>Address Line1:</b> {{ $user_address_data->address_line_one }} <br>
-                                                <b>Address Line2:</b> {{ $user_address_data->address_line_two }} <br>
-                                                <b>City:</b> {{ $user_address_data->city }} <br>
-                                                <b>State:</b> {{ $user_address_data->state }} <br>
-                                                <b>Pincode:</b> {{ $user_address_data->pincode }} <br>
+                                                <dl class="bz-kv-list">
+                                                    <div>
+                                                        <dt>Company Name</dt>
+                                                        <dd>{{ $user_address_data->company_name }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Phone Number</dt>
+                                                        <dd>{{ $user_address_data->phone }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Gst Number</dt>
+                                                        <dd>{{ $user_address_data->gst }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Address Line1</dt>
+                                                        <dd>{{ $user_address_data->address_line_one }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Address Line2</dt>
+                                                        <dd>{{ $user_address_data->address_line_two }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>City</dt>
+                                                        <dd>{{ $user_address_data->city }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>State</dt>
+                                                        <dd>{{ $user_address_data->state }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Pincode</dt>
+                                                        <dd>{{ $user_address_data->pincode }}</dd>
+                                                    </div>
+                                                </dl>
                                             </div>
                                         </div>
                                     @empty
@@ -161,12 +183,12 @@
                                     @endforelse
                                 </div>
 
-                                <div class="card card-body p-2 mb-2">
+                                <div class="card card-body p-2 mb-3">
                                     <h6>Consignee Details (Ship To) <br></h6>
-                                    <div class="text-end h6">
+                                    <div class="text-end">
                                         <input type="checkbox" class="form-check-input" id="same_buyer_address" wire:model.live="same_buyer_address" wire:change="consigneeAddress()">
                                         <label class="form-check-label" for="same_buyer_address">
-                                            <span class="badge bg-light text-black">Same Buyer Address</span>
+                                            <span class="bz-chip">Same Buyer Address</span>
                                         </label>
                                     </div>
                                     @forelse ($user_address_list as $user_address_data) 
@@ -174,19 +196,45 @@
                                             <div class="card-body p-2">
                                                 <div class="form-check mb-2">
                                                     <input type="checkbox" class="form-check-input" id="consignee_address_{{ $user_address_data->id }}" wire:model.live="consignee_address_id" value="{{ $user_address_data->id }}">
-                                                    <label class="form-check-label" for="consignee_address">
-                                                        <span class="badge bg-light text-black">Select</span>
+                                                    <label class="form-check-label" for="consignee_address_{{ $user_address_data->id }}">
+                                                        <span class="bz-chip">Select</span>
                                                     </label>
                                                 </div>
                                                 <hr>
-                                                <b>Company Name:</b> {{ $user_address_data->company_name }} <br>
-                                                <b>Phone Number:</b> {{ $user_address_data->phone }} <br>
-                                                <b>Gst Number:</b> {{ $user_address_data->gst }} <br>
-                                                <b>Address Line1:</b> {{ $user_address_data->address_line_one }} <br>
-                                                <b>Address Line2:</b> {{ $user_address_data->address_line_two }} <br>
-                                                <b>City:</b> {{ $user_address_data->city }} <br>
-                                                <b>State:</b> {{ $user_address_data->state }} <br>
-                                                <b>Pincode:</b> {{ $user_address_data->pincode }} <br>
+                                                <dl class="bz-kv-list">
+                                                    <div>
+                                                        <dt>Company Name</dt>
+                                                        <dd>{{ $user_address_data->company_name }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Phone Number</dt>
+                                                        <dd>{{ $user_address_data->phone }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Gst Number</dt>
+                                                        <dd>{{ $user_address_data->gst }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Address Line1</dt>
+                                                        <dd>{{ $user_address_data->address_line_one }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Address Line2</dt>
+                                                        <dd>{{ $user_address_data->address_line_two }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>City</dt>
+                                                        <dd>{{ $user_address_data->city }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>State</dt>
+                                                        <dd>{{ $user_address_data->state }}</dd>
+                                                    </div>
+                                                    <div>
+                                                        <dt>Pincode</dt>
+                                                        <dd>{{ $user_address_data->pincode }}</dd>
+                                                    </div>
+                                                </dl>
                                             </div>
                                         </div>
                                     @empty

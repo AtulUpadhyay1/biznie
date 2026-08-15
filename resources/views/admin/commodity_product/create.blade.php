@@ -1,30 +1,14 @@
 <div>
     @section('title', config('app.name') . ' | '.$page_title)
-    <style>
-        .select2-container--default .select2-selection--single{
-            height: 42px !important;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            top: 8px;
-        }
-
-        .select2.is-invalid {
-            border-color: #dc3545 !important; /* Set the border color to the invalid state color */
-        }
-
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     <div class="row">
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.commodity-product.index')}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.commodity-product.index')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
             </div>
@@ -57,7 +41,7 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <div wire:ignore>
-                                    <label for="category" class="form-label">Category</label>
+                                    <label for="category_id" class="form-label">Category</label>
                                     <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
                                         <option value="">Select Category</option>
                                         @foreach ($category_list as $category_data)
@@ -130,9 +114,10 @@
 
                             @foreach ($packaging_type_name as $packaging_types)
                                 <div class="col-md-4 mb-3">
-                                    <div class="input-group mb-3">
+                                    <label class="form-label" for="packaging_type_price_{{$loop->iteration}}">{{$packaging_types}} Price</label>
+                                    <div class="input-group">
                                         <span class="input-group-text">{{$packaging_types}}</span>
-                                        <input type="number" class="form-control " placeholder="Enter {{$packaging_types}} Price" wire:model="packaging_type_price.{{$loop->iteration}}">
+                                        <input type="number" id="packaging_type_price_{{$loop->iteration}}" class="form-control" placeholder="Enter {{$packaging_types}} Price" wire:model="packaging_type_price.{{$loop->iteration}}">
                                     </div>
                                 </div>
                             @endforeach
@@ -183,14 +168,14 @@
                             </div>
 
                             <div class="col-md-12 mb-3">
-                                <button type="button" class="btn btn-inverse-primary btn-xs" wire:click="addOtherChargesField({{$charge}})">Add Other Charges</button>
+                                <button type="button" class="btn btn-sm btn-inverse-primary" wire:click="addOtherChargesField({{$charge}})"><i class="bi bi-plus-lg"></i>Add Other Charges</button>
                             </div>
 
                             @foreach($charge_inputs as $charge_key => $charge_input)
 
                                 <div class="col-md-4 mb-3">
                                     <label for="charge_name_{{$charge_input}}" class="form-label">Charge Name</label>
-                                    <input type="test" class="form-control @error('charge_name.'.$charge_input) is-invalid @enderror" id="charge_name_{{$charge_input}}" placeholder="Enter charge name" wire:model="charge_name.{{$charge_input}}">
+                                    <input type="text" class="form-control @error('charge_name.'.$charge_input) is-invalid @enderror" id="charge_name_{{$charge_input}}" placeholder="Enter charge name" wire:model="charge_name.{{$charge_input}}">
                                     @error('charge_name.'.$charge_input) <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
 
@@ -214,10 +199,10 @@
                                 </div>
 
                                 <div class="col-md-1 mb-3">
-                                    <label for="" class="form-label">&nbsp;</label>
+                                    <label class="form-label">&nbsp;</label>
 
-                                    <button type="button" class="btn btn-inverse-danger" wire:click="removeOtherChargesField({{$charge_key}})">
-                                        Remove
+                                    <button type="button" class="btn btn-sm btn-inverse-danger" wire:click="removeOtherChargesField({{$charge_key}})">
+                                        <i class="bi bi-trash"></i>Remove
                                     </button>
                                 </div>
                             @endforeach
@@ -232,7 +217,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-5 mb-3">
-                                <div class="input-group mb-3">
+                                <div class="input-group">
                                     <span class="input-group-text">Size</span>
                                     <input type="text" class="form-control @error('size.0') is-invalid @enderror" placeholder="Enter Size" wire:model="size.0">
                                     <span class="input-group-text">Price</span>
@@ -243,7 +228,7 @@
                             </div>
 
                             {{--<div class="col-md-6 mb-3">
-                                <div class="input-group mb-3">
+                                <div class="input-group">
                                     <span class="input-group-text">Dimension</span>
                                     <input type="text" class="form-control @error('dimension.0') is-invalid @enderror" placeholder="Enter Dimension" wire:model="dimension.0">
                                     <span class="input-group-text">Price</span>
@@ -254,7 +239,7 @@
                             </div> --}}
 
                             <div class="col-md-6 mb-3">
-                                <div class="input-group mb-3">
+                                <div class="input-group">
                                     <span class="input-group-text">Specification</span>
                                     <textarea class="form-control @error('specification.0') is-invalid @enderror" wire:model="specification.0" rows="1"></textarea>
                                 </div>
@@ -262,13 +247,13 @@
                             </div>
 
                             <div class="col-md-1 mb-3">
-                                <button type="button" class="btn btn-inverse-success" wire:click="addVariationField({{$variation}})">Add</button>
+                                <button type="button" class="btn btn-sm btn-inverse-success" wire:click="addVariationField({{$variation}})"><i class="bi bi-plus-lg"></i>Add</button>
                             </div>
 
                             @foreach ($variation_inputs as $variation_key => $variation_input)
 
                                 <div class="col-md-5 mb-3">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text">Size</span>
                                         <input type="text" class="form-control @error('size.'.$variation_input) is-invalid @enderror" placeholder="Enter Size" wire:model="size.{{$variation_input}}">
                                         <span class="input-group-text">Price</span>
@@ -279,7 +264,7 @@
                                 </div>
 
                                 {{-- <div class="col-md-6 mb-3">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text">Dimension</span>
                                         <input type="text" class="form-control @error('dimension.'.$variation_input) is-invalid @enderror" placeholder="Enter Dimension" wire:model="dimension.{{$variation_input}}">
                                         <span class="input-group-text">Price</span>
@@ -290,7 +275,7 @@
                                 </div> --}}
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text">Specification</span>
                                         <textarea class="form-control @error('specification.'.$variation_input) is-invalid @enderror" wire:model="specification.{{$variation_input}}" rows="1"></textarea>
                                     </div>
@@ -298,7 +283,7 @@
                                 </div>
 
                                 <div class="col-md-1 mb-3">
-                                    <button type="button" class="btn btn-inverse-danger" wire:click="removeVariationField({{$variation_key}})">Remove</button>
+                                    <button type="button" class="btn btn-sm btn-inverse-danger" wire:click="removeVariationField({{$variation_key}})"><i class="bi bi-trash"></i>Remove</button>
                                 </div>
                             @endforeach
                         </div>
@@ -306,18 +291,18 @@
                 </div>
 
                 <div class="card mt-3">
-                    <div class="card-header d-flex">
+                    <div class="card-header d-flex align-items-center gap-3 flex-wrap">
                         <h5>Product quality setup</h5>
-                        <div class="form-check form-switch ms-3">
+                        <div class="form-check form-switch">
                             <input type="checkbox" class="form-check-input" id="quality_switch" value="{{$is_quality ? 1 : 0}}" wire:model.live="is_quality">
+                            <label class="form-check-label" for="quality_switch">Enable quality grades</label>
                         </div>
-
                     </div>
                     <div class="card-body">
                         <div class="row">
                             @if ($is_quality)
                                 <div class="col-md-11 mb-3">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text">Quality</span>
                                         <input type="text" class="form-control @error('quality.0') is-invalid @enderror" placeholder="Enter Quality" wire:model="quality.0">
                                         <span class="input-group-text">Price</span>
@@ -327,13 +312,13 @@
                                     @error('quality_price.0') <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
                                 <div class="col-md-1 mb-3">
-                                    <button type="button" class="btn btn-inverse-success" wire:click="addQualityField({{$quality_field}})">Add</button>
+                                    <button type="button" class="btn btn-sm btn-inverse-success" wire:click="addQualityField({{$quality_field}})"><i class="bi bi-plus-lg"></i>Add</button>
                                 </div>
 
                                 @foreach ($quality_inputs as $quality_key => $quality_input)
 
                                     <div class="col-md-11 mb-3">
-                                        <div class="input-group mb-3">
+                                        <div class="input-group">
                                             <span class="input-group-text">Quality</span>
                                             <input type="text" class="form-control @error('quality.'.$quality_input) is-invalid @enderror" placeholder="Enter Quality" wire:model="quality.{{$quality_input}}">
                                             <span class="input-group-text">Price</span>
@@ -343,7 +328,7 @@
                                         @error('quality_price.'.$quality_input) <small class="text-danger">{{ $message }}</small>@enderror
                                     </div>
                                     <div class="col-md-1 mb-3">
-                                        <button type="button" class="btn btn-inverse-danger" wire:click="removeQualityField({{$quality_key}})">Remove</button>
+                                        <button type="button" class="btn btn-sm btn-inverse-danger" wire:click="removeQualityField({{$quality_key}})"><i class="bi bi-trash"></i>Remove</button>
                                     </div>
 
                                 @endforeach
@@ -355,7 +340,7 @@
                 <div class="row mt-3">
                     <div class="col-md-4">
                         <div class="card card-body">
-                            <label for="thumbnail">
+                            <label class="form-label" for="thumbnail">
                                 Product Thumbnail
                                 <br>
                                 @if ($thumbnail)
@@ -371,7 +356,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card card-body">
-                            <label for="images">
+                            <label class="form-label" for="images">
                                 Product Images
                                 <br>
                                 @if ($images)
@@ -420,7 +405,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 ps-5">
-                                <label for="meta_image">
+                                <label class="form-label" for="meta_image">
                                     Meta Image
                                     <br>
                                     @if ($meta_image)

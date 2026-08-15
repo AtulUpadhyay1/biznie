@@ -3,62 +3,64 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>
-                                {{ $page_title }}
-                                <span class="badge bg-secondary rounded-pill fs-6 ms-1">{{ $list->count() }}</span>
-                            </h4>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-                                    <span class="input-group-text input-group-addon bg-transparent border-danger"
-                                        data-toggle><i data-feather="calendar" class="text-danger"></i></span>
-                                    <input type="text" class="form-control bg-transparent border-danger"
-                                        placeholder="Select date" data-input>
-                                </div>
-                                <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
-                                    <i class="btn-icon-prepend" data-feather="download-cloud"></i>
-                                    Download Report
-                                </button>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>
+                        {{ $page_title }}
+                        <span class="badge bg-secondary rounded-pill fs-6 ms-1">{{ $list->count() }}</span>
+                    </h4>
+                    <div class="bz-toolbar">
+                        <div class="bz-toolbar-field">
+                            <label class="bz-filter-label" for="dashboardDateInput">Filter by date</label>
+                            <div class="input-group flatpickr" id="dashboardDate">
+                                <span class="input-group-text" data-toggle><i class="bi bi-calendar"></i></span>
+                                <input type="text" id="dashboardDateInput" class="form-control"
+                                    placeholder="Select date" data-input>
                             </div>
                         </div>
+                        <button type="button" class="btn btn-danger btn-sm">
+                            <i class="bi bi-cloud-download"></i>
+                            Download Report
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-horizontal filter-list-group">
                         <li class="list-group-item border-0">
                             <form class="custom-search-bar">
+                                <label class="bz-filter-label" for="product_filter_search">Search products</label>
                                 <div class="input-group">
-                                    <span class="input-group-text"> <i data-feather="search"></i></span>
-                                    <input type="text" class="form-control" placeholder="Search here...">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" id="product_filter_search" class="form-control" placeholder="Search here...">
                                 </div>
                             </form>
                         </li>
                         <li class="list-group-item border-0">
-                            <select class="form-select">
+                            <label class="bz-filter-label" for="product_filter_category">Category</label>
+                            <select id="product_filter_category" class="form-select">
                                 <option>Category</option>
                             </select>
                         </li>
                         <li class="list-group-item border-0">
-                            <select class="form-select">
+                            <label class="bz-filter-label" for="product_filter_sub_category">Sub Category</label>
+                            <select id="product_filter_sub_category" class="form-select">
                                 <option>Sub Category</option>
                             </select>
                         </li>
                         <li class="list-group-item border-0">
-                            <select class="form-select">
+                            <label class="bz-filter-label" for="product_filter_business_category">Business Category</label>
+                            <select id="product_filter_business_category" class="form-select">
                                 <option>Business Category</option>
                             </select>
                         </li>
                         <li class="list-group-item border-0">
-                            <select class="form-select">
+                            <label class="bz-filter-label" for="product_filter_seller_type">Seller Type</label>
+                            <select id="product_filter_seller_type" class="form-select">
                                 <option>Seller Type</option>
                             </select>
                         </li>
                         <li class="list-group-item border-0">
-                            <select class="form-select">
+                            <label class="bz-filter-label" for="product_filter_sort_by">Sort By</label>
+                            <select id="product_filter_sort_by" class="form-select">
                                 <option>Sort By</option>
                             </select>
                         </li>
@@ -87,18 +89,18 @@
                             <tbody>
                                 @forelse ($list as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>
                                             <img src="{{imageUrl($data->thumbnail)}}" alt="image" >
                                             {{ $data->name }}
                                         </td>
-                                        <td><b class="text-primary"> {{ $data->getBusiness->name }} </b></td>
+                                        <td><b>{{ $data->getBusiness->name }}</b></td>
                                         <td> 0 </td>
                                         <td> {{ $data->current_stock }} </td>
-                                        <td><b class="text-sucess">RS {{ $data->unit_price }}</b></td>
+                                        <td><b class="bz-num">RS {{ $data->unit_price }}</b></td>
                                         <td class="text-center">
-                                            <button class="btn btn-success btn-sm" wire:click="updateRequestStatus({{$data->id}}, 'approved')">Approve</button>
-                                            <button class="btn btn-danger btn-sm" wire:click="updateRequestStatus({{$data->id}}, 'rejected')">Reject</button>
+                                            <button class="btn btn-sm btn-inverse-success" wire:click="updateRequestStatus({{$data->id}}, 'approved')"><i class="bi bi-check-lg"></i>Approve</button>
+                                            <button class="btn btn-sm btn-inverse-danger" wire:click="updateRequestStatus({{$data->id}}, 'rejected')"><i class="bi bi-x-lg"></i>Reject</button>
                                         </td>
                                     </tr>
                                 @empty

@@ -4,27 +4,22 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>Tax Type</h4>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <form class="custom-search-bar me-3 mb-2 mb-md-0">
-                                    <div class="input-group">
-                                        <span class="input-group-text"> <i data-feather="search"></i></span>
-                                        <input type="text" class="form-control" placeholder="Search here...">
-                                    </div>
-                                </form>
-                                <a type="button"
-                                    class="btn btn-danger btn-sm btn-icon-text float-end align-items-center"
-                                    title="add" href="{{ route('admin.create-tax-type') }}" wire:navigate>
-                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                    Add Tax Type
-                                </a>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Tax Type</h4>
+
+                    <div class="bz-toolbar">
+                        <form class="custom-search-bar">
+                            <label class="bz-filter-label" for="tax_type_search">Search tax types</label>
+                            <div class="input-group">
+                                <span class="input-group-text"> <i class="bi bi-search"></i></span>
+                                <input type="text" id="tax_type_search" class="form-control" placeholder="Search here...">
                             </div>
-                        </div>
+                        </form>
+                        <a type="button" class="btn btn-danger btn-sm"
+                            title="add" href="{{ route('admin.create-tax-type') }}" wire:navigate>
+                            <i class="bi bi-plus-lg"></i>
+                            Add Tax Type
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -56,14 +51,14 @@
                                                 <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn_{{ $data->id }}">
-                                                <a class="dropdown-item d-flex align-items-center" href=""><i
-                                                        class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                <a class="dropdown-item" href=""><i
+                                                        class="bi bi-eye"></i><span>View</span></a>
                                                 <a href="{{route('admin.edit-tax-type', $data->id)}}"
-                                                    class="dropdown-item d-flex align-items-center" wire:navigate><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                                <a href="javascript:;" class="dropdown-item d-flex align-items-center"
+                                                    class="dropdown-item" wire:navigate><i
+                                                        class="bi bi-pencil-square"></i><span>Edit</span></a>
+                                                <a href="javascript:;" class="dropdown-item"
                                                     wire:click="delete({{ $data->id }})"><i
-                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a>
+                                                        class="bi bi-trash"></i><span>Delete</span></a>
                                             </div>
                                         </td>
                                     </tr>

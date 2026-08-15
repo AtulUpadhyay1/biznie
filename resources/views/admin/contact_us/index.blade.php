@@ -3,25 +3,17 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>
-                                {{ $page_title }}
-                            </h4>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
 
-                        <div class="col-6">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <form class="custom-search-bar me-3 mb-2 mb-md-0">
-                                    <div class="input-group">
-                                        <span class="input-group-text"> <i data-feather="search"></i></span>
-                                        <input type="text" class="form-control" placeholder="Search here...">
-                                    </div>
-                                </form>
-
+                    <div class="bz-toolbar">
+                        <form class="custom-search-bar">
+                            <label class="bz-filter-label" for="contact_us_search">Search messages</label>
+                            <div class="input-group">
+                                <span class="input-group-text"> <i class="bi bi-search"></i></span>
+                                <input type="text" id="contact_us_search" class="form-control" placeholder="Search here...">
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="card-body">
@@ -40,7 +32,7 @@
                             <tbody>
                                 @forelse ($list as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->email }}</td>
                                         <td>{{ $data->phone }}</td>
@@ -58,7 +50,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <div class="float-end">
+                        <div class="bz-pagination">
                             {{ $list->links() }}
                         </div>
                     </div>

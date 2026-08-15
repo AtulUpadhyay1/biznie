@@ -1,24 +1,16 @@
 <div>
-    <style>
-        .table-sm>:not(caption)>*>* {
-            padding: 0.25rem .55rem;
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4> {{ $page_title }} - {{ $data->unique_id }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-enquiry.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i
-                                    class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4> {{ $page_title }} - {{ $data->unique_id }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-enquiry.index') }}"
+                            class="btn btn-secondary btn-sm" wire:navigate><i
+                                class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -31,59 +23,57 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Enquiry ID</strong></td>
-                                                <td>{{ $data->unique_id }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Enquiry ID</dt>
+                                            <dd>{{ $data->unique_id }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Category</strong></td>
-                                                <td>{{ $data->getCommodityProduct->getCategory->name }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Category</dt>
+                                            <dd>{{ $data->getCommodityProduct->getCategory->name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Product</strong></td>
-                                                <td>{{ $data->getCommodityProduct->name }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Product</dt>
+                                            <dd>{{ $data->getCommodityProduct->name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Brand</strong></td>
-                                                <td>{{ $data->getBrand->name }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Brand</dt>
+                                            <dd>{{ $data->getBrand->name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Purpose</strong></td>
-                                                <td>{{ $data->purpose }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Purpose</dt>
+                                            <dd>{{ $data->purpose }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Description</strong></td>
-                                                <td>{{ $data->description }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Description</dt>
+                                            <dd>{{ $data->description }}</dd>
+                                        </div>
 
-                                            @if ($data->quality)
-                                                <tr>
-                                                    <td><strong>Quality</strong></td>
-                                                    <td>
-                                                        {{ $data->quality['name'] }} –
-                                                        ₹ {{ formatIndianNumber($data->quality['price']) }}
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                        @if ($data->quality)
+                                            <div>
+                                                <dt>Quality</dt>
+                                                <dd>
+                                                    {{ $data->quality['name'] }} –
+                                                    ₹ {{ formatIndianNumber($data->quality['price']) }}
+                                                </dd>
+                                            </div>
+                                        @endif
 
-                                            @if ($data->packaging_charge)
-                                                <tr>
-                                                    <td><strong>Packaging Charge</strong></td>
-                                                    <td>
-                                                        {{ $data->packaging_charge['name'] }} –
-                                                        ₹ {{ formatIndianNumber($data->packaging_charge['charge']) }}
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
+                                        @if ($data->packaging_charge)
+                                            <div>
+                                                <dt>Packaging Charge</dt>
+                                                <dd>
+                                                    {{ $data->packaging_charge['name'] }} –
+                                                    ₹ {{ formatIndianNumber($data->packaging_charge['charge']) }}
+                                                </dd>
+                                            </div>
+                                        @endif
+                                    </dl>
 
                                 </div>
                             </div>
@@ -96,54 +86,52 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $data->getUser->getUserDetail->company_name }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $data->getUser->getUserDetail->company_name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $data->getUser->phone }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $data->getUser->phone }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $data->getUser->getUserDetail->gst_number }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $data->getUser->getUserDetail->gst_number }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $data->getUser->getUserDetail->address_line_one }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $data->getUser->getUserDetail->address_line_one }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $data->getUser->getUserDetail->address_line_two }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $data->getUser->getUserDetail->address_line_two }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $data->getUser->getUserDetail->city }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $data->getUser->getUserDetail->city }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $data->getUser->getUserDetail->state }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $data->getUser->getUserDetail->state }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>{{ $data->getUser->getUserDetail->postal_code }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ $data->getUser->getUserDetail->postal_code }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Credit Days</strong></td>
-                                                <td>{{ $data->getUser->credit_days }} Days</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Credit Days</dt>
+                                            <dd>{{ $data->getUser->credit_days }} Days</dd>
+                                        </div>
+                                    </dl>
 
                                 </div>
                             </div>
@@ -156,51 +144,49 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $data->billing_address['company_name'] }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $data->billing_address['company_name'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $data->billing_address['phone'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $data->billing_address['phone'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $data->billing_address['gst'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $data->billing_address['gst'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $data->billing_address['address_line_one'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $data->billing_address['address_line_one'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $data->billing_address['address_line_two'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $data->billing_address['address_line_two'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $data->billing_address['state'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $data->billing_address['state'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $data->billing_address['city'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $data->billing_address['city'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>
-                                                    {{ $data->consignee_detail['pin_code'] ?? ($data->billing_address['pincode'] ?? '') }}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>
+                                                {{ $data->consignee_detail['pin_code'] ?? ($data->billing_address['pincode'] ?? '') }}
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -212,51 +198,49 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $data->consignee_detail['company_name'] }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $data->consignee_detail['company_name'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $data->consignee_detail['phone'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $data->consignee_detail['phone'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $data->consignee_detail['gst'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $data->consignee_detail['gst'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $data->consignee_detail['address_line_one'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $data->consignee_detail['address_line_one'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $data->consignee_detail['address_line_two'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $data->consignee_detail['address_line_two'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $data->consignee_detail['state'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $data->consignee_detail['state'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $data->consignee_detail['city'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $data->consignee_detail['city'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>
-                                                    {{ $data->consignee_detail['pin_code'] ?? ($data->billing_address['pincode'] ?? '') }}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>
+                                                {{ $data->consignee_detail['pin_code'] ?? ($data->billing_address['pincode'] ?? '') }}
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -270,34 +254,32 @@
                                 </div>
                                 <div class="card-body p-3">
                                     @if ($loading_address)
-                                        <table class="table table-sm table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Address Line One</strong></td>
-                                                    <td>{{ $loading_address->address_line_one }}</td>
-                                                </tr>
+                                        <dl class="bz-kv-list">
+                                            <div>
+                                                <dt>Address Line One</dt>
+                                                <dd>{{ $loading_address->address_line_one }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>Address Line Two</strong></td>
-                                                    <td>{{ $loading_address->address_line_two }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>Address Line Two</dt>
+                                                <dd>{{ $loading_address->address_line_two }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>City</strong></td>
-                                                    <td>{{ $loading_address->city }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>City</dt>
+                                                <dd>{{ $loading_address->city }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>State</strong></td>
-                                                    <td>{{ $loading_address->state }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>State</dt>
+                                                <dd>{{ $loading_address->state }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>Pincode</strong></td>
-                                                    <td>{{ $loading_address->pincode }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                            <div>
+                                                <dt>Pincode</dt>
+                                                <dd>{{ $loading_address->pincode }}</dd>
+                                            </div>
+                                        </dl>
                                     @endif
                                 </div>
                             </div>
@@ -401,8 +383,9 @@
 
                                     <div class="col-4 text-end">
                                         @if (count($this->user_id))
-                                            <button class="btn btn-success btn-xs my-2" title="Send enquiry to seller"
-                                                wire:click="sendEnquiry()">Send Enquiry</button>
+                                            <button class="btn btn-danger btn-sm my-2" title="Send enquiry to seller"
+                                                wire:click="sendEnquiry()"><i class="bi bi-send"></i>Send
+                                                Enquiry</button>
                                         @endif
                                     </div>
 
@@ -411,10 +394,16 @@
                                             <div class="accordion-item">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <input type="checkbox" id="seller_{{ $seller_data->user_id }}"
-                                                            class="form-check-input"
-                                                            value="{{ $seller_data->user_id }}"
-                                                            wire:model.live="user_id">
+                                                        <div class="form-check d-inline-block">
+                                                            <input type="checkbox"
+                                                                id="seller_{{ $seller_data->user_id }}"
+                                                                class="form-check-input"
+                                                                value="{{ $seller_data->user_id }}"
+                                                                wire:model.live="user_id">
+                                                            <label class="form-check-label visually-hidden"
+                                                                for="seller_{{ $seller_data->user_id }}">Select
+                                                                seller</label>
+                                                        </div>
                                                         <h2 class="accordion-header"
                                                             id="heading_{{ $seller_data->id }}">
                                                             <button class="accordion-button collapsed" type="button"
@@ -552,13 +541,13 @@
 
                                                                     @foreach ($seller_data->getStatePrice as $state_price)
                                                                         <tr>
-                                                                            <th>
+                                                                            <td>
                                                                                 {{ $loop->iteration }}
                                                                                 @if ($state_price->is_selected)
                                                                                     <i
-                                                                                        class="bi bi-check2-circle text-success fs-5"></i>
+                                                                                        class="bi bi-check2-circle text-success"></i>
                                                                                 @endif
-                                                                            </th>
+                                                                            </td>
                                                                             @foreach ($state_price->value as $price_value)
                                                                                 <td>{{ $price_value['value'] }} </td>
                                                                             @endforeach
@@ -606,12 +595,13 @@
 
                                     <div class="col-4 text-end">
                                         @if (count($this->transporter_user_id))
-                                            <button class="btn btn-primary btn-xs my-2" title="Send enquiry to seller"
-                                                wire:click="sendTransporterEnquiry()">Send Enquiry</button>
+                                            <button class="btn btn-danger btn-sm my-2" title="Send enquiry to seller"
+                                                wire:click="sendTransporterEnquiry()"><i class="bi bi-send"></i>Send
+                                                Enquiry</button>
                                         @endif
                                     </div>
 
-                                    <div class="accordion" id="state_price">
+                                    <div class="accordion" id="transporter_state_price">
                                         @foreach ($transporter_list as $transporter_data)
                                             <div class="accordion-item">
                                                 <div class="row">
@@ -621,15 +611,18 @@
                                                             class="form-check-input"
                                                             value="{{ $transporter_data->user_id }}"
                                                             wire:model.live="transporter_user_id">
+                                                        <label class="form-check-label visually-hidden"
+                                                            for="transporter_{{ $transporter_data->user_id }}">Select
+                                                            transporter</label>
                                                     </div>
                                                     <div class="col-11">
                                                         <h2 class="accordion-header"
-                                                            id="heading_{{ $transporter_data->id }}">
+                                                            id="transporter_heading_{{ $transporter_data->id }}">
                                                             <button class="accordion-button collapsed" type="button"
                                                                 data-bs-toggle="collapse"
-                                                                data-bs-target="#collapse_{{ $transporter_data->id }}"
+                                                                data-bs-target="#transporter_collapse_{{ $transporter_data->id }}"
                                                                 aria-expanded="false"
-                                                                aria-controls="collapse_{{ $transporter_data->id }}">
+                                                                aria-controls="transporter_collapse_{{ $transporter_data->id }}">
                                                                 <b>{{ $transporter_data->getUser->name }}
                                                                     ({{ $transporter_data->getUser->phone }})
                                                                 </b>,

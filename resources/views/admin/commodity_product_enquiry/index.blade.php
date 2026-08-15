@@ -3,37 +3,26 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>
-                                {{ $page_title }}
-                                <span class="badge bg-secondary rounded-pill fs-6 ms-1">{{$total}}</span>
-                            </h4>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>
+                        {{ $page_title }}
+                        <span class="badge bg-secondary rounded-pill fs-6 ms-1">{{$total}}</span>
+                    </h4>
 
-                        <div class="col-6">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <div class="custom-search-bar">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                        <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
-                                    </div>
-                                </div>
-                                <a type="button" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="add" href="{{route('admin.commodity-product-enquiry.create')}}" wire:navigate>
-                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                    Add
-                                </a>
+                    <div class="bz-toolbar">
+                        <div class="custom-search-bar">
+                            <label class="bz-filter-label" for="commodity_enquiry_search">Search enquiries</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" id="commodity_enquiry_search" class="form-control" placeholder="Search here..." wire:model.live="search">
                             </div>
                         </div>
+                        <a type="button" class="btn btn-danger btn-sm" title="add" href="{{route('admin.commodity-product-enquiry.create')}}" wire:navigate>
+                            <i class="bi bi-plus-lg"></i>
+                            Add
+                        </a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="custom-table">
@@ -52,32 +41,32 @@
                             <tbody>
                                 @forelse ($list as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>{{ $data->unique_id }}</td>
                                         <td>{{ $data->getBrand->name }}</td>
                                         <td>{{ $data->getCommodityProduct->name}}</td>
                                         <td>
-                                            {{ $data->getUser?->getUserDetail?->company_name ?? '--' }}
-                                            <br><small>{{ $data->getUser->name }}</small>
+                                            <div class="bz-cell-title">{{ $data->getUser?->getUserDetail?->company_name ?? '--' }}</div>
+                                            <div class="bz-cell-sub">{{ $data->getUser->name }}</div>
                                         </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td>
-                                            {{ ucfirst($data->status) }}
+                                            <span class="bz-status {{ $data->status == 'ordered' ? 'bz-status--success' : 'bz-status--info' }}">{{ ucfirst($data->status) }}</span>
                                             @if ($data->status == 'ordered' && $data->getCommodityProductOrder)
                                                 <br><small><a href="{{route('admin.commodity-product-order.show', $data->getCommodityProductOrder->id)}}" wire:navigate>{{ $data->getCommodityProductOrder->order_id }}</a></small>
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            <a type="button" id="ActionBtn{{$data->id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-light btn-xs px-2">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-dark"></i>
+                                            <a type="button" id="ActionBtn{{$data->id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="bz-row-action">
+                                                <i class="bi bi-three-dots-vertical"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn{{$data->id}}">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.sellerReply', $data->id)}}" wire:navigate><i class="bi bi-reply-all icon-sm me-2"></i><span>Seller Reply</span></a>
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.history', $data->id)}}" wire:navigate><i class="bi bi-clock-history icon-sm me-2"></i><span>History</span></a>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye"></i><span>View</span></a>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.sellerReply', $data->id)}}" wire:navigate><i class="bi bi-reply-all"></i><span>Seller Reply</span></a>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.history', $data->id)}}" wire:navigate><i class="bi bi-clock-history"></i><span>History</span></a>
                                                 @if ($data->status == 'Seller Marked')
-                                                    <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-enquiry.convertToOrder', $data->id)}}" wire:navigate><i class="bi bi-cart-check icon-sm me-2"></i><span>Convert To Order</span></a>
-                                                    <button class="dropdown-item d-flex align-items-center" wire:click="processOverPhone({{$data->id}})"><i class="bi bi-cloud-haze2 icon-sm me-2"></i><span>Process Over Phone</span></button>
+                                                    <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.convertToOrder', $data->id)}}" wire:navigate><i class="bi bi-cart-check"></i><span>Convert To Order</span></a>
+                                                    <button class="dropdown-item d-flex align-items-center gap-2" wire:click="processOverPhone({{$data->id}})"><i class="bi bi-cloud-haze2"></i><span>Process Over Phone</span></button>
                                                 @endif
                                             </div>
                                         </td>
@@ -87,7 +76,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <div class="float-end">
+                        <div class="bz-pagination">
                             {{ $list->links() }}
                         </div>
                     </div>

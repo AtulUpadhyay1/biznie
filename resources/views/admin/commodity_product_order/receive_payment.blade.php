@@ -4,37 +4,34 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <small> ( {{ $data->order_id }} ) </small>
-                            <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
-                            </span>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-order.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
-                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
-                        <div class="col-12 text-center">
-                            @include('admin.commodity_product_order.menu', [
-                                'is_active' => 'receive-payment',
-                            ])
-                        </div>
-                        <div class="col-12 text-center mt-3">
-                            <div class="btn-group mb-3 mb-md-0" role="group" aria-label="Basic example">
-                                <a href="{{ route('admin.commodity-product-order.receive-payment', $data->id) }}"
-                                    class="btn btn-sm btn-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-box icon-sm"></i> For Order
-                                </a>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <small> ( {{ $data->order_id }} ) </small>
+                        <span
+                            class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--info') }} ms-1">{{ $data->status }}
+                        </span>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-order.index') }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
+                    </div>
+                    <div class="w-100 text-center">
+                        @include('admin.commodity_product_order.menu', [
+                            'is_active' => 'receive-payment',
+                        ])
+                    </div>
+                    <div class="w-100 text-center mt-3">
+                        <div class="bz-tabs d-inline-flex mb-3 mb-md-0" role="group" aria-label="Payment target">
+                            <a href="{{ route('admin.commodity-product-order.receive-payment', $data->id) }}"
+                                class="bz-tab is-active" wire:navigate>
+                                <i class="bi bi-box"></i> For Order
+                            </a>
 
-                                <a href="{{ route('admin.commodity-product-order.transporter-receive-payment', $data->id) }}"
-                                    class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-truck icon-sm"></i> For Transporter
-                                </a>
-                            </div>
+                            <a href="{{ route('admin.commodity-product-order.transporter-receive-payment', $data->id) }}"
+                                class="bz-tab" wire:navigate>
+                                <i class="bi bi-truck"></i> For Transporter
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -42,63 +39,74 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6 mb-3">
-                                <div class="p-3 border rounded bg-light">
-                                    <div class="row g-2">
-                                        <div class="col-6 text-muted">Company Name</div>
-                                        <div class="col-6 fw-semibold">
-                                            {{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }}
+                                <div class="bz-panel">
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company Name</dt>
+                                            <dd class="fw-semibold">
+                                                {{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }}
+                                            </dd>
                                         </div>
 
-                                        <div class="col-6 text-muted">User</div>
-                                        <div class="col-6 fw-semibold">
-                                            {{ $data->getCustomer?->name ?? '--' }}
+                                        <div>
+                                            <dt>User</dt>
+                                            <dd class="fw-semibold">
+                                                {{ $data->getCustomer?->name ?? '--' }}
+                                            </dd>
                                         </div>
 
-                                        <div class="col-6 text-muted">GST</div>
-                                        <div class="col-6 fw-semibold">
-                                            {{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }}
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd class="fw-semibold">
+                                                {{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }}
+                                            </dd>
                                         </div>
 
-                                        <div class="col-6 text-muted">Phone</div>
-                                        <div class="col-6 fw-semibold">
-                                            {{ $data->getCustomer?->phone ?? '--' }}
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd class="fw-semibold">
+                                                {{ $data->getCustomer?->phone ?? '--' }}
+                                            </dd>
                                         </div>
-                                    </div>
+                                    </dl>
                                 </div>
                             </div>
                             <div class="col-4 mb-3">
-                                <div class="border rounded p-3 h-100 bg-light">
-                                    <div class="mb-2">
-                                        <small class="text-muted">Total Amount</small><br>
-                                        <strong>₹
-                                            {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }}</strong>
-                                    </div>
+                                <div class="bz-panel h-100">
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Total Amount</dt>
+                                            <dd><strong>₹
+                                                    {{ formatIndianNumber($data->buyer_invoice_amount ?? $data->total_amount) }}</strong>
+                                            </dd>
+                                        </div>
 
-                                    <div class="mb-2">
-                                        <small class="text-muted">Paid Amount</small><br>
-                                        <strong class="text-success">₹
-                                            {{ formatIndianNumber($data->paid_amount) }}</strong>
-                                    </div>
+                                        <div>
+                                            <dt>Paid Amount</dt>
+                                            <dd><strong class="text-success">₹
+                                                    {{ formatIndianNumber($data->paid_amount) }}</strong></dd>
+                                        </div>
 
-                                    <hr class="my-2">
-
-                                    <div>
-                                        <small class="text-muted">Remaining Amount</small><br>
-                                        <strong class="text-danger">
-                                            ₹
-                                            {{ formatIndianNumber($data->buyer_invoice_amount)
-                                                ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount)
-                                                : formatIndianNumber($data->due_amount) }}
-                                        </strong>
-                                    </div>
+                                        <div>
+                                            <dt>Remaining Amount</dt>
+                                            <dd>
+                                                <strong class="text-danger">
+                                                    ₹
+                                                    {{ formatIndianNumber($data->buyer_invoice_amount)
+                                                        ? formatIndianNumber($data->buyer_invoice_amount - $data->paid_amount)
+                                                        : formatIndianNumber($data->due_amount) }}
+                                                </strong>
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
 
                             <div class="col-2 mb-3 text-end">
                                 <a href="{{ route('admin.customer-payment-list', $data->getCustomer?->id) }}?mode=cashwallet"
-                                    class="btn btn-outline-success btn-sm" wire:navigate>Cash Wallet</a>
+                                    class="btn btn-secondary btn-sm" wire:navigate>Cash Wallet</a>
                                 <a href="{{ route('admin.customer-payment-list', $data->getCustomer?->id) }}?mode=creditwallet"
-                                    class="btn btn-outline-primary btn-sm" wire:navigate>Credit Wallet</a>
+                                    class="btn btn-secondary btn-sm" wire:navigate>Credit Wallet</a>
                             </div>
                             <div class="mb-3">
                                 <div class="form-check form-check-inline">
@@ -230,7 +238,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="payment_method" class="form-label">Payment Method <span
                                             class="text-danger">*</span></label>
-                                    <select class="form-control @error('payment_method') is-invalid @enderror"
+                                    <select class="form-select @error('payment_method') is-invalid @enderror"
                                         id="payment_method" wire:model="payment_method">
                                         <option value="">Select Payment Method</option>
                                         <option value="Cash">Cash</option>
@@ -279,8 +287,8 @@
                             </div>
                         @endif
                     </div>
-                    <div class="card-footer text-end">
-                        <button type="submit" class="btn btn-success">Save</button>
+                    <div class="card-footer d-flex justify-content-end">
+                        <x-submit-btn text="Save" />
                     </div>
                 </form>
             </div>

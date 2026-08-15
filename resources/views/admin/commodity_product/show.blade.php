@@ -1,23 +1,15 @@
 <div>
-    <style>
-        .table-sm>:not(caption)>*>* {
-            padding: 0.25rem .55rem;
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i
-                                    class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product.index') }}"
+                            class="btn btn-secondary btn-sm" wire:navigate><i
+                                class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -28,82 +20,78 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <th>Category</th>
-                                                <td>{{ $data->getCategory ? $data->getCategory->name : '--' }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Category</dt>
+                                            <dd>{{ $data->getCategory ? $data->getCategory->name : '--' }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <th>Sub Category</th>
-                                                <td>{{ $data->getSubCategory ? $data->getSubCategory->name : '--' }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Sub Category</dt>
+                                            <dd>{{ $data->getSubCategory ? $data->getSubCategory->name : '--' }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <th>Sub Sub Category</th>
-                                                <td>{{ $data->getSubSubCategory ? $data->getSubSubCategory->name : '--' }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Sub Sub Category</dt>
+                                            <dd>{{ $data->getSubSubCategory ? $data->getSubSubCategory->name : '--' }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <th>Brand</th>
-                                                <td>
-                                                    @if (!empty($data->brand_id))
-                                                        @foreach ($data->brand_id as $brand_id)
-                                                            {{ getBrand($brand_id)->name }}@if (!$loop->last)
-                                                                ,
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                        --
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Brand</dt>
+                                            <dd>
+                                                @if (!empty($data->brand_id))
+                                                    @foreach ($data->brand_id as $brand_id)
+                                                        {{ getBrand($brand_id)->name }}@if (!$loop->last)
+                                                            ,
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    --
+                                                @endif
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <th>Unit</th>
-                                                <td>{{ $data->getUnit ? $data->getUnit->name : '--' }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Unit</dt>
+                                            <dd>{{ $data->getUnit ? $data->getUnit->name : '--' }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <th>Description</th>
-                                                <td>{{ $data->description ?? '--' }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Description</dt>
+                                            <dd>{{ $data->description ?? '--' }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <th>Packaging Type</th>
-                                                <td>
-                                                    @if (!empty($data->packaging_type))
-                                                        @foreach ($data->packaging_type as $index => $packaging_type)
-                                                            {{ getPackagingType($packaging_type)->name }} –
-                                                            ₹ {{ $data->packaging_type_price[$index + 1] ?? 0 }}
-                                                            @if (!$loop->last)
-                                                                ,
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                        --
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Packaging Type</dt>
+                                            <dd>
+                                                @if (!empty($data->packaging_type))
+                                                    @foreach ($data->packaging_type as $index => $packaging_type)
+                                                        {{ getPackagingType($packaging_type)->name }} –
+                                                        ₹ {{ $data->packaging_type_price[$index + 1] ?? 0 }}
+                                                        @if (!$loop->last)
+                                                            ,
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    --
+                                                @endif
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <th>HSN Code</th>
-                                                <td>{{ $data->hsn_code ?? '--' }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>HSN Code</dt>
+                                            <dd>{{ $data->hsn_code ?? '--' }}</dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -132,7 +120,7 @@
                         <div class="accordion mt-2" id="product_quality">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="product_quality">
-                                    <button class="accordion-button collapsed fw-bold fs-5" type="button"
+                                    <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#product_quality_collapse"
                                         aria-expanded="false" aria-controls="product_quality_collapse">
                                         Product Quality
@@ -169,7 +157,7 @@
                         <div class="accordion mt-2" id="product_variation_accordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="product_variation_heading">
-                                    <button class="accordion-button collapsed fw-bold fs-5" type="button"
+                                    <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#product_variation_collapse"
                                         aria-expanded="false" aria-controls="product_variation_collapse">
                                         Product Variation
@@ -242,34 +230,45 @@
                                         <div class="accordion-body">
                                             <div class="row">
                                                 <div class="col-8">
-                                                    <b>Pincode</b> : {{ $state_variation->pincode }} |
-                                                    <b>Address Line One</b> : {{ $state_variation->address_line_one }}
-                                                    |
-                                                    <b>Address Line Two</b> : {{ $state_variation->address_line_two }}
-                                                    |
-                                                    <b>Load Within</b> : {{ $state_variation->load_within }} Days
-
+                                                    <dl class="bz-kv-list">
+                                                        <div>
+                                                            <dt>Pincode</dt>
+                                                            <dd>{{ $state_variation->pincode }}</dd>
+                                                        </div>
+                                                        <div>
+                                                            <dt>Address Line One</dt>
+                                                            <dd>{{ $state_variation->address_line_one }}</dd>
+                                                        </div>
+                                                        <div>
+                                                            <dt>Address Line Two</dt>
+                                                            <dd>{{ $state_variation->address_line_two }}</dd>
+                                                        </div>
+                                                        <div>
+                                                            <dt>Load Within</dt>
+                                                            <dd>{{ $state_variation->load_within }} Days</dd>
+                                                        </div>
+                                                    </dl>
                                                 </div>
-                                                <div class="col-4 text-end">
+                                                <div class="col-4 d-flex align-items-center justify-content-end flex-wrap gap-2">
                                                     <b>Action</b> :
-                                                    <button type="reset" class="btn btn-light btn-icon btn-xs p-0"
+                                                    <button type="reset" class="btn btn-sm btn-secondary btn-icon"
                                                         data-bs-toggle="modal" title="Chart"
                                                         data-bs-target="#chartModal_{{ $state_variation->id }}"
                                                         form="copyFormModal_{{ $state_variation->id }}">
                                                         <i class="bi bi-clipboard-data"></i>
                                                     </button>
-                                                    <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0"
+                                                    <button type="reset" class="btn btn-sm btn-secondary btn-icon"
                                                         data-bs-toggle="modal" title="Copy"
                                                         data-bs-target="#copyModal_{{ $state_variation->id }}"
                                                         form="copyFormModal_{{ $state_variation->id }}">
                                                         <i class="bi bi-copy"></i>
                                                     </button>
                                                     <a href="{{ route('admin.commodity-product.statePrice', $data->id) }}?state_price_id={{ $state_variation->id }}"
-                                                        wire:navigate class="btn btn-primary btn-icon btn-xs"
+                                                        wire:navigate class="btn btn-sm btn-secondary btn-icon"
                                                         title="Edit">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
-                                                    <button type="button" class="btn btn-danger btn-icon btn-xs p-0"
+                                                    <button type="button" class="btn btn-sm btn-danger btn-icon"
                                                         title="Delete"
                                                         wire:click="deleteStatePrice({{ $state_variation->id }})">
                                                         <i class="bi bi-trash"></i>
@@ -420,11 +419,11 @@
                                                         </div>
 
                                                         <div class="col-md-4 mb-3">
-                                                            <label for="address_line_one" class="form-label">Address
+                                                            <label for="address_line_one_{{ $state_variation->id }}" class="form-label">Address
                                                                 Line One <span class="text-danger">*</span></label>
                                                             <input type="text"
                                                                 class="form-control @error('address_line_one') is-invalid @enderror"
-                                                                id="address_line_one" wire:model="address_line_one"
+                                                                id="address_line_one_{{ $state_variation->id }}" wire:model="address_line_one"
                                                                 placeholder="Address Line One">
                                                             @error('address_line_one')
                                                                 <small class="text-danger">{{ $message }}</small>
@@ -432,10 +431,10 @@
                                                         </div>
 
                                                         <div class="col-md-4 mb-3">
-                                                            <label for="address_line_two" class="form-label">Address
+                                                            <label for="address_line_two_{{ $state_variation->id }}" class="form-label">Address
                                                                 Line Two <span class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
-                                                                id="address_line_two" wire:model="address_line_two"
+                                                                id="address_line_two_{{ $state_variation->id }}" wire:model="address_line_two"
                                                                 placeholder="Address Line Two">
                                                             @error('address_line_two')
                                                                 <small class="text-danger">{{ $message }}</small>
@@ -443,10 +442,10 @@
                                                         </div>
 
                                                         <div class="col-md-4 mb-3">
-                                                            <label for="load_within" class="form-label">Load Within
+                                                            <label for="load_within_{{ $state_variation->id }}" class="form-label">Load Within
                                                                 <span class="text-danger">*</span></label>
                                                             <input type="number" class="form-control"
-                                                                id="load_within" wire:model="load_within"
+                                                                id="load_within_{{ $state_variation->id }}" wire:model="load_within"
                                                                 placeholder="Load Within">
                                                             @error('load_within')
                                                                 <small class="text-danger">{{ $message }}</small>
@@ -456,10 +455,10 @@
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="reset" class="btn btn-secondary"
+                                                <button type="reset" class="btn btn-secondary btn-sm"
                                                     data-bs-dismiss="modal"
                                                     form="copyFormModal_{{ $state_variation->id }}">Close</button>
-                                                <button type="submit" class="btn btn-primary"
+                                                <button type="submit" class="btn btn-danger btn-sm"
                                                     form="copyFormModal_{{ $state_variation->id }}">Copy</button>
                                             </div>
                                         </div>
@@ -496,17 +495,15 @@
                                                                 class="form-control @error('chart') is-invalid @enderror"
                                                                 id="chart_{{ $state_variation->id }}"
                                                                 wire:model.live="chart">
-                                                            <label for="chart_{{ $state_variation->id }}">
+                                                            <label class="form-label" for="chart_{{ $state_variation->id }}">
                                                                 @if ($chart)
                                                                     <img src="{{ $chart->temporaryUrl() }}"
-                                                                        class="img-thumbnail" alt="Upload File"
-                                                                        class="mt-2">
+                                                                        class="img-thumbnail mt-2" alt="Upload File">
                                                                 @else
                                                                     <div class="d-flex align-items-center">
                                                                         <img src="{{ asset('common/images/upload.png') }}"
-                                                                            class="img-thumbnail" alt="Upload File"
-                                                                            class="mt-2" wire:loading.remove>
-                                                                        <span class="text-danger h5"
+                                                                            class="img-thumbnail mt-2" alt="Upload File" wire:loading.remove>
+                                                                        <span class="text-danger"
                                                                             wire:loading>Uploading...</span>
                                                                     </div>
                                                                 @endif
@@ -520,14 +517,15 @@
                                                             @if ($state_variation->chart)
                                                                 @foreach ($state_variation->chart ?? [] as $chart_image)
                                                                     <div class="col-md-4 mb-3">
-                                                                        <span
-                                                                            wire:click="removeChart({{ $state_variation->id }}, {{ $chart_image }})"
-                                                                            class="text-danger cls-btn"><i
-                                                                                class="bi bi-x-circle"></i></span>
-                                                                        <img src="{{ imageUrl($chart_image) }}"
-                                                                            class="img-thumbnail" alt="Upload File"
-                                                                            class="mt-2" height="150"
-                                                                            width="150">
+                                                                        <div class="bz-thumb mt-2">
+                                                                            <img src="{{ imageUrl($chart_image) }}"
+                                                                                class="img-thumbnail" alt="Upload File" height="150"
+                                                                                width="150">
+                                                                            <span
+                                                                                wire:click="removeChart({{ $state_variation->id }}, {{ $chart_image }})"
+                                                                                class="bz-thumb-remove" title="Remove"><i
+                                                                                    class="bi bi-x-lg"></i></span>
+                                                                        </div>
                                                                     </div>
                                                                 @endforeach
                                                             @endif
@@ -536,10 +534,10 @@
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="reset" class="btn btn-secondary"
+                                                <button type="reset" class="btn btn-secondary btn-sm"
                                                     data-bs-dismiss="modal"
                                                     form="chartFormModal_{{ $state_variation->id }}">Close</button>
-                                                <button type="submit" class="btn btn-primary"
+                                                <button type="submit" class="btn btn-danger btn-sm"
                                                     form="chartFormModal_{{ $state_variation->id }}">
                                                     <span wire:loading.remove>
                                                         Upload
@@ -561,16 +559,16 @@
                                     <b>Brand : </b>{{$state_variation->getBrand->name}} | <b>State : </b>{{ $state_variation->state }} | <b>City : </b>{{ $state_variation->city }}
                                 </div>
                                 <div class="col-md-2 text-end">
-                                    <button type="reset" class="btn btn-light btn-icon btn-xs p-0" data-bs-toggle="modal" title="Chart" data-bs-target="#chartModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
+                                    <button type="reset" class="btn btn-sm btn-secondary" data-bs-toggle="modal" title="Chart" data-bs-target="#chartModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
                                         <i class="bi bi-clipboard-data"></i>
                                     </button>
-                                    <button type="reset" class="btn btn-secondary btn-icon btn-xs p-0" data-bs-toggle="modal" title="Copy" data-bs-target="#copyModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
+                                    <button type="reset" class="btn btn-sm btn-secondary" data-bs-toggle="modal" title="Copy" data-bs-target="#copyModal_{{$state_variation->id}}" form="copyFormModal_{{$state_variation->id}}">
                                         <i class="bi bi-copy"></i>
                                     </button>
-                                    <a href="{{route('admin.commodity-product.statePrice', $data->id)}}?state_price_id={{ $state_variation->id }}" wire:navigate class="btn btn-primary btn-icon btn-xs" title="Edit">
+                                    <a href="{{route('admin.commodity-product.statePrice', $data->id)}}?state_price_id={{ $state_variation->id }}" wire:navigate class="btn btn-sm btn-secondary" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <button type="button" class="btn btn-danger btn-icon btn-xs p-0" title="Delete" wire:click="deleteStatePrice({{ $state_variation->id }})">
+                                    <button type="button" class="btn btn-sm btn-danger" title="Delete" wire:click="deleteStatePrice({{ $state_variation->id }})">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>

@@ -4,37 +4,34 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <small> ( {{ $data->order_id }} ) </small>
-                            <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : 'border-primary text-primary' }} rounded-pill ms-1">{{ $data->status }}
-                            </span>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-order.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
-                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
-                        <div class="col-12 text-center">
-                            @include('admin.commodity_product_order.menu', [
-                                'is_active' => 'receive-payment',
-                            ])
-                        </div>
-                        <div class="col-12 text-center mt-3">
-                            <div class="btn-group mb-3 mb-md-0" role="group" aria-label="Basic example">
-                                <a href="{{ route('admin.commodity-product-order.receive-payment', $data->id) }}"
-                                    class="btn btn-sm btn-outline-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-box icon-sm"></i> For Order
-                                </a>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <small> ( {{ $data->order_id }} ) </small>
+                        <span
+                            class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : 'bz-status--info' }} ms-1">{{ $data->status }}
+                        </span>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-order.index') }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
+                    </div>
+                    <div class="w-100 text-center">
+                        @include('admin.commodity_product_order.menu', [
+                            'is_active' => 'receive-payment',
+                        ])
+                    </div>
+                    <div class="w-100 text-center mt-3">
+                        <div class="bz-tabs d-inline-flex mb-3 mb-md-0" role="group" aria-label="Payment target">
+                            <a href="{{ route('admin.commodity-product-order.receive-payment', $data->id) }}"
+                                class="bz-tab" wire:navigate>
+                                <i class="bi bi-box"></i> For Order
+                            </a>
 
-                                <a href="{{ route('admin.commodity-product-order.transporter-receive-payment', $data->id) }}"
-                                    class="btn btn-sm btn-primary btn-icon-text" wire:navigate>
-                                    <i class="bi bi-truck icon-sm"></i> For Transporter
-                                </a>
-                            </div>
+                            <a href="{{ route('admin.commodity-product-order.transporter-receive-payment', $data->id) }}"
+                                class="bz-tab is-active" wire:navigate>
+                                <i class="bi bi-truck"></i> For Transporter
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -42,29 +39,48 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6 mb-3">
-                                <p>
-                                    <b>Company Name: </b>
-                                    {{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }} <br>
-                                    <b>User: </b> {{ $data->getCustomer?->name }} <br>
-                                    <b>GST: </b> {{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }} <br>
-                                    <b>Phone: </b> {{ $data->getCustomer?->phone }} <br>
-                                </p>
+                                <dl class="bz-kv-list">
+                                    <div>
+                                        <dt>Company Name</dt>
+                                        <dd>{{ $data->getCustomer?->getUserDetail?->company_name ?? '--' }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>User</dt>
+                                        <dd>{{ $data->getCustomer?->name }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>GST</dt>
+                                        <dd>{{ $data->getCustomer?->getUserDetail?->gst_number ?? '--' }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Phone</dt>
+                                        <dd>{{ $data->getCustomer?->phone }}</dd>
+                                    </div>
+                                </dl>
                             </div>
                             <div class="col-3 mb-3">
-                                <p>
-                                    <b>Transport Amount:</b> ₹
-                                    {{ formatIndianNumber($data->transporter_invoice_amount ?? 0) }} <br>
-                                    <b>Paid Amount:</b> ₹ {{ formatIndianNumber($transporter_paid) }} <br>
-                                    <b>Remaining Amount:</b> ₹
-                                    {{ formatIndianNumber($data->transporter_invoice_amount - $transporter_paid) }}
-                                    <br>
-                                </p>
+                                <dl class="bz-kv-list">
+                                    <div>
+                                        <dt>Transport Amount</dt>
+                                        <dd>₹ {{ formatIndianNumber($data->transporter_invoice_amount ?? 0) }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Paid Amount</dt>
+                                        <dd>₹ {{ formatIndianNumber($transporter_paid) }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Remaining Amount</dt>
+                                        <dd>₹
+                                            {{ formatIndianNumber($data->transporter_invoice_amount - $transporter_paid) }}
+                                        </dd>
+                                    </div>
+                                </dl>
                             </div>
                             <div class="col-3 mb-3 text-end">
                                 <a href="{{ route('admin.customer-payment-list', $data->getCustomer?->id) }}?mode=cashwallet"
-                                    class="btn btn-outline-success btn-sm" wire:navigate>Cash Wallet</a>
+                                    class="btn btn-secondary btn-sm" wire:navigate>Cash Wallet</a>
                                 <a href="{{ route('admin.customer-payment-list', $data->getCustomer?->id) }}?mode=creditwallet"
-                                    class="btn btn-outline-primary btn-sm" wire:navigate>Credit Wallet</a>
+                                    class="btn btn-secondary btn-sm" wire:navigate>Credit Wallet</a>
                             </div>
                             <div class="mb-3">
                                 <div class="form-check form-check-inline">
@@ -196,7 +212,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="payment_method" class="form-label">Payment Method <span
                                             class="text-danger">*</span></label>
-                                    <select class="form-control @error('payment_method') is-invalid @enderror"
+                                    <select class="form-select @error('payment_method') is-invalid @enderror"
                                         id="payment_method" wire:model="payment_method">
                                         <option value="">Select Payment Method</option>
                                         <option value="Cash">Cash</option>
@@ -245,8 +261,8 @@
                             </div>
                         @endif
                     </div>
-                    <div class="card-footer text-end">
-                        <button type="submit" class="btn btn-success">Save</button>
+                    <div class="card-footer d-flex justify-content-end">
+                        <x-submit-btn text="Save" />
                     </div>
                 </form>
             </div>

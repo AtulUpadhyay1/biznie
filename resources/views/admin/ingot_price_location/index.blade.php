@@ -4,21 +4,15 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <a type="button"
-                                    class="btn btn-danger btn-sm btn-icon-text float-end align-items-center"
-                                    title="add" href="{{ route('admin.ingot_price_location.create') }}" wire:navigate>
-                                    <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                    Add
-                                </a>
-                            </div>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+
+                    <div class="bz-toolbar">
+                        <a type="button" class="btn btn-danger btn-sm"
+                            title="add" href="{{ route('admin.ingot_price_location.create') }}" wire:navigate>
+                            <i class="bi bi-plus-lg"></i>
+                            Add
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -53,11 +47,11 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn_{{ $data->id }}">
                                                 <a href="{{route('admin.ingot_price_location.edit', $data->id)}}"
-                                                    class="dropdown-item d-flex align-items-center" wire:navigate><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
-                                                {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"
+                                                    class="dropdown-item" wire:navigate><i
+                                                        class="bi bi-pencil-square"></i><span>Edit</span></a>
+                                                {{-- <a href="javascript:;" class="dropdown-item"
                                                     wire:click="delete({{ $data->id }})"><i
-                                                        class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
+                                                        class="bi bi-trash"></i><span>Delete</span></a> --}}
                                             </div>
                                         </td>
                                     </tr>

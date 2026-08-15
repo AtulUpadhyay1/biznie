@@ -3,25 +3,19 @@
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-
-                    </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
                 </div>
                 <div class="card-body">
                     <form wire:submit.prevent="save()">
-                        <div class="row mb-3">
-
+                        <div class="row">
                             <div class="col-md-12 mb-3" wire:ignore>
-                                <textarea id="value" class="form-control @error('value') is-invalid @enderror" wire:model="value" rows="10" placeholder="Enter About Us"></textarea>
+                                <label class="form-label" for="value">{{ $page_title }}</label>
+                                <textarea id="value" class="form-control @error('value') is-invalid @enderror" wire:model="value" rows="10" placeholder="Enter {{ $page_title }}"></textarea>
                                 @error('value')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-
                         </div>
                         <div class="row">
                             <div class="col-md-6">

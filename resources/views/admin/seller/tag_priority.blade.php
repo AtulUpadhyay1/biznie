@@ -3,23 +3,19 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>Seller Tag & Priority</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" title="Cancel"
-                                href="{{ route('admin.seller.index') }}" wire:navigate>
-                                <i class="bi bi-x-lg btn-icon-prepend"></i>Cancel
-                            </a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Seller Tag & Priority</h4>
+                    <div class="bz-toolbar">
+                        <a class="btn btn-secondary btn-sm" title="Cancel"
+                            href="{{ route('admin.seller.index') }}" wire:navigate>
+                            <i class="bi bi-x-lg"></i>Cancel
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
                     <form wire:submit.prevent="save()">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
                                 <label class="form-label">Tags</label>
                                 <div>
                                     @forelse ($seller_tag as $tag)
@@ -36,7 +32,7 @@
                                     @endforelse
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <label class="form-label" for="priority">Priority</label>
                                 <select class="form-select" name="priority" id="priority" wire:model="priority">
                                     <option value="">Select priority</option>

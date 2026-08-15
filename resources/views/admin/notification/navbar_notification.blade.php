@@ -1,52 +1,43 @@
 <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown"
+    <a class="bz-icon-btn dropdown-toggle" href="#" id="notificationDropdown" title="Notifications"
         role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="bi bi-bell fs-4"></i>
+        <i class="bi bi-bell"></i>
         @if ($notifications->count() > 0)
-            <div class="indicator">
-                <div class="circle"></div>
-            </div>
+            <span class="bz-notif-dot">{{ $notifications->count() > 9 ? '9+' : $notifications->count() }}</span>
         @endif
     </a>
-    <div class="dropdown-menu p-0" aria-labelledby="notificationDropdown">
-        <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
-            <p>{{ $notifications->count() }} New Notifications</p>
-            @if($notifications->count() > 0)
-                <a href="javascript:;" class="text-muted ms-2" wire:click="markAllAsRead()">Clear all</a>
-                <audio id="notificationSound" src="{{ asset('admin_css/notification.wav') }}" preload="auto"></audio>
-                <script>
-                    window.onload = function() {
-                        document.getElementById('notificationDropdown').addEventListener('click', function() {
-                            document.getElementById('notificationSound').play();
-                        });
-                    };
-                </script>
+    <div class="dropdown-menu dropdown-menu-end bz-notif-menu" aria-labelledby="notificationDropdown">
+        <div class="bz-notif-menu__head">
+            <span class="bz-notif-menu__title">
+                Notifications
+                @if ($notifications->count() > 0)
+                    <span class="badge bg-danger">{{ $notifications->count() }}</span>
+                @endif
+            </span>
+            @if ($notifications->count() > 0)
+                <button type="button" class="bz-notif-menu__clear" wire:click="markAllAsRead()">Mark all read</button>
             @endif
         </div>
-        <div class="p-1">
+
+        <div class="bz-notif-menu__list">
             @forelse ($notifications->take(6) as $notification)
-                <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2" wire:click="markAsRead({{ $notification->id }})">
-                    <div class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
-                        <i class="bi bi-bell icon-sm text-white"></i>
-                    </div>
-                    <div class="flex-grow-1 me-2">
-                        <p>{{ $notification->title }}</p>
-                        <p class="tx-12 text-muted">{{ $notification->created_at->diffForHumans() }}</p>
-                    </div>
+                <a href="javascript:;" class="dropdown-item bz-notif-item" wire:click="markAsRead({{ $notification->id }})">
+                    <span class="bz-notif-item__icon"><i class="bi bi-bell"></i></span>
+                    <span class="bz-notif-item__body">
+                        <span class="bz-notif-item__title">{{ $notification->title }}</span>
+                        <span class="bz-notif-item__time">{{ $notification->created_at->diffForHumans() }}</span>
+                    </span>
                 </a>
             @empty
-                <a href="javascript:;" class="dropdown-item d-flex align-items-center py-2">
-                    <div class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-secondary rounded-circle me-3">
-                        <i class="bi bi-bell-slash icon-sm text-white"></i>
-                    </div>
-                    <div class="flex-grow-1 me-2">
-                        <p>No notifications found</p>
-                    </div>
-                </a>
+                <div class="bz-notif-empty">
+                    <i class="bi bi-bell-slash"></i>
+                    <span>You're all caught up</span>
+                </div>
             @endforelse
         </div>
-        <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top">
-            <a href="javascript:;">View all</a>
-        </div>
+
+        @if ($notifications->count() > 0)
+            <audio id="notificationSound" src="{{ asset('admin_css/notification.wav') }}" preload="auto"></audio>
+        @endif
     </div>
 </li>

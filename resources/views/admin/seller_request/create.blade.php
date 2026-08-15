@@ -1,106 +1,30 @@
 <div>
-    <style>
-        .wz-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .5rem;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .wz-step {
-            flex: 1 1 140px;
-            border: 1px solid #e9ecef;
-            border-radius: .35rem;
-            padding: .5rem .65rem;
-            background: #fff;
-            cursor: default;
-            font-size: .78rem;
-            line-height: 1.2;
-        }
-
-        .wz-step.is-done {
-            border-color: #1bcfb4;
-            background: #f2fbf9;
-            cursor: pointer;
-        }
-
-        .wz-step.is-active {
-            border-color: #fd7070;
-            background: #fff5f5;
-            box-shadow: 0 0 0 1px #fd7070 inset;
-        }
-
-        .wz-step-no {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-            text-align: center;
-            border-radius: 50%;
-            background: #e9ecef;
-            font-weight: 600;
-            margin-right: .35rem;
-        }
-
-        .wz-step.is-done .wz-step-no {
-            background: #1bcfb4;
-            color: #fff;
-        }
-
-        .wz-step.is-active .wz-step-no {
-            background: #fd7070;
-            color: #fff;
-        }
-
-        .wz-kv {
-            border: 1px solid #dee2e6;
-            border-radius: .35rem;
-            padding: .5rem .65rem;
-            height: 100%;
-        }
-
-        .wz-kv-label {
-            font-size: .72rem;
-            text-transform: uppercase;
-            color: #7987a1;
-            letter-spacing: .3px;
-        }
-
-        .wz-kv-value {
-            font-weight: 600;
-            word-break: break-word;
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
 
     @section('title', config('app.name') . ' | ' . $page_title)
 
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col-md-8 card-title mb-0">
-                            <h4 class="mb-1">Add Seller Request</h4>
-                            <small class="text-muted">
-                                On behalf of
-                                <b class="text-danger text-uppercase">{{ $buyer->name }}</b>
-                                @if ($buyer->phone)
-                                    <span class="ms-2"><i class="bi bi-telephone"></i> {{ $buyer->phone }}</span>
-                                @endif
-                                @if ($buyer->email)
-                                    <span class="ms-2"><i class="bi bi-envelope-at"></i> {{ $buyer->email }}</span>
-                                @endif
-                            </small>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>Add Seller Request</h4>
+                        <div class="bz-card-sub">
+                            On behalf of
+                            <b class="text-uppercase">{{ $buyer->name }}</b>
+                            @if ($buyer->phone)
+                                <span class="ms-2"><i class="bi bi-telephone"></i> {{ $buyer->phone }}</span>
+                            @endif
+                            @if ($buyer->email)
+                                <span class="ms-2"><i class="bi bi-envelope-at"></i> {{ $buyer->email }}</span>
+                            @endif
                         </div>
-                        <div class="col-md-4 text-end">
-                            <a href="{{ route('admin.customer-list') }}"
-                                class="btn btn-danger btn-sm btn-icon-text" wire:navigate>
-                                <i class="bi bi-x-lg btn-icon-prepend"></i>
-                                Cancel
-                            </a>
-                        </div>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.customer-list') }}" class="btn btn-secondary btn-sm" wire:navigate>
+                            <i class="bi bi-x-lg"></i>
+                            Cancel
+                        </a>
                     </div>
                 </div>
 
@@ -129,32 +53,32 @@
                     @if ($step === 1)
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Business Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('company_name') is-invalid @enderror"
+                                <label class="form-label" for="company_name">Business Name <span class="text-danger">*</span></label>
+                                <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror"
                                     wire:model="company_name">
                                 @error('company_name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">GST Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('gst_number') is-invalid @enderror"
+                                <label class="form-label" for="gst_number">GST Number <span class="text-danger">*</span></label>
+                                <input id="gst_number" type="text" class="form-control @error('gst_number') is-invalid @enderror"
                                     wire:model="gst_number">
                                 @error('gst_number')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">PAN Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control text-uppercase @error('pan_number') is-invalid @enderror"
+                                <label class="form-label" for="pan_number">PAN Number <span class="text-danger">*</span></label>
+                                <input id="pan_number" type="text" class="form-control text-uppercase @error('pan_number') is-invalid @enderror"
                                     wire:model="pan_number" placeholder="ABCDE1234F">
                                 @error('pan_number')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Business Type <span class="text-danger">*</span></label>
-                                <select class="form-select @error('seller_type_id') is-invalid @enderror"
+                                <label class="form-label" for="seller_type_id">Business Type <span class="text-danger">*</span></label>
+                                <select id="seller_type_id" class="form-select @error('seller_type_id') is-invalid @enderror"
                                     wire:model="seller_type_id">
                                     <option value="">Select business type</option>
                                     @foreach ($sellerTypes as $sellerType)
@@ -166,8 +90,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Constitution Type <span class="text-danger">*</span></label>
-                                <select class="form-select @error('constitution_type') is-invalid @enderror"
+                                <label class="form-label" for="constitution_type">Constitution Type <span class="text-danger">*</span></label>
+                                <select id="constitution_type" class="form-select @error('constitution_type') is-invalid @enderror"
                                     wire:model="constitution_type">
                                     <option value="">Select constitution type</option>
                                     <option value="proprietorship">Proprietorship</option>
@@ -181,8 +105,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Years in Business <span class="text-danger">*</span></label>
-                                <input type="number" min="0" max="100"
+                                <label class="form-label" for="years_in_business">Years in Business <span class="text-danger">*</span></label>
+                                <input id="years_in_business" type="number" min="0" max="100"
                                     class="form-control @error('years_in_business') is-invalid @enderror"
                                     wire:model="years_in_business">
                                 @error('years_in_business')
@@ -190,40 +114,40 @@
                                 @enderror
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label class="form-label">Company Address <span class="text-danger">*</span></label>
-                                <textarea rows="3" maxlength="500" class="form-control @error('company_address') is-invalid @enderror"
+                                <label class="form-label" for="company_address">Company Address <span class="text-danger">*</span></label>
+                                <textarea id="company_address" rows="3" maxlength="500" class="form-control @error('company_address') is-invalid @enderror"
                                     wire:model="company_address"></textarea>
                                 @error('company_address')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">City <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('city') is-invalid @enderror"
+                                <label class="form-label" for="city">City <span class="text-danger">*</span></label>
+                                <input id="city" type="text" class="form-control @error('city') is-invalid @enderror"
                                     wire:model="city">
                                 @error('city')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">State <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('state') is-invalid @enderror"
+                                <label class="form-label" for="state">State <span class="text-danger">*</span></label>
+                                <input id="state" type="text" class="form-control @error('state') is-invalid @enderror"
                                     wire:model="state">
                                 @error('state')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Country <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('country') is-invalid @enderror"
+                                <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
+                                <input id="country" type="text" class="form-control @error('country') is-invalid @enderror"
                                     wire:model="country">
                                 @error('country')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Pincode <span class="text-danger">*</span></label>
-                                <input type="text" maxlength="6"
+                                <label class="form-label" for="pincode">Pincode <span class="text-danger">*</span></label>
+                                <input id="pincode" type="text" maxlength="6"
                                     class="form-control @error('pincode') is-invalid @enderror" wire:model="pincode">
                                 @error('pincode')
                                     <small class="text-danger">{{ $message }}</small>
@@ -236,32 +160,32 @@
                     @if ($step === 2)
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Contact Person <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('contact_person') is-invalid @enderror"
+                                <label class="form-label" for="contact_person">Contact Person <span class="text-danger">*</span></label>
+                                <input id="contact_person" type="text" class="form-control @error('contact_person') is-invalid @enderror"
                                     wire:model="contact_person">
                                 @error('contact_person')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Designation <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('designation') is-invalid @enderror"
+                                <label class="form-label" for="designation">Designation <span class="text-danger">*</span></label>
+                                <input id="designation" type="text" class="form-control @error('designation') is-invalid @enderror"
                                     wire:model="designation">
                                 @error('designation')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Mobile <span class="text-danger">*</span></label>
-                                <input type="text" maxlength="10"
+                                <label class="form-label" for="mobile">Mobile <span class="text-danger">*</span></label>
+                                <input id="mobile" type="text" maxlength="10"
                                     class="form-control @error('mobile') is-invalid @enderror" wire:model="mobile">
                                 @error('mobile')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Alternate Mobile</label>
-                                <input type="text" maxlength="10"
+                                <label class="form-label" for="alternate_mobile">Alternate Mobile</label>
+                                <input id="alternate_mobile" type="text" maxlength="10"
                                     class="form-control @error('alternate_mobile') is-invalid @enderror"
                                     wire:model="alternate_mobile">
                                 @error('alternate_mobile')
@@ -269,8 +193,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
                                     wire:model="email">
                                 @error('email')
                                     <small class="text-danger">{{ $message }}</small>
@@ -294,8 +218,8 @@
                             @endphp
                             @foreach ($documentFields as $field => $label)
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">{{ $label }}</label>
-                                    <input type="file" accept=".pdf,.jpg,.jpeg,.png"
+                                    <label class="form-label" for="{{ $field }}">{{ $label }}</label>
+                                    <input type="file" id="{{ $field }}" accept=".pdf,.jpg,.jpeg,.png"
                                         class="form-control @error($field) is-invalid @enderror"
                                         wire:model="{{ $field }}">
                                     @error($field)
@@ -323,8 +247,8 @@
                     @if ($step === 4)
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Account Holder Name <span class="text-danger">*</span></label>
-                                <input type="text"
+                                <label class="form-label" for="account_holder_name">Account Holder Name <span class="text-danger">*</span></label>
+                                <input id="account_holder_name" type="text"
                                     class="form-control @error('account_holder_name') is-invalid @enderror"
                                     wire:model="account_holder_name">
                                 @error('account_holder_name')
@@ -332,24 +256,24 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Bank Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('bank_name') is-invalid @enderror"
+                                <label class="form-label" for="bank_name">Bank Name <span class="text-danger">*</span></label>
+                                <input id="bank_name" type="text" class="form-control @error('bank_name') is-invalid @enderror"
                                     wire:model="bank_name">
                                 @error('bank_name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Account Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('account_number') is-invalid @enderror"
+                                <label class="form-label" for="account_number">Account Number <span class="text-danger">*</span></label>
+                                <input id="account_number" type="text" class="form-control @error('account_number') is-invalid @enderror"
                                     wire:model="account_number">
                                 @error('account_number')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">IFSC Code <span class="text-danger">*</span></label>
-                                <input type="text"
+                                <label class="form-label" for="ifsc_code">IFSC Code <span class="text-danger">*</span></label>
+                                <input id="ifsc_code" type="text"
                                     class="form-control text-uppercase @error('ifsc_code') is-invalid @enderror"
                                     wire:model="ifsc_code" placeholder="ABCD0123456">
                                 @error('ifsc_code')
@@ -357,8 +281,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Account Type <span class="text-danger">*</span></label>
-                                <select class="form-select @error('account_type') is-invalid @enderror"
+                                <label class="form-label" for="account_type">Account Type <span class="text-danger">*</span></label>
+                                <select id="account_type" class="form-select @error('account_type') is-invalid @enderror"
                                     wire:model="account_type">
                                     <option value="">Select account type</option>
                                     <option value="savings">Savings</option>
@@ -369,8 +293,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Branch <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('branch') is-invalid @enderror"
+                                <label class="form-label" for="branch">Branch <span class="text-danger">*</span></label>
+                                <input id="branch" type="text" class="form-control @error('branch') is-invalid @enderror"
                                     wire:model="branch">
                                 @error('branch')
                                     <small class="text-danger">{{ $message }}</small>
@@ -383,24 +307,24 @@
                     @if ($step === 5)
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Category <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('category') is-invalid @enderror"
+                                <label class="form-label" for="category">Category <span class="text-danger">*</span></label>
+                                <input id="category" type="text" class="form-control @error('category') is-invalid @enderror"
                                     wire:model="category" placeholder="e.g. Metals, Polymers">
                                 @error('category')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Annual Turnover <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('turnover') is-invalid @enderror"
+                                <label class="form-label" for="turnover">Annual Turnover <span class="text-danger">*</span></label>
+                                <input id="turnover" type="text" class="form-control @error('turnover') is-invalid @enderror"
                                     wire:model="turnover">
                                 @error('turnover')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Product Upload Mode <span class="text-danger">*</span></label>
-                                <select class="form-select @error('product_upload_mode') is-invalid @enderror"
+                                <label class="form-label" for="product_upload_mode">Product Upload Mode <span class="text-danger">*</span></label>
+                                <select id="product_upload_mode" class="form-select @error('product_upload_mode') is-invalid @enderror"
                                     wire:model="product_upload_mode">
                                     <option value="existing">Existing Products</option>
                                     <option value="new">New Product</option>
@@ -410,9 +334,9 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div class="col-md-12">
-                                <label class="form-label">Products <span class="text-danger">*</span></label>
-                                <textarea rows="5" maxlength="4000" class="form-control @error('products') is-invalid @enderror"
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="products">Products <span class="text-danger">*</span></label>
+                                <textarea id="products" rows="5" maxlength="4000" class="form-control @error('products') is-invalid @enderror"
                                     wire:model="products" placeholder="List the products this seller wants to sell"></textarea>
                                 @error('products')
                                     <small class="text-danger">{{ $message }}</small>
@@ -505,24 +429,24 @@
                     <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
                         <div>
                             @if ($step > 1)
-                                <button type="button" class="btn btn-secondary btn-sm btn-icon-text"
+                                <button type="button" class="btn btn-secondary btn-sm"
                                     wire:click="previousStep">
-                                    <i class="bi bi-arrow-left btn-icon-prepend"></i>
+                                    <i class="bi bi-arrow-left"></i>
                                     Previous
                                 </button>
                             @endif
                         </div>
                         <div>
                             @if ($step <= 5)
-                                <button type="button" class="btn btn-success btn-sm btn-icon-text"
+                                <button type="button" class="btn btn-danger btn-sm"
                                     wire:click="nextStep" wire:loading.attr="disabled">
                                     Save &amp; Next
-                                    <i class="bi bi-arrow-right btn-icon-append"></i>
+                                    <i class="bi bi-arrow-right"></i>
                                 </button>
                             @else
-                                <button type="button" class="btn btn-success btn-sm btn-icon-text" wire:click="submit"
+                                <button type="button" class="btn btn-danger btn-sm" wire:click="submit"
                                     wire:loading.attr="disabled">
-                                    <i class="bi bi-send btn-icon-prepend"></i>
+                                    <i class="bi bi-send"></i>
                                     Submit Request
                                 </button>
                             @endif

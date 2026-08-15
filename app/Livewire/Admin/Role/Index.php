@@ -21,6 +21,11 @@ class Index extends Component
         $this->authorize('role-list');
     }
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         $list = Role::where('id', '!=', 1)

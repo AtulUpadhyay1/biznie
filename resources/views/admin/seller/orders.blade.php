@@ -9,15 +9,8 @@
         </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-4 card-title">
-                            <h5 class="mt-2">Seller Order List</h5>
-                        </div>
-                        <div class="col-8 text-end">
-
-                        </div>
-                    </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Seller Order List</h4>
                 </div>
                 <div class="card-body">
                     {{-- <p class="h6">
@@ -44,9 +37,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($list as $key => $data)
+                                @forelse ($list as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>
                                             {{ $data->getProductEnquiry->unique_id }}
                                             <br>
@@ -54,19 +47,24 @@
                                         </td>
                                         <td>{{ $data->getCommodityProduct->name }}</td>
                                         <td><b>RS {{ $data->total_amount }}</b></td>
-                                        <td class="fw-bolder">{{ ucfirst($data->status) }}</td>
+                                        <td>
+                                            <span
+                                                class="bz-status {{ in_array($data->status, ['delivered', 'completed', 'paid']) ? 'bz-status--success' : (in_array($data->status, ['cancelled', 'rejected', 'failed']) ? 'bz-status--danger' : 'bz-status--info') }}">{{ ucfirst($data->status) }}</span>
+                                        </td>
                                         <td class="text-center">
-                                            <a type="button" id="ActionBtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="">
-                                                <i class="bi bi-three-dots-vertical icon-lg text-muted pb-3px"></i>
+                                            <a type="button" class="bz-row-action" id="actionBtn{{ $data->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
                                             </a>
-                                            <div class="dropdown-menu" aria-labelledby="ActionBtn" style="">
-                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-order.show', $data->id)}}" wire:navigate><i class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
-                                                {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down icon-sm me-2"></i><span>Download</span></a> --}}
-                                                {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash icon-sm me-2"></i><span>Delete</span></a> --}}
+                                            <div class="dropdown-menu" aria-labelledby="actionBtn{{ $data->id }}">
+                                                <a class="dropdown-item d-flex align-items-center" href="{{route('admin.commodity-product-order.show', $data->id)}}" wire:navigate><i class="bi bi-eye me-2"></i><span>View</span></a>
+                                                {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-arrow-down me-2"></i><span>Download</span></a> --}}
+                                                {{-- <a href="javascript:;" class="dropdown-item d-flex align-items-center"><i class="bi bi-trash me-2"></i><span>Delete</span></a> --}}
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <x-table-no-data colspan="6" />
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

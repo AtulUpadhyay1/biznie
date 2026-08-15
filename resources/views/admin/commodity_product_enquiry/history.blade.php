@@ -4,16 +4,12 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4> {{ $page_title }} - {{ $data->unique_id }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-enquiry.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i
-                                    class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4> {{ $page_title }} - {{ $data->unique_id }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-enquiry.index') }}"
+                            class="btn btn-secondary btn-sm" wire:navigate><i
+                                class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -29,8 +25,8 @@
                             <tbody>
                                 @foreach ($data->history ?? [] as $history)
                                     <tr>
-                                        <th>{{ $loop->iteration }}</th>
-                                        <td>{{ ucfirst($history['status']) }}</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td><span class="bz-status bz-status--info">{{ ucfirst($history['status']) }}</span></td>
                                         <td>{{ dateTimeFormat($history['created_at']) }}</td>
                                     </tr>
                                 @endforeach

@@ -4,14 +4,10 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.seller-product.index', $user_id)}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.seller-product.index', $user_id)}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
             </div>
@@ -34,19 +30,19 @@
                                                 <td>
                                                     <div class="form-check">
                                                         <input class="form-check-input quality-checkbox" type="checkbox" value="{{ $item }}" id="quality_{{ $key }}" wire:model="selected_quality" data-key="{{ $key }}">
+                                                        <label class="form-check-label visually-hidden" for="quality_{{ $key }}">{{ $item }}</label>
                                                     </div>
                                                 </td>
                                                 <td>{{ $item }}</td>
                                                 <td>
+                                                    <label class="form-label visually-hidden" for="price_{{ $key }}">{{ $item }} Price</label>
                                                     <input type="number" class="form-control price-input" wire:model="selected_quality_price.{{ $item }}" placeholder="Enter Price" min="0" step="0.01" id="price_{{ $key }}">
                                                     @error('selected_quality_price.'.$item) <span class="text-danger">{{ $message }}</span> @enderror
                                                 </td>
                                             </tr>
                                         @endforeach
                                     @else
-                                        <tr>
-                                            <td colspan="3" class="text-center">No quality found.</td>
-                                        </tr>
+                                        <x-table-no-data colspan="3" title="No quality found" text="This product has no quality grades configured." />
                                     @endif
                                 </tbody>
                             </table>

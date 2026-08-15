@@ -4,17 +4,15 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <p class="text-muted mb-0">
-                                {{ $seller_name ?: '—' }}@if($product) &middot; {{ $product->name }}@endif
-                            </p>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{route('admin.seller-product.index', $user_id)}}" class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <p class="bz-card-sub">
+                            {{ $seller_name ?: '—' }}@if($product) &middot; {{ $product->name }}@endif
+                        </p>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{route('admin.seller-product.index', $user_id)}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
             </div>
@@ -68,10 +66,8 @@
             </form>
 
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <h4>Quoted Cities</h4>
-                    </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Quoted Cities</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -91,18 +87,18 @@
                             <tbody>
                                 @forelse ($list as $key => $data)
                                     <tr>
-                                        <th>{{ $key + 1 }}</th>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>{{ $seller_name ?: '—' }}</td>
                                         <td>{{ $data->state }}</td>
                                         <td>{{ $data->city }}</td>
-                                        <td class="text-muted">&#8377;{{ number_format($ex_price, 2) }}</td>
-                                        <td class="text-muted">+ &#8377;{{ number_format($data->price, 2) }}</td>
-                                        <td class="fw-bold">&#8377;{{ number_format($ex_price + $data->price, 2) }}</td>
+                                        <td class="text-muted bz-num">&#8377;{{ number_format($ex_price, 2) }}</td>
+                                        <td class="text-muted bz-num">+ &#8377;{{ number_format($data->price, 2) }}</td>
+                                        <td class="fw-bold bz-num">&#8377;{{ number_format($ex_price + $data->price, 2) }}</td>
                                         <td>
                                             <a role="button" class="text-danger for-price-delete"
                                                 data-id="{{ $data->id }}" data-city="{{ $data->city }}"
                                                 title="Remove">
-                                                <i class="bi bi-trash icon-sm"></i>
+                                                <i class="bi bi-trash"></i>
                                             </a>
                                         </td>
                                     </tr>

@@ -9,18 +9,11 @@
         </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h5 class="mt-2">Staff List</h5>
-                        </div>
-                        <div class="col-6">
-
-                        </div>
-                    </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Staff List</h4>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive mt-2">
+                    <div class="table-responsive">
                         <table class="custom-table">
                             <thead>
                                 <tr>
@@ -33,9 +26,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($list as $key => $data)
+                                @forelse ($list as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->email }}</td>
                                         <td>{{ $data->phone }}</td>
@@ -44,7 +37,8 @@
                                         </td>
                                         <td>
                                             @if ($data->permission)
-                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#permissionModal{{ $data->id }}">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#permissionModal{{ $data->id }}">
+                                                    <i class="bi bi-eye"></i>
                                                     View
                                                 </button>
                                             @else
@@ -52,7 +46,9 @@
                                             @endif
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <x-table-no-data colspan="6" />
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -81,8 +77,8 @@
                                         @foreach ($permissionGroup as $module => $actions)
                                             <div class="col-md-6 mb-3">
                                                 <div class="card">
-                                                    <div class="card-header bg-primary text-white">
-                                                        <h6 class="mb-0 text-uppercase fw-bold">{{ ucfirst($module) }}</h6>
+                                                    <div class="card-header">
+                                                        <h6 class="mb-0">{{ ucfirst($module) }}</h6>
                                                     </div>
                                                     <div class="card-body">
                                                         <ul class="list-unstyled mb-0">
@@ -112,7 +108,7 @@
                             @endif
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

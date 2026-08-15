@@ -3,51 +3,46 @@
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-
-                    </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
                 </div>
                 <form wire:submit.prevent="updateSetting()">
                     <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-xl-4 col-sm-6">
+                        <div class="row">
+                            <div class="col-xl-4 col-sm-6 mb-3">
                                 <div class="form-group">
-                                    <div class="d-flex justify-content-between align-items-center gap-10 form-control">
-                                        <span class="fs-5">
-                                            Enquiry Send to Seller
+                                    <div class="bz-toggle-row">
+                                        <span class="bz-toggle-row__label">
+                                            <label for="enquiry_send_to_seller">Enquiry Send to Seller</label>
                                             <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="It enable product enquiry automatically send to seller.">
                                                 <i class="bi bi-info-circle"></i>
                                             </span>
                                         </span>
                                         <div class="form-check form-switch">
-                                            <input type="checkbox" class="form-check-input" wire:model="value.enquiry_send_to_seller" {{$value['enquiry_send_to_seller'] == true ? 'checked' : '' }}>
+                                            <input type="checkbox" id="enquiry_send_to_seller" class="form-check-input" wire:model="value.enquiry_send_to_seller" {{$value['enquiry_send_to_seller'] == true ? 'checked' : '' }}>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-4 col-sm-6">
+                            <div class="col-xl-4 col-sm-6 mb-3">
                                 <div class="form-group">
-                                    <div class="d-flex justify-content-between align-items-center gap-10 form-control">
-                                        <span class="fs-5">
-                                            Enquiry Send to Transporter
+                                    <div class="bz-toggle-row">
+                                        <span class="bz-toggle-row__label">
+                                            <label for="enquiry_send_to_transporter">Enquiry Send to Transporter</label>
                                             <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="It enable product enquiry automatically send to transporter.">
                                                 <i class="bi bi-info-circle"></i>
                                             </span>
                                         </span>
                                         <div class="form-check form-switch">
-                                            <input type="checkbox" class="form-check-input" wire:model="value.enquiry_send_to_transporter" {{$value['enquiry_send_to_transporter'] == true ? 'checked' : ''}}>
+                                            <input type="checkbox" id="enquiry_send_to_transporter" class="form-check-input" wire:model="value.enquiry_send_to_transporter" {{$value['enquiry_send_to_transporter'] == true ? 'checked' : ''}}>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-xl-4 col-sm-6">
+                        <div class="row">
+                            <div class="col-xl-4 col-sm-6 mb-3">
                                 <label for="seller_enquiry_reply_time" class="form-label">Seller Enquiry Reply Time (Min)
                                     <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="Time in minutes for the seller to reply to an enquiry.">
                                         <i class="bi bi-info-circle"></i>
@@ -79,18 +74,18 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="row mb-4">
-                            <div class="col-xl-4 col-sm-6">
+                        <div class="row">
+                            <div class="col-xl-4 col-sm-6 mb-3">
                                 <div class="form-group">
-                                    <div class="d-flex justify-content-between align-items-center gap-10 form-control">
-                                        <span class="fs-5">
-                                            Customer Quality Check Visibility
+                                    <div class="bz-toggle-row">
+                                        <span class="bz-toggle-row__label">
+                                            <label for="customer_quality_check_visibility">Customer Quality Check Visibility</label>
                                             <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="It enable product order quality check visible to customer.">
                                                 <i class="bi bi-info-circle"></i>
                                             </span>
                                         </span>
                                         <div class="form-check form-switch">
-                                            <input type="checkbox" class="form-check-input" wire:model="value.customer_quality_check_visibility" {{$value['customer_quality_check_visibility'] == true ? 'checked' : '' }}>
+                                            <input type="checkbox" id="customer_quality_check_visibility" class="form-check-input" wire:model="value.customer_quality_check_visibility" {{$value['customer_quality_check_visibility'] == true ? 'checked' : '' }}>
                                         </div>
                                     </div>
                                 </div>

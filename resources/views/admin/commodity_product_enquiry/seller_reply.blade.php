@@ -1,24 +1,16 @@
 <div>
-    <style>
-        .table-sm>:not(caption)>*>* {
-            padding: 0.25rem .55rem;
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     @section('title', config('app.name') . ' | ' . $page_title)
     <div class="row">
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4> {{ $page_title }} - {{ $data->unique_id }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-enquiry.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center" wire:navigate><i
-                                    class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4> {{ $page_title }} - {{ $data->unique_id }}</h4>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-enquiry.index') }}"
+                            class="btn btn-secondary btn-sm" wire:navigate><i
+                                class="bi bi-arrow-left"></i>Back</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -31,62 +23,60 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Enquiry ID</strong></td>
-                                                <td>{{ $main_product_enquiry->unique_id }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Enquiry ID</dt>
+                                            <dd>{{ $main_product_enquiry->unique_id }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Category</strong></td>
-                                                <td>{{ $main_product_enquiry->getCommodityProduct->getCategory->name }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Category</dt>
+                                            <dd>{{ $main_product_enquiry->getCommodityProduct->getCategory->name }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Product</strong></td>
-                                                <td>{{ $main_product_enquiry->getCommodityProduct->name }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Product</dt>
+                                            <dd>{{ $main_product_enquiry->getCommodityProduct->name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Brand</strong></td>
-                                                <td>{{ $main_product_enquiry->getBrand->name }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Brand</dt>
+                                            <dd>{{ $main_product_enquiry->getBrand->name }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Purpose</strong></td>
-                                                <td>{{ $main_product_enquiry->purpose }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Purpose</dt>
+                                            <dd>{{ $main_product_enquiry->purpose }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Description</strong></td>
-                                                <td>{{ $main_product_enquiry->description }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Description</dt>
+                                            <dd>{{ $main_product_enquiry->description }}</dd>
+                                        </div>
 
-                                            @if ($main_product_enquiry->quality)
-                                                <tr>
-                                                    <td><strong>Quality</strong></td>
-                                                    <td>
-                                                        {{ $main_product_enquiry->quality['name'] }} –
-                                                        ₹
-                                                        {{ formatIndianNumber($main_product_enquiry->quality['price']) }}
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                        @if ($main_product_enquiry->quality)
+                                            <div>
+                                                <dt>Quality</dt>
+                                                <dd>
+                                                    {{ $main_product_enquiry->quality['name'] }} –
+                                                    ₹
+                                                    {{ formatIndianNumber($main_product_enquiry->quality['price']) }}
+                                                </dd>
+                                            </div>
+                                        @endif
 
-                                            @if ($main_product_enquiry->packaging_charge)
-                                                <tr>
-                                                    <td><strong>Packaging Charge</strong></td>
-                                                    <td>
-                                                        {{ $main_product_enquiry->packaging_charge['name'] }} –
-                                                        ₹
-                                                        {{ formatIndianNumber($main_product_enquiry->packaging_charge['charge']) }}
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
+                                        @if ($main_product_enquiry->packaging_charge)
+                                            <div>
+                                                <dt>Packaging Charge</dt>
+                                                <dd>
+                                                    {{ $main_product_enquiry->packaging_charge['name'] }} –
+                                                    ₹
+                                                    {{ formatIndianNumber($main_product_enquiry->packaging_charge['charge']) }}
+                                                </dd>
+                                            </div>
+                                        @endif
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -98,59 +88,57 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->getUserDetail->company_name }}
-                                                </td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->getUserDetail->company_name }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->phone }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->phone }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->getUserDetail->gst_number }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->getUserDetail->gst_number }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->getUserDetail->address_line_one }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->getUserDetail->address_line_one }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->getUserDetail->address_line_two }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->getUserDetail->address_line_two }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->getUserDetail->city }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->getUserDetail->city }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->getUserDetail->state }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->getUserDetail->state }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->getUserDetail->postal_code }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->getUserDetail->postal_code }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Credit Days</strong></td>
-                                                <td>{{ $main_product_enquiry->getUser->credit_days }} Days</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Credit Days</dt>
+                                            <dd>{{ $main_product_enquiry->getUser->credit_days }} Days</dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -162,54 +150,52 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $main_product_enquiry->billing_address['company_name'] }}</td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $main_product_enquiry->billing_address['company_name'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $main_product_enquiry->billing_address['phone'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $main_product_enquiry->billing_address['phone'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $main_product_enquiry->billing_address['gst'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $main_product_enquiry->billing_address['gst'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $main_product_enquiry->billing_address['address_line_one'] }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $main_product_enquiry->billing_address['address_line_one'] }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $main_product_enquiry->billing_address['address_line_two'] }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $main_product_enquiry->billing_address['address_line_two'] }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $main_product_enquiry->billing_address['state'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $main_product_enquiry->billing_address['state'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $main_product_enquiry->billing_address['city'] }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $main_product_enquiry->billing_address['city'] }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>
-                                                    {{ $main_product_enquiry->consignee_detail['pin_code'] ??
-                                                        ($main_product_enquiry->billing_address['pincode'] ?? '') }}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>
+                                                {{ $main_product_enquiry->consignee_detail['pin_code'] ??
+                                                    ($main_product_enquiry->billing_address['pincode'] ?? '') }}
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -221,54 +207,52 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <table class="table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Company</strong></td>
-                                                <td>{{ $main_product_enquiry->consignee_detail['company_name'] ?? '--' }}
-                                                </td>
-                                            </tr>
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $main_product_enquiry->consignee_detail['company_name'] ?? '--' }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Phone</strong></td>
-                                                <td>{{ $main_product_enquiry->consignee_detail['phone'] ?? '--' }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $main_product_enquiry->consignee_detail['phone'] ?? '--' }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>GST</strong></td>
-                                                <td>{{ $main_product_enquiry->consignee_detail['gst'] ?? '--' }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $main_product_enquiry->consignee_detail['gst'] ?? '--' }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 1</strong></td>
-                                                <td>{{ $main_product_enquiry->consignee_detail['address_line_one'] ?? '--' }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 1</dt>
+                                            <dd>{{ $main_product_enquiry->consignee_detail['address_line_one'] ?? '--' }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Address Line 2</strong></td>
-                                                <td>{{ $main_product_enquiry->consignee_detail['address_line_two'] ?? '--' }}
-                                                </td>
-                                            </tr>
+                                        <div>
+                                            <dt>Address Line 2</dt>
+                                            <dd>{{ $main_product_enquiry->consignee_detail['address_line_two'] ?? '--' }}
+                                            </dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>State</strong></td>
-                                                <td>{{ $main_product_enquiry->consignee_detail['state'] ?? '--' }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $main_product_enquiry->consignee_detail['state'] ?? '--' }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>City</strong></td>
-                                                <td>{{ $main_product_enquiry->consignee_detail['city'] ?? '--' }}</td>
-                                            </tr>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $main_product_enquiry->consignee_detail['city'] ?? '--' }}</dd>
+                                        </div>
 
-                                            <tr>
-                                                <td><strong>Pincode</strong></td>
-                                                <td>
-                                                    {{ $main_product_enquiry->consignee_detail['pin_code'] ?? ($data->billing_address['pincode'] ?? '--') }}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>
+                                                {{ $main_product_enquiry->consignee_detail['pin_code'] ?? ($data->billing_address['pincode'] ?? '--') }}
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
@@ -282,34 +266,32 @@
                                 </div>
                                 <div class="card-body p-3">
                                     @if ($loading_address)
-                                        <table class="table table-sm table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Address Line One</strong></td>
-                                                    <td>{{ $loading_address->address_line_one ?? '--' }}</td>
-                                                </tr>
+                                        <dl class="bz-kv-list">
+                                            <div>
+                                                <dt>Address Line One</dt>
+                                                <dd>{{ $loading_address->address_line_one ?? '--' }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>Address Line Two</strong></td>
-                                                    <td>{{ $loading_address->address_line_two ?? '--' }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>Address Line Two</dt>
+                                                <dd>{{ $loading_address->address_line_two ?? '--' }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>City</strong></td>
-                                                    <td>{{ $loading_address->city ?? '--' }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>City</dt>
+                                                <dd>{{ $loading_address->city ?? '--' }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>State</strong></td>
-                                                    <td>{{ $loading_address->state ?? '--' }}</td>
-                                                </tr>
+                                            <div>
+                                                <dt>State</dt>
+                                                <dd>{{ $loading_address->state ?? '--' }}</dd>
+                                            </div>
 
-                                                <tr>
-                                                    <td><strong>Pincode</strong></td>
-                                                    <td>{{ $loading_address->pincode ?? '--' }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                            <div>
+                                                <dt>Pincode</dt>
+                                                <dd>{{ $loading_address->pincode ?? '--' }}</dd>
+                                            </div>
+                                        </dl>
                                     @endif
                                 </div>
                             </div>
@@ -380,9 +362,9 @@
 
                                     <div class="col-12 text-end">
                                         @if ($selected_transporter_id)
-                                            <button class="btn btn-success btn-xs my-2"
-                                                title="Mark enquiry to transporter" wire:click="markTransporter()">Mark
-                                                Transporter</button>
+                                            <button class="btn btn-danger btn-sm my-2"
+                                                title="Mark enquiry to transporter" wire:click="markTransporter()"><i
+                                                    class="bi bi-check2-circle"></i>Mark Transporter</button>
                                         @endif
                                     </div>
                                     <div class="accordion" id="transporter_price">
@@ -395,7 +377,10 @@
                                                             class="form-check-input"
                                                             value="{{ $transporter_data->id }}"
                                                             wire:model.live="selected_transporter_id">
-                                                        <button class="btn btn-info btn-sm p-0 ms-2"
+                                                        <label class="form-check-label visually-hidden"
+                                                            for="transporter_{{ $transporter_data->id }}">Select
+                                                            transporter</label>
+                                                        <button class="btn btn-secondary btn-sm ms-2"
                                                             title="Update Price" data-bs-toggle="modal"
                                                             data-bs-target="#updateTransporterPrice_{{ $transporter_data->id }}"
                                                             wire:click="setTransporterPrice({{ $transporter_data->id }})"><i
@@ -406,9 +391,9 @@
                                                             id="transporter_heading_{{ $transporter_data->id }}">
                                                             <button class="accordion-button collapsed" type="button"
                                                                 data-bs-toggle="collapse"
-                                                                data-bs-target="#collapse_{{ $transporter_data->id }}"
+                                                                data-bs-target="#transporter_collapse_{{ $transporter_data->id }}"
                                                                 aria-expanded="false"
-                                                                aria-controls="collapse_{{ $transporter_data->id }}">
+                                                                aria-controls="transporter_collapse_{{ $transporter_data->id }}">
                                                                 <b>{{ $transporter_data->getUser->name }}
                                                                     ({{ $transporter_data->getUser->phone }})
                                                                 </b>,
@@ -453,9 +438,9 @@
                                                             @enderror
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger"
+                                                            <button type="button" class="btn btn-secondary btn-sm"
                                                                 data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary"
+                                                            <button type="button" class="btn btn-danger btn-sm"
                                                                 wire:click="updateTransporterPrice()">Update</button>
                                                         </div>
                                                     </div>
@@ -474,9 +459,10 @@
                                     </div>
                                     <div class="col-4 text-end">
                                         @if ($selected_enquiry_id)
-                                            <button class="btn btn-success btn-xs my-2" title="Update Price"
+                                            <button class="btn btn-danger btn-sm my-2" title="Update Price"
                                                 data-bs-toggle="modal" data-bs-target="#updatePrice"
-                                                wire:click="updatePriceForm()">Update Price</button>
+                                                wire:click="updatePriceForm()"><i
+                                                    class="bi bi-pencil-square"></i>Update Price</button>
                                             {{-- <button class="btn btn-primary btn-xs my-2" title="Mark enquiry to seller" wire:click="markSeller()">Mark Seller</button> --}}
                                         @endif
                                     </div>
@@ -495,7 +481,9 @@
                                                         <input type="radio" id="seller_{{ $list_data->id }}"
                                                             class="form-check-input" value="{{ $list_data->id }}"
                                                             wire:model.live="selected_enquiry_id">
-                                                        <button class="btn btn-info btn-sm p-0 ms-2"
+                                                        <label class="form-check-label visually-hidden"
+                                                            for="seller_{{ $list_data->id }}">Select seller</label>
+                                                        <button class="btn btn-secondary btn-sm ms-2"
                                                             title="Update Price" data-bs-toggle="modal"
                                                             data-bs-target="#updateBasePrice_{{ $list_data->id }}"
                                                             wire:click="setBasePrice({{ $list_data->id }})"><i
@@ -641,7 +629,7 @@
                                                                 </b>
                                                                 @if ($repliedStatus)
                                                                     <b class="ms-1">Status: </b><span
-                                                                        class="badge bg-success">{{ $repliedStatus['status'] }}</span>
+                                                                        class="bz-status bz-status--success">{{ $repliedStatus['status'] }}</span>
                                                                     <span
                                                                         class="ms-1">{{ \Carbon\Carbon::parse($repliedStatus['created_at'])->format('d-m-Y H:i:s') }}</span>
                                                                 @endif
@@ -657,43 +645,78 @@
                                                         <div class="row">
 
                                                             <div class="col-md-6">
-                                                                <b>Name : </b> {{ $list_data->getUser->name }} <br>
-                                                                <b>Company Name: </b>
-                                                                {{ $list_data->getUser->getBusiness->name }} <br>
-                                                                <b>GST : </b>
-                                                                {{ $list_data->getUser->getSellerKycDetail ? $list_data->getUser->getSellerKycDetail->gst_number : '--' }}
-                                                                <br>
-                                                                <b>Phone : </b> {{ $list_data->getUser->phone }} <br>
-                                                                <b>Brand</b> : {{ $list_data->getBrand->name }} <br>
-                                                                <b>State</b> :
-                                                                {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }}
-                                                                <br>
-                                                                <b>City</b> :
-                                                                {{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }}
-                                                                <br>
-
+                                                                <dl class="bz-kv-list">
+                                                                    <div>
+                                                                        <dt>Name</dt>
+                                                                        <dd>{{ $list_data->getUser->name }}</dd>
+                                                                    </div>
+                                                                    <div>
+                                                                        <dt>Company Name</dt>
+                                                                        <dd>{{ $list_data->getUser->getBusiness->name }}
+                                                                        </dd>
+                                                                    </div>
+                                                                    <div>
+                                                                        <dt>GST</dt>
+                                                                        <dd>{{ $list_data->getUser->getSellerKycDetail ? $list_data->getUser->getSellerKycDetail->gst_number : '--' }}
+                                                                        </dd>
+                                                                    </div>
+                                                                    <div>
+                                                                        <dt>Phone</dt>
+                                                                        <dd>{{ $list_data->getUser->phone }}</dd>
+                                                                    </div>
+                                                                    <div>
+                                                                        <dt>Brand</dt>
+                                                                        <dd>{{ $list_data->getBrand->name }}</dd>
+                                                                    </div>
+                                                                    <div>
+                                                                        <dt>State</dt>
+                                                                        <dd>{{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }}
+                                                                        </dd>
+                                                                    </div>
+                                                                    <div>
+                                                                        <dt>City</dt>
+                                                                        <dd>{{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }}
+                                                                        </dd>
+                                                                    </div>
+                                                                </dl>
                                                             </div>
                                                             @foreach ($list_data->loading_address as $loading_address)
                                                                 <div class="col-md-6">
                                                                     @if ($loading_address)
-                                                                        <b>Loading Address: </b> <br>
-                                                                        <b>Pincode: </b>
-                                                                        {{ $loading_address['pin_code'] }} <br>
-                                                                        <b>Address Line One: </b>
-                                                                        {{ isset($loading_address['address_line_one']) ? $loading_address['address_line_one'] : '--' }}
-                                                                        <br>
-                                                                        <b>Address Line Two: </b>
-                                                                        {{ isset($loading_address['address_line_two']) ? $loading_address['address_line_two'] : '--' }}
-                                                                        <br>
-                                                                        <b>City: </b>
-                                                                        {{ isset($loading_address['city']) ? $loading_address['city'] : '--' }}
-                                                                        <br>
-                                                                        <b>State: </b>
-                                                                        {{ isset($loading_address['state']) ? $loading_address['state'] : '--' }}
-                                                                        <br>
-                                                                        <b>Loading Position: </b>
-                                                                        {{ isset($loading_address['loading_position']) ? $loading_address['loading_position'] : '--' }}
-                                                                        / Days <br>
+                                                                        <div class="bz-section-label">Loading Address
+                                                                        </div>
+                                                                        <dl class="bz-kv-list">
+                                                                            <div>
+                                                                                <dt>Pincode</dt>
+                                                                                <dd>{{ $loading_address['pin_code'] }}
+                                                                                </dd>
+                                                                            </div>
+                                                                            <div>
+                                                                                <dt>Address Line One</dt>
+                                                                                <dd>{{ isset($loading_address['address_line_one']) ? $loading_address['address_line_one'] : '--' }}
+                                                                                </dd>
+                                                                            </div>
+                                                                            <div>
+                                                                                <dt>Address Line Two</dt>
+                                                                                <dd>{{ isset($loading_address['address_line_two']) ? $loading_address['address_line_two'] : '--' }}
+                                                                                </dd>
+                                                                            </div>
+                                                                            <div>
+                                                                                <dt>City</dt>
+                                                                                <dd>{{ isset($loading_address['city']) ? $loading_address['city'] : '--' }}
+                                                                                </dd>
+                                                                            </div>
+                                                                            <div>
+                                                                                <dt>State</dt>
+                                                                                <dd>{{ isset($loading_address['state']) ? $loading_address['state'] : '--' }}
+                                                                                </dd>
+                                                                            </div>
+                                                                            <div>
+                                                                                <dt>Loading Position</dt>
+                                                                                <dd>{{ isset($loading_address['loading_position']) ? $loading_address['loading_position'] : '--' }}
+                                                                                    / Days</dd>
+                                                                            </div>
+                                                                        </dl>
                                                                     @else
                                                                         <b>Loading Address Not Found.</b>
                                                                     @endif
@@ -701,20 +724,35 @@
                                                             @endforeach
                                                             @if ($list_data->quality)
                                                                 <div class="col-md-6 mt-3">
-                                                                    <b>Quality: </b> {{ $list_data->quality['name'] }}
-                                                                    <br>
-                                                                    <b>Price: </b> ₹
-                                                                    {{ formatIndianNumber($list_data->quality['price']) }}
-                                                                    <br>
+                                                                    <dl class="bz-kv-list">
+                                                                        <div>
+                                                                            <dt>Quality</dt>
+                                                                            <dd>{{ $list_data->quality['name'] }}</dd>
+                                                                        </div>
+                                                                        <div>
+                                                                            <dt>Price</dt>
+                                                                            <dd>₹
+                                                                                {{ formatIndianNumber($list_data->quality['price']) }}
+                                                                            </dd>
+                                                                        </div>
+                                                                    </dl>
                                                                 </div>
                                                             @endif
                                                             @if ($list_data->packaging_charge)
                                                                 <div class="col-md-6 mt-3">
-                                                                    <b>Packaging Charge: </b>
-                                                                    {{ $list_data->packaging_charge['name'] }} <br>
-                                                                    <b>Price: </b> ₹
-                                                                    {{ formatIndianNumber($list_data->packaging_charge['charge']) }}
-                                                                    <br>
+                                                                    <dl class="bz-kv-list">
+                                                                        <div>
+                                                                            <dt>Packaging Charge</dt>
+                                                                            <dd>{{ $list_data->packaging_charge['name'] }}
+                                                                            </dd>
+                                                                        </div>
+                                                                        <div>
+                                                                            <dt>Price</dt>
+                                                                            <dd>₹
+                                                                                {{ formatIndianNumber($list_data->packaging_charge['charge']) }}
+                                                                            </dd>
+                                                                        </div>
+                                                                    </dl>
                                                                 </div>
                                                             @endif
                                                         </div>
@@ -1050,9 +1088,9 @@
                                                             @enderror
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger"
+                                                            <button type="button" class="btn btn-secondary btn-sm"
                                                                 data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary"
+                                                            <button type="button" class="btn btn-danger btn-sm"
                                                                 wire:click="updateBasePrice()">Update</button>
                                                         </div>
                                                     </div>
@@ -1177,12 +1215,10 @@
                                                         @endforeach
                                                         @if ($set_enquiry_data->quality || $set_enquiry_data->packaging_charge)
                                                             <tr>
-                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}"
-                                                                    style="border-right: hidden;"></td>
+                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}"></td>
                                                                 @if ($set_enquiry_data->quality)
                                                                     <th>
-                                                                        <label for=""
-                                                                            class="form-label">Quality</label>
+                                                                        Quality
                                                                     </th>
                                                                     <td>
                                                                         {{ $set_enquiry_data->quality['name'] }}: ₹
@@ -1191,8 +1227,7 @@
                                                                 @endif
                                                                 @if ($set_enquiry_data->packaging_charge)
                                                                     <th>
-                                                                        <label for=""
-                                                                            class="form-label">Packaging</label>
+                                                                        Packaging
                                                                     </th>
                                                                     <td>
                                                                         {{ $set_enquiry_data->packaging_charge['name'] }}:
@@ -1203,7 +1238,7 @@
                                                             </tr>
                                                         @endif
                                                         <tr>
-                                                            <th style="border-right: hidden;">
+                                                            <th>
                                                                 <label for="transport_price"
                                                                     class="form-label">Transport Price / MT</label>
                                                             </th>
@@ -1220,7 +1255,7 @@
 
                                                             </td>
 
-                                                            <th style="border-right: hidden;">
+                                                            <th>
                                                                 <label for="base_price" class="form-label">Base
                                                                     Price</label>
                                                             </th>
@@ -1240,22 +1275,38 @@
                                                             <td
                                                                 colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}">
                                                                 @if ($selected_transporter)
-                                                                    Name : {{ $selected_transporter->getUser->name }}
-                                                                    <br>
-                                                                    Phone :
-                                                                    {{ $selected_transporter->getUser->phone }} <br>
-                                                                    Price : ₹
-                                                                    {{ formatIndianNumber($selected_transporter->min_price) }}
-                                                                    - ₹
-                                                                    {{ formatIndianNumber($selected_transporter->max_price) }}<br>
-                                                                    Given Price : ₹
-                                                                    {{ formatIndianNumber($selected_transporter->price) }}<br>
+                                                                    <dl class="bz-kv-list">
+                                                                        <div>
+                                                                            <dt>Name</dt>
+                                                                            <dd>{{ $selected_transporter->getUser->name }}
+                                                                            </dd>
+                                                                        </div>
+                                                                        <div>
+                                                                            <dt>Phone</dt>
+                                                                            <dd>{{ $selected_transporter->getUser->phone }}
+                                                                            </dd>
+                                                                        </div>
+                                                                        <div>
+                                                                            <dt>Price</dt>
+                                                                            <dd>₹
+                                                                                {{ formatIndianNumber($selected_transporter->min_price) }}
+                                                                                - ₹
+                                                                                {{ formatIndianNumber($selected_transporter->max_price) }}
+                                                                            </dd>
+                                                                        </div>
+                                                                        <div>
+                                                                            <dt>Given Price</dt>
+                                                                            <dd>₹
+                                                                                {{ formatIndianNumber($selected_transporter->price) }}
+                                                                            </dd>
+                                                                        </div>
+                                                                    </dl>
                                                                 @else
                                                                     <a href="{{ route('admin.commodity-product-enquiry.sellerReply', $hidden_id) }}?active_tab=transporter"
                                                                         wire:navigate>Select Transpoter</a>
                                                                 @endif
                                                             </td>
-                                                            <th style="border-right: hidden;">
+                                                            <th>
                                                                 <label for="commission" class="form-label">Commission
                                                                     / MT<br>
                                                                     ({{ ucfirst($selected_seller_commodity_product->commission_type) }})
@@ -1290,7 +1341,7 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <th style="border-right: hidden;">
+                                                            <th>
                                                                 <label for="seller_credit_days"
                                                                     class="form-label">Seller Credit Days</label>
                                                             </th>
@@ -1306,10 +1357,10 @@
                                                                 @enderror
                                                             </td>
                                                             @if ($selected_seller_commodity_product->loading_charge > 0)
-                                                                <th style="border-right: hidden;">
+                                                                <th>
                                                                     {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                    <label for="" class="form-label">Loading
-                                                                        Charge</label>
+                                                                    Loading
+                                                                        Charge
                                                                 </th>
                                                                 <td colspan="3">
                                                                     ₹
@@ -1319,7 +1370,7 @@
                                                         </tr>
 
                                                         <tr>
-                                                            <th style="border-right: hidden;">
+                                                            <th>
                                                                 <label for="customer_credit_days"
                                                                     class="form-label">Buyer Credit Days</label>
                                                             </th>
@@ -1335,10 +1386,10 @@
                                                                 @enderror
                                                             </td>
                                                             @if ($selected_seller_commodity_product->insurance_charge > 0)
-                                                                <th style="border-right: hidden;">
+                                                                <th>
                                                                     {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                    <label for="" class="form-label">Insurance
-                                                                        Charge</label>
+                                                                    Insurance
+                                                                        Charge
                                                                 </th>
                                                                 <td colspan="3">
                                                                     ₹
@@ -1347,7 +1398,7 @@
                                                             @endif
                                                         </tr>
                                                         <tr>
-                                                            <th style="border-right: hidden;">
+                                                            <th>
                                                                 <label for="load_within" class="form-label">Load
                                                                     Within</label>
                                                             </th>
@@ -1364,13 +1415,12 @@
                                                         </tr>
                                                         @if ($selected_seller_commodity_product->quality_charge > 0)
                                                             <tr>
-                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}"
-                                                                    style="border-left: hidden; border-bottom: hidden;">
+                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}">
                                                                 </td>
-                                                                <th style="border-right: hidden;">
+                                                                <th>
                                                                     {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                    <label for="" class="form-label">Quality
-                                                                        Charge</label>
+                                                                    Quality
+                                                                        Charge
                                                                 </th>
                                                                 <td colspan="3">
                                                                     ₹
@@ -1381,13 +1431,11 @@
                                                         @foreach ($selected_seller_commodity_product->charge_name as $charge_key => $charge_name)
                                                             @if ($selected_seller_commodity_product->charge_price[$charge_key] > 0)
                                                                 <tr>
-                                                                    <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}"
-                                                                        style="border-left: hidden; border-bottom: hidden;">
+                                                                    <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}">
                                                                     </td>
-                                                                    <th style="border-right: hidden;">
+                                                                    <th>
                                                                         {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                        <label for=""
-                                                                            class="form-label">{{ $charge_name }}</label>
+                                                                        {{ $charge_name }}
                                                                     </th>
                                                                     <td colspan="3">
                                                                         {{ $selected_seller_commodity_product->operator[$charge_key] }}
@@ -1398,13 +1446,12 @@
                                                         @endforeach
                                                         @if ($selected_seller_commodity_product->gst)
                                                             <tr>
-                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}"
-                                                                    style="border-left: hidden; border-bottom: hidden;">
+                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}">
                                                                 </td>
-                                                                <th style="border-right: hidden;">
+                                                                <th>
                                                                     {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                    <label for="" class="form-label">GST
-                                                                        Charge</label>
+                                                                    GST
+                                                                        Charge
                                                                 </th>
                                                                 <td colspan="3">
                                                                     ₹
@@ -1415,13 +1462,12 @@
                                                         @endif
                                                         @if ($selected_seller_commodity_product->tcs > 0)
                                                             <tr>
-                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}"
-                                                                    style="border-left: hidden; border-bottom: hidden;">
+                                                                <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}">
                                                                 </td>
-                                                                <th style="border-right: hidden;">
+                                                                <th>
                                                                     {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                    <label for="" class="form-label">TCS
-                                                                        Charge</label>
+                                                                    TCS
+                                                                        Charge
                                                                 </th>
                                                                 <td colspan="3">
                                                                     ₹
@@ -1430,12 +1476,11 @@
                                                             </tr>
                                                         @endif
                                                         <tr>
-                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}"
-                                                                style="border-left: hidden; border-bottom: hidden;">
+                                                            <td colspan="{{ count($set_enquiry_data->value[0]['value']) + 1 }}">
                                                             </td>
-                                                            <th style="border-right: hidden;">
+                                                            <th>
                                                                 {{-- <label for="" class="form-label">Total Transport Price</label> --}}
-                                                                <label for="" class="form-label">Total</label>
+                                                                Total
                                                             </th>
                                                             <td colspan="3">
                                                                 {{-- ₹ {{ formatIndianNumber($total_transport_price) }}
@@ -1450,9 +1495,9 @@
                                         @endif
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger"
+                                        <button type="button" class="btn btn-secondary btn-sm"
                                             data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" wire:click="markSeller()"
+                                        <button type="button" class="btn btn-danger btn-sm" wire:click="markSeller()"
                                             wire:loading.attr="disabled">
                                             <span wire:loading.remove wire:target="markSeller">Update</span>
                                             <span wire:loading wire:target="markSeller">Updating...</span>

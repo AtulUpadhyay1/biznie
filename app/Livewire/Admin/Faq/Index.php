@@ -13,9 +13,24 @@ class Index extends Component
 
     public $page_title = 'Faq List';
 
+    public $search;
+    protected $queryString = [
+        'search' => ['except' => ''],
+    ];
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $list = Faq::latest()->paginate(getPaginate());
+        $list = Faq::when($this->search, function ($q) {
+                $q->where('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('description', 'like', '%' . $this->search . '%');
+            })
+            ->latest()
+            ->paginate(getPaginate());
         return view('admin.faq.index', compact('list'));
     }
 

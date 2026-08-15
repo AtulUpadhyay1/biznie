@@ -3,46 +3,28 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                        </div>
-                        <div class="col-6 text-end">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <li class="list-group-item border-0 me-2">
-                                    <div class="custom-search-bar">
-                                        <div class="input-group">
-                                            <span class="input-group-text"> <i data-feather="search"></i></span>
-                                            <input type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item border-0 me-2">
-                                    <select class="form-select" wire:model.live="status">
-                                        <option value="">Status</option>
-                                        <option value="active">Active</option>
-                                        <option value="in_active">In Active</option>
-                                    </select>
-                                </li>
-                                {{-- <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-                                    <span class="input-group-text input-group-addon bg-transparent border-danger"
-                                        data-toggle><i data-feather="calendar" class="text-danger"></i></span>
-                                    <input type="text" class="form-control bg-transparent border-danger"
-                                        placeholder="Select date" data-input>
-                                </div>
-                                <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
-                                    <i class="btn-icon-prepend" data-feather="download-cloud"></i>
-                                    Download Report
-                                </button> --}}
-                                @can('transporter-create')
-                                    <a href="{{ route('admin.transporter.create') }}" class="btn btn-danger btn-sm btn-icon-text mb-2 mb-md-0" wire:navigate>
-                                        <i class="bi bi-plus-lg btn-icon-prepend"></i>
-                                        Add
-                                    </a>
-                                @endcan
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>{{ $page_title }}</h4>
+                    <div class="bz-toolbar">
+                        <div class="custom-search-bar">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <label class="bz-filter-label" for="search">Search</label>
+                                <input id="search" type="text" class="form-control" placeholder="Search here..." wire:model.live="search">
                             </div>
                         </div>
+                        <label class="bz-filter-label" for="status">Status</label>
+                        <select id="status" class="form-select" wire:model.live="status">
+                            <option value="">Status</option>
+                            <option value="active">Active</option>
+                            <option value="in_active">In Active</option>
+                        </select>
+                        @can('transporter-create')
+                            <a href="{{ route('admin.transporter.create') }}" class="btn btn-danger btn-sm" wire:navigate>
+                                <i class="bi bi-plus-lg"></i>
+                                Add
+                            </a>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">
@@ -62,15 +44,15 @@
                             <tbody>
                                 @forelse ($list as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }}</td>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>{{ $data->name }}</td>
                                         <td>
-                                            <i class="bi bi-telephone"></i><span class="ms-2">{{ $data->phone }}</span>
+                                            <div class="bz-cell-sub"><i class="bi bi-telephone"></i>{{ $data->phone }}</div>
                                         </td>
                                         <td>{{ dateFormat($data->created_at) }}</td>
                                         <td>{{ lastActive($data->id) }}</td>
                                         <td>
-                                            {!! $data->status == 'active' ? '<span class="text-success fw-bolder"> Active </span>' : '<span class="text-danger fw-bolder"> Inactive </span>' !!}
+                                            {!! $data->status == 'active' ? '<span class="bz-status bz-status--success">Active</span>' : '<span class="bz-status bz-status--muted">Inactive</span>' !!}
                                         </td>
                                         <td class="text-center">
                                             <a type="button" id="actionBtn_{{$data->id}}" data-bs-toggle="dropdown"
@@ -79,17 +61,17 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="actionBtn_{{$data->id}}">
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.profile', $data->id)}}" wire:navigate><i
-                                                    class="bi bi-eye icon-sm me-2"></i><span>View</span></a>
+                                                    class="bi bi-eye me-2"></i><span>View</span></a>
                                                 @can('transporter-edit')
                                                     <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.edit', $data->id)}}" wire:navigate><i
-                                                        class="bi bi-pencil-square icon-sm me-2"></i><span>Edit</span></a>
+                                                        class="bi bi-pencil-square me-2"></i><span>Edit</span></a>
                                                 @endcan
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.vehicle', $data->id)}}" wire:navigate><i
-                                                    class="bi bi-truck icon-sm me-2"></i><span>Vehicles</span></a>
+                                                    class="bi bi-truck me-2"></i><span>Vehicles</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.product', $data->id)}}" wire:navigate><i
-                                                    class="bi bi-cart icon-sm me-2"></i><span>Products</span></a>
+                                                    class="bi bi-cart me-2"></i><span>Products</span></a>
                                                 <a class="dropdown-item d-flex align-items-center" href="{{route('admin.transporter.addressPrice', $data->id)}}" wire:navigate><i
-                                                    class="bi bi-diagram-2 icon-sm me-2"></i><span>Belts</span></a>
+                                                    class="bi bi-diagram-2 me-2"></i><span>Belts</span></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -106,14 +88,6 @@
             </div>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class="col-12">
-            <div class="card">
-
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="showDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDetailsLabel" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -133,7 +107,7 @@
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

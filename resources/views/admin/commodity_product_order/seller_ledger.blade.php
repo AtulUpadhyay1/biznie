@@ -4,24 +4,20 @@
         <x-loader />
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>{{ $page_title }}</h4>
-                            <small> ( {{ $data->order_id }} ) </small>
-                            <span
-                                class="badge rounded-pill border {{ $data->status == 'cancel' ? 'border-danger text-danger' : ($data->status == 'pending' ? 'border-warning text-warning' : 'border-primary text-primary') }} rounded-pill ms-1">{{ $data->status }}
-                            </span>
-                        </div>
-                        <div class="col-6 text-end">
-                            <a href="{{ route('admin.commodity-product-order.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text float-end align-items-center ms-2"
-                                wire:navigate><i class="bi bi-arrow-left btn-icon-prepend"></i>Back</a>
-                        </div>
-                        <div class="col-12 text-center">
-                            @include('admin.commodity_product_order.menu', ['is_active' => 'sellerLedger'])
-                        </div>
-
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>{{ $page_title }}</h4>
+                        <small> ( {{ $data->order_id }} ) </small>
+                        <span
+                            class="bz-status {{ $data->status == 'cancel' ? 'bz-status--danger' : ($data->status == 'pending' ? 'bz-status--warning' : 'bz-status--info') }} ms-1">{{ $data->status }}
+                        </span>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.commodity-product-order.index') }}" class="btn btn-secondary btn-sm"
+                            wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
+                    </div>
+                    <div class="w-100 text-center">
+                        @include('admin.commodity_product_order.menu', ['is_active' => 'sellerLedger'])
                     </div>
                 </div>
 
@@ -40,11 +36,11 @@
                             <tbody>
                                 @forelse ($ledgers as $key => $data)
                                     <tr>
-                                        <td>{{ $key + 1 + ($ledgers->currentPage() - 1) * $ledgers->perPage() }}</td>
+                                        <td>{{ $ledgers->firstItem() + $loop->index }}</td>
                                         <td>
-                                            {{ $data->transaction_id }} <br>
+                                            <div class="bz-cell-title">{{ $data->transaction_id }}</div>
                                             <span
-                                                class="badge {{ $data->type == 'credit' ? 'bg-success' : 'bg-danger' }}">
+                                                class="bz-status {{ $data->type == 'credit' ? 'bz-status--success' : 'bz-status--danger' }}">
                                                 {{ ucfirst($data->type) }}
                                             </span> <br>
                                             <b>Date & Time : </b>
@@ -54,41 +50,67 @@
                                         <td>₹ {{ formatIndianNumber($data->amount) }}</td>
                                         {{-- <td>₹ {{ formatIndianNumber($data->remaining_balance) }}</td> --}}
                                         <td style="width: 300px;">
-                                            @if ($data->payment_mode)
-                                                <b>Payment Mode : </b> {{ $data->payment_mode }} <br>
-                                            @endif
-                                            @if ($data->payment_method)
-                                                <b>Payment Method : </b> {{ $data->payment_method }} <br>
-                                            @endif
-                                            @if ($data->transaction_account_name)
-                                                <b>Account Name : </b> {{ $data->transaction_account_name }} <br>
-                                            @endif
-                                            @if ($data->transaction_account_number)
-                                                <b>Account Number : </b> {{ $data->transaction_account_number }} <br>
-                                            @endif
-                                            @if ($data->transaction_bank_name)
-                                                <b>Bank Name : </b> {{ $data->transaction_bank_name }} <br>
-                                            @endif
-                                            @if ($data->transaction_number)
-                                                <b>Transaction ID : </b> {{ $data->transaction_number }} <br>
-                                            @endif
-                                            @if ($data->description)
-                                                <b>Description : </b> {{ $data->description }} <br>
-                                            @endif
-                                            @if ($data->file)
-                                                <b>File: </b>
-                                                <a href="{{ asset('storage/' . $data->file) }}"
-                                                    target="_blank">View</a>
-                                                <br>
-                                            @endif
+                                            <dl class="bz-kv-list">
+                                                @if ($data->payment_mode)
+                                                    <div>
+                                                        <dt>Payment Mode</dt>
+                                                        <dd>{{ $data->payment_mode }}</dd>
+                                                    </div>
+                                                @endif
+                                                @if ($data->payment_method)
+                                                    <div>
+                                                        <dt>Payment Method</dt>
+                                                        <dd>{{ $data->payment_method }}</dd>
+                                                    </div>
+                                                @endif
+                                                @if ($data->transaction_account_name)
+                                                    <div>
+                                                        <dt>Account Name</dt>
+                                                        <dd>{{ $data->transaction_account_name }}</dd>
+                                                    </div>
+                                                @endif
+                                                @if ($data->transaction_account_number)
+                                                    <div>
+                                                        <dt>Account Number</dt>
+                                                        <dd>{{ $data->transaction_account_number }}</dd>
+                                                    </div>
+                                                @endif
+                                                @if ($data->transaction_bank_name)
+                                                    <div>
+                                                        <dt>Bank Name</dt>
+                                                        <dd>{{ $data->transaction_bank_name }}</dd>
+                                                    </div>
+                                                @endif
+                                                @if ($data->transaction_number)
+                                                    <div>
+                                                        <dt>Transaction ID</dt>
+                                                        <dd>{{ $data->transaction_number }}</dd>
+                                                    </div>
+                                                @endif
+                                                @if ($data->description)
+                                                    <div>
+                                                        <dt>Description</dt>
+                                                        <dd>{{ $data->description }}</dd>
+                                                    </div>
+                                                @endif
+                                                @if ($data->file)
+                                                    <div>
+                                                        <dt>File</dt>
+                                                        <dd>
+                                                            <a href="{{ asset('storage/' . $data->file) }}"
+                                                                target="_blank">View</a>
+                                                        </dd>
+                                                    </div>
+                                                @endif
+                                            </dl>
                                         </td>
                                     </tr>
                                 @empty
-                                    <x-table-no-data />
+                                    <x-table-no-data colspan="4" />
                                 @endforelse
                             </tbody>
                         </table>
-                        <div class="mt-2">
+                        <div class="bz-pagination">
                             {{ $ledgers->links() }}
                         </div>
                     </div>

@@ -4,25 +4,17 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h4>All Business Listings</h4>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>All Business Listings</h4>
+                    <div class="bz-toolbar">
+                        <label class="bz-filter-label" for="dashboardDateInput">Filter by date</label>
+                        <div class="input-group flatpickr" id="dashboardDate">
+                            <span class="input-group-text input-group-addon" data-toggle><i class="bi bi-calendar"></i></span>
+                            <input type="text" id="dashboardDateInput" class="form-control" placeholder="Select date" data-input>
                         </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-                                    <span class="input-group-text input-group-addon bg-transparent border-danger"
-                                        data-toggle><i data-feather="calendar" class="text-danger"></i></span>
-                                    <input type="text" class="form-control bg-transparent border-danger"
-                                        placeholder="Select date" data-input>
-                                </div>
-                                <button type="button" class="btn btn-danger btn-icon-text mb-2 mb-md-0">
-                                    <i class="btn-icon-prepend" data-feather="download-cloud"></i>
-                                    Download Report
-                                </button>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-danger btn-sm">
+                            <i class="bi bi-cloud-arrow-down"></i>Download Report
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -30,7 +22,7 @@
                         <li class="list-group-item border-0">
                             <form class="custom-search-bar">
                                 <div class="input-group">
-                                    <span class="input-group-text"> <i data-feather="search"></i></span>
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
                                     <input type="text" class="form-control" placeholder="Search here...">
                                 </div>
                             </form>
@@ -86,14 +78,14 @@
                             <tbody>
                                 @forelse ($list as $key => $data )
                                     <tr>
-                                        <th> {{ $key + 1 + ($list->currentPage() - 1) * $list->perPage() }} </th>
+                                        <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>
                                             <b>Business Name:</b>
-                                            <span class="text-primary"> {{ $data->name }} </span>
+                                            <span> {{ $data->name }} </span>
                                             <i class="bi bi-patch-check-fill text-danger"></i>
                                             <br>
                                             <b>Business Category:</b>
-                                            <span class="text-success">Textile</span>
+                                            <span>Textile</span>
                                             <br>
                                             <b>User Name:</b>
                                             <span> {{ $data->getUser->name }} </span>
@@ -136,11 +128,11 @@
                                         <td class="text-center">
                                             <div class="custom-dropdown">
                                                 <a class="custom-status-btn rounded text-white" href="javascript:;"
-                                                    role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                                    role="button" id="dropdownMenuLink{{ $data->id }}" data-bs-toggle="dropdown"
                                                     title="Status" aria-haspopup="true" aria-expanded="false">
                                                     <i class="bi bi-three-dots-vertical"></i>
                                                 </a>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink{{ $data->id }}">
                                                     <a class="dropdown-item" href="javascript:;">
                                                         <div class="form-check form-switch">
                                                             <input type="checkbox"
@@ -171,7 +163,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="mt-3 fw-bolder text-success">Active</div>
+                                            <div class="mt-3"><span class="bz-status bz-status--success">Active</span></div>
                                         </td>
                                         <td class="text-center">
                                             <a href="{{route('admin.edit-business')}}" class="custom-edit-btn rounded text-white"

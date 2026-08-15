@@ -1,121 +1,30 @@
 <div>
-    <style>
-        .wz-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .5rem;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .wz-step {
-            flex: 1 1 120px;
-            border: 1px solid #e9ecef;
-            border-radius: .35rem;
-            padding: .5rem .65rem;
-            background: #fff;
-            cursor: default;
-            font-size: .78rem;
-            line-height: 1.2;
-        }
-
-        .wz-step.is-done {
-            border-color: #1bcfb4;
-            background: #f2fbf9;
-            cursor: pointer;
-        }
-
-        .wz-step.is-active {
-            border-color: #fd7070;
-            background: #fff5f5;
-            box-shadow: 0 0 0 1px #fd7070 inset;
-        }
-
-        .wz-step-no {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-            text-align: center;
-            border-radius: 50%;
-            background: #e9ecef;
-            font-weight: 600;
-            margin-right: .35rem;
-        }
-
-        .wz-step.is-done .wz-step-no {
-            background: #1bcfb4;
-            color: #fff;
-        }
-
-        .wz-step.is-active .wz-step-no {
-            background: #fd7070;
-            color: #fff;
-        }
-
-        .wz-repeater-row {
-            border: 1px dashed #dee2e6;
-            border-radius: .35rem;
-            padding: .75rem;
-            margin-bottom: .5rem;
-        }
-
-        .wz-kv {
-            border: 1px solid #dee2e6;
-            border-radius: .35rem;
-            padding: .5rem .65rem;
-            height: 100%;
-        }
-
-        .wz-kv-label {
-            font-size: .72rem;
-            text-transform: uppercase;
-            color: #7987a1;
-            letter-spacing: .3px;
-        }
-
-        .wz-kv-value {
-            font-weight: 600;
-            word-break: break-word;
-        }
-
-        .wz-thumb {
-            width: 64px;
-            height: 64px;
-            object-fit: cover;
-            border-radius: .35rem;
-            border: 1px solid #dee2e6;
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
 
     @section('title', config('app.name') . ' | ' . $page_title)
 
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col-md-8 card-title mb-0">
-                            <h4 class="mb-1">Add Product Request</h4>
-                            <small class="text-muted">
-                                On behalf of
-                                <b class="text-danger text-uppercase">{{ $seller->name }}</b>
-                                @if ($seller->phone)
-                                    <span class="ms-2"><i class="bi bi-telephone"></i> {{ $seller->phone }}</span>
-                                @endif
-                                @if ($seller->email)
-                                    <span class="ms-2"><i class="bi bi-envelope-at"></i> {{ $seller->email }}</span>
-                                @endif
-                            </small>
-                        </div>
-                        <div class="col-md-4 text-end">
-                            <a href="{{ route('admin.seller.index') }}"
-                                class="btn btn-danger btn-sm btn-icon-text" wire:navigate>
-                                <i class="bi bi-x-lg btn-icon-prepend"></i>
-                                Cancel
-                            </a>
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h4>Add Product Request</h4>
+                        <p class="bz-card-sub">
+                            On behalf of
+                            <b class="text-danger text-uppercase">{{ $seller->name }}</b>
+                            @if ($seller->phone)
+                                <span class="ms-2"><i class="bi bi-telephone"></i> {{ $seller->phone }}</span>
+                            @endif
+                            @if ($seller->email)
+                                <span class="ms-2"><i class="bi bi-envelope-at"></i> {{ $seller->email }}</span>
+                            @endif
+                        </p>
+                    </div>
+                    <div class="bz-toolbar">
+                        <a href="{{ route('admin.seller.index') }}" class="btn btn-secondary btn-sm" wire:navigate>
+                            <i class="bi bi-x-lg"></i>
+                            Cancel
+                        </a>
                     </div>
                 </div>
 
@@ -144,16 +53,16 @@
                     @if ($step === 1)
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Product Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('product_name') is-invalid @enderror"
+                                <label class="form-label" for="product_name">Product Name <span class="text-danger">*</span></label>
+                                <input id="product_name" type="text" class="form-control @error('product_name') is-invalid @enderror"
                                     wire:model="product_name" placeholder="Enter product name">
                                 @error('product_name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Category <span class="text-danger">*</span></label>
-                                <select class="form-select @error('category_id') is-invalid @enderror"
+                                <label class="form-label" for="category_id">Category <span class="text-danger">*</span></label>
+                                <select id="category_id" class="form-select @error('category_id') is-invalid @enderror"
                                     wire:model.live="category_id">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
@@ -165,8 +74,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Sub Category</label>
-                                <select class="form-select @error('sub_category_id') is-invalid @enderror"
+                                <label class="form-label" for="sub_category_id">Sub Category</label>
+                                <select id="sub_category_id" class="form-select @error('sub_category_id') is-invalid @enderror"
                                     wire:model="sub_category_id">
                                     <option value="">Select Sub Category</option>
                                     @foreach ($subCategories as $subCategory)
@@ -178,8 +87,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Product Type <span class="text-danger">*</span></label>
-                                <select class="form-select @error('product_type') is-invalid @enderror"
+                                <label class="form-label" for="product_type">Product Type <span class="text-danger">*</span></label>
+                                <select id="product_type" class="form-select @error('product_type') is-invalid @enderror"
                                     wire:model="product_type">
                                     <option value="raw_material">Raw Material</option>
                                     <option value="finished_good">Finished Good</option>
@@ -190,16 +99,16 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">HSN Code <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('hsn_code') is-invalid @enderror"
+                                <label class="form-label" for="hsn_code">HSN Code <span class="text-danger">*</span></label>
+                                <input id="hsn_code" type="text" class="form-control @error('hsn_code') is-invalid @enderror"
                                     wire:model="hsn_code" placeholder="Enter HSN code">
                                 @error('hsn_code')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Tax Rate (%)</label>
-                                <input type="number" step="0.01" min="0"
+                                <label class="form-label" for="tax_rate">Tax Rate (%)</label>
+                                <input id="tax_rate" type="number" step="0.01" min="0"
                                     class="form-control @error('tax_rate') is-invalid @enderror" wire:model="tax_rate"
                                     placeholder="e.g. 18">
                                 @error('tax_rate')
@@ -207,8 +116,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label class="form-label">Short Description <span class="text-danger">*</span></label>
-                                <input type="text" maxlength="200"
+                                <label class="form-label" for="short_description">Short Description <span class="text-danger">*</span></label>
+                                <input id="short_description" type="text" maxlength="200"
                                     class="form-control @error('short_description') is-invalid @enderror"
                                     wire:model="short_description" placeholder="Max 200 characters">
                                 @error('short_description')
@@ -216,8 +125,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label">Detailed Description</label>
-                                <textarea rows="4" maxlength="1000" class="form-control @error('detailed_description') is-invalid @enderror"
+                                <label class="form-label" for="detailed_description">Detailed Description</label>
+                                <textarea id="detailed_description" rows="4" maxlength="1000" class="form-control @error('detailed_description') is-invalid @enderror"
                                     wire:model="detailed_description" placeholder="Max 1000 characters"></textarea>
                                 @error('detailed_description')
                                     <small class="text-danger">{{ $message }}</small>
@@ -230,8 +139,8 @@
                     @if ($step === 2)
                         <div class="row mb-3">
                             <div class="col-md-12 mb-3">
-                                <label class="form-label">Product Images <span class="text-danger">*</span></label>
-                                <input type="file" multiple accept="image/jpeg,image/jpg,image/png"
+                                <label class="form-label" for="product_images">Product Images <span class="text-danger">*</span></label>
+                                <input id="product_images" type="file" multiple accept="image/jpeg,image/jpg,image/png"
                                     class="form-control @error('product_images') is-invalid @enderror"
                                     wire:model="product_images">
                                 <small class="text-muted">Up to 5 images. JPG / JPEG / PNG, max 5 MB each.</small>
@@ -268,8 +177,8 @@
                                 @endif
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label">Product Video URL</label>
-                                <input type="text" class="form-control @error('product_video') is-invalid @enderror"
+                                <label class="form-label" for="product_video">Product Video URL</label>
+                                <input id="product_video" type="text" class="form-control @error('product_video') is-invalid @enderror"
                                     wire:model="product_video" placeholder="https://...">
                                 @error('product_video')
                                     <small class="text-danger">{{ $message }}</small>
@@ -282,16 +191,16 @@
                     @if ($step === 3)
                         <div class="row mb-3">
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Quality <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('quality') is-invalid @enderror"
+                                <label class="form-label" for="quality">Quality <span class="text-danger">*</span></label>
+                                <input id="quality" type="text" class="form-control @error('quality') is-invalid @enderror"
                                     wire:model="quality" placeholder="e.g. Grade A">
                                 @error('quality')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Quality Charge</label>
-                                <input type="number" step="0.01" min="0"
+                                <label class="form-label" for="quality_charge">Quality Charge</label>
+                                <input id="quality_charge" type="number" step="0.01" min="0"
                                     class="form-control @error('quality_charge') is-invalid @enderror"
                                     wire:model="quality_charge">
                                 @error('quality_charge')
@@ -299,8 +208,8 @@
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Quality Description</label>
-                                <input type="text" maxlength="300"
+                                <label class="form-label" for="quality_description">Quality Description</label>
+                                <input id="quality_description" type="text" maxlength="300"
                                     class="form-control @error('quality_description') is-invalid @enderror"
                                     wire:model="quality_description">
                                 @error('quality_description')
@@ -308,16 +217,16 @@
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Brand</label>
-                                <input type="text" class="form-control @error('brand') is-invalid @enderror"
+                                <label class="form-label" for="brand">Brand</label>
+                                <input id="brand" type="text" class="form-control @error('brand') is-invalid @enderror"
                                     wire:model="brand">
                                 @error('brand')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Make</label>
-                                <input type="text" class="form-control @error('make') is-invalid @enderror"
+                                <label class="form-label" for="make">Make</label>
+                                <input id="make" type="text" class="form-control @error('make') is-invalid @enderror"
                                     wire:model="make">
                                 @error('make')
                                     <small class="text-danger">{{ $message }}</small>
@@ -329,16 +238,16 @@
                                     <div class="wz-repeater-row">
                                         <div class="row align-items-end">
                                             <div class="col-md-5">
-                                                <label class="form-label">Packaging Type</label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="packaging_{{ $index }}_type">Packaging Type</label>
+                                                <input id="packaging_{{ $index }}_type" type="text" class="form-control"
                                                     wire:model="packaging.{{ $index }}.type">
                                                 @error('packaging.' . $index . '.type')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-5">
-                                                <label class="form-label">Charge</label>
-                                                <input type="number" step="0.01" min="0" class="form-control"
+                                                <label class="form-label" for="packaging_{{ $index }}_charge">Charge</label>
+                                                <input id="packaging_{{ $index }}_charge" type="number" step="0.01" min="0" class="form-control"
                                                     wire:model="packaging.{{ $index }}.charge">
                                                 @error('packaging.' . $index . '.charge')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -370,24 +279,24 @@
                                     <div class="wz-repeater-row">
                                         <div class="row align-items-end">
                                             <div class="col-md-4">
-                                                <label class="form-label">Parameter</label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="physical_specs_{{ $index }}_parameter">Parameter</label>
+                                                <input id="physical_specs_{{ $index }}_parameter" type="text" class="form-control"
                                                     wire:model="physical_specs.{{ $index }}.parameter">
                                                 @error('physical_specs.' . $index . '.parameter')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="form-label">Value</label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="physical_specs_{{ $index }}_value">Value</label>
+                                                <input id="physical_specs_{{ $index }}_value" type="text" class="form-control"
                                                     wire:model="physical_specs.{{ $index }}.value">
                                                 @error('physical_specs.' . $index . '.value')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Image</label>
-                                                <input type="file" accept="image/jpeg,image/jpg,image/png"
+                                                <label class="form-label" for="physical_spec_images_{{ $index }}">Image</label>
+                                                <input id="physical_spec_images_{{ $index }}" type="file" accept="image/jpeg,image/jpg,image/png"
                                                     class="form-control"
                                                     wire:model="physical_spec_images.{{ $index }}">
                                                 @error('physical_spec_images.' . $index)
@@ -415,24 +324,24 @@
                                     <div class="wz-repeater-row">
                                         <div class="row align-items-end">
                                             <div class="col-md-4">
-                                                <label class="form-label">Parameter</label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="chemical_specs_{{ $index }}_parameter">Parameter</label>
+                                                <input id="chemical_specs_{{ $index }}_parameter" type="text" class="form-control"
                                                     wire:model="chemical_specs.{{ $index }}.parameter">
                                                 @error('chemical_specs.' . $index . '.parameter')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="form-label">Value</label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="chemical_specs_{{ $index }}_value">Value</label>
+                                                <input id="chemical_specs_{{ $index }}_value" type="text" class="form-control"
                                                     wire:model="chemical_specs.{{ $index }}.value">
                                                 @error('chemical_specs.' . $index . '.value')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Image</label>
-                                                <input type="file" accept="image/jpeg,image/jpg,image/png"
+                                                <label class="form-label" for="chemical_spec_images_{{ $index }}">Image</label>
+                                                <input id="chemical_spec_images_{{ $index }}" type="file" accept="image/jpeg,image/jpg,image/png"
                                                     class="form-control"
                                                     wire:model="chemical_spec_images.{{ $index }}">
                                                 @error('chemical_spec_images.' . $index)
@@ -455,24 +364,24 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Weight Unit <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('weight_unit') is-invalid @enderror"
+                                <label class="form-label" for="weight_unit">Weight Unit <span class="text-danger">*</span></label>
+                                <input id="weight_unit" type="text" class="form-control @error('weight_unit') is-invalid @enderror"
                                     wire:model="weight_unit" placeholder="e.g. KG">
                                 @error('weight_unit')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Net Weight <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('net_weight') is-invalid @enderror"
+                                <label class="form-label" for="net_weight">Net Weight <span class="text-danger">*</span></label>
+                                <input id="net_weight" type="text" class="form-control @error('net_weight') is-invalid @enderror"
                                     wire:model="net_weight">
                                 @error('net_weight')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Tolerance</label>
-                                <input type="text" class="form-control @error('tolerance') is-invalid @enderror"
+                                <label class="form-label" for="tolerance">Tolerance</label>
+                                <input id="tolerance" type="text" class="form-control @error('tolerance') is-invalid @enderror"
                                     wire:model="tolerance">
                                 @error('tolerance')
                                     <small class="text-danger">{{ $message }}</small>
@@ -494,32 +403,32 @@
                                     <div class="wz-repeater-row">
                                         <div class="row align-items-end">
                                             <div class="col-md-3">
-                                                <label class="form-label">Size <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="variants_{{ $index }}_size">Size <span class="text-danger">*</span></label>
+                                                <input id="variants_{{ $index }}_size" type="text" class="form-control"
                                                     wire:model="variants.{{ $index }}.size">
                                                 @error('variants.' . $index . '.size')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Unit <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="variants_{{ $index }}_unit">Unit <span class="text-danger">*</span></label>
+                                                <input id="variants_{{ $index }}_unit" type="text" class="form-control"
                                                     wire:model="variants.{{ $index }}.unit">
                                                 @error('variants.' . $index . '.unit')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="form-label">Charge</label>
-                                                <input type="number" step="0.01" min="0" class="form-control"
+                                                <label class="form-label" for="variants_{{ $index }}_charge">Charge</label>
+                                                <input id="variants_{{ $index }}_charge" type="number" step="0.01" min="0" class="form-control"
                                                     wire:model="variants.{{ $index }}.charge">
                                                 @error('variants.' . $index . '.charge')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Stock</label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="variants_{{ $index }}_stock">Stock</label>
+                                                <input id="variants_{{ $index }}_stock" type="text" class="form-control"
                                                     wire:model="variants.{{ $index }}.stock">
                                                 @error('variants.' . $index . '.stock')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -546,41 +455,41 @@
                     @if ($step === 6)
                         <div class="row mb-3">
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Loading City <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('loading_city') is-invalid @enderror"
+                                <label class="form-label" for="loading_city">Loading City <span class="text-danger">*</span></label>
+                                <input id="loading_city" type="text" class="form-control @error('loading_city') is-invalid @enderror"
                                     wire:model="loading_city">
                                 @error('loading_city')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Loading State <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('loading_state') is-invalid @enderror"
+                                <label class="form-label" for="loading_state">Loading State <span class="text-danger">*</span></label>
+                                <input id="loading_state" type="text" class="form-control @error('loading_state') is-invalid @enderror"
                                     wire:model="loading_state">
                                 @error('loading_state')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Country <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('country') is-invalid @enderror"
+                                <label class="form-label" for="country">Country <span class="text-danger">*</span></label>
+                                <input id="country" type="text" class="form-control @error('country') is-invalid @enderror"
                                     wire:model="country">
                                 @error('country')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Minimum Order Quantity <span
+                                <label class="form-label" for="moq">Minimum Order Quantity <span
                                         class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('moq') is-invalid @enderror"
+                                <input id="moq" type="text" class="form-control @error('moq') is-invalid @enderror"
                                     wire:model="moq">
                                 @error('moq')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">MOQ Unit <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('moq_unit') is-invalid @enderror"
+                                <label class="form-label" for="moq_unit">MOQ Unit <span class="text-danger">*</span></label>
+                                <input id="moq_unit" type="text" class="form-control @error('moq_unit') is-invalid @enderror"
                                     wire:model="moq_unit" placeholder="e.g. MT">
                                 @error('moq_unit')
                                     <small class="text-danger">{{ $message }}</small>
@@ -593,8 +502,8 @@
                     @if ($step === 7)
                         <div class="row mb-3">
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Publish On</label>
-                                <input type="date" class="form-control @error('publish_on') is-invalid @enderror"
+                                <label class="form-label" for="publish_on">Publish On</label>
+                                <input id="publish_on" type="date" class="form-control @error('publish_on') is-invalid @enderror"
                                     wire:model="publish_on">
                                 @error('publish_on')
                                     <small class="text-danger">{{ $message }}</small>
@@ -607,8 +516,8 @@
                                     <div class="wz-repeater-row">
                                         <div class="row align-items-end">
                                             <div class="col-md-4">
-                                                <label class="form-label">Charge Type</label>
-                                                <input type="text" class="form-control"
+                                                <label class="form-label" for="charges_{{ $index }}_type">Charge Type</label>
+                                                <input id="charges_{{ $index }}_type" type="text" class="form-control"
                                                     wire:model="charges.{{ $index }}.type"
                                                     placeholder="GST / Loading / Insurance">
                                                 @error('charges.' . $index . '.type')
@@ -616,16 +525,16 @@
                                                 @enderror
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Percent</label>
-                                                <input type="number" step="0.01" min="0" class="form-control"
+                                                <label class="form-label" for="charges_{{ $index }}_percent">Percent</label>
+                                                <input id="charges_{{ $index }}_percent" type="number" step="0.01" min="0" class="form-control"
                                                     wire:model="charges.{{ $index }}.percent">
                                                 @error('charges.' . $index . '.percent')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Amount</label>
-                                                <input type="number" step="0.01" min="0" class="form-control"
+                                                <label class="form-label" for="charges_{{ $index }}_amount">Amount</label>
+                                                <input id="charges_{{ $index }}_amount" type="number" step="0.01" min="0" class="form-control"
                                                     wire:model="charges.{{ $index }}.amount">
                                                 @error('charges.' . $index . '.amount')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -720,10 +629,8 @@
                                                     </tr>
                                                 @endif
                                             @empty
-                                                <tr>
-                                                    <td colspan="4" class="text-center text-danger">No variants added
-                                                    </td>
-                                                </tr>
+                                                <x-table-no-data colspan="4" title="No variants added"
+                                                    text="Go back to step 5 and add at least one size variant." />
                                             @endforelse
                                         </tbody>
                                     </table>
@@ -744,24 +651,23 @@
                     <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
                         <div>
                             @if ($step > 1)
-                                <button type="button" class="btn btn-secondary btn-sm btn-icon-text"
-                                    wire:click="previousStep">
-                                    <i class="bi bi-arrow-left btn-icon-prepend"></i>
+                                <button type="button" class="btn btn-secondary btn-sm" wire:click="previousStep">
+                                    <i class="bi bi-arrow-left"></i>
                                     Previous
                                 </button>
                             @endif
                         </div>
                         <div>
                             @if ($step <= 7)
-                                <button type="button" class="btn btn-success btn-sm btn-icon-text"
-                                    wire:click="nextStep" wire:loading.attr="disabled">
+                                <button type="button" class="btn btn-danger btn-sm" wire:click="nextStep"
+                                    wire:loading.attr="disabled">
                                     Save &amp; Next
-                                    <i class="bi bi-arrow-right btn-icon-append"></i>
+                                    <i class="bi bi-arrow-right"></i>
                                 </button>
                             @else
-                                <button type="button" class="btn btn-success btn-sm btn-icon-text" wire:click="submit"
+                                <button type="button" class="btn btn-danger btn-sm" wire:click="submit"
                                     wire:loading.attr="disabled">
-                                    <i class="bi bi-send btn-icon-prepend"></i>
+                                    <i class="bi bi-send"></i>
                                     Submit Request
                                 </button>
                             @endif

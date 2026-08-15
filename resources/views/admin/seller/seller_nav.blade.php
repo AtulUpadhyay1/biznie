@@ -1,18 +1,10 @@
 <div>
-    <style>
-        .card-header.customer-profile-header{
-            background: url("{{asset('admin_css/assets/images/doodle.jpg')}}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: repeat;
-            border: 0;
-        }
-    </style>
+    {{-- page styles moved to admin_css/assets/css/biznie-admin.css --}}
     <div class="card ">
         <div class="card-header customer-profile-header">
             <div class="text-center">
-                <img src="{{asset('admin_css/assets/images/avatar.png')}}" alt="" class="w-25 h-25">
-                <h5 class="text-dark mt-3"> {{ $data->name }}
+                <img src="{{asset('admin_css/assets/images/avatar.png')}}" alt="" class="bz-avatar-img bz-avatar-img--xl">
+                <h5 class="mt-3"> {{ $data->name }}
                     @if ($data->getSellerKycDetail)
                         @if ($data->getSellerKycDetail->status == 'uploaded' || $data->getSellerKycDetail->status == 'pending')
                             <i class="bi bi-stopwatch-fill text-warning"></i>

@@ -9,41 +9,32 @@
         </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-6 card-title">
-                            <h5 class="mt-2">Seller Kyc Detail</h5>
-                        </div>
-                        <div class="col-4 text-end">
-                            @if (
-                                ($data->getSellerKycDetail && $data->getSellerKycDetail->status == 'uploaded') ||
-                                    $data->getSellerKycDetail->status == 'pending')
-                                <select class="form-select" wire:model="status" wire:change="updateStatus()">
-                                    <option value="pending" disabled>Pending</option>
-                                    <option value="uploaded" disabled>Uploaded</option>
-                                    <option value="approved">Approved</option>
-                                    <option value="rejected">Rejected</option>
-                                </select>
-                            @endif
-
-                        </div>
-                        <div class="col-2 text-end">
-                            @if (isset($data->status) && $data->status === 'active')
-                                <button type="button"
-                                    class="btn btn-danger btn-sm btn-icon-text align-items-center ms-2"
-                                    wire:click.prevent="openBlockModal">
-                                    <i class="bi bi-slash-circle btn-icon-prepend"></i>
-                                    Block
-                                </button>
-                            @else
-                                <button type="button"
-                                    class="btn btn-success btn-sm btn-icon-text align-items-center ms-2"
-                                    wire:click.prevent="unblock">
-                                    <i class="bi bi-unlock btn-icon-prepend"></i>
-                                    Unblock
-                                </button>
-                            @endif
-                        </div>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Seller Kyc Detail</h4>
+                    <div class="bz-toolbar">
+                        @if (
+                            ($data->getSellerKycDetail && $data->getSellerKycDetail->status == 'uploaded') ||
+                                $data->getSellerKycDetail->status == 'pending')
+                            <label class="bz-filter-label" for="kyc_status">KYC Status</label>
+                            <select class="form-select" id="kyc_status" wire:model="status"
+                                wire:change="updateStatus()">
+                                <option value="pending" disabled>Pending</option>
+                                <option value="uploaded" disabled>Uploaded</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        @endif
+                        @if (isset($data->status) && $data->status === 'active')
+                            <button type="button" class="btn btn-danger btn-sm" wire:click.prevent="openBlockModal">
+                                <i class="bi bi-slash-circle"></i>
+                                Block
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-success btn-sm" wire:click.prevent="unblock">
+                                <i class="bi bi-unlock"></i>
+                                Unblock
+                            </button>
+                        @endif
                     </div>
                     <!-- Block Reason Modal -->
                     <div class="modal fade" id="blockModal" tabindex="-1" aria-labelledby="blockModalLabel"
@@ -66,9 +57,9 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
+                                    <button type="button" class="btn btn-secondary btn-sm"
                                         data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-danger"
+                                    <button type="button" class="btn btn-danger btn-sm"
                                         wire:click.prevent="confirmBlock">Confirm Block</button>
                                 </div>
                             </div>
@@ -94,16 +85,16 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <h6 class="py-2 bg-orange-light">Seller Permissions</h6>
+                        <h6 class="bz-section-label">Seller Permissions</h6>
                         <div class="mb-4">
-                            <div class="d-flex align-items-center justify-content-between border rounded p-3 mb-2">
-                                <div class="me-3">
-                                    <b>F.O.R Prices</b>
-                                    <p class="mb-0 text-muted small">
+                            <div class="bz-toggle-row">
+                                <div>
+                                    <span class="bz-toggle-row__label">F.O.R Prices</span>
+                                    <span class="bz-toggle-row__hint">
                                         When enabled, the seller can add and update their own city-wise
                                         F.O.R prices from their product page. Off by default — buyers
                                         then see the calculated F.O.R price (Ex Price + freight).
-                                    </p>
+                                    </span>
                                 </div>
                                 <div class="form-check form-switch mb-0">
                                     <input class="form-check-input" type="checkbox" role="switch"
@@ -114,13 +105,13 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="d-flex align-items-center justify-content-between border rounded p-3">
-                                <div class="me-3">
-                                    <b>F.O.B Price</b>
-                                    <p class="mb-0 text-muted small">
+                            <div class="bz-toggle-row">
+                                <div>
+                                    <span class="bz-toggle-row__label">F.O.B Price</span>
+                                    <span class="bz-toggle-row__hint">
                                         When enabled, the seller can add and update their own F.O.B
                                         prices from their product page. Off by default.
-                                    </p>
+                                    </span>
                                 </div>
                                 <div class="form-check form-switch mb-0">
                                     <input class="form-check-input" type="checkbox" role="switch"
@@ -132,54 +123,40 @@
                                 </div>
                             </div>
                         </div>
-                        <h6 class="py-2 bg-orange-light">Seller Details</h6>
-                        <div class="table-responsive mb-4">
-                            <table class="table table-sm table-bordered mt-2">
-                                <tbody>
-                                    <tr>
-                                        <td><b>Business Name:</b></td>
-                                        <td>{{ $data->getBusiness ? $data->getBusiness->name : '' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>GST Number:</b></td>
-                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->gst_number : '' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>PAN:</b></td>
-                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Customer Name:</b></td>
-                                        <td>{{ $data->name }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Mobile Number:</b></td>
-                                        <td>{{ $data->phone }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>City:</b></td>
-                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Email:</b></td>
-                                        <td>{{ $data->email }}
-                                        </td>
-                                    </tr>
-                                    {{-- <tr>
-                                        <td><b>Gender:</b></td>
-                                        <td>Male
-                                        </td>
-                                    </tr> --}}
-                                </tbody>
-                            </table>
+                        <h6 class="bz-section-label">Seller Details</h6>
+                        <div class="bz-panel mb-4">
+                            <dl class="bz-kv-list">
+                                <div>
+                                    <dt>Business Name</dt>
+                                    <dd>{{ $data->getBusiness ? $data->getBusiness->name : '' }}</dd>
+                                </div>
+                                <div>
+                                    <dt>GST Number</dt>
+                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->gst_number : '' }}</dd>
+                                </div>
+                                <div>
+                                    <dt>PAN</dt>
+                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->identity_number : '' }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Customer Name</dt>
+                                    <dd>{{ $data->name }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Mobile Number</dt>
+                                    <dd>{{ $data->phone }}</dd>
+                                </div>
+                                <div>
+                                    <dt>City</dt>
+                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->city : '' }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Email</dt>
+                                    <dd>{{ $data->email }}</dd>
+                                </div>
+                            </dl>
                         </div>
-                        <h6 class="py-2 bg-orange-light">Address Details</h6>
+                        <h6 class="bz-section-label">Address Details</h6>
                         <div class="table-responsive mb-4">
                             <table class="custom-table borderless-table">
                                 <tbody>
@@ -191,32 +168,26 @@
                                 </tbody>
                             </table>
                         </div>
-                        <h6 class="py-2 bg-orange-light">Bank Details</h6>
-                        <div class="table-responsive mb-4">
-                            <table class="table table-sm table-bordered mt-2">
-                                <tbody>
-                                    <tr>
-                                        <td><b>Account Name:</b></td>
-                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->account_number : '' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Account Holder Name:</b></td>
-                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->account_holder_name : '' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Bank Name:</b></td>
-                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->bank_name : '' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>IFSC Code:</b></td>
-                                        <td>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->ifsc_code : '' }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <h6 class="bz-section-label">Bank Details</h6>
+                        <div class="bz-panel mb-4">
+                            <dl class="bz-kv-list">
+                                <div>
+                                    <dt>Account Name</dt>
+                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->account_number : '' }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Account Holder Name</dt>
+                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->account_holder_name : '' }}</dd>
+                                </div>
+                                <div>
+                                    <dt>Bank Name</dt>
+                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->bank_name : '' }}</dd>
+                                </div>
+                                <div>
+                                    <dt>IFSC Code</dt>
+                                    <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->ifsc_code : '' }}</dd>
+                                </div>
+                            </dl>
                             {{-- <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
@@ -238,7 +209,7 @@
                                 </tbody>
                             </table> --}}
                         </div>
-                        <h6 class="py-2 bg-orange-light">More Details</h6>
+                        <h6 class="bz-section-label">More Details</h6>
                         <div class="table-responsive mb-4">
                             <table class="table table-sm table-bordered mt-2">
                                 <tbody>

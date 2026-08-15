@@ -11,18 +11,15 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
         rel="stylesheet">
 
     <script src="https://use.fontawesome.com/80ace2cf8a.js"></script>
 
     <meta name="keywords"
         content="Biznie">
+    <meta name="theme-color" content="#0F172A">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap"
-        rel="stylesheet">
     <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/core/core.css')}}">
     <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/flatpickr/flatpickr.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin_css/assets/fonts/feather-font/css/iconfont.css')}}">
@@ -33,6 +30,9 @@
     <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/select2/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/jquery-tags-input/jquery.tagsinput.min.css')}}">
+
+    {{-- Biznie theme layer — must stay last so it wins the cascade --}}
+    <link rel="stylesheet" href="{{asset('admin_css/assets/css/biznie-admin.css')}}?v=15">
 
     <!-- core:js -->
     <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>
@@ -46,6 +46,17 @@
 </head>
 
 <body>
+    {{-- Restore the folded sidebar before the shell paints, so there is no layout flash --}}
+    <script>
+        try {
+            if (localStorage.getItem('bz:sidebar-folded') === '1' && window.matchMedia('(min-width: 992px)').matches) {
+                document.body.classList.add('sidebar-folded');
+            }
+        } catch (e) {}
+    </script>
+
+    <div id="bz-progress"></div>
+
     <div class="main-wrapper">
 
         @include('admin.layouts.sidebar')

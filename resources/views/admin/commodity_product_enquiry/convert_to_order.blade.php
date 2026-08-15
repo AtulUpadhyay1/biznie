@@ -282,6 +282,12 @@
         $seller_enq_data['variation'] = $variation_arr;
         $seller_enq_data['commission'] = $seller_enquiry_data->commission;
     @endphp
+    <div class="bz-page-head">
+        <div>
+            <h1 class="bz-page-head__title">{{ $page_title }}</h1>
+            <p class="bz-page-head__sub">Review the marked quotation and confirm it as an order.</p>
+        </div>
+    </div>
     <div class="row">
         <x-loader />
         <div class="col-md-6 mb-3">
@@ -292,18 +298,40 @@
                     </div>
                 </div>
                 <div class="card-body p-3">
-                    <p>
-                        Enquiry Id : {{ $enquiry_data->unique_id }} <br>
-                        Category : {{ $enquiry_data->getCommodityProduct->getCategory->name }} <br>
-                        Product : {{ $enquiry_data->getCommodityProduct->name }} <br>
-                        Brand : {{ $enquiry_data->getBrand->name }} <br>
-                        Delivery Location : {{ $enquiry_data->consignee_detail['address_line_one'] }}
-                        {{ $enquiry_data->consignee_detail['address_line_two'] }}
-                        {{ $enquiry_data->consignee_detail['city'] }}
-                        {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }} <br>
-                        Purpose : {{ $enquiry_data->purpose }} <br>
-                        Description : {{ $enquiry_data->description }}
-                    </p>
+                    <dl class="bz-kv-list">
+                        <div>
+                            <dt>Enquiry Id</dt>
+                            <dd>{{ $enquiry_data->unique_id }}</dd>
+                        </div>
+                        <div>
+                            <dt>Category</dt>
+                            <dd>{{ $enquiry_data->getCommodityProduct->getCategory->name }}</dd>
+                        </div>
+                        <div>
+                            <dt>Product</dt>
+                            <dd>{{ $enquiry_data->getCommodityProduct->name }}</dd>
+                        </div>
+                        <div>
+                            <dt>Brand</dt>
+                            <dd>{{ $enquiry_data->getBrand->name }}</dd>
+                        </div>
+                        <div>
+                            <dt>Delivery Location</dt>
+                            <dd>{{ $enquiry_data->consignee_detail['address_line_one'] }}
+                                {{ $enquiry_data->consignee_detail['address_line_two'] }}
+                                {{ $enquiry_data->consignee_detail['city'] }}
+                                {{ isset($enquiry_data->consignee_detail['pin_code']) ? $enquiry_data->consignee_detail['pin_code'] : $enquiry_data->consignee_detail['pincode'] }}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>Purpose</dt>
+                            <dd>{{ $enquiry_data->purpose }}</dd>
+                        </div>
+                        <div>
+                            <dt>Description</dt>
+                            <dd>{{ $enquiry_data->description }}</dd>
+                        </div>
+                    </dl>
                 </div>
             </div>
         </div>
@@ -316,16 +344,42 @@
                     </div>
                 </div>
                 <div class="card-body p-3">
-                    <p>
-                        Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
-                        Phone : {{ $enquiry_data->getUser->phone }} <br>
-                        GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                        Pincode : {{ isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : (isset($enquiry_data->billing_address['pin_code']) ? $enquiry_data->billing_address['pin_code'] : '') }} <br>
-                        Address Line1 : {{ $enquiry_data->billing_address['address_line_one'] }} <br>
-                        Address Line2 : {{ $enquiry_data->billing_address['address_line_two'] }} <br>
-                        City : {{ $enquiry_data->billing_address['city'] }} <br>
-                        State : {{ $enquiry_data->billing_address['state'] }}
-                    </p>
+                    <dl class="bz-kv-list">
+                        <div>
+                            <dt>Company Name</dt>
+                            <dd>{{ $enquiry_data->getUser->name }}
+                                ({{$enquiry_data->getUser->getUserDetail->company_name}})</dd>
+                        </div>
+                        <div>
+                            <dt>Phone</dt>
+                            <dd>{{ $enquiry_data->getUser->phone }}</dd>
+                        </div>
+                        <div>
+                            <dt>GST</dt>
+                            <dd>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</dd>
+                        </div>
+                        <div>
+                            <dt>Pincode</dt>
+                            <dd>{{ isset($enquiry_data->billing_address['pincode']) ? $enquiry_data->billing_address['pincode'] : (isset($enquiry_data->billing_address['pin_code']) ? $enquiry_data->billing_address['pin_code'] : '') }}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>Address Line1</dt>
+                            <dd>{{ $enquiry_data->billing_address['address_line_one'] }}</dd>
+                        </div>
+                        <div>
+                            <dt>Address Line2</dt>
+                            <dd>{{ $enquiry_data->billing_address['address_line_two'] }}</dd>
+                        </div>
+                        <div>
+                            <dt>City</dt>
+                            <dd>{{ $enquiry_data->billing_address['city'] }}</dd>
+                        </div>
+                        <div>
+                            <dt>State</dt>
+                            <dd>{{ $enquiry_data->billing_address['state'] }}</dd>
+                        </div>
+                    </dl>
                 </div>
             </div>
         </div>
@@ -338,17 +392,45 @@
                     </div>
                 </div>
                 <div class="card-body p-3">
-                    <p>
-                        Company Name : {{ $enquiry_data->getUser->name }} ({{$enquiry_data->getUser->getUserDetail->company_name}})<br>
-                        Phone : {{ $enquiry_data->getUser->phone }} <br>
-                        GST : {{ $enquiry_data->getUser->getUserDetail->gst_number }} <br>
-                        Pincode : {{ $enquiry_data->getUser->getUserDetail->postal_code }} <br>
-                        Address Line1 : {{ $enquiry_data->getUser->getUserDetail->address_line_one }} <br>
-                        Address Line2 : {{ $enquiry_data->getUser->getUserDetail->address_line_two }} <br>
-                        City : {{ $enquiry_data->getUser->getUserDetail->city }} <br>
-                        State : {{ $enquiry_data->getUser->getUserDetail->state }} <br>
-                        Credit Days : {{ $data['credit_days'] }} Days <br>
-                    </p>
+                    <dl class="bz-kv-list">
+                        <div>
+                            <dt>Company Name</dt>
+                            <dd>{{ $enquiry_data->getUser->name }}
+                                ({{$enquiry_data->getUser->getUserDetail->company_name}})</dd>
+                        </div>
+                        <div>
+                            <dt>Phone</dt>
+                            <dd>{{ $enquiry_data->getUser->phone }}</dd>
+                        </div>
+                        <div>
+                            <dt>GST</dt>
+                            <dd>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</dd>
+                        </div>
+                        <div>
+                            <dt>Pincode</dt>
+                            <dd>{{ $enquiry_data->getUser->getUserDetail->postal_code }}</dd>
+                        </div>
+                        <div>
+                            <dt>Address Line1</dt>
+                            <dd>{{ $enquiry_data->getUser->getUserDetail->address_line_one }}</dd>
+                        </div>
+                        <div>
+                            <dt>Address Line2</dt>
+                            <dd>{{ $enquiry_data->getUser->getUserDetail->address_line_two }}</dd>
+                        </div>
+                        <div>
+                            <dt>City</dt>
+                            <dd>{{ $enquiry_data->getUser->getUserDetail->city }}</dd>
+                        </div>
+                        <div>
+                            <dt>State</dt>
+                            <dd>{{ $enquiry_data->getUser->getUserDetail->state }}</dd>
+                        </div>
+                        <div>
+                            <dt>Credit Days</dt>
+                            <dd>{{ $data['credit_days'] }} Days</dd>
+                        </div>
+                    </dl>
                 </div>
             </div>
         </div>
@@ -365,17 +447,44 @@
                         $seller = $enquiry_data->getMarkedSellerProductEnquiry->getUser;
                         $sellerDetail = $seller->getSellerKycDetail;
                     @endphp
-                    <p>
-                        Name : {{ $seller->name }} ({{$seller->getBusiness->name}})<br>
-                        Phone : {{ $seller->phone }} <br>
-                        GST : {{ $sellerDetail->gst_number }} <br>
-                        Pincode : {{ $sellerDetail->postal_code }} <br>
-                        Address Line One : {{ $sellerDetail->address_line_one }} <br>
-                        Address Line Two : {{ $sellerDetail->address_line_two }} <br>
-                        City : {{ $sellerDetail->city }} <br>
-                        State : {{ $sellerDetail->state }} <br>
-                        Credit Days : {{ $seller_enq_data['credit_days'] }} Days <br>
-                    </p>
+                    <dl class="bz-kv-list">
+                        <div>
+                            <dt>Name</dt>
+                            <dd>{{ $seller->name }} ({{$seller->getBusiness->name}})</dd>
+                        </div>
+                        <div>
+                            <dt>Phone</dt>
+                            <dd>{{ $seller->phone }}</dd>
+                        </div>
+                        <div>
+                            <dt>GST</dt>
+                            <dd>{{ $sellerDetail->gst_number }}</dd>
+                        </div>
+                        <div>
+                            <dt>Pincode</dt>
+                            <dd>{{ $sellerDetail->postal_code }}</dd>
+                        </div>
+                        <div>
+                            <dt>Address Line One</dt>
+                            <dd>{{ $sellerDetail->address_line_one }}</dd>
+                        </div>
+                        <div>
+                            <dt>Address Line Two</dt>
+                            <dd>{{ $sellerDetail->address_line_two }}</dd>
+                        </div>
+                        <div>
+                            <dt>City</dt>
+                            <dd>{{ $sellerDetail->city }}</dd>
+                        </div>
+                        <div>
+                            <dt>State</dt>
+                            <dd>{{ $sellerDetail->state }}</dd>
+                        </div>
+                        <div>
+                            <dt>Credit Days</dt>
+                            <dd>{{ $seller_enq_data['credit_days'] }} Days</dd>
+                        </div>
+                    </dl>
                 </div>
             </div>
         </div>
@@ -390,24 +499,29 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p>
-                            Basic Price : ₹ {{ $data['base_price'] }} / Metric Ton <br>
-                            Freight : ₹ {{ $data['transport_price'] }} / Metric Ton
-                        </p> <br>
-                        @if($data['selected_quality'])
-                            <p>
-                                Quality:
-                                {{ $data['selected_quality']['name'] }} : ₹ {{ $data['selected_quality']['price'] }} <br>
-                            </p>
-                        @endif
-                        @if($data['selected_packaging_charge'])
-                            <p>
-                                Packaging:
-                                {{ $data['selected_packaging_charge']['name'] }} : ₹ {{ $data['selected_packaging_charge']['charge'] }} <br>
-                            </p>
-                            <br>
-                        @endif
-                        <table class="table table-hover">
+                        <dl class="bz-kv-list">
+                            <div>
+                                <dt>Basic Price</dt>
+                                <dd>₹ {{ $data['base_price'] }} / Metric Ton</dd>
+                            </div>
+                            <div>
+                                <dt>Freight</dt>
+                                <dd>₹ {{ $data['transport_price'] }} / Metric Ton</dd>
+                            </div>
+                            @if($data['selected_quality'])
+                                <div>
+                                    <dt>Quality</dt>
+                                    <dd>{{ $data['selected_quality']['name'] }} : ₹ {{ $data['selected_quality']['price'] }}</dd>
+                                </div>
+                            @endif
+                            @if($data['selected_packaging_charge'])
+                                <div>
+                                    <dt>Packaging</dt>
+                                    <dd>{{ $data['selected_packaging_charge']['name'] }} : ₹ {{ $data['selected_packaging_charge']['charge'] }}</dd>
+                                </div>
+                            @endif
+                        </dl>
+                        <table class="table table-hover bz-section-gap">
                             <thead>
                                 <tr>
                                     <th>Requirements</th>
@@ -442,24 +556,29 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p>
-                            Basic Price : ₹ {{ $seller_enq_data['base_price'] }} / Metric Ton <br>
-                            Freight : ₹ {{ $data['transport_price'] }} / Metric Ton
-                        </p> <br>
-                        @if($data['selected_quality'])
-                            <p>
-                                Quality:
-                                {{ $data['selected_quality']['name'] }} : ₹ {{ $data['selected_quality']['price'] }} <br>
-                            </p>
-                        @endif
-                        @if($data['selected_packaging_charge'])
-                            <p>
-                                Packaging:
-                                {{ $data['selected_packaging_charge']['name'] }} : ₹ {{ $data['selected_packaging_charge']['charge'] }} <br>
-                            </p>
-                            <br>
-                        @endif
-                        <table class="table table-hover">
+                        <dl class="bz-kv-list">
+                            <div>
+                                <dt>Basic Price</dt>
+                                <dd>₹ {{ $seller_enq_data['base_price'] }} / Metric Ton</dd>
+                            </div>
+                            <div>
+                                <dt>Freight</dt>
+                                <dd>₹ {{ $data['transport_price'] }} / Metric Ton</dd>
+                            </div>
+                            @if($data['selected_quality'])
+                                <div>
+                                    <dt>Quality</dt>
+                                    <dd>{{ $data['selected_quality']['name'] }} : ₹ {{ $data['selected_quality']['price'] }}</dd>
+                                </div>
+                            @endif
+                            @if($data['selected_packaging_charge'])
+                                <div>
+                                    <dt>Packaging</dt>
+                                    <dd>{{ $data['selected_packaging_charge']['name'] }} : ₹ {{ $data['selected_packaging_charge']['charge'] }}</dd>
+                                </div>
+                            @endif
+                        </dl>
+                        <table class="table table-hover bz-section-gap">
                             <thead>
                                 <tr>
                                     <th>Requirements</th>
@@ -508,27 +627,27 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p><span class="text-danger">Credit Days : </span> {{ $data['credit_days'] }} Days</p>
-                        <p><span class="text-danger">Basic Price : </span> ₹ {{ formatIndianNumber($data['base_price']) }} </p>
-                        {{-- <p><span class="text-danger">Ex-Factory Price : </span> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p> --}}
-                        <p><span class="text-danger">Total Quantity : </span> {{ $data['total_quantity'] }} Metric Ton</p>
-                        <p><span class="text-danger">Total Ex-Factory Price : </span> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p>
+                        <p><b>Credit Days:</b> {{ $data['credit_days'] }} Days</p>
+                        <p><b>Basic Price:</b> ₹ {{ formatIndianNumber($data['base_price']) }} </p>
+                        {{-- <p><b>Ex-Factory Price:</b> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p> --}}
+                        <p><b>Total Quantity:</b> {{ $data['total_quantity'] }} Metric Ton</p>
+                        <p><b>Total Ex-Factory Price:</b> ₹ {{ formatIndianNumber($data['final_variation_price']) }}</p>
                         @if ($data['commission_type'] == 'exclude')
-                            <p><span class="text-danger">Commission (Excluded) : </span> ₹ {{ formatIndianNumber($data['commission']) }}</p>
+                            <p><b>Commission (Excluded):</b> ₹ {{ formatIndianNumber($data['commission']) }}</p>
                         @endif
-                        <p><span class="text-danger">Load Within : </span> {{ $seller_enquiry_data->load_within }} Days</p>
+                        <p><b>Load Within:</b> {{ $seller_enquiry_data->load_within }} Days</p>
                         <small class="text-success">Rate included - loading charges, insurance charges, Packaging charges, Quality inspection charges, TCS & GST </small>
                         <hr>
 
-                        <p><span class="text-danger">Freight : </span> ₹ {{ formatIndianNumber($data['transport_price']) }}/Metric Ton</p>
-                        <p><span class="text-danger">Total Freight : </span> ₹ {{ formatIndianNumber($data['total_quantity'] * $data['transport_price']) }}</p>
+                        <p><b>Freight:</b> ₹ {{ formatIndianNumber($data['transport_price']) }}/Metric Ton</p>
+                        <p><b>Total Freight:</b> ₹ {{ formatIndianNumber($data['total_quantity'] * $data['transport_price']) }}</p>
                         <small class="text-success">
                             Freight May Change +/- 100. <br>
                             (Freight Depends On Demand & Supply of Trucks On Loading Day)
                         </small>
                         <hr>
 
-                        <p><span class="text-danger">Total Amount Payable (Ex-Factory+Freight) : </span> ₹ {{ formatIndianNumber($data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price'])) }}</p>
+                        <p><b>Total Amount Payable (Ex-Factory+Freight):</b> ₹ {{ formatIndianNumber($data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price'])) }}</p>
                         <small class="text-danger fw-bold">Disclaimer</small> <br>
                         <small class="text-success fw-bold">The invoice amount will be updated after the goods are loaded and the final quantity is confirmed.</small>
                     </div>
@@ -543,15 +662,15 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p><span class="text-danger">Credit Days : </span> {{ $seller_enq_data['credit_days'] }} Days</p>
-                        <p><span class="text-danger">Basic Price : </span> ₹ {{ formatIndianNumber($seller_enq_data['base_price']) }}</p>
-                        <p><span class="text-danger">Total Quantity : </span> {{ $seller_enq_data['total_quantity'] }} MT</p>
-                        <p><span class="text-danger">Total Ex-Factory Price : </span> ₹ {{ formatIndianNumber($seller_enq_data['ex_price']) }}</p>
+                        <p><b>Credit Days:</b> {{ $seller_enq_data['credit_days'] }} Days</p>
+                        <p><b>Basic Price:</b> ₹ {{ formatIndianNumber($seller_enq_data['base_price']) }}</p>
+                        <p><b>Total Quantity:</b> {{ $seller_enq_data['total_quantity'] }} MT</p>
+                        <p><b>Total Ex-Factory Price:</b> ₹ {{ formatIndianNumber($seller_enq_data['ex_price']) }}</p>
                         @if ($seller_enq_data['commission_type'] == 'include')
                             @php
                                 $commission = $seller_enq_data['commission'] * ($seller_enq_data['total_quantity'] + $seller_enq_data['gst'] / 100)
                             @endphp
-                            <p><span class="text-danger">Commission (Included) : </span> ₹ {{ formatIndianNumber($commission) }} ({{ $seller_enq_data['commission'] }} / MT) ({{ $seller_enq_data['gst'] }}% GST)</p>
+                            <p><b>Commission (Included):</b> ₹ {{ formatIndianNumber($commission) }} ({{ $seller_enq_data['commission'] }} / MT) ({{ $seller_enq_data['gst'] }}% GST)</p>
                         @endif
                         <small class="text-success">Rate included - loading charges, insurance charges, packaging charges, quality inspection charges & GST. TCS may apply (If applicable).
                             <br>
@@ -570,24 +689,24 @@
                     </div>
                     <div class="card-body">
                         <small class="text-danger">You have to pay minimum order amount to confirm order</small>
-                        <p class="fw-bold"><span class="text-danger">Order Amount : </span> <span class="text-success">₹ {{ formatIndianNumber($data['required_booking_amount']) }}</span></p>
-                        <p class="fw-bold">
+                        <p><b>Order Amount:</b> <span class="bz-num">₹ {{ formatIndianNumber($data['required_booking_amount']) }}</span></p>
+                        <p>
                             <span class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="selected_wallet" id="selected_wallet_cash" value="cash_balance" wire:model="selected_wallet">
-                                <label class="form-check-label text-danger fw-bold" for="selected_wallet_cash">Cash Wallet Balance :</label>
-                                <span class="">₹ {{ formatIndianNumber($enquiry_data->getUser->cash_balance) }}</span>
+                                <label class="form-check-label" for="selected_wallet_cash"><b>Cash Wallet Balance:</b></label>
+                                <span class="bz-num">₹ {{ formatIndianNumber($enquiry_data->getUser->cash_balance) }}</span>
                             </span>
                         </p>
-                        <p class="fw-bold">
+                        <p>
                             <span class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="selected_wallet" id="selected_wallet_credit" value="credit_balance" wire:model="selected_wallet">
-                                <label class="form-check-label text-danger fw-bold" for="selected_wallet_credit">Credit Wallet Balance :</label>
-                                <span class="">₹ {{ formatIndianNumber($enquiry_data->getUser->credit_balance) }}</span>
+                                <label class="form-check-label" for="selected_wallet_credit"><b>Credit Wallet Balance:</b></label>
+                                <span class="bz-num">₹ {{ formatIndianNumber($enquiry_data->getUser->credit_balance) }}</span>
                             </span>
                         </p>
                         {{-- <p class="fw-bold">Wallet Balance : ₹ {{ formatIndianNumber($enquiry_data->getUser->cash_balance + $enquiry_data->getUser->credit_balance) }}</p> --}}
                         <small class="text-danger">Disclaimer</small> <br>
-                        <ol class="text-primary small">
+                        <ol class="small">
                             <li>This order can not be cancelled.</li>
                             <li>Advance amount will not be refunded/returned if confirmed order is cancelled.</li>
                             <li>You can not return the goods.</li>
@@ -596,31 +715,35 @@
                         {{-- <input type="text" name="token_amount" value="{{ $data['required_booking_amount'] }}">
                         <input type="text" name="total_amount" value="{{ $data['final_variation_price'] + ($data['total_quantity'] * $data['transport_price']) }}"> --}}
 
-                        <div class="row mb-3">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
                                 <label for="token_amount" class="form-label">Product Amount</label>
                                 <input type="number" class="form-control" id="token_amount" wire:model="token_amount" wire:keyup="calculateAmount()" wire:change="calculateAmount()">
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <label for="freight_token_amount" class="form-label">Freight Amount</label>
                                 <input type="number" class="form-control" id="freight_token_amount" wire:model="freight_token_amount" wire:keyup="calculateAmount()" wire:change="calculateAmount()">
                             </div>
 
-                            <div class="col-md-4">
-                                <label for="calculated_amount" class="form-label">Total Amount:</label>
+                            <div class="col-md-4 mb-3">
+                                <label for="calculated_amount" class="form-label">Total Amount</label>
                                 <input type="number" class="form-control" id="calculated_amount" value="{{$token_amount + $freight_token_amount}}" wire:model.live="calculated_amount" disabled>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea rows="5" id="message" placeholder="Write Your Message" class="form-control" wire:model="message"></textarea>
                             </div>
                         </div>
 
-                        <textarea rows="5" placeholder="Write Your Message" class="form-control" wire:model="message"></textarea>
-                        <div class="text-end">
+                        <div class="d-flex align-items-center justify-content-end gap-2">
                             {{-- <button class="btn btn-success floa-end mt-2" wire:click="enquiryToOrder()"> Confirm & Pay </button> --}}
-                            <button class="btn btn-info floa-end mt-2" wire:click="enquiryToOrder()" wire:loading.attr="disabled">
+                            <button class="btn btn-secondary btn-sm" wire:click="enquiryToOrder()" wire:loading.attr="disabled">
                                 <span wire:loading.remove wire:target="enquiryToOrder">Proceed Without OTP</span>
                                 <span wire:loading wire:target="enquiryToOrder">Processing your request...</span>
                             </button>
-                            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#otpVeryfiy" wire:click="sendOtp()" wire:loading.attr="disabled">
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#otpVeryfiy" wire:click="sendOtp()" wire:loading.attr="disabled">
                                 <span wire:loading.remove wire:target="enquiryToOrder">Generate OTP</span>
                                 <span wire:loading wire:target="sendOtp">Sending OTP...</span>
                             </button>
@@ -635,7 +758,7 @@
                                         {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                                     </div>
                                     <div class="modal-body">
-                                        <label for="otp">Otp Send On {{ $enquiry_data->getMarkedSellerProductEnquiry->getUser->phone }}</label>
+                                        <label for="otp" class="form-label">Otp Send On {{ $enquiry_data->getMarkedSellerProductEnquiry->getUser->phone }}</label>
                                         <input type="number" class="form-control" id="otp" placeholder="Enter OTP" wire:model="otp">
                                         <div class="text-end">
                                             <small id="resend-otp" class="d-none" wire:click="sendOtp()">
@@ -645,8 +768,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-success btn-sm" wire:click="verifyOtp()" wire:loading.attr="disabled">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger btn-sm" wire:click="verifyOtp()" wire:loading.attr="disabled">
                                             <span wire:loading.remove>Verify</span>
                                             <span wire:loading wire:target="verifyOtp">Verifying...</span>
                                         </button>

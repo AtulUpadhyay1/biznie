@@ -2,14 +2,29 @@
 <nav class="sidebar">
     <div class="sidebar-header">
         <a href="{{route('admin.dashboard')}}" class="sidebar-brand" wire:navigate>
-            <img src="{{asset('admin_css/assets/images/logo.png')}}" style="width: 70%;">
+            <img src="{{asset('admin_css/assets/images/logo.png')}}" alt="Biznie">
         </a>
-        <div class="sidebar-toggler not-active">
-            <i class="bi bi-list fs-3 text-white"></i>
+        <div class="sidebar-toggler not-active" title="Collapse menu">
+            <i class="bi bi-list"></i>
         </div>
     </div>
     <div class="sidebar-body">
+        <div class="bz-sb-search">
+            <div class="bz-sb-search__box">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search menu…  (press /)" autocomplete="off" spellcheck="false"
+                    aria-label="Filter menu">
+                <button type="button" class="bz-sb-search__clear" aria-label="Clear">
+                    <i class="bi bi-x-lg" style="font-size:.7rem"></i>
+                </button>
+            </div>
+        </div>
+        <p class="bz-sb-empty">No menu item matches that search.</p>
+
         <ul class="nav">
+            @can('dashboard')
+                <li class="nav-item nav-category">Overview</li>
+            @endcan
             @can('dashboard')
                 <li class="nav-item {{ isActiveRoute(['admin.dashboard']) ? 'active' : '' }}">
                     <a href="{{route('admin.dashboard')}}" class="nav-link" wire:navigate>
@@ -18,6 +33,10 @@
                     </a>
                 </li>
             @endcan
+
+            @canany(['seller-list', 'buyer-list', 'vehicle-list', 'transporter-list'])
+                <li class="nav-item nav-category">Network</li>
+            @endcanany
 
             @can('seller-list')
                 <!--Sellers-->
@@ -142,6 +161,12 @@
                     <span class="link-title">Brand</span>
                 </a>
             </li> --}}
+            @canany(['product_wise_seller_buyer-list', 'commodity_product-list', 'product_category-list',
+                'product_sub_category-list', 'product_sub_subcategory-list', 'product_attribute-list',
+                'packaging_type-list', 'brand-list', 'product_enquiry-list', 'commodity_product_order-list'])
+                <li class="nav-item nav-category">Trade &amp; Catalogue</li>
+            @endcanany
+
             @can('product_wise_seller_buyer-list')
                 <li class="nav-item {{ isActiveRoute(['admin.product-wise-seller-buyer.index']) ? 'active' : ''}}">
                     <a href="{{route('admin.product-wise-seller-buyer.index')}}" class="nav-link" wire:navigate>

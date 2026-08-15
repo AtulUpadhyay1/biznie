@@ -9,99 +9,89 @@
         </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-4 card-title">
-                            <h5 class="mt-2">Buyer Profile</h5>
-                        </div>
-                        <div class="col-8">
-                            <div class="d-flex align-items-center justify-content-end flex-wrap text-nowrap">
-                                <div class="col-md-6">
-                                    <select class="form-select" name="priority" id="priority" wire:model="priority"
-                                        wire:change="updatePriority($event.target.value)">
-                                        <option value="">Select priority</option>
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                                <a type="button"
-                                    class="btn btn-warning btn-sm btn-icon-text float-end align-items-center ms-2"
-                                    title="Edit" href="{{ route('admin.edit-customer-info', $data->id) }}"
-                                    wire:navigate>
-                                    <i class="bi bi-pencil-square btn-icon-prepend"></i>
-                                    Edit
-                                </a>
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <h4>Buyer Profile</h4>
+                    <div class="bz-toolbar">
+                        <label class="bz-filter-label" for="priority">Priority</label>
+                        <select class="form-select" name="priority" id="priority" wire:model="priority"
+                            wire:change="updatePriority($event.target.value)">
+                            <option value="">Select priority</option>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        </select>
+                        <a type="button" class="btn btn-secondary btn-sm" title="Edit"
+                            href="{{ route('admin.edit-customer-info', $data->id) }}" wire:navigate>
+                            <i class="bi bi-pencil-square"></i>
+                            Edit
+                        </a>
 
-                                @if (isset($data->status) && $data->status === 'active')
-                                    <button type="button"
-                                        class="btn btn-danger btn-sm btn-icon-text align-items-center ms-2"
-                                        wire:click.prevent="openBlockModal">
-                                        <i class="bi bi-slash-circle btn-icon-prepend"></i>
-                                        Block
-                                    </button>
-                                @else
-                                    <button type="button"
-                                        class="btn btn-success btn-sm btn-icon-text align-items-center ms-2"
-                                        wire:click.prevent="unblock">
-                                        <i class="bi bi-unlock btn-icon-prepend"></i>
-                                        Unblock
-                                    </button>
-                                @endif
-                            </div>
-                        </div>
+                        @if (isset($data->status) && $data->status === 'active')
+                            <button type="button" class="btn btn-danger btn-sm"
+                                wire:click.prevent="openBlockModal">
+                                <i class="bi bi-slash-circle"></i>
+                                Block
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-sm btn-outline-success"
+                                wire:click.prevent="unblock">
+                                <i class="bi bi-unlock"></i>
+                                Unblock
+                            </button>
+                        @endif
                     </div>
-
-                    <!-- Block Reason Modal -->
-                    <div class="modal fade" id="blockModal" tabindex="-1" aria-labelledby="blockModalLabel"
-                        aria-hidden="true" wire:ignore.self>
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="blockModalLabel">Block Customer - Reason</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="blockReason" class="form-label">Reason</label>
-                                        <textarea id="blockReason" class="form-control" rows="4" wire:model.defer="blockReason"
-                                            placeholder="Enter reason for blocking the customer"></textarea>
-                                        @error('blockReason')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-danger"
-                                        wire:click.prevent="confirmBlock">Confirm Block</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <script>
-                        window.addEventListener('open-block-modal', event => {
-                            const modalEl = document.getElementById('blockModal');
-                            if (modalEl && typeof bootstrap !== 'undefined') {
-                                const modal = new bootstrap.Modal(modalEl);
-                                modal.show();
-                            }
-                        });
-                        window.addEventListener('close-block-modal', event => {
-                            const modalEl = document.getElementById('blockModal');
-                            if (modalEl && typeof bootstrap !== 'undefined') {
-                                const instance = bootstrap.Modal.getInstance(modalEl);
-                                if (instance) instance.hide();
-                            }
-                        });
-                    </script>
                 </div>
+
+                <!-- Block Reason Modal -->
+                <div class="modal fade" id="blockModal" tabindex="-1" aria-labelledby="blockModalLabel"
+                    aria-hidden="true" wire:ignore.self>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="blockModalLabel">Block Customer - Reason</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="blockReason" class="form-label">Reason</label>
+                                    <textarea id="blockReason" class="form-control" rows="4" wire:model.defer="blockReason"
+                                        placeholder="Enter reason for blocking the customer"></textarea>
+                                    @error('blockReason')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    wire:click.prevent="confirmBlock">Confirm Block</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    window.addEventListener('open-block-modal', event => {
+                        const modalEl = document.getElementById('blockModal');
+                        if (modalEl && typeof bootstrap !== 'undefined') {
+                            const modal = new bootstrap.Modal(modalEl);
+                            modal.show();
+                        }
+                    });
+                    window.addEventListener('close-block-modal', event => {
+                        const modalEl = document.getElementById('blockModal');
+                        if (modalEl && typeof bootstrap !== 'undefined') {
+                            const instance = bootstrap.Modal.getInstance(modalEl);
+                            if (instance) instance.hide();
+                        }
+                    });
+                </script>
+
                 <div class="card-body">
                     <div class="row">
-                        <h6 class="py-2 bg-orange-light">Buyer Details</h6>
+                        <h6 class="bz-section-label">Buyer Details</h6>
                         <div class="table-responsive mb-4">
                             <table class="table table-sm table-bordered mt-3">
                                 <tbody>
@@ -143,7 +133,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <h6 class="py-2 bg-orange-light">Address</h6>
+                        <h6 class="bz-section-label">Address</h6>
                         <div class="table-responsive mb-4">
                             <table class="custom-table borderless-table">
                                 <tbody>
