@@ -12,9 +12,18 @@ class SubmitBtn extends Component
      * Create a new component instance.
      */
     public $text = "";
-    public function __construct($text)
+
+    /**
+     * Optional Livewire method. When given, the button calls it with wire:click
+     * instead of submitting — needed for actions that sit outside a <form>,
+     * such as the quick-add modals on the commodity-product screen.
+     */
+    public $function = "";
+
+    public function __construct($text, $function = "")
     {
         $this->text = $text;
+        $this->function = $function;
     }
 
     /**

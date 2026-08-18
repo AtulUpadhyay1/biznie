@@ -71,6 +71,15 @@ class ProductOfferResource extends JsonResource
             'freight_charges'  => (float) $doorstep['freight'],
             'for_price'        => $doorstep['for_price'],
             'for_price_source' => $doorstep['source'],
+
+            // Same shape the detail page reads, so a card and the page it links
+            // to lead with the same price under the same name.
+            'display' => [
+                'show_ex_price'  => (bool) $this->show_ex_price,
+                'show_for_price' => (bool) $this->show_for_price,
+                'show_fob_price' => (bool) $this->show_fob_price,
+                'for_price_city' => $priced['city'],
+            ],
         ];
     }
 }

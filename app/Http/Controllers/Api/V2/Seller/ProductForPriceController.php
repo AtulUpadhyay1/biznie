@@ -123,18 +123,25 @@ class ProductForPriceController extends Controller
         ]);
     }
 
-    /** @return array<int, array{id: int, state: string, city: string, price: string}> */
+    /**
+     * @return array<int, array{id: int, state: string, city: string, price: string,
+     *     created_at: ?string, updated_at: ?string}>
+     */
     private function rows(SellerCommodityProduct $product): array
     {
         return SellerProductForPrice::where('product_id', $product->id)
             ->orderBy('state')
             ->orderBy('city')
-            ->get(['id', 'state', 'city', 'price'])
+            ->get(['id', 'state', 'city', 'price', 'created_at', 'updated_at'])
             ->map(fn ($row) => [
                 'id'    => $row->id,
                 'state' => $row->state,
                 'city'  => $row->city,
                 'price' => (string) $row->price,
+                // Because the save is an upsert, these are how a seller tells a
+                // rate they set months ago from one they re-quoted this morning.
+                'created_at' => $row->created_at ? dateTimeFormat($row->created_at) : null,
+                'updated_at' => $row->updated_at ? dateTimeFormat($row->updated_at) : null,
             ])
             ->all();
     }

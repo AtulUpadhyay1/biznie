@@ -12,13 +12,16 @@ use App\Models\PackagingType;
 use Livewire\WithFileUploads;
 use App\Models\ProductCategory;
 use App\Models\CommodityProduct;
+use App\Models\BusinessCategory;
 use App\Models\ProductSubCategory;
 use App\Models\ProductSubSubCategory;
+use App\Livewire\Concerns\ProductLookupQuickAdd;
 
 class Create extends Component
 {
     public $page_title = "Add Commodity Product";
     use WithFileUploads;
+    use ProductLookupQuickAdd;
 
     public $name, $hsn_code, $category_id, $sub_category, $sub_category_id, $sub_sub_category_id, $brand_id = [], $unit_id, $attribute=[], $base_price, $loading_charge, $insurance_charge, $quality_charge, $gst, $tcs, $description, $thumbnail, $show_thumbnail, $images, $show_image, $video_url, $meta_title, $meta_description, $meta_image, $show_meta_image, $specification_notes, $min_order_qty, $order_amount_type = 'percent', $required_order_amount;
 
@@ -49,7 +52,8 @@ class Create extends Component
         $brand_list = Brand::active()->orderBy('name', 'asc')->get();
         $unit_list = ProductUnit::active()->orderBy('name', 'asc')->get();
         $packaging_type_list = PackagingType::active()->orderBy('name', 'asc')->get();
-        $attribute_list = Attribute::active()->get();
+        $attribute_list = Attribute::active()->orderBy('name', 'asc')->get();
+        $business_category_list = BusinessCategory::active()->orderBy('name', 'asc')->get();
 
         $packaging_type_ids = $this->packaging_type;
 
@@ -61,7 +65,7 @@ class Create extends Component
             ->map(fn($packaging_type_ids) => optional($packagingTypes->get($packaging_type_ids))->name)
             ->filter();
 
-        return view('admin.commodity_product.form', compact('category_list', 'brand_list', 'unit_list', 'packaging_type_list', 'attribute_list'));
+        return view('admin.commodity_product.form', compact('category_list', 'brand_list', 'unit_list', 'packaging_type_list', 'attribute_list', 'business_category_list'));
     }
 
     public function addOtherChargesField($charge)
@@ -98,17 +102,6 @@ class Create extends Component
     public function removeQualityField($quality_field)
     {
         unset($this->quality_inputs[$quality_field]);
-    }
-
-    public function setSubCategoryList()
-    {
-        $this->sub_category_list = ProductSubCategory::active()->where('product_category_id', $this->category_id)->get();
-        $this->sub_sub_category_list = [];
-    }
-
-    public function setSubSubCategoryList()
-    {
-        $this->sub_sub_category_list = ProductSubSubCategory::active()->where('product_sub_category_id', $this->sub_category_id)->get();
     }
 
     public function save()

@@ -2,7 +2,7 @@
 <nav class="sidebar">
     <div class="sidebar-header">
         <a href="{{route('admin.dashboard')}}" class="sidebar-brand" wire:navigate>
-            <img src="{{asset('admin_css/assets/images/logo.png')}}" alt="Biznie">
+            <img src="{{asset('admin_css/assets/images/logo-white.png')}}" alt="Biznie">
         </a>
         <div class="sidebar-toggler not-active" title="Collapse menu">
             <i class="bi bi-list"></i>

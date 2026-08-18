@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="{{asset('admin_css/assets/vendors/jquery-tags-input/jquery.tagsinput.min.css')}}">
 
     {{-- Biznie theme layer — must stay last so it wins the cascade --}}
-    <link rel="stylesheet" href="{{asset('admin_css/assets/css/biznie-admin.css')}}?v=15">
+    <link rel="stylesheet" href="{{asset('admin_css/assets/css/biznie-admin.css')}}?v=18">
 
     <!-- core:js -->
     <script src="{{asset('admin_css/assets/vendors/core/core.js')}}"></script>

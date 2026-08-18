@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{{ asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
 
     {{-- Same token layer as the panel, so auth controls match the app exactly --}}
-    <link rel="stylesheet" href="{{ asset('admin_css/assets/css/biznie-admin.css') }}?v=15">
+    <link rel="stylesheet" href="{{ asset('admin_css/assets/css/biznie-admin.css') }}?v=18">
 </head>
 
 <body>
@@ -31,7 +31,7 @@
 
         <aside class="bz-auth__brand">
             <div class="bz-auth__logo">
-                <img src="{{ asset('admin_css/assets/images/logo.png') }}" alt="Biznie">
+                <img src="{{ asset('admin_css/assets/images/logo-white.png') }}" alt="Biznie">
             </div>
 
             <div class="bz-auth__pitch">

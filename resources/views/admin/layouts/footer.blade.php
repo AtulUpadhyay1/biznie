@@ -5,12 +5,12 @@
 
 <script src="{{asset('admin_css/assets/vendors/sweetalert2/sweetalert2.min.js')}}"></script>
 <script src="{{asset('admin_css/assets/vendors/select2/select2.min.js')}}"></script>
-<script src="{{asset('admin_css/assets/js/select2.js')}}"></script>
+<script src="{{asset('admin_css/assets/js/select2.js')}}?v=16"></script>
 <script src="{{asset('admin_css/assets/vendors/jquery-tags-input/jquery.tagsinput.min.js')}}"></script>
 <script src="{{asset('admin_css/assets/js/tags-input.js')}}"></script>
 
 {{-- Biznie UI behaviour: progress bar, sidebar filter, post-navigate re-init --}}
-<script src="{{asset('admin_css/assets/js/biznie-admin.js')}}?v=15"></script>
+<script src="{{asset('admin_css/assets/js/biznie-admin.js')}}?v=16"></script>
 <script>
     var Toast = Swal.mixin({
         toast: true,

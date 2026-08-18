@@ -268,12 +268,15 @@
 
         if (!$) { return; }
 
-        // select2 (mirrors assets/js/select2.js)
+        // select2 (mirrors assets/js/select2.js). Scoped to `select` because
+        // select2's own wrapper carries class "select2" too — matching it makes
+        // select2 re-initialise on its own output and stack duplicate controls.
         if ($.fn && $.fn.select2) {
-            $('.js-example-basic-single, .js-example-basic-multiple, .select2').each(function () {
+            $('select.js-example-basic-single, select.js-example-basic-multiple, select.select2').each(function () {
                 if (!$(this).hasClass('select2-hidden-accessible')) { $(this).select2(); }
             });
         }
+        initLivewireSelects();
 
         // Sidebar: close sibling submenus when one opens
         var $sidebar = $('.sidebar');
@@ -312,6 +315,88 @@
     }
 
     /* ----------------------------------------------------------------------
+       select2 <-> Livewire bridge  (`.bz-select2`)
+       ----------------------------------------------------------------------
+       A select2 control cannot be morphed by Livewire — select2 builds its own
+       sibling DOM and Livewire's diff tears it apart, which is why selected
+       values used to vanish. So each `.bz-select2` lives inside `wire:ignore`
+       and this bridge owns it:
+
+         DOM  -> server : on change, push the value to the property named in
+                          `data-prop` (the old code guessed the property from
+                          the element id, so `#sub_category` wrote to the
+                          non-existent `sub_category` instead of
+                          `sub_category_id` and the choice was lost).
+         server -> DOM  : the component dispatches `bz-options` with the new
+                          option list, since Blade can no longer reach inside
+                          `wire:ignore`.
+       -------------------------------------------------------------------- */
+    function componentFor(el) {
+        var host = el.closest('[wire\\:id]');
+        if (!host || !window.Livewire) { return null; }
+        try { return window.Livewire.find(host.getAttribute('wire:id')); } catch (err) { return null; }
+    }
+
+    function initLivewireSelects() {
+        if (!$ || !$.fn || !$.fn.select2) { return; }
+
+        $('select.bz-select2').each(function () {
+            var $el = $(this);
+            if ($el.data('bzSelectReady')) { return; }
+
+            $el.select2({
+                width: '100%',
+                placeholder: $el.attr('data-placeholder') || 'Select',
+                // A modal creates its own stacking context; without this the
+                // dropdown renders behind the backdrop.
+                dropdownParent: $el.closest('.modal').length ? $el.closest('.modal') : $(document.body)
+            });
+            $el.data('bzSelectReady', true);
+
+            $el.on('change', function () {
+                var prop = $el.attr('data-prop');
+                if (!prop) { return; }
+                var cmp = componentFor($el[0]);
+                if (!cmp) { return; }
+                var val = $el.val();
+                cmp.set(prop, val === null ? ($el.prop('multiple') ? [] : '') : val);
+            });
+        });
+    }
+
+    function applyOptions(detail) {
+        if (!$ || !detail || !detail.target) { return; }
+        var $el = $('#' + detail.target);
+        if (!$el.length) { return; }
+
+        $el.empty();
+        if (!$el.prop('multiple')) {
+            $el.append(new Option(detail.placeholder || 'Select', '', false, false));
+        }
+        (detail.options || []).forEach(function (opt) {
+            $el.append(new Option(opt.text, opt.id, false, false));
+        });
+
+        $el.val(detail.selected === undefined || detail.selected === null ? '' : detail.selected);
+        // `change.select2` redraws the widget WITHOUT firing our own change
+        // handler, so this cannot echo back to the server in a loop.
+        $el.trigger('change.select2');
+    }
+
+    window.addEventListener('bz-options', function (e) {
+        applyOptions(e.detail && e.detail.length ? e.detail[0] : e.detail);
+    });
+
+    window.addEventListener('bz-modal-close', function (e) {
+        var detail = e.detail && e.detail.length ? e.detail[0] : e.detail;
+        if (!detail || !detail.id || !window.bootstrap) { return; }
+        var el = document.getElementById(detail.id);
+        if (!el) { return; }
+        var modal = window.bootstrap.Modal.getInstance(el);
+        if (modal) { modal.hide(); }
+    });
+
+    /* ----------------------------------------------------------------------
        Boot
        ---------------------------------------------------------------------- */
     function boot() {
@@ -320,6 +405,9 @@
         syncTopbarTitle();
         sweepBrokenImages();
         // template.js already wires everything on the first load — don't double-bind.
+        // select2.js does not know about `.bz-select2`, so this one is ours.
+        initLivewireSelects();
+        document.addEventListener('livewire:initialized', initLivewireSelects);
     }
 
     if (document.readyState === 'loading') {

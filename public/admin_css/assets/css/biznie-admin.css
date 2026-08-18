@@ -1232,12 +1232,21 @@ textarea.form-control { min-height: 84px; padding: 8px 11px; line-height: 1.6; }
     border-radius: var(--bz-r-sm) !important;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
+    /* Own the box: select2 ships ~7.5px of vertical padding on top of the
+       line-height, which made the value 49px tall inside a 36px control and
+       pushed the text to the bottom. Fill the control and centre with
+       line-height alone (36px box - 2 x 1px border = 34px of content). */
+    height: 34px;
     line-height: 34px;
+    padding: 0 26px 0 11px;
     color: var(--bz-text);
     font-size: .8125rem;
-    padding-left: 11px;
 }
-.select2-container--default .select2-selection--single .select2-selection__arrow { top: 5px; right: 6px; }
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 0;
+    right: 6px;
+    height: 100%;
+}
 .select2-container--default .select2-selection--multiple {
     min-height: var(--bz-control-h);
     border: 1px solid var(--bz-border-strong) !important;
@@ -1249,8 +1258,65 @@ textarea.form-control { min-height: 84px; padding: 8px 11px; line-height: 1.6; }
     box-shadow: var(--bz-shadow-md);
     overflow: hidden;
 }
-.select2-container--default .select2-results__option--highlighted[aria-selected] { background-color: var(--bz-brand) !important; }
+/* The already-selected row is also the highlighted one when the menu opens, so
+   both rules hit it. Without the white text it painted brand-on-brand and the
+   row read as a solid red bar with no label. */
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--bz-brand) !important;
+    color: #FFFFFF !important;
+}
 .select2-container--default .select2-results__option[aria-selected="true"] { background-color: var(--bz-brand-soft); color: var(--bz-brand); }
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid var(--bz-border-strong);
+    border-radius: var(--bz-r-sm);
+    padding: 6px 10px;
+    font-size: .8125rem;
+}
+/* select2 renders the placeholder <option> as a blank result row; hide it so the
+   list does not open with an empty (and brand-highlighted) first item. */
+.select2-results__option[role="option"]:empty { display: none; }
+
+/* --- select2 inside an .input-group (field + "add new" button) ------------
+   select2 replaces the <select> with a sibling .select2-container, which
+   Bootstrap's input-group does not know how to size, so it collapses. Make the
+   container behave as the group's stretched first child and square off the
+   edge that meets the button. */
+.bz-select-group { flex-wrap: nowrap; }
+.bz-select-group > .select2-container {
+    flex: 1 1 auto;
+    width: 1% !important;
+    min-width: 0;
+}
+.bz-select-group > .select2-container .select2-selection--single,
+.bz-select-group > .select2-container .select2-selection--multiple {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+/* The original <select> is visually hidden by select2 but still in flow. */
+.bz-select-group > select.bz-select2.select2-hidden-accessible { flex: 0 0 0; width: 0 !important; }
+.bz-select-group > .btn {
+    flex: 0 0 auto;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+    /* Drop the control-height floor and let the button stretch to whatever the
+       select2 box is. Otherwise the button sets the row height (38px) while
+       select2 stays pinned at 36px and the two read as misaligned — and a
+       multiple-select grows taller than any fixed height once chips wrap. */
+    align-self: stretch;
+    min-height: 0;
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+/* Before select2 boots (or if JS fails) the bare <select> must still look right. */
+.bz-select-group > select.bz-select2:not(.select2-hidden-accessible) {
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
 
 /* Flatpickr / CKEditor containers */
 .flatpickr-input { background: var(--bz-surface) !important; }

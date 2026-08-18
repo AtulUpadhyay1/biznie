@@ -71,37 +71,59 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <div wire:ignore>
-                                    <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
-                                    <select class="form-select select2 @error('category_id') is-invalid @enderror" id="category_id" wire:model="category_id">
+                                <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
+                                {{-- wire:ignore keeps select2's own DOM alive across Livewire re-renders.
+                                     Because Blade can no longer refresh the <option>s, the component pushes
+                                     them with a `bz-options` event (see ProductLookupQuickAdd). --}}
+                                <div class="input-group bz-select-group" wire:ignore>
+                                    <select class="form-select bz-select2 @error('category_id') is-invalid @enderror"
+                                        id="category_id" data-prop="category_id" data-placeholder="Select Category">
                                         <option value="">Select Category</option>
                                         @foreach ($category_list as $category_data)
-                                            <option value="{{ $category_data->id }}"> {{ $category_data->name }} @if($category_data->attributes) (@foreach ($category_data->attributes as $attributes) {{getAttribute($attributes)->name}}@if(!$loop->last),@endif @endforeach)@endif </option>
+                                            <option value="{{ $category_data->id }}" @selected($category_id == $category_data->id)>{{ $category_data->name }}@if($category_data->attributes) (@foreach ($category_data->attributes as $attributes){{ getAttribute($attributes)?->name }}@if(!$loop->last), @endif @endforeach)@endif</option>
                                         @endforeach
                                     </select>
+                                    <button class="btn btn-secondary btn-icon" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#qaCategoryModal" title="Add new category">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
                                 </div>
                                 @error('category_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="sub_category" class="form-label">Sub Category <span class="text-danger">*</span></label>
-                                <select class="form-select select2 sub_category @error('sub_category') is-invalid @enderror" id="sub_category" wire:model="sub_category_id">
-                                    <option>Select Sub Category</option>
-                                    @foreach ($sub_category_list as $sub_category_data)
-                                        <option value="{{$sub_category_data->id}}">{{$sub_category_data->name}} </option>
-                                    @endforeach
-                                </select>
+                                <label for="sub_category_id" class="form-label">Sub Category <span class="text-danger">*</span></label>
+                                <div class="input-group bz-select-group" wire:ignore>
+                                    <select class="form-select bz-select2 @error('sub_category_id') is-invalid @enderror"
+                                        id="sub_category_id" data-prop="sub_category_id" data-placeholder="Select Sub Category">
+                                        <option value="">Select Sub Category</option>
+                                        @foreach ($sub_category_list as $sub_category_data)
+                                            <option value="{{ $sub_category_data->id }}" @selected($sub_category_id == $sub_category_data->id)>{{ $sub_category_data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button class="btn btn-secondary btn-icon" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#qaSubCategoryModal" title="Add new sub category">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
+                                </div>
                                 @error('sub_category_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="sub_sub_category" class="form-label">Sub Sub Category</label>
-                                <select class="form-select select2 @error('sub_sub_category_id') is-invalid @enderror" id="sub_sub_category" wire:model="sub_sub_category_id">
-                                    <option>Select Sub Sub Category</option>
-                                    @foreach ($sub_sub_category_list as $sub_sub_category_data)
-                                        <option value="{{$sub_sub_category_data->id}}">{{$sub_sub_category_data->name}}</option>
-                                    @endforeach
-                                </select>
+                                <label for="sub_sub_category_id" class="form-label">Sub Sub Category</label>
+                                <div class="input-group bz-select-group" wire:ignore>
+                                    <select class="form-select bz-select2 @error('sub_sub_category_id') is-invalid @enderror"
+                                        id="sub_sub_category_id" data-prop="sub_sub_category_id" data-placeholder="Select Sub Sub Category">
+                                        <option value="">Select Sub Sub Category</option>
+                                        @foreach ($sub_sub_category_list as $sub_sub_category_data)
+                                            <option value="{{ $sub_sub_category_data->id }}" @selected($sub_sub_category_id == $sub_sub_category_data->id)>{{ $sub_sub_category_data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button class="btn btn-secondary btn-icon" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#qaSubSubCategoryModal" title="Add new sub sub category">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
+                                </div>
                                 @error('sub_sub_category_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
 
@@ -118,31 +140,51 @@
                             </div> --}}
 
                             <div class="col-md-4 mb-3">
-                                <div wire:ignore>
-                                    <label for="unit_id" class="form-label">Unit <span class="text-danger">*</span></label>
-                                    <select class="form-select select2 @error('unit_id') is-invalid @enderror" id="unit_id" wire:model="unit_id">
-                                        <option>Select Unit</option>
+                                <label for="unit_id" class="form-label">Unit <span class="text-danger">*</span></label>
+                                <div class="input-group bz-select-group" wire:ignore>
+                                    <select class="form-select bz-select2 @error('unit_id') is-invalid @enderror"
+                                        id="unit_id" data-prop="unit_id" data-placeholder="Select Unit">
+                                        <option value="">Select Unit</option>
                                         @foreach ($unit_list as $unit_data)
-                                            <option value="{{ $unit_data->id }}">{{ $unit_data->short_name }}</option>
+                                            <option value="{{ $unit_data->id }}" @selected($unit_id == $unit_data->id)>{{ $unit_data->short_name }}</option>
                                         @endforeach
                                     </select>
+                                    <button class="btn btn-secondary btn-icon" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#qaUnitModal" title="Add new unit">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
                                 </div>
                                 @error('unit_id') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+
                             <div class="col-md-4 mb-3">
-                                <div wire:ignore>
-                                    <label class="form-label" for="attribute">Attribute <span class="text-danger">*</span></label>
-                                    <select class="form-select select2 @error('attribute') is-invalid @enderror" id="attribute" wire:model="attribute" data-placeholder="Select Attribute" multiple @if($variation_count > 0) disabled @endif>
+                                <label class="form-label" for="attribute">Attribute <span class="text-danger">*</span></label>
+                                <div class="input-group bz-select-group" wire:ignore>
+                                    <select class="form-select bz-select2 @error('attribute') is-invalid @enderror"
+                                        id="attribute" data-prop="attribute" data-placeholder="Select Attribute" multiple
+                                        @if($variation_count > 0) disabled @endif>
                                         @foreach($attribute_list as $attribute_data)
-                                            <option value="{{$attribute_data->id}}">{{$attribute_data->name}}</option>
+                                            <option value="{{ $attribute_data->id }}" @selected(in_array($attribute_data->id, (array) $attribute))>{{ $attribute_data->name }}</option>
                                         @endforeach
                                     </select>
+                                    <button class="btn btn-secondary btn-icon" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#qaAttributeModal" title="Add new attribute"
+                                        @disabled($variation_count > 0)>
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
                                 </div>
                                 @error('attribute') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+
                             <div class="col-md-4 mb-3">
-                                <label for="packaging_type" class="form-label">Packaging Type <span class="text-danger">*</span></label>
-                                <div class="d-flex flex-wrap">
+                                <div class="d-flex align-items-center justify-content-between gap-2">
+                                    <label for="packaging_type" class="form-label mb-0">Packaging Type <span class="text-danger">*</span></label>
+                                    <button class="btn btn-secondary btn-sm btn-icon" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#qaPackagingTypeModal" title="Add new packaging type">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex flex-wrap mt-2">
                                     @foreach ($packaging_type_list as $packaging_type_data)
                                         <div class="form-check me-3 mb-2">
                                             <input class="form-check-input" type="checkbox" id="packaging_type_{{ $packaging_type_data->id }}" value="{{ $packaging_type_data->id }}" wire:model.live="packaging_type">
@@ -269,26 +311,177 @@
             </form>
         </div>
     </div>
-    @push('scripts')
-        <script>
-            $(document).ready(function () {
-                $('.select2').on('change', function (e) {
-                    let elementName = $(this).attr('id');
-                    var data = $(this).select2("val");
-                    @this.set(elementName, data);
-                });
-                window.addEventListener('render-select2', event => {
-                    $('.select2').select2();
-                })
-            });
 
-            $('#category_id').on('change', function (e) {
-                @this.setSubCategoryList();
-            });
+    {{-- ---------------------------------------------------------------------
+         Quick-add modals. They sit outside the <form> so a nested submit can
+         never fire the product save. `wire:ignore.self` protects the modal
+         element's own attributes (Bootstrap toggles .show / style on it) while
+         still letting Livewire morph the fields inside.
+         ------------------------------------------------------------------ --}}
 
-            $('#sub_category').on('change', function (e) {
-                @this.setSubSubCategoryList();
-            });
-        </script>
-    @endpush
+    <div class="modal fade" id="qaCategoryModal" tabindex="-1" aria-labelledby="qaCategoryModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qaCategoryModalLabel">Add Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="qa_business_category_id">Business Category <span class="text-danger">*</span></label>
+                        <select class="form-select @error('qa_business_category_id') is-invalid @enderror" id="qa_business_category_id" wire:model="qa_business_category_id">
+                            <option value="">Select Business Category</option>
+                            @foreach ($business_category_list as $business_category_data)
+                                <option value="{{ $business_category_data->id }}">{{ $business_category_data->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('qa_business_category_id') <small class="text-danger">{{ $message }}</small>@enderror
+                    </div>
+                    <div>
+                        <label class="form-label" for="qa_category_name">Category Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('qa_category_name') is-invalid @enderror" id="qa_category_name" placeholder="Enter category name" wire:model="qa_category_name">
+                        @error('qa_category_name') <small class="text-danger">{{ $message }}</small>@enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <x-submit-btn text="Save Category" function="saveQuickCategory" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="qaSubCategoryModal" tabindex="-1" aria-labelledby="qaSubCategoryModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qaSubCategoryModalLabel">Add Sub Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @php
+                        $qaParentCategory = collect($category_list)->first(fn ($c) => $c->id == $category_id);
+                    @endphp
+                    <div class="mb-3">
+                        <label class="form-label" for="qa_sub_category_parent">Category</label>
+                        <input type="text" class="form-control" id="qa_sub_category_parent" readonly
+                            value="{{ $qaParentCategory?->name ?? 'No category selected yet' }}">
+                        <small class="text-muted">The sub category will be created under this category.</small>
+                    </div>
+                    <label class="form-label" for="qa_sub_category_name">Sub Category Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('qa_sub_category_name') is-invalid @enderror" id="qa_sub_category_name" placeholder="Enter sub category name" wire:model="qa_sub_category_name">
+                    @error('qa_sub_category_name') <small class="text-danger">{{ $message }}</small>@enderror
+                    @error('category_id') <small class="text-danger d-block">{{ $message }}</small>@enderror
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <x-submit-btn text="Save Sub Category" function="saveQuickSubCategory" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="qaSubSubCategoryModal" tabindex="-1" aria-labelledby="qaSubSubCategoryModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qaSubSubCategoryModalLabel">Add Sub Sub Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @php
+                        $qaParentCategory2 = collect($category_list)->first(fn ($c) => $c->id == $category_id);
+                        $qaParentSubCategory = collect($sub_category_list)->first(fn ($c) => $c->id == $sub_category_id);
+                    @endphp
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="qa_ssc_parent_category">Category</label>
+                            <input type="text" class="form-control" id="qa_ssc_parent_category" readonly
+                                value="{{ $qaParentCategory2?->name ?? 'No category selected yet' }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="qa_ssc_parent_sub_category">Sub Category</label>
+                            <input type="text" class="form-control" id="qa_ssc_parent_sub_category" readonly
+                                value="{{ $qaParentSubCategory?->name ?? 'No sub category selected yet' }}">
+                        </div>
+                    </div>
+                    <label class="form-label" for="qa_sub_sub_category_name">Sub Sub Category Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('qa_sub_sub_category_name') is-invalid @enderror" id="qa_sub_sub_category_name" placeholder="Enter sub sub category name" wire:model="qa_sub_sub_category_name">
+                    @error('qa_sub_sub_category_name') <small class="text-danger">{{ $message }}</small>@enderror
+                    @error('sub_category_id') <small class="text-danger d-block">{{ $message }}</small>@enderror
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <x-submit-btn text="Save Sub Sub Category" function="saveQuickSubSubCategory" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="qaUnitModal" tabindex="-1" aria-labelledby="qaUnitModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qaUnitModalLabel">Add Unit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="qa_unit_name">Unit Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('qa_unit_name') is-invalid @enderror" id="qa_unit_name" placeholder="e.g. Metric Tonne" wire:model="qa_unit_name">
+                        @error('qa_unit_name') <small class="text-danger">{{ $message }}</small>@enderror
+                    </div>
+                    <div>
+                        <label class="form-label" for="qa_unit_short_name">Short Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('qa_unit_short_name') is-invalid @enderror" id="qa_unit_short_name" placeholder="e.g. MT" wire:model="qa_unit_short_name">
+                        @error('qa_unit_short_name') <small class="text-danger">{{ $message }}</small>@enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <x-submit-btn text="Save Unit" function="saveQuickUnit" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="qaAttributeModal" tabindex="-1" aria-labelledby="qaAttributeModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qaAttributeModalLabel">Add Attribute</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label" for="qa_attribute_name">Attribute Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('qa_attribute_name') is-invalid @enderror" id="qa_attribute_name" placeholder="Enter attribute name" wire:model="qa_attribute_name">
+                    @error('qa_attribute_name') <small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <x-submit-btn text="Save Attribute" function="saveQuickAttribute" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="qaPackagingTypeModal" tabindex="-1" aria-labelledby="qaPackagingTypeModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qaPackagingTypeModalLabel">Add Packaging Type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label" for="qa_packaging_type_name">Packaging Type Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('qa_packaging_type_name') is-invalid @enderror" id="qa_packaging_type_name" placeholder="Enter packaging type name" wire:model="qa_packaging_type_name">
+                    @error('qa_packaging_type_name') <small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <x-submit-btn text="Save Packaging Type" function="saveQuickPackagingType" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
