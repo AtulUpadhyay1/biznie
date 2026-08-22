@@ -196,6 +196,9 @@ Route::group(['as'=>'admin.'], function () {
         Route::get('commodity-product-enquiry/show/{id}', AdminRoot\CommodityProductEnquiry\Show::class)->name('commodity-product-enquiry.show');
         Route::get('commodity-product-enquiry/history/{id}', AdminRoot\CommodityProductEnquiry\History::class)->name('commodity-product-enquiry.history');
         Route::get('commodity-product-enquiry/seller-reply/{id}', AdminRoot\CommodityProductEnquiry\SellerReply::class)->name('commodity-product-enquiry.sellerReply');
+        // Live reverse-auction board + keying a price in on a seller's behalf.
+        Route::get('commodity-product-enquiry/live', AdminRoot\CommodityProductEnquiry\LiveBidding::class)->name('commodity-product-enquiry.liveBidding');
+        Route::get('commodity-product-enquiry/live/{id}', AdminRoot\CommodityProductEnquiry\ManualPriceEntry::class)->name('commodity-product-enquiry.manualPriceEntry');
 
         // Commodity Product Order
         Route::get('commodity-product-order', AdminRoot\CommodityProductOrder\Index::class)->name('commodity-product-order.index');

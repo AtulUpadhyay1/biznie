@@ -8,6 +8,7 @@
      4. Remember the folded/expanded sidebar state
      5. Re-initialise template plugins after a wire:navigate swap
         (feather icons, tooltips, select2, scrollbar, sidebar handlers)
+     6. RFQ auction countdowns ([data-bz-countdown])
    ========================================================================== */
 (function () {
     'use strict';
@@ -310,6 +311,7 @@
         reinitPlugins();
         syncTopbarTitle();
         sweepBrokenImages();
+        initCountdowns();
         var input = document.querySelector('.bz-sb-search input');
         if (input && input.value) { filterSidebar(input.value); }
     }
@@ -397,6 +399,54 @@
     });
 
     /* ----------------------------------------------------------------------
+       RFQ auction countdowns
+       ----------------------------------------------------------------------
+       An RFQ auction closes at a fixed instant, and three screens have to agree
+       on how long is left. Blade can only render the number that was true when
+       the response was built, and a wire:poll cheap enough to sit on a list
+       page still leaves the figure visibly stale between refreshes.
+
+       So the server renders the deadline as an epoch on `data-bz-countdown`
+       and this ticker owns the digits. One interval drives every element on the
+       page, and it stops itself when none are left, so an admin who navigates
+       away is not paying for a timer forever.
+       ---------------------------------------------------------------------- */
+    var countdownTimer = null;
+
+    function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+    function paintCountdowns() {
+        var nodes = document.querySelectorAll('[data-bz-countdown]');
+        if (!nodes.length) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+            return;
+        }
+
+        var now = Date.now();
+
+        nodes.forEach(function (el) {
+            var endsAt = parseInt(el.getAttribute('data-bz-countdown'), 10);
+            if (!endsAt) { return; }
+
+            var left = Math.max(0, Math.floor((endsAt * 1000 - now) / 1000));
+            var mins = Math.floor(left / 60);
+            var secs = left % 60;
+
+            el.textContent = left > 0 ? pad(mins) + 'm : ' + pad(secs) + 's' : 'Closed';
+            el.classList.toggle('text-danger', left > 0 && left <= 120);
+            el.classList.toggle('text-muted', left === 0);
+        });
+    }
+
+    function initCountdowns() {
+        paintCountdowns();
+        if (!countdownTimer && document.querySelector('[data-bz-countdown]')) {
+            countdownTimer = setInterval(paintCountdowns, 1000);
+        }
+    }
+
+    /* ----------------------------------------------------------------------
        Boot
        ---------------------------------------------------------------------- */
     function boot() {
@@ -407,7 +457,11 @@
         // template.js already wires everything on the first load — don't double-bind.
         // select2.js does not know about `.bz-select2`, so this one is ours.
         initLivewireSelects();
+        initCountdowns();
         document.addEventListener('livewire:initialized', initLivewireSelects);
+        // A wire:poll re-render swaps the deadline nodes out from under us.
+        document.addEventListener('livewire:initialized', initCountdowns);
+        document.addEventListener('livewire:update', initCountdowns);
     }
 
     if (document.readyState === 'loading') {

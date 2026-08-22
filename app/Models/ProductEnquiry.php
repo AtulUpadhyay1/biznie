@@ -19,7 +19,17 @@ class ProductEnquiry extends Model
         'history'           => 'array',
         'quality'           => 'array',
         'packaging_charge'  => 'array',
+        'quantity'          => 'float',
+        'best_for_price'    => 'float',
+        'bidding_started_at' => 'datetime',
+        'bidding_ends_at'    => 'datetime',
     ];
+
+    /** Auctions still taking bids — what the admin "Live RFQs" screen lists. */
+    public function scopeLiveBidding($query)
+    {
+        return $query->where('bidding_status', 'live')->where('bidding_ends_at', '>', now());
+    }
 
     public function scopeSearch($query, $search)
     {

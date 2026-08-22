@@ -30,17 +30,40 @@ class BiddingResource extends JsonResource
             'credit_days'         => $this->credit_days,
             'gst'                 => $this->gst,
             'required_booking_amount' => $this->required_booking_amount,
-            'ex_price'            => $this->ex_price,
-            'for_price'           => $this->for_price,
+
+            /* The live-auction figures. `for_price` is the one anything ranks
+               on; the three parts are exposed so the buyer can see the breakup
+               behind the doorstep price rather than a single opaque number. */
+            'ex_works_price'      => $this->ex_works_price !== null ? (float) $this->ex_works_price : null,
+            'freight_charges'     => $this->freight_charges !== null ? (float) $this->freight_charges : null,
+            'other_charges'       => $this->other_charges !== null ? (float) $this->other_charges : null,
+            'for_price'           => $this->for_price !== null ? (float) $this->for_price : null,
+            'ex_works_city'       => $this->ex_works_city,
+            'freight_type'        => $this->freight_type,
+            'price_source'        => $this->price_source ?: 'app',
+            'price_updated_at'    => optional($this->price_updated_at)->toIso8601String(),
+
+            /* Set by the controller when the viewer is not entitled to know who
+               quoted: an anonymous rank label ("Offer A") stands in for the
+               company name. Absent means the caller may see the seller. */
+            'rank'                => $this->rank ?? null,
+            'seller_label'        => $this->seller_label ?? null,
+
+            /* Loaded via `getUser.getUserDetail`: `company_name` is a column on
+               `user_details`, not on `users`. */
             'seller'              => $this->whenLoaded('getUser', function () {
                 $user = $this->getUser;
-                return $user ? [
+                if (! $user) {
+                    return null;
+                }
+
+                return [
                     'id'           => $user->id,
                     'name'         => $user->name,
-                    'company_name' => $user->company_name ?? null,
-                    'city'         => $user->city ?? null,
-                    'state'        => $user->state ?? null,
-                ] : null;
+                    'company_name' => optional($user->getUserDetail)->company_name,
+                    'city'         => $this->ex_works_city,
+                    'state'        => $this->ex_works_state,
+                ];
             }),
             'created_at'          => optional($this->created_at)->toIso8601String(),
             'updated_at'          => optional($this->updated_at)->toIso8601String(),

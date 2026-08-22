@@ -282,7 +282,7 @@
 
             @canany(['product_enquiry-list', 'product_enquiry-general_enquiry', 'product_enquiry-query'])
                 <!--Product Enquiry-->
-                <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder', 'admin.general-enquiry.index', 'admin.general-enquiry.show', 'admin.contact-us.index']) ? 'active' : '' }}">
+                <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder', 'admin.commodity-product-enquiry.liveBidding', 'admin.commodity-product-enquiry.manualPriceEntry', 'admin.general-enquiry.index', 'admin.general-enquiry.show', 'admin.contact-us.index']) ? 'active' : '' }}">
                     <a class="nav-link" data-bs-toggle="collapse" href="#products_enquiry" role="button"
                         aria-expanded="false" aria-controls="products_enquiry">
                         <i class="bi bi-journal-check"></i>
@@ -290,12 +290,18 @@
                         <i class="bi bi-chevron-down link-arrow"></i>
                     </a>
                 </li>
-                <div class="collapse {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder', 'admin.general-enquiry.index', 'admin.general-enquiry.show', 'admin.contact-us.index']) ? 'show' : '' }}" id="products_enquiry">
+                <div class="collapse {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder', 'admin.commodity-product-enquiry.liveBidding', 'admin.commodity-product-enquiry.manualPriceEntry', 'admin.general-enquiry.index', 'admin.general-enquiry.show', 'admin.contact-us.index']) ? 'show' : '' }}" id="products_enquiry">
                     <ul class="nav sub-menu">
                         @can('product_enquiry-list')
                             <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.index', 'admin.commodity-product-enquiry.create', 'admin.commodity-product-enquiry.variation', 'admin.commodity-product-enquiry.show', 'admin.commodity-product-enquiry.sellerReply', 'admin.commodity-product-enquiry.history', 'admin.commodity-product-enquiry.convertToOrder']) ? 'active' : '' }}">
                                 <a href="{{route('admin.commodity-product-enquiry.index')}}" class="nav-link" wire:navigate>
                                     Enquiry
+                                </a>
+                            </li>
+
+                            <li class="nav-item {{ isActiveRoute(['admin.commodity-product-enquiry.liveBidding', 'admin.commodity-product-enquiry.manualPriceEntry']) ? 'active' : '' }}">
+                                <a href="{{route('admin.commodity-product-enquiry.liveBidding')}}" class="nav-link" wire:navigate>
+                                    Live RFQs
                                 </a>
                             </li>
                         @endcan

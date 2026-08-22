@@ -63,6 +63,7 @@
                                             <div class="dropdown-menu" aria-labelledby="ActionBtn{{$data->id}}">
                                                 <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.show', $data->id)}}" wire:navigate><i class="bi bi-eye"></i><span>View</span></a>
                                                 <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.sellerReply', $data->id)}}" wire:navigate><i class="bi bi-reply-all"></i><span>Seller Reply</span></a>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.manualPriceEntry', $data->id)}}" wire:navigate><i class="bi bi-pencil-square"></i><span>Live Bidding / Manual Price</span></a>
                                                 <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.history', $data->id)}}" wire:navigate><i class="bi bi-clock-history"></i><span>History</span></a>
                                                 @if ($data->status == 'Seller Marked')
                                                     <a class="dropdown-item d-flex align-items-center gap-2" href="{{route('admin.commodity-product-enquiry.convertToOrder', $data->id)}}" wire:navigate><i class="bi bi-cart-check"></i><span>Convert To Order</span></a>

@@ -15,6 +15,25 @@ class SellerQuotationDetailResource extends JsonResource
             'unique_id'       => $this->unique_id,
             'status'          => $this->status,
             'origin_city'     => $this->origin_city,
+            'quantity'        => $this->quantity !== null ? (float) $this->quantity : null,
+            'unit_label'      => $this->unit_label,
+            'size_label'      => $this->size_label,
+            /* The city is all a bidding seller gets. Full delivery details are
+               released only after the buyer confirms the order - the screen
+               says as much, and the payload has to make that true. */
+            'delivery_city'   => $this->delivery_city,
+            'required_by'     => $this->required_by,
+            'bidding' => [
+                'status'       => $this->bidding_status,
+                'is_live'      => $this->bidding_status === 'live'
+                                  && $this->bidding_ends_at
+                                  && $this->bidding_ends_at->isFuture(),
+                'started_at'   => optional($this->bidding_started_at)->toIso8601String(),
+                'ends_at'      => optional($this->bidding_ends_at)->toIso8601String(),
+                'seconds_left' => $this->bidding_ends_at
+                    ? max(0, (int) now()->diffInSeconds($this->bidding_ends_at, false))
+                    : 0,
+            ],
             'description'     => $this->description,
             'purpose'         => $this->purpose,
             'variation'       => $this->variation ?? null,
@@ -23,9 +42,6 @@ class SellerQuotationDetailResource extends JsonResource
             'price'           => $this->price,
             'payment_mode'    => $this->payment_mode,
             'credit_day'      => $this->credit_day,
-            'billing_address' => $this->billing_address ?? null,
-            'delivery_address'=> $this->delivery_address ?? null,
-            'consignee_detail'=> $this->consignee_detail ?? null,
             'brand' => $this->getBrand ? [
                 'id'   => $this->getBrand->id,
                 'name' => $this->getBrand->name,
@@ -46,11 +62,22 @@ class SellerQuotationDetailResource extends JsonResource
                 'id'   => $this->getUser->id,
                 'name' => $this->getUser->name,
             ] : null,
+            /* The seller's own bid. `freight_charges` and `other_charges` are
+               read-only here: the seller types ex-works, the platform supplies
+               the rest, and `for_price` is what the ranking uses. */
             'my_reply' => $myReply && $myReply->resource ? [
                 'id'              => $myReply->id,
                 'status'          => $myReply->status,
                 'base_price'      => (float) ($myReply->base_price ?? 0),
                 'transport_price' => (float) ($myReply->transport_price ?? 0),
+                'ex_works_price'  => $myReply->ex_works_price !== null ? (float) $myReply->ex_works_price : null,
+                'freight_charges' => (float) ($myReply->freight_charges ?? 0),
+                'other_charges'   => (float) ($myReply->other_charges ?? 0),
+                'for_price'       => $myReply->for_price !== null ? (float) $myReply->for_price : null,
+                'ex_works_city'   => $myReply->ex_works_city,
+                'freight_type'    => $myReply->freight_type,
+                'price_source'    => $myReply->price_source ?: 'app',
+                'remarks'         => $myReply->remarks,
                 'price'           => $myReply->price,
                 'commission'      => $myReply->commission ?? null,
                 'commission_type' => $myReply->commission_type ?? null,

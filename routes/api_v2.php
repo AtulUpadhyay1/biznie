@@ -129,6 +129,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('enquiries/{id}', [CustomerEnquiryController::class, 'show']);
         Route::put('enquiries/{id}', [CustomerEnquiryController::class, 'update']);
         Route::get('enquiries/{id}/bidding', [CustomerEnquiryController::class, 'biddingList']);
+        // The blind "best price" panel: winning F.O.R price and the countdown,
+        // with no seller identity in the payload.
+        Route::get('enquiries/{id}/live', [CustomerEnquiryController::class, 'live']);
         Route::post('enquiries/{id}/mark-seller', [CustomerEnquiryController::class, 'markSeller']);
         Route::post('enquiries/{id}/accept', [CustomerEnquiryController::class, 'acceptQuotation']);
 
@@ -183,7 +186,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('rfqs', [SellerQuotationController::class, 'index']);
         Route::get('rfqs/{id}', [SellerQuotationController::class, 'show']);
-        Route::get('rfqs/{id}/bidding', [SellerQuotationController::class, 'biddingList']);
+        // Anonymised price ladder plus this seller's own rank in it.
+        Route::get('rfqs/{id}/leaderboard', [SellerQuotationController::class, 'leaderboard']);
+        Route::post('rfqs/{id}/quote', [SellerQuotationController::class, 'quote']);
+        // Superseded by `quote`; still routed for older mobile builds.
         Route::post('rfqs/{id}/respond', [SellerQuotationController::class, 'respond']);
 
         // The admin catalog behind the wizard's Product Name type-ahead.

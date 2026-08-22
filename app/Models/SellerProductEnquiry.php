@@ -24,6 +24,11 @@ class SellerProductEnquiry extends Model
         'history'               => 'array',
         'quality'               => 'array',
         'packaging_charge'      => 'array',
+        'ex_works_price'        => 'float',
+        'freight_charges'       => 'float',
+        'other_charges'         => 'float',
+        'for_price'             => 'float',
+        'price_updated_at'      => 'datetime',
     ];
 
     public function getBrand()
