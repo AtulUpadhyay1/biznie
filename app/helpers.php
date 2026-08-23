@@ -190,7 +190,9 @@ if(!function_exists('getSellerType')){
 
 if(!function_exists('formatIndianNumber')){
     function formatIndianNumber($number) {
-        $numberParts = explode('.', $number);
+        // An un-priced bid or an empty charge column arrives as null; render it
+        // as zero instead of tripping explode()'s null deprecation.
+        $numberParts = explode('.', (string) ($number ?? 0));
         $whole = $numberParts[0];
         $decimal = isset($numberParts[1]) ? '.' . $numberParts[1] : '';
 

@@ -147,37 +147,37 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $data->billing_address['company_name'] }}</dd>
+                                            <dd>{{ $data->billing_address['company_name'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Phone</dt>
-                                            <dd>{{ $data->billing_address['phone'] }}</dd>
+                                            <dd>{{ $data->billing_address['phone'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $data->billing_address['gst'] }}</dd>
+                                            <dd>{{ $data->billing_address['gst'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 1</dt>
-                                            <dd>{{ $data->billing_address['address_line_one'] }}</dd>
+                                            <dd>{{ $data->billing_address['address_line_one'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 2</dt>
-                                            <dd>{{ $data->billing_address['address_line_two'] }}</dd>
+                                            <dd>{{ $data->billing_address['address_line_two'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $data->billing_address['state'] }}</dd>
+                                            <dd>{{ $data->billing_address['state'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $data->billing_address['city'] }}</dd>
+                                            <dd>{{ $data->billing_address['city'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
@@ -201,37 +201,37 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $data->consignee_detail['company_name'] }}</dd>
+                                            <dd>{{ $data->consignee_detail['company_name'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Phone</dt>
-                                            <dd>{{ $data->consignee_detail['phone'] }}</dd>
+                                            <dd>{{ $data->consignee_detail['phone'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $data->consignee_detail['gst'] }}</dd>
+                                            <dd>{{ $data->consignee_detail['gst'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 1</dt>
-                                            <dd>{{ $data->consignee_detail['address_line_one'] }}</dd>
+                                            <dd>{{ $data->consignee_detail['address_line_one'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 2</dt>
-                                            <dd>{{ $data->consignee_detail['address_line_two'] }}</dd>
+                                            <dd>{{ $data->consignee_detail['address_line_two'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $data->consignee_detail['state'] }}</dd>
+                                            <dd>{{ $data->consignee_detail['state'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $data->consignee_detail['city'] }}</dd>
+                                            <dd>{{ $data->consignee_detail['city'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>

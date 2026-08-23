@@ -153,39 +153,39 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $main_product_enquiry->billing_address['company_name'] }}</dd>
+                                            <dd>{{ $main_product_enquiry->billing_address['company_name'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Phone</dt>
-                                            <dd>{{ $main_product_enquiry->billing_address['phone'] }}</dd>
+                                            <dd>{{ $main_product_enquiry->billing_address['phone'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $main_product_enquiry->billing_address['gst'] }}</dd>
+                                            <dd>{{ $main_product_enquiry->billing_address['gst'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 1</dt>
-                                            <dd>{{ $main_product_enquiry->billing_address['address_line_one'] }}
+                                            <dd>{{ $main_product_enquiry->billing_address['address_line_one'] ?? '--' }}
                                             </dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 2</dt>
-                                            <dd>{{ $main_product_enquiry->billing_address['address_line_two'] }}
+                                            <dd>{{ $main_product_enquiry->billing_address['address_line_two'] ?? '--' }}
                                             </dd>
                                         </div>
 
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $main_product_enquiry->billing_address['state'] }}</dd>
+                                            <dd>{{ $main_product_enquiry->billing_address['state'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $main_product_enquiry->billing_address['city'] }}</dd>
+                                            <dd>{{ $main_product_enquiry->billing_address['city'] ?? '--' }}</dd>
                                         </div>
 
                                         <div>
@@ -491,73 +491,54 @@
                                                     </div>
                                                     <div class="col-11">
                                                         @php
-                                                            $address = $list_data->loading_address[0];
-                                                            $city = isset($address['city']) ? $address['city'] : '';
-                                                            $state = isset($address['state']) ? $address['state'] : '';
+                                                            // Matched on product + brand, so the charges below
+                                                            // belong to the product being quoted. Null only when
+                                                            // the seller has no usable listing at all.
+                                                            $seller_commodity_product = $list_data->sellerListing();
 
-                                                            $seller_commodity_product = App\Models\SellerCommodityProduct::where(
-                                                                'user_id',
-                                                                $list_data->user_id,
-                                                            )
-                                                                ->where(
-                                                                    'commodity_product_id',
-                                                                    $list_data->commodity_product_id,
-                                                                )
-                                                                ->where('brand_id', $list_data->brand_id)
-                                                                ->first();
+                                                            $origin = $list_data->originPlace();
+                                                            $state = $origin['state'];
+                                                            $city = $origin['city'];
 
                                                             $defaul_ex_price = 0;
-                                                            $base_price = 0;
-                                                            if (
-                                                                $seller_commodity_product->base_price !=
-                                                                $list_data->base_price
-                                                            ) {
-                                                                $base_price = $list_data->base_price;
-                                                            } else {
-                                                                $base_price = $seller_commodity_product->base_price;
-                                                            }
+                                                            // An edited price on the enquiry overrides the listing's.
+                                                            $base_price =
+                                                                $seller_commodity_product &&
+                                                                $seller_commodity_product->base_price ==
+                                                                    $list_data->base_price
+                                                                    ? $seller_commodity_product->base_price
+                                                                    : $list_data->base_price;
+                                                            $base_price = (float) ($base_price ?? 0);
 
-                                                            $state = $state
-                                                                ? $state
-                                                                : $list_data->getSellerCommodityProduct
-                                                                    ->getStatePrice[0]->state;
-                                                            $city = $city
-                                                                ? $city
-                                                                : $list_data->getSellerCommodityProduct
-                                                                    ->getStatePrice[0]->city;
                                                             $default_price = getDefaultCommodityProductVariationPrice(
                                                                 $list_data->commodity_product_id,
                                                                 $list_data->brand_id,
                                                                 $state,
                                                                 $city,
                                                             );
-                                                            $loading_charge = $seller_commodity_product->loading_charge;
-                                                            $insurance_charge =
-                                                                $seller_commodity_product->insurance_charge;
-                                                            $quality_charge = $seller_commodity_product->quality_charge;
-                                                            $gst = $seller_commodity_product->gst;
+                                                            $loading_charge = (float) ($seller_commodity_product
+                                                                ?->loading_charge ?? 0);
+                                                            $insurance_charge = (float) ($seller_commodity_product
+                                                                ?->insurance_charge ?? 0);
+                                                            $quality_charge = (float) ($seller_commodity_product
+                                                                ?->quality_charge ?? 0);
+                                                            $gst = (float) ($seller_commodity_product?->gst ?? 0);
 
                                                             $extra_charges = 0;
                                                             $other_charges = [];
                                                             foreach (
-                                                                $seller_commodity_product->charge_name
+                                                                (array) ($seller_commodity_product?->charge_name ?? [])
                                                                 as $charge_key => $charge_name
                                                             ) {
                                                                 $other_charges_arr['name'] = $charge_name;
-                                                                $other_charges_arr['price'] = isset(
-                                                                    $seller_commodity_product->charge_price[
-                                                                        $charge_key
-                                                                    ],
-                                                                )
-                                                                    ? $seller_commodity_product->charge_price[
-                                                                        $charge_key
-                                                                    ]
-                                                                    : '0';
-                                                                $other_charges_arr['operator'] = isset(
-                                                                    $seller_commodity_product->operator[$charge_key],
-                                                                )
-                                                                    ? $seller_commodity_product->operator[$charge_key]
-                                                                    : '';
+                                                                $charge_prices = (array) ($seller_commodity_product
+                                                                    ?->charge_price ?? []);
+                                                                $charge_operators = (array) ($seller_commodity_product
+                                                                    ?->operator ?? []);
+                                                                $other_charges_arr['price'] =
+                                                                    $charge_prices[$charge_key] ?? '0';
+                                                                $other_charges_arr['operator'] =
+                                                                    $charge_operators[$charge_key] ?? '';
 
                                                                 if ($other_charges_arr['operator']) {
                                                                     if ($other_charges_arr['operator'] == '+') {
@@ -593,7 +574,7 @@
                                                                 data-bs-target="#collapse_{{ $list_data->id }}"
                                                                 aria-expanded="false"
                                                                 aria-controls="collapse_{{ $list_data->id }}">
-                                                                <b>{{ $list_data->getUser->getBusiness->name }}
+                                                                <b>{{ $list_data->getUser?->getBusiness?->name ?? ($list_data->getUser?->name ?? 'Seller') }}
                                                                     ({{ getSellerType($list_data->user_id) }}) </b>,
                                                                 @php
                                                                     $default_variation = getDefaultCommodityProductVariation(
@@ -662,25 +643,25 @@
                                                                     </div>
                                                                     <div>
                                                                         <dt>Phone</dt>
-                                                                        <dd>{{ $list_data->getUser->phone }}</dd>
+                                                                        <dd>{{ $list_data->getUser?->phone ?? '--' }}</dd>
                                                                     </div>
                                                                     <div>
                                                                         <dt>Brand</dt>
-                                                                        <dd>{{ $list_data->getBrand->name }}</dd>
+                                                                        <dd>{{ $list_data->getBrand?->name ?? 'Any' }}</dd>
                                                                     </div>
                                                                     <div>
                                                                         <dt>State</dt>
-                                                                        <dd>{{ $list_data->getSellerCommodityProduct->getStatePrice[0]->state }}
+                                                                        <dd>{{ $state ?: '--' }}
                                                                         </dd>
                                                                     </div>
                                                                     <div>
                                                                         <dt>City</dt>
-                                                                        <dd>{{ $list_data->getSellerCommodityProduct->getStatePrice[0]->city }}
+                                                                        <dd>{{ $city ?: '--' }}
                                                                         </dd>
                                                                     </div>
                                                                 </dl>
                                                             </div>
-                                                            @foreach ($list_data->loading_address as $loading_address)
+                                                            @foreach ($list_data->loading_address ?? [] as $loading_address)
                                                                 <div class="col-md-6">
                                                                     @if ($loading_address)
                                                                         <div class="bz-section-label">Loading Address
@@ -688,7 +669,7 @@
                                                                         <dl class="bz-kv-list">
                                                                             <div>
                                                                                 <dt>Pincode</dt>
-                                                                                <dd>{{ $loading_address['pin_code'] }}
+                                                                                <dd>{{ $loading_address['pin_code'] ?? '--' }}
                                                                                 </dd>
                                                                             </div>
                                                                             <div>
@@ -1114,13 +1095,14 @@
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="updatePriceLabel">
                                             @if ($set_enquiry_data)
-                                                <b>{{ $set_enquiry_data->getUser->name }}
+                                                @php $selected_origin = $set_enquiry_data->originPlace(); @endphp
+                                                <b>{{ $set_enquiry_data->getUser?->name ?? 'Seller' }}
                                                     ({{ getSellerType($set_enquiry_data->user_id) }})</b>,
-                                                <b>Brand</b> : {{ $set_enquiry_data->getBrand->name }},
+                                                <b>Brand</b> : {{ $set_enquiry_data->getBrand?->name ?? 'Any' }},
                                                 <b>State</b> :
-                                                {{ $selected_seller_commodity_product->getStatePrice[0]->state }},
+                                                {{ $selected_origin['state'] ?: '--' }},
                                                 <b>City</b> :
-                                                {{ $selected_seller_commodity_product->getStatePrice[0]->city }}
+                                                {{ $selected_origin['city'] ?: '--' }}
                                             @else
                                                 <b>Loading...</b>
                                             @endif

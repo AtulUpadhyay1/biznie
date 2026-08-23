@@ -78,24 +78,33 @@ class SellerReply extends Component
             $this->set_enquiry_quantity = [];
             $this->set_enquiry_data_price = [];
             $this->set_enquiry_data = SellerProductEnquiry::with('getSellerCommodityProduct', 'getSellerCommodityProduct.getStatePrice', 'getBrand', 'getCommodityProduct', 'getUser')->find($this->selected_enquiry_id);
-            $this->set_seller_commodity_product = SellerCommodityProduct::where('user_id', $this->set_enquiry_data->user_id)
-                ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
-                ->where('brand_id', $this->set_enquiry_data->brand_id)
-                ->first();
-            $this->seller_credit_days = $this->set_enquiry_data->seller_credit_days ?? $this->set_enquiry_data->getUser->credit_days;
-            $this->customer_credit_days = $this->set_enquiry_data->customer_credit_days ?? $this->set_enquiry_data->getCustomer->credit_days;
-            $seller_commodity_product = SellerCommodityProduct::where('user_id', $this->set_enquiry_data->user_id)
-                ->where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
-                ->where('brand_id', $this->set_enquiry_data->brand_id)
-                ->first();
+            // One resolver instead of the same three-column query written out
+            // twice. It also handles the seller who stocks the product without
+            // the exact brand, where the old lookup simply returned null and
+            // the next line fatalled.
+            $seller_commodity_product = $this->set_enquiry_data->sellerListing();
+
+            $this->set_seller_commodity_product = $seller_commodity_product;
             $this->selected_seller_commodity_product = $seller_commodity_product;
-            $this->is_editable_commission = $seller_commodity_product->commission_type == 'include';
-            $address = $this->set_enquiry_data->loading_address[0];
-            $city = isset($address['city']) ? $address['city'] : '';
-            $state = isset($address['state']) ? $address['state'] : '';
-            foreach ($this->set_enquiry_data->value as $variation) {
+
+            $this->seller_credit_days = $this->set_enquiry_data->seller_credit_days
+                ?? $this->set_enquiry_data->getUser?->credit_days
+                ?? 0;
+            $this->customer_credit_days = $this->set_enquiry_data->customer_credit_days
+                ?? $this->set_enquiry_data->getCustomer?->credit_days
+                ?? 0;
+
+            $this->is_editable_commission = $seller_commodity_product?->commission_type === 'include';
+
+            // Older bids carry a loading address with no city/state, and bids
+            // raised for a seller without a loading point carry none at all.
+            $origin = $this->set_enquiry_data->originPlace();
+            $state = $origin['state'];
+            $city = $origin['city'];
+
+            foreach ($this->set_enquiry_data->value ?? [] as $variation) {
                 $variation_arr = [];
-                foreach ($variation['value'] as $value) {
+                foreach ($variation['value'] ?? [] as $value) {
                     $variation_data_arr['id'] = $value['id'];
                     $variation_data_arr['name'] = $value['name'];
                     $variation_data_arr['value'] = $value['value'];
@@ -113,13 +122,14 @@ class SellerReply extends Component
                         }
                     })
                     ->first();
-                $this->set_enquiry_quantity[] = $variation['quantity'];
+                $this->set_enquiry_quantity[] = $variation['quantity'] ?? 1;
                 $this->set_enquiry_data_price[] = $gauge_diff ? $gauge_diff->price : 0;
             }
             // $this->set_enquiry_data_base_price = $seller_commodity_product->base_price ? $seller_commodity_product->base_price : 0;
             $this->set_enquiry_data_base_price = $this->set_enquiry_data->base_price ? $this->set_enquiry_data->base_price : 0;
             $this->transport_price = $this->set_enquiry_data->transport_price ? $this->set_enquiry_data->transport_price : 0;
-            $this->commission = $this->set_enquiry_data->commission ? $this->set_enquiry_data->commission : $this->set_seller_commodity_product->commission_amount;
+            $this->commission = $this->set_enquiry_data->commission
+                ?: ($this->set_seller_commodity_product?->commission_amount ?? 0);
 
             // $get_product_state = CommodityProductState::where('commodity_product_id', $this->set_enquiry_data->commodity_product_id)
             //     ->where('brand_id', $this->set_enquiry_data->brand_id)
@@ -202,7 +212,7 @@ class SellerReply extends Component
             $enquiry_data->value = $new_variation_arr;
             $enquiry_data->base_price = $this->set_enquiry_data_base_price;
             $enquiry_data->transport_price = $this->transport_price;
-            $enquiry_data->commission_type = $this->set_seller_commodity_product->commission_type;
+            $enquiry_data->commission_type = $this->set_seller_commodity_product?->commission_type;
             $enquiry_data->commission = $this->commission;
             $enquiry_data->price = $this->set_enquiry_data_price;
             $enquiry_data->is_mark = 1;
