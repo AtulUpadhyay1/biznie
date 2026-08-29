@@ -21,10 +21,14 @@
 
         <div class="bz-notif-menu__list">
             @forelse ($notifications->take(6) as $notification)
-                <a href="javascript:;" class="dropdown-item bz-notif-item" wire:click="markAsRead({{ $notification->id }})">
+                <a href="javascript:;" class="dropdown-item bz-notif-item"
+                    wire:click="openNotification({{ $notification->id }})">
                     <span class="bz-notif-item__icon"><i class="bi bi-bell"></i></span>
                     <span class="bz-notif-item__body">
                         <span class="bz-notif-item__title">{{ $notification->title }}</span>
+                        @if ($notification->body)
+                            <span class="bz-notif-item__time">{{ Str::limit($notification->body, 70) }}</span>
+                        @endif
                         <span class="bz-notif-item__time">{{ $notification->created_at->diffForHumans() }}</span>
                     </span>
                 </a>

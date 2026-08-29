@@ -172,11 +172,11 @@
                         <div class="bz-panel mb-4">
                             <dl class="bz-kv-list">
                                 <div>
-                                    <dt>Account Name</dt>
+                                    <dt>Account Number</dt>
                                     <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->account_number : '' }}</dd>
                                 </div>
                                 <div>
-                                    <dt>Account Holder Name</dt>
+                                    <dt>Account Name</dt>
                                     <dd>{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->account_holder_name : '' }}</dd>
                                 </div>
                                 <div>
@@ -194,7 +194,7 @@
                                         <td><b>Account Number:</b><span
                                                 class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->account_number : '' }}</span>
                                         </td>
-                                        <td><b>Account Holder Name:</b><span
+                                        <td><b>Account Name:</b><span
                                                 class="ms-2">{{ $data->getSellerKycDetail ? $data->getSellerKycDetail->account_holder_name : '' }}</span>
                                         </td>
                                     </tr>

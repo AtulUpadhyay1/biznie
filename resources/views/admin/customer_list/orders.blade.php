@@ -33,7 +33,7 @@
                                             <div class="bz-cell-title">{{ $data->getProductEnquiry->unique_id }}</div>
                                             <div class="bz-cell-sub">({{ $data->order_id }})</div>
                                         </td>
-                                        <td>{{ $data->getCommodityProduct->name }}</td>
+                                        <td>{{ $data->getCommodityProduct?->name }}</td>
                                         <td><b class="bz-num">RS {{ $data->total_amount }}</b></td>
                                         <td>
                                             <span class="bz-status {{ in_array($data->status, ['delivered', 'completed', 'paid']) ? 'bz-status--success' : (in_array($data->status, ['cancelled', 'rejected', 'failed']) ? 'bz-status--danger' : 'bz-status--info') }}">{{ ucfirst($data->status) }}</span>

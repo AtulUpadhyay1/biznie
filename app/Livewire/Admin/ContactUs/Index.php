@@ -13,9 +13,30 @@ class Index extends Component
 
     public $page_title = 'Query List';
 
+    public $search;
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+    ];
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $list = ContactUs::latest()->paginate(getPaginate());
+        $list = ContactUs::when($this->search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('message', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(getPaginate());
+
         return view('admin.contact_us.index', compact('list'));
     }
 }

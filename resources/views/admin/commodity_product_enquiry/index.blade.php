@@ -43,11 +43,13 @@
                                     <tr>
                                         <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>{{ $data->unique_id }}</td>
-                                        <td>{{ $data->getBrand->name }}</td>
-                                        <td>{{ $data->getCommodityProduct->name}}</td>
+                                        {{-- Rate Finder RFQs carry no brand, and a deleted product or
+                                             customer leaves the relation empty; none of that should 500 the list. --}}
+                                        <td>{{ $data->getBrand?->name ?? '--' }}</td>
+                                        <td>{{ $data->getCommodityProduct?->name ?? '--' }}</td>
                                         <td>
                                             <div class="bz-cell-title">{{ $data->getUser?->getUserDetail?->company_name ?? '--' }}</div>
-                                            <div class="bz-cell-sub">{{ $data->getUser->name }}</div>
+                                            <div class="bz-cell-sub">{{ $data->getUser?->name ?? '--' }}</div>
                                         </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                         <td>

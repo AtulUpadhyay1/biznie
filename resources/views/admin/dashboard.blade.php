@@ -64,14 +64,45 @@
                 <div class="bz-stat__foot"><i class="bi bi-clock-history"></i> Since midnight</div>
             </a>
 
-            <div class="bz-stat bz-stat--violet">
+            {{-- Was a plain div, so the tile looked clickable and was not. --}}
+            @can('buyer-list')
+            <a class="bz-stat bz-stat--violet" href="{{ route('admin.customer-list') }}" wire:navigate>
                 <div class="bz-stat__top">
                     <span class="bz-stat__label">New sign-ups this week</span>
                     <span class="bz-stat__icon"><i class="bi bi-person-plus"></i></span>
                 </div>
                 <div class="bz-stat__value">{{ formatIndianNumber($bzNewThisWeek) }}</div>
                 <div class="bz-stat__foot"><i class="bi bi-calendar3"></i> Buyers + sellers, last 7 days</div>
-            </div>
+            </a>
+            @endcan
+
+            {{-- Leads from the website's "tell us your requirement" form. --}}
+            @can('product_enquiry-general_enquiry')
+            <a class="bz-stat bz-stat--amber" href="{{ route('admin.general-enquiry.index') }}" wire:navigate>
+                <div class="bz-stat__top">
+                    <span class="bz-stat__label">General enquiry</span>
+                    <span class="bz-stat__icon"><i class="bi bi-megaphone"></i></span>
+                </div>
+                <div class="bz-stat__value">
+                    {{ formatIndianNumber($today_general_enquiry) }}
+                    @if ($pending_general_enquiry > 0)
+                        <span class="badge bg-danger align-middle ms-1">{{ formatIndianNumber($pending_general_enquiry) }} new</span>
+                    @endif
+                </div>
+                <div class="bz-stat__foot"><i class="bi bi-clock-history"></i> Since midnight</div>
+            </a>
+            @endcan
+
+            @can('seller-list')
+            <a class="bz-stat bz-stat--brand" href="{{ route('admin.seller-request.index') }}" wire:navigate>
+                <div class="bz-stat__top">
+                    <span class="bz-stat__label">New seller requests</span>
+                    <span class="bz-stat__icon"><i class="bi bi-shop-window"></i></span>
+                </div>
+                <div class="bz-stat__value">{{ formatIndianNumber($pending_seller_request) }}</div>
+                <div class="bz-stat__foot"><i class="bi bi-hourglass-split"></i> Awaiting review</div>
+            </a>
+            @endcan
         </div>
 
         {{-- ---------------------------------------------------------------
@@ -215,7 +246,15 @@
                                     <tr wire:key="kyc-{{ $item->id }}">
                                         <td class="text-muted">{{ $customer_list->firstItem() + $loop->index }}</td>
                                         <td>
-                                            <div class="bz-cell-title">{{ $item->name }}</div>
+                                            <div class="bz-cell-title">
+                                                @can('buyer-list')
+                                                    <a href="{{ route('admin.customer-profile', $item->id) }}" wire:navigate>
+                                                        {{ $item->name }}
+                                                    </a>
+                                                @else
+                                                    {{ $item->name }}
+                                                @endcan
+                                            </div>
                                             <div class="bz-cell-sub">
                                                 {{ $item->getUserDetail->company_name ?? '—' }}
                                             </div>

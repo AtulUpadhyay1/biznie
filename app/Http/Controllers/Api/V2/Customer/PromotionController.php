@@ -139,10 +139,63 @@ class PromotionController extends Controller
             $record->request_status = 'draft';
             $record->current_step = 1;
             $record->timeline = [];
+            $this->seedFromProfile($record, $user);
             $record->save();
+        } elseif ($record && in_array($record->request_status, ['draft', 'rejected'], true)) {
+            // A draft started before this seeding existed (or before the buyer
+            // completed their profile) still opens with the blanks filled in.
+            if ($this->seedFromProfile($record, $user)) {
+                $record->save();
+            }
         }
 
         return $record;
+    }
+
+    /**
+     * Fill the blanks from what the buyer already gave us — a buyer applying to
+     * sell has already handed over their company, GST and address once.
+     *
+     * Only ever writes to a field that is currently empty, so anything the
+     * applicant typed — or corrected — is left exactly as it is.
+     *
+     * @return bool whether anything was filled in
+     */
+    private function seedFromProfile(SellerOnboardingDetail $record, $user): bool
+    {
+        $detail = $user->getUserDetail;
+
+        $addressLines = trim(implode(', ', array_filter([
+            $detail?->address_line_one,
+            $detail?->address_line_two,
+        ])));
+
+        $seed = [
+            'company_name' => $detail?->company_name,
+            'gst_number' => $detail?->gst_number,
+            'pan_number' => $detail?->pan_number,
+            'company_address' => $addressLines ?: $detail?->company_address,
+            'city' => $detail?->city,
+            'state' => $detail?->state,
+            'country' => $detail?->country ?: 'India',
+            'pincode' => $detail?->postal_code,
+            'contact_person' => $user->name,
+            'mobile' => $user->phone,
+            'email' => $user->email,
+            'account_holder_name' => $detail?->company_name ?: $user->name,
+        ];
+
+        $filled = false;
+
+        foreach ($seed as $column => $value) {
+            if (blank($value) || filled($record->{$column})) {
+                continue;
+            }
+            $record->{$column} = $value;
+            $filled = true;
+        }
+
+        return $filled;
     }
 
     private function stepRules(int $step, $user): array
@@ -188,8 +241,10 @@ class PromotionController extends Controller
             5 => [
                 'category' => ['required', 'string', 'max:160'],
                 'products' => ['required', 'string', 'max:4000'],
-                'turnover' => ['required', 'string', 'max:120'],
+                // Turnover is useful context, not a gate on the application.
+                'turnover' => ['nullable', 'string', 'max:120'],
                 'product_upload_mode' => ['required', Rule::in(['existing', 'new', 'bulk'])],
+                'product_sheet' => ['nullable', 'file', 'mimes:csv,txt,xls,xlsx', 'max:10240'],
             ],
             default => throw new \InvalidArgumentException('Invalid seller step.'),
         };
@@ -233,8 +288,9 @@ class PromotionController extends Controller
 
             'category' => ['required', 'string', 'max:160'],
             'products' => ['required', 'string', 'max:4000'],
-            'turnover' => ['required', 'string', 'max:120'],
+            'turnover' => ['nullable', 'string', 'max:120'],
             'product_upload_mode' => ['required', Rule::in(['existing', 'new', 'bulk'])],
+            'product_sheet' => ['nullable', 'file', 'mimes:csv,txt,xls,xlsx', 'max:10240'],
         ];
     }
 
@@ -253,7 +309,7 @@ class PromotionController extends Controller
             }
         }
 
-        foreach (['gst_certificate', 'pan_document', 'registration_certificate', 'address_proof', 'cancelled_cheque', 'other_documents'] as $field) {
+        foreach (['gst_certificate', 'pan_document', 'registration_certificate', 'address_proof', 'cancelled_cheque', 'other_documents', 'product_sheet'] as $field) {
             if ($request->hasFile($field)) {
                 $column = $this->documentColumn($field);
                 $record->{$column} = $this->storeSellerDocument($request, $field, $record->{$column} ?? null);
@@ -307,6 +363,7 @@ class PromotionController extends Controller
                 'products' => $record->products,
                 'turnover' => $record->turnover,
                 'product_upload_mode' => $record->product_upload_mode,
+                'product_sheet' => $this->documentUrl($record->product_sheet_path),
             ],
         ];
     }
@@ -355,6 +412,14 @@ class PromotionController extends Controller
     {
         $record->loadMissing('getUser');
 
+        // The mail goes to one inbox; the bell reaches whoever is in the panel.
+        sendAdminNotification(
+            'New seller request',
+            ($record->company_name ?: $record->getUser?->name ?: 'A buyer').' applied to become a seller',
+            'seller_request',
+            ['id' => $record->id, 'reference' => $record->request_reference]
+        );
+
         Mail::to('contact@biznie.com')->send(new SellerRequestSubmittedAdminMail($record));
 
         if ($record->getUser?->email) {
@@ -376,6 +441,7 @@ class PromotionController extends Controller
             'address_proof' => 'address_proof_path',
             'cancelled_cheque' => 'cancelled_cheque_path',
             'other_documents' => 'other_documents_path',
+            'product_sheet' => 'product_sheet_path',
             default => throw new \InvalidArgumentException('Invalid document field.'),
         };
     }

@@ -40,9 +40,9 @@
                                             @else
                                                 <img src="{{asset('common/images/no-photo.png')}}" alt="image" >
                                             @endif
-                                            {{ $data->getCommodityProduct->name }}
+                                            {{ $data->getCommodityProduct?->name }}
                                         </td>
-                                        <td>{{ $data->getBrand->name }}</td>
+                                        <td>{{ $data->getBrand?->name }}</td>
                                         <td>{{ $data->city }}</td>
                                         <td><b class="bz-num">₹ {{ $data->base_price }}</b> </td>
                                         <td>{{ dateTimeFormat($data->updated_at) }}</td>

@@ -21,6 +21,13 @@ class CategoryController extends Controller
         if ($search = $request->string('search')->toString()) {
             $q->where('name', 'like', "%{$search}%");
         }
+        // Storefront listings ask for this so a category whose products are all
+        // disabled (or that has none yet) stops showing up as a dead link.
+        if ($request->boolean('with_products')) {
+            $q->whereHas('getProducts', function ($query) {
+                $query->where('status', 'active');
+            });
+        }
         $list = $q->paginate($request->integer('per_page', 20));
 
         return response()->json([

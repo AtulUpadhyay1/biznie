@@ -45,18 +45,23 @@
 
 
     // Applying perfect-scrollbar
-    if ($('.sidebar .sidebar-body').length) {
-      const sidebarBodyScroll = new PerfectScrollbar('.sidebar-body');
-    }
+    // The sidebar's scrollbar is owned by biznie-admin.js: it keeps a single
+    // instance across wire:navigate swaps and re-measures it when a submenu
+    // expands. Creating one here too left two of them fighting, which clipped
+    // the freshly opened submenu out of view.
     // commented beacuse of hang (scroll from  dropdown.html with small height)
     // if ($('.content-nav-wrapper').length) {
     //   const contentNavWrapper = new PerfectScrollbar('.content-nav-wrapper');
     // }
 
 
-    // Close other submenu in sidebar on opening any
+    // Close other submenu in sidebar on opening any.
+    // Skips the panel being opened — hiding that one collapses it right back.
     sidebar.on('show.bs.collapse', '.collapse', function() {
-      sidebar.find('.collapse.show').collapse('hide');
+      var opening = this;
+      sidebar.find('.collapse.show').each(function () {
+        if (this !== opening) { $(this).collapse('hide'); }
+      });
     });
 
 

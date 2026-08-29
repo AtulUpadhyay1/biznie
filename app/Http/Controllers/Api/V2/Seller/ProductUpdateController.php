@@ -279,11 +279,13 @@ class ProductUpdateController extends Controller
         }
 
         $data = $request->validate([
+            'show_basic_price' => ['sometimes', 'boolean'],
             'show_ex_price'  => ['required', 'boolean'],
             'show_for_price' => ['required', 'boolean'],
             'show_fob_price' => ['required', 'boolean'],
         ]);
 
+        $product->show_basic_price = (bool) ($data['show_basic_price'] ?? false);
         $product->show_ex_price  = (bool) $data['show_ex_price'];
         $product->show_for_price = (bool) $data['show_for_price'];
         $product->show_fob_price = (bool) $data['show_fob_price'];

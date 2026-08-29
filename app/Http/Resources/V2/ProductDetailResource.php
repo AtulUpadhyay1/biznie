@@ -103,6 +103,7 @@ class ProductDetailResource extends JsonResource
             // renders — so a hidden ex-works number never stops the F.O.R
             // total that was built from it being correct.
             'display' => [
+                'show_basic_price' => (bool) ($sellerProduct?->show_basic_price ?? false),
                 'show_ex_price'  => (bool) ($sellerProduct?->show_ex_price ?? false),
                 'show_for_price' => (bool) ($sellerProduct?->show_for_price ?? false),
                 'show_fob_price' => (bool) ($sellerProduct?->show_fob_price ?? false),
@@ -123,8 +124,11 @@ class ProductDetailResource extends JsonResource
                     'id'   => $sellerProduct->getBrand->id,
                     'name' => $sellerProduct->getBrand->name,
                 ] : null,
-                'loading_city'  => $sellerProduct->city,
-                'loading_state' => $sellerProduct->state,
+                // Where the goods load from — shown as the city of manufacturing
+                // and as the city the Ex-Works price belongs to. Listings often
+                // leave it blank, so fall back to the seller's registered city.
+                'loading_city'  => $sellerProduct->city ?: $sellerProduct->getUser?->getUserDetail?->city,
+                'loading_state' => $sellerProduct->state ?: $sellerProduct->getUser?->getUserDetail?->state,
                 'sellers_count' => (int) ($best['sellers_count'] ?? 0),
             ] : null,
 

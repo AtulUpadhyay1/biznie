@@ -16,7 +16,7 @@ class EnquiryController extends Controller
             'name'              => ['required', 'string', 'max:120'],
             'company_name'      => ['nullable', 'string', 'max:160'],
             'contact_number'    => ['required', 'string', 'max:20'],
-            'email'             => ['required', 'email', 'max:160'],
+            'email'             => ['nullable', 'email', 'max:160'],
             'gst_number'        => ['nullable', 'string', 'max:30'],
             'delivery_location' => ['nullable', 'string', 'max:255'],
             'brand_id'          => ['nullable', 'integer', 'exists:brands,id'],
@@ -31,7 +31,7 @@ class EnquiryController extends Controller
         $enquiry->name                        = $data['name'];
         $enquiry->company_name                = $data['company_name'] ?? null;
         $enquiry->contact_number              = $data['contact_number'];
-        $enquiry->email                       = $data['email'];
+        $enquiry->email                       = $data['email'] ?? null;
         $enquiry->gst_number                  = $data['gst_number'] ?? null;
         $enquiry->delivery_location           = $data['delivery_location'] ?? null;
         $enquiry->brand_id                    = $data['brand_id'] ?? null;
@@ -40,6 +40,15 @@ class EnquiryController extends Controller
         $enquiry->message                     = $data['message'] ?? null;
         $enquiry->status                      = 'pending';
         $enquiry->save();
+
+        // Puts it in the admin bell and on the dashboard, which is what makes a
+        // walk-in enquiry visible to anyone.
+        sendAdminNotification(
+            'New general enquiry',
+            trim(($enquiry->name ?: 'A visitor').' sent a requirement'.($enquiry->requirement ? ': '.$enquiry->requirement : '')),
+            'general_enquiry',
+            ['id' => $enquiry->id, 'unique_id' => $enquiry->unique_id]
+        );
 
         return response()->json([
             'success' => true,

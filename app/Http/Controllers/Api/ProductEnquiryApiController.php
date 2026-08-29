@@ -239,7 +239,12 @@ class ProductEnquiryApiController extends Controller
             }
 
             sendNotification(auth()->user(), $title, $body, $type, $data_info, true);
-            sendAdminNotification('New Product Enquiry', 'You got a new product enquiry.');
+            sendAdminNotification(
+                'New Product Enquiry',
+                'You got a new product enquiry: '.$enquiry_data->unique_id,
+                'product_enquiry',
+                ['id' => $enquiry_data->id, 'unique_id' => $enquiry_data->unique_id]
+            );
 
             // if(websiteSetupValue('enquiry_send_to_transporter') && websiteSetupValue('enquiry_send_to_transporter') == 1){
             //     $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $enquiry_data->commodity_product_id)->pluck('user_id')->toArray();

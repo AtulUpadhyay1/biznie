@@ -173,7 +173,7 @@ class LiveBiddingService
         }
 
         if ($sent > 0) {
-            $this->pushStatus($rfq, 'Enquiry Send To Seller');
+            $this->pushStatus($rfq, 'Enquiry Sent To Seller');
         }
 
         return $sent;

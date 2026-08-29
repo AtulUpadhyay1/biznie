@@ -125,7 +125,7 @@ if(! function_exists('getProductUnit')){
 }
 
 if(! function_exists('sendNotification')){
-    function sendNotification($user, $title, $body, $type="notification", $data = [], $save=false,)
+    function sendNotification($user, $title, $body, $type="notification", $payload = [], $save=false,)
     {
         $notificationArr = [
             'title'             => $title,
@@ -140,20 +140,30 @@ if(! function_exists('sendNotification')){
             FireBaseManager::sendMessage($notificationArr, $in_app_module, $user->fcm_token);
         }
         if($save){
-            $data = new Notification;
-            $data->user_id = $user->id;
-            $data->title = $title;
-            $data->body = $body;
-            $data->type = $type;
-            $data->data = $data;
-            $data->is_read = 0;
-            $data->save();
+            $notification = new Notification;
+            $notification->user_id = $user->id;
+            $notification->title = $title;
+            $notification->body = $body;
+            $notification->type = $type;
+            // Was assigning the model to itself, which stored a serialised
+            // Notification in its own `data` column instead of the payload.
+            $notification->data = $payload;
+            $notification->is_read = 0;
+            $notification->save();
         }
     }
 }
 
 if(! function_exists('sendAdminNotification')){
-    function sendAdminNotification($title, $body)
+    /**
+     * Notify admin: a push where a device token exists, and always a row for the
+     * navbar bell.
+     *
+     * The row is what makes the notification survivable — the panel is usually
+     * open without any FCM token registered, so a push-only notification reached
+     * nobody. `$type` and `$payload` are carried so the bell can deep-link.
+     */
+    function sendAdminNotification($title, $body, $type = 'notification', array $payload = [], $save = true)
     {
         $notificationArr = [
             'title'             => $title,
@@ -162,13 +172,25 @@ if(! function_exists('sendAdminNotification')){
         $in_app_module = [
             "title"          => $title,
             "body"           => $body,
-            "type"           => 'notification',
+            "type"           => $type,
         ];
         $admin_list = Admin::get();
         foreach ($admin_list as $admin_data){
             if($admin_data->fcm_token){
                 FireBaseManager::sendMessage($notificationArr, $in_app_module, $admin_data->fcm_token);
             }
+        }
+
+        if($save){
+            $notification = new Notification;
+            $notification->user_id = null;
+            $notification->title = $title;
+            $notification->body = $body;
+            $notification->type = $type;
+            $notification->data = $payload;
+            $notification->is_read = 0;
+            $notification->is_admin_read = 0;
+            $notification->save();
         }
     }
 }

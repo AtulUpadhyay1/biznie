@@ -77,6 +77,7 @@ class ProductOfferResource extends JsonResource
             'display' => [
                 'show_ex_price'  => (bool) $this->show_ex_price,
                 'show_for_price' => (bool) $this->show_for_price,
+                'show_basic_price' => (bool) $this->show_basic_price,
                 'show_fob_price' => (bool) $this->show_fob_price,
                 'for_price_city' => $priced['city'],
             ],

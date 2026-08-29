@@ -205,6 +205,54 @@
     }
 
     /* ----------------------------------------------------------------------
+       2d. Sidebar scrollbar
+       ----------------------------------------------------------------------
+       PerfectScrollbar sets `overflow: hidden` and caches the content height.
+       Two things used to break the submenus: a fresh instance was created on
+       every wire:navigate without destroying the last (so several of them
+       fought over the same element), and none of them was told to re-measure
+       after a submenu expanded — the extra height stayed clipped, which is why
+       an opened menu looked empty.
+       ---------------------------------------------------------------------- */
+    var sidebarScrollbar = null;
+    var sidebarScrollbarEl = null;
+
+    function initSidebarScrollbar() {
+        var el = document.querySelector('.sidebar .sidebar-body');
+        if (!window.PerfectScrollbar || !el) { return; }
+
+        if (sidebarScrollbar && sidebarScrollbarEl === el) {
+            try { sidebarScrollbar.update(); } catch (err) { /* noop */ }
+            return;
+        }
+
+        if (sidebarScrollbar) {
+            try { sidebarScrollbar.destroy(); } catch (err) { /* noop */ }
+            sidebarScrollbar = null;
+        }
+
+        try {
+            sidebarScrollbar = new window.PerfectScrollbar(el);
+            sidebarScrollbarEl = el;
+        } catch (err) { /* noop */ }
+    }
+
+    function updateSidebarScrollbar() {
+        if (!sidebarScrollbar) { return; }
+        try { sidebarScrollbar.update(); } catch (err) { /* noop */ }
+    }
+
+    // Delegated, so it keeps working across Livewire DOM swaps. Bootstrap's
+    // collapse events do bubble.
+    ['shown.bs.collapse', 'hidden.bs.collapse'].forEach(function (evt) {
+        document.addEventListener(evt, function (e) {
+            if (e.target && e.target.closest && e.target.closest('.sidebar')) {
+                updateSidebarScrollbar();
+            }
+        });
+    });
+
+    /* ----------------------------------------------------------------------
        3. Contextual page title in the top bar
        ---------------------------------------------------------------------- */
     function syncTopbarTitle() {
@@ -263,9 +311,7 @@
             });
         }
 
-        if (window.PerfectScrollbar && document.querySelector('.sidebar .sidebar-body')) {
-            try { new window.PerfectScrollbar('.sidebar .sidebar-body'); } catch (err) { /* noop */ }
-        }
+        initSidebarScrollbar();
 
         if (!$) { return; }
 
@@ -279,10 +325,14 @@
         }
         initLivewireSelects();
 
-        // Sidebar: close sibling submenus when one opens
+        // Sidebar: close sibling submenus when one opens. Scoped to *other*
+        // panels — hiding the one that is mid-open collapses it straight back.
         var $sidebar = $('.sidebar');
         $sidebar.off('show.bs.collapse.bz').on('show.bs.collapse.bz', '.collapse', function () {
-            $sidebar.find('.collapse.show').collapse('hide');
+            var opening = this;
+            $sidebar.find('.collapse.show').each(function () {
+                if (this !== opening) { $(this).collapse('hide'); }
+            });
         });
 
         // Sidebar toggler (element-bound in template.js)
@@ -452,6 +502,9 @@
     function boot() {
         ensureBar();
         applyFoldedState();
+        // The sidebar scrollbar is ours alone now (template.js no longer makes
+        // one), so a single instance survives every wire:navigate swap.
+        initSidebarScrollbar();
         syncTopbarTitle();
         sweepBrokenImages();
         // template.js already wires everything on the first load — don't double-bind.

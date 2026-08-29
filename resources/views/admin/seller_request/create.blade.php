@@ -247,7 +247,7 @@
                     @if ($step === 4)
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label" for="account_holder_name">Account Holder Name <span class="text-danger">*</span></label>
+                                <label class="form-label" for="account_holder_name">Account Name <span class="text-danger">*</span></label>
                                 <input id="account_holder_name" type="text"
                                     class="form-control @error('account_holder_name') is-invalid @enderror"
                                     wire:model="account_holder_name">
@@ -365,7 +365,7 @@
                                     'Mobile' => $mobile,
                                     'Alternate Mobile' => $alternate_mobile,
                                     'Email' => $email,
-                                    'Account Holder' => $account_holder_name,
+                                    'Account Name' => $account_holder_name,
                                     'Bank Name' => $bank_name,
                                     'Account Number' => $account_number,
                                     'IFSC Code' => $ifsc_code,

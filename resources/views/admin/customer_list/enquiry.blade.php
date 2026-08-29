@@ -30,8 +30,9 @@
                                     <tr>
                                         <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>{{ $data->unique_id }}</td>
-                                        <td>{{ $data->getBrand->name }}</td>
-                                        <td>{{ $data->getCommodityProduct->name }}</td>
+                                        {{-- Same as the main enquiry list: a Rate Finder RFQ has no brand. --}}
+                                        <td>{{ $data->getBrand?->name ?? '--' }}</td>
+                                        <td>{{ $data->getCommodityProduct?->name ?? '--' }}</td>
                                         <td>
                                             <span class="bz-status {{ $data->status == 'ordered' ? 'bz-status--success' : 'bz-status--info' }}">{{ ucfirst($data->status) }}</span>
                                         </td>

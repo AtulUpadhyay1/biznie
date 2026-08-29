@@ -172,9 +172,9 @@ class Show extends Component
 
             }
 
-            $enquiry_data->status = 'Enquiry Send To Seller';
+            $enquiry_data->status = 'Enquiry Sent To Seller';
             $history = $enquiry_data->history;
-            $history[] = ['status' => 'Enquiry Send To Seller', 'created_at' => Carbon::now()];
+            $history[] = ['status' => 'Enquiry Sent To Seller', 'created_at' => Carbon::now()];
             $enquiry_data->history = $history;
             $enquiry_data->save();
 

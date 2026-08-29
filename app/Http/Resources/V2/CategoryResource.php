@@ -13,7 +13,9 @@ class CategoryResource extends JsonResource
             'id'        => $this->id,
             'name'      => $this->name,
             'slug'      => $this->slug,
-            'icon'      => $this->icon ? asset('storage/'.$this->icon) : null,
+            // The icon column also holds markup-style icons (e.g. an <i class="bi ...">)
+            // on older rows; only turn real upload paths into URLs.
+            'icon'      => $this->iconUrl(),
             'thumbnail' => $this->thumbnail ? imageUrl($this->thumbnail) : null,
             'banner'    => $this->banner ? imageUrl($this->banner) : null,
             'featured'  => (bool) $this->featured,
@@ -23,5 +25,16 @@ class CategoryResource extends JsonResource
                 'keywords'    => $this->meta_keywords,
             ],
         ];
+    }
+
+    private function iconUrl(): ?string
+    {
+        $icon = trim((string) $this->icon);
+
+        if ($icon === '' || str_contains($icon, '<')) {
+            return null;
+        }
+
+        return asset('storage/'.ltrim($icon, '/'));
     }
 }

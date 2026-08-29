@@ -8,8 +8,10 @@ use App\Models\Brand;
 use Livewire\Component;
 use App\Mail\EnquiryMail;
 use Livewire\WithPagination;
+use App\Models\GeneralEnquiry;
 use App\Models\ProductEnquiry;
 use App\Models\CommodityProduct;
+use App\Models\SellerOnboardingDetail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\CommodityProductOrder;
 
@@ -46,6 +48,14 @@ class DashboardLivewire extends Component
         $today_order = CommodityProductOrder::whereDate('created_at', $today)->count();
         $today_order_amount = CommodityProductOrder::whereDate('created_at', $today)->sum('total_amount');
 
+        // "Tell us your requirement" leads from the website. The pending count is
+        // what makes a new one visible without opening the list.
+        $today_general_enquiry = GeneralEnquiry::whereDate('created_at', $today)->count();
+        $pending_general_enquiry = GeneralEnquiry::where('status', 'pending')->count();
+
+        // Buyers waiting to be promoted to sellers.
+        $pending_seller_request = SellerOnboardingDetail::where('request_status', 'pending_review')->count();
+
         $last_7_days_customer = [];
         $last_7_days_seller = [];
 
@@ -80,6 +90,9 @@ class DashboardLivewire extends Component
             'today_order',
             'today_order_amount',
             'total_commodity_product',
+            'today_general_enquiry',
+            'pending_general_enquiry',
+            'pending_seller_request',
             'customer_list'
         ), ['page_title' => 'Admin Dashboard']);
     }

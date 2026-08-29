@@ -5,7 +5,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
-                    <h4>{{ $data->getSellerCommodityProduct->name }}</h4>
+                    <h4>{{ $data->getSellerCommodityProduct?->name }}</h4>
                     <div class="bz-toolbar">
                         <a href="{{route('admin.commodity-product-enquiry.create')}}" class="btn btn-secondary btn-sm" wire:navigate><i class="bi bi-arrow-left"></i>Back</a>
                     </div>
@@ -15,8 +15,8 @@
                         <div class="row">
                             <div class="col-md-10">
                                 <h5>Product Specification</h5>
-                                <p>Category: {{ $data->getSellerCommodityProduct->getCategory->name }}</p>
-                                <p>Brand: {{ $data->getSellerCommodityProduct->getBrand->name }}</p>
+                                <p>Category: {{ $data->getSellerCommodityProduct?->getCategory->name }}</p>
+                                <p>Brand: {{ $data->getSellerCommodityProduct?->getBrand?->name }}</p>
                             </div>
                             <div class="col-md-2 d-flex align-items-start justify-content-end">
                                 <x-submit-btn text="Save" />
@@ -56,8 +56,8 @@
                                                         @php
                                                             $unit_name = "";
                                                             $unit_short_name = "";
-                                                            if($variation->getSellerCommodityProduct && $variation->getSellerCommodityProduct->commodity_product_id){
-                                                                $commodity = App\Models\CommodityProduct::find($variation->getSellerCommodityProduct->commodity_product_id);
+                                                            if($variation->getSellerCommodityProduct && $variation->getSellerCommodityProduct?->commodity_product_id){
+                                                                $commodity = App\Models\CommodityProduct::find($variation->getSellerCommodityProduct?->commodity_product_id);
                                                                 if($commodity && $commodity->unit){
                                                                     $unit_name = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->name : '';
                                                                     $unit_short_name = getProductUnit($commodity->unit[$value['name']]) ? getProductUnit($commodity->unit[$value['name']])->short_name : '';
@@ -83,11 +83,11 @@
                                     <div class="row">
                                         <div class="mb-3">
                                             <div class="bz-section-label">Select Quality</div>
-                                            @foreach ($data->getCommodityProduct->quality as $quality_key => $quality)
+                                            @foreach ($data->getCommodityProduct?->quality as $quality_key => $quality)
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="quality" value="{{ $quality }}" id="quality_{{ $quality_key }}" wire:model.live="selected_quality">
                                                     <label class="form-check-label" for="quality_{{ $quality_key }}">
-                                                        {{ $quality }} <span class="text-danger">(₹ {{ formatIndianNumber($data->getCommodityProduct->quality_price[$quality_key]) }})</span>
+                                                        {{ $quality }} <span class="text-danger">(₹ {{ formatIndianNumber($data->getCommodityProduct?->quality_price[$quality_key]) }})</span>
                                                     </label>
                                                 </div>
                                                 

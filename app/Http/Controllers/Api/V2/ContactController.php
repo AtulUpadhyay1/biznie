@@ -25,6 +25,13 @@ class ContactController extends Controller
         $contact->message = $data['message'];
         $contact->save();
 
+        sendAdminNotification(
+            'New website query',
+            $contact->name.' sent a message from the contact form',
+            'contact_us',
+            ['id' => $contact->id]
+        );
+
         return response()->json([
             'success' => true,
             'message' => 'Thanks! Our team will get back to you shortly.',

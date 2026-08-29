@@ -7,13 +7,14 @@
                     <h4>{{ $page_title }}</h4>
 
                     <div class="bz-toolbar">
-                        <form class="custom-search-bar">
+                        <div class="custom-search-bar">
                             <label class="bz-filter-label" for="contact_us_search">Search messages</label>
                             <div class="input-group">
                                 <span class="input-group-text"> <i class="bi bi-search"></i></span>
-                                <input type="text" id="contact_us_search" class="form-control" placeholder="Search here...">
+                                <input type="text" id="contact_us_search" class="form-control"
+                                    placeholder="Search here..." wire:model.live.debounce.400ms="search">
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -31,20 +32,72 @@
                             </thead>
                             <tbody>
                                 @forelse ($list as $key => $data)
-                                    <tr>
+                                    <tr wire:key="query-{{ $data->id }}">
                                         <td>{{ $list->firstItem() + $loop->index }}</td>
                                         <td>{{ $data->name }}</td>
                                         <td>{{ $data->email }}</td>
                                         <td>{{ $data->phone }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-outline-success view-message"
-                                                data-name="{{ e($data->name) }}">
+                                            {{-- Bootstrap's own delegated handler opens this. The page is
+                                                 reached through wire:navigate, which never fires
+                                                 DOMContentLoaded, so the hand-rolled listener this
+                                                 replaces was never attached and the button did nothing. --}}
+                                            <button type="button" class="btn btn-sm btn-outline-success"
+                                                data-bs-toggle="modal" data-bs-target="#queryModal{{ $data->id }}">
                                                 View
                                             </button>
-                                            <div class="d-none message-text">{{ $data->message }}</div>
+                                        <div class="modal fade" id="queryModal{{ $data->id }}" tabindex="-1"
+                                            aria-labelledby="queryModalLabel{{ $data->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="queryModalLabel{{ $data->id }}">
+                                                            Message from {{ $data->name }}
+                                                        </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <dl class="row mb-3">
+                                                            <dt class="col-sm-3">Name</dt>
+                                                            <dd class="col-sm-9">{{ $data->name ?: '--' }}</dd>
+
+                                                            <dt class="col-sm-3">Email</dt>
+                                                            <dd class="col-sm-9">
+                                                                @if ($data->email)
+                                                                    <a href="mailto:{{ $data->email }}">{{ $data->email }}</a>
+                                                                @else
+                                                                    --
+                                                                @endif
+                                                            </dd>
+
+                                                            <dt class="col-sm-3">Phone</dt>
+                                                            <dd class="col-sm-9">
+                                                                @if ($data->phone)
+                                                                    <a href="tel:{{ $data->phone }}">{{ $data->phone }}</a>
+                                                                @else
+                                                                    --
+                                                                @endif
+                                                            </dd>
+
+                                                            <dt class="col-sm-3">Received</dt>
+                                                            <dd class="col-sm-9">{{ dateTimeFormat($data->created_at) }}</dd>
+                                                        </dl>
+
+                                                        <p class="mb-1 fw-semibold">Message</p>
+                                                        <p class="mb-0" style="white-space: pre-line">{{ $data->message }}</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         </td>
                                         <td>{{ dateTimeFormat($data->created_at) }}</td>
                                     </tr>
+
                                 @empty
                                     <x-table-no-data />
                                 @endforelse
@@ -58,45 +111,4 @@
             </div>
         </div>
     </div>
-    <!-- Message Modal -->
-    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="messageModalLabel">Message</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- filled by JS -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var messageModalEl = document.getElementById('messageModal');
-                if (!messageModalEl || typeof bootstrap === 'undefined') return;
-                var bsModal = new bootstrap.Modal(messageModalEl);
-
-                document.querySelectorAll('.view-message').forEach(function(btn) {
-                    btn.addEventListener('click', function() {
-                        var name = this.getAttribute('data-name') || 'Message';
-                        var msgEl = this.closest('tr').querySelector('.message-text');
-                        var msg = msgEl ? msgEl.textContent.trim() : '';
-                        messageModalEl.querySelector('.modal-title').textContent = 'Message from ' +
-                            name;
-                        // preserve line breaks
-                        messageModalEl.querySelector('.modal-body').innerHTML = msg.replace(/\n/g,
-                            '<br>');
-                        bsModal.show();
-                    });
-                });
-            });
-        </script>
-    @endpush
 </div>

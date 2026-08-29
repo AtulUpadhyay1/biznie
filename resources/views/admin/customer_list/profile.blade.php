@@ -130,17 +130,41 @@
                                         <td>{{ $data->getUserDetail ? $data->getUserDetail->city : '--' }}
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>State:</b></td>
+                                        <td>{{ $data->getUserDetail?->state ?: '--' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Pincode:</b></td>
+                                        <td>{{ $data->getUserDetail?->postal_code ?: '--' }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
+                        @php
+                            // Buyers fill the address on their profile as separate lines; this block
+                            // was reading only `company_address`, which most of them never set, so a
+                            // filled-in address showed as blank here.
+                            $bzDetail = $data->getUserDetail;
+                            $bzAddress = collect([
+                                $bzDetail?->address_line_one,
+                                $bzDetail?->address_line_two,
+                                $bzDetail?->city,
+                                $bzDetail?->state,
+                                $bzDetail?->postal_code,
+                                $bzDetail?->country,
+                            ])->filter()->implode(', ');
+
+                            if (! $bzAddress) {
+                                $bzAddress = $bzDetail?->company_address;
+                            }
+                        @endphp
                         <h6 class="bz-section-label">Address</h6>
                         <div class="table-responsive mb-4">
                             <table class="custom-table borderless-table">
                                 <tbody>
                                     <tr>
-                                        <td><span
-                                                class="ms-2">{{ $data->getUserDetail ? $data->getUserDetail->company_address : '' }}</span>
-                                        </td>
+                                        <td><span class="ms-2">{{ $bzAddress ?: '--' }}</span></td>
                                     </tr>
                                 </tbody>
                             </table>

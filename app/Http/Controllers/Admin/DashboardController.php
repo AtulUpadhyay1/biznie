@@ -63,7 +63,8 @@ class DashboardController extends Controller
 
     public function sendNotification()
     {
-        sendAdminNotification('Hi Admin', 'This is a test notification');
+        // Push only — a manual smoke test should not leave a row in the bell.
+        sendAdminNotification('Hi Admin', 'This is a test notification', 'notification', [], false);
         return 'notification sent successfully.';
     }
 }

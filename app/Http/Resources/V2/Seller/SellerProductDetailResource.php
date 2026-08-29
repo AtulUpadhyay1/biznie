@@ -74,6 +74,7 @@ class SellerProductDetailResource extends SellerProductResource
             // say what is shown once they have.
             'show_ex_price'  => (bool) $this->show_ex_price,
             'show_for_price' => (bool) $this->show_for_price,
+            'show_basic_price' => (bool) $this->show_basic_price,
             'show_fob_price' => (bool) $this->show_fob_price,
 
             'submitted_at' => $this->submitted_at ? Carbon::parse($this->submitted_at)->toIso8601String() : null,

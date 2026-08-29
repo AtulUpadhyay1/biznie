@@ -31,17 +31,17 @@
 
                                         <div>
                                             <dt>Category</dt>
-                                            <dd>{{ $data->getCommodityProduct->getCategory->name }}</dd>
+                                            <dd>{{ $data->getCommodityProduct?->getCategory->name }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Product</dt>
-                                            <dd>{{ $data->getCommodityProduct->name }}</dd>
+                                            <dd>{{ $data->getCommodityProduct?->name }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Brand</dt>
-                                            <dd>{{ $data->getBrand->name }}</dd>
+                                            <dd>{{ $data->getBrand?->name }}</dd>
                                         </div>
 
                                         <div>
@@ -89,47 +89,47 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $data->getUser->getUserDetail->company_name }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail->company_name }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Phone</dt>
-                                            <dd>{{ $data->getUser->phone }}</dd>
+                                            <dd>{{ $data->getUser?->phone }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $data->getUser->getUserDetail->gst_number }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail->gst_number }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 1</dt>
-                                            <dd>{{ $data->getUser->getUserDetail->address_line_one }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail->address_line_one }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 2</dt>
-                                            <dd>{{ $data->getUser->getUserDetail->address_line_two }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail->address_line_two }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $data->getUser->getUserDetail->city }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail->city }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $data->getUser->getUserDetail->state }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail->state }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Pincode</dt>
-                                            <dd>{{ $data->getUser->getUserDetail->postal_code }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail->postal_code }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Credit Days</dt>
-                                            <dd>{{ $data->getUser->credit_days }} Days</dd>
+                                            <dd>{{ $data->getUser?->credit_days }} Days</dd>
                                         </div>
                                     </dl>
 
@@ -288,8 +288,8 @@
                     <div class="row">
                         {{-- <div class="col-6">
                             <p>
-                                <b>Product: </b> {{ $data->getCommodityProduct->name }} <br>
-                                <b>Brand: </b> {{ $data->getBrand->name }} <br>
+                                <b>Product: </b> {{ $data->getCommodityProduct?->name }} <br>
+                                <b>Brand: </b> {{ $data->getBrand?->name }} <br>
                                 <b>Purpose: </b> {{ $data->purpose }} <br>
                             </p><br>
                             <p>
@@ -411,12 +411,12 @@
                                                                 data-bs-target="#collapse_{{ $seller_data->id }}"
                                                                 aria-expanded="false"
                                                                 aria-controls="collapse_{{ $seller_data->id }}">
-                                                                <b>{{ $seller_data->getUser->getBusiness->name }}
-                                                                    ({{ $seller_data->getUser->phone }})
-                                                                    {{ $seller_data->getUser->name }}
+                                                                <b>{{ $seller_data->getUser?->getBusiness->name }}
+                                                                    ({{ $seller_data->getUser?->phone }})
+                                                                    {{ $seller_data->getUser?->name }}
                                                                     ({{ getSellerType($seller_data->user_id) }})</b>,
                                                                 &nbsp;<b>Brand</b> :
-                                                                {{ $seller_data->getBrand->name }}, &nbsp;<b>State</b>
+                                                                {{ $seller_data->getBrand?->name }}, &nbsp;<b>State</b>
                                                                 : {{ $seller_data->getStatePrice[0]->state }},
                                                                 &nbsp;<b>City</b> :
                                                                 {{ $seller_data->getStatePrice[0]->city }}, &nbsp;
@@ -623,8 +623,8 @@
                                                                 data-bs-target="#transporter_collapse_{{ $transporter_data->id }}"
                                                                 aria-expanded="false"
                                                                 aria-controls="transporter_collapse_{{ $transporter_data->id }}">
-                                                                <b>{{ $transporter_data->getUser->name }}
-                                                                    ({{ $transporter_data->getUser->phone }})
+                                                                <b>{{ $transporter_data->getUser?->name }}
+                                                                    ({{ $transporter_data->getUser?->phone }})
                                                                 </b>,
                                                                 &nbsp;<b>State</b> : {{ $transporter_data->state }},
                                                                 &nbsp;<b>City</b> : {{ $transporter_data->city }},

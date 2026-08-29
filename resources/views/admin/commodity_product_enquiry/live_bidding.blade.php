@@ -76,7 +76,7 @@
                                             <div class="bz-cell-title">{{ $data->getCommodityProduct?->name ?? '--' }}{{ $data->size_label ? ' ' . $data->size_label : '' }}</div>
                                             <div class="bz-cell-sub">
                                                 {{ $data->quantity ? formatIndianNumber($data->quantity) . ' ' . ($data->unit_label ?? '') : '--' }}
-                                                @if ($data->getBrand) · {{ $data->getBrand->name }} @endif
+                                                @if ($data->getBrand) · {{ $data->getBrand?->name }} @endif
                                             </div>
                                         </td>
                                         <td>{{ $data->delivery_city ?? '--' }}</td>

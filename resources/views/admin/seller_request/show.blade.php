@@ -97,7 +97,7 @@
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Mobile</div><div class="sr-kv-value">{{ $requestRecord->mobile ?? '--' }}</div></div></div>
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Alternate Mobile</div><div class="sr-kv-value">{{ $requestRecord->alternate_mobile ?? '--' }}</div></div></div>
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Email</div><div class="sr-kv-value">{{ $requestRecord->email ?? '--' }}</div></div></div>
-                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Account Holder</div><div class="sr-kv-value">{{ $requestRecord->account_holder_name ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Account Name</div><div class="sr-kv-value">{{ $requestRecord->account_holder_name ?? '--' }}</div></div></div>
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Bank Name</div><div class="sr-kv-value">{{ $requestRecord->bank_name ?? '--' }}</div></div></div>
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Account Number</div><div class="sr-kv-value">{{ $requestRecord->account_number ?? '--' }}</div></div></div>
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">IFSC Code</div><div class="sr-kv-value">{{ $requestRecord->ifsc_code ?? '--' }}</div></div></div>
@@ -105,6 +105,7 @@
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Branch</div><div class="sr-kv-value">{{ $requestRecord->branch ?? '--' }}</div></div></div>
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Category</div><div class="sr-kv-value">{{ $requestRecord->category ?? '--' }}</div></div></div>
                                         <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Turnover</div><div class="sr-kv-value">{{ $requestRecord->turnover ?? '--' }}</div></div></div>
+                                        <div class="col-md-6"><div class="sr-kv"><div class="sr-kv-label">Upload Option</div><div class="sr-kv-value">{{ $requestRecord->product_upload_mode ? ucfirst($requestRecord->product_upload_mode) : '--' }}</div></div></div>
                                         <div class="col-12"><div class="sr-kv"><div class="sr-kv-label">Products</div><div class="sr-kv-value">{{ $requestRecord->products ?? '--' }}</div></div></div>
                                     </div>
                                 </div>
@@ -156,6 +157,16 @@
                                                 <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>Other Documents (Not uploaded)</button>
                                             @endif
                                         </div>
+                                        {{-- Only offered when the applicant picked the bulk upload option. --}}
+                                        @if($requestRecord->product_upload_mode === 'bulk')
+                                            <div class="col-md-6 col-lg-4">
+                                                @if($requestRecord->product_sheet_path)
+                                                    <a href="{{ asset('storage/' . $requestRecord->product_sheet_path) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Product Sheet</a>
+                                                @else
+                                                    <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>Product Sheet (Not uploaded)</button>
+                                                @endif
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

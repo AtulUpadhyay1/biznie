@@ -6,21 +6,21 @@
             'unique_id'         => $enquiry_data->unique_id,
             'order_id'          => $enquiry_data->getCommodityProductOrder ? $enquiry_data->getCommodityProductOrder->id : NULL,
             'brand'             => $enquiry_data->getBrand ? [
-                'id'            => $enquiry_data->getBrand->id,
-                'name'          => $enquiry_data->getBrand->name
+                'id'            => $enquiry_data->getBrand?->id,
+                'name'          => $enquiry_data->getBrand?->name
             ] : [],
-            'unit'              => $enquiry_data->getCommodityProduct->getUnit ? [
-                'id'            => $enquiry_data->getCommodityProduct->getUnit->id,
-                'name'          => $enquiry_data->getCommodityProduct->getUnit->name
+            'unit'              => $enquiry_data->getCommodityProduct?->getUnit ? [
+                'id'            => $enquiry_data->getCommodityProduct?->getUnit->id,
+                'name'          => $enquiry_data->getCommodityProduct?->getUnit->name
             ] : [],
             'commodity_product' => $enquiry_data->getCommodityProduct ? [
-                'id'        => $enquiry_data->getCommodityProduct->id,
-                'name'      => $enquiry_data->getCommodityProduct->name,
-                'thumbnail' => $enquiry_data->getCommodityProduct->thumbnail ? imageUrl($enquiry_data->getCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
+                'id'        => $enquiry_data->getCommodityProduct?->id,
+                'name'      => $enquiry_data->getCommodityProduct?->name,
+                'thumbnail' => $enquiry_data->getCommodityProduct?->thumbnail ? imageUrl($enquiry_data->getCommodityProduct?->thumbnail) : asset('common/images/no-photo.png'),
 
-                'category'  => $enquiry_data->getCommodityProduct->getCategory ? [
-                    'id'    => $enquiry_data->getCommodityProduct->getCategory->id,
-                    'name'  => $enquiry_data->getCommodityProduct->getCategory->name,
+                'category'  => $enquiry_data->getCommodityProduct?->getCategory ? [
+                    'id'    => $enquiry_data->getCommodityProduct?->getCategory->id,
+                    'name'  => $enquiry_data->getCommodityProduct?->getCategory->name,
 
                 ] : [],
 
@@ -62,11 +62,11 @@
             'is_mark'           => false,
             'status'            => $enquiry_data->status,
             'created_at'        => dateTimeFormat($enquiry_data->created_at),
-            'credit_days'       => $enquiry_data->getUser->credit_days,
+            'credit_days'       => $enquiry_data->getUser?->credit_days,
         ];
         $markedSeller = $enquiry_data->getMarkedSellerProductEnquiry;
         if($markedSeller){
-            $data['credit_days'] = $markedSeller->customer_credit_days ? $markedSeller->customer_credit_days : $enquiry_data->getUser->credit_days;
+            $data['credit_days'] = $markedSeller->customer_credit_days ? $markedSeller->customer_credit_days : $enquiry_data->getUser?->credit_days;
             // $data['variation']  = $markedSeller->value;
             $data['base_price'] = $markedSeller->base_price;
             $data['transport_price'] = $markedSeller->transport_price;
@@ -147,15 +147,15 @@
             $data['for_price']          = $data['ex_price'] + $data['transport_price'] * $data['total_quantity'];
 
             $data['required_booking_amount'] = $data['for_price'] * 30 / 100;
-            if($enquiry_data->getCommodityProduct->order_amount_type == 'flat'){
-                $data['required_booking_amount'] = $enquiry_data->getCommodityProduct->required_order_amount ? $enquiry_data->getCommodityProduct->required_order_amount * $data['total_quantity']: 0;
+            if($enquiry_data->getCommodityProduct?->order_amount_type == 'flat'){
+                $data['required_booking_amount'] = $enquiry_data->getCommodityProduct?->required_order_amount ? $enquiry_data->getCommodityProduct?->required_order_amount * $data['total_quantity']: 0;
             }
 
-            if($enquiry_data->getCommodityProduct->order_amount_type == 'percent'){
-                $data['required_booking_amount'] = $data['for_price'] * $enquiry_data->getCommodityProduct->required_order_amount / 100;
+            if($enquiry_data->getCommodityProduct?->order_amount_type == 'percent'){
+                $data['required_booking_amount'] = $data['for_price'] * $enquiry_data->getCommodityProduct?->required_order_amount / 100;
             }
 
-            // dd($enquiry_data->getCommodityProduct->order_amount_type, $enquiry_data->getCommodityProduct->required_order_amount);
+            // dd($enquiry_data->getCommodityProduct?->order_amount_type, $enquiry_data->getCommodityProduct?->required_order_amount);
             // if($data['commission_type'] == 'exclude'){
             //     $data['final_variation_price'] += $data['commission'];
             // }
@@ -171,21 +171,21 @@
             'unique_id'         => $seller_enquiry_data->unique_id,
             'order_id'          => $seller_enquiry_data->getCommodityProductOrder ? $seller_enquiry_data->getCommodityProductOrder->id : NULL,
             'brand'             => $seller_enquiry_data->getBrand ? [
-                    'id'        => $seller_enquiry_data->getBrand->id,
-                    'name'      => $seller_enquiry_data->getBrand->name
+                    'id'        => $seller_enquiry_data->getBrand?->id,
+                    'name'      => $seller_enquiry_data->getBrand?->name
                 ] : [],
-            'unit'              => $seller_enquiry_data->getSellerCommodityProduct->getUnit ? [
-                    'id'        => $seller_enquiry_data->getSellerCommodityProduct->getUnit->id,
-                    'name'      => $seller_enquiry_data->getSellerCommodityProduct->getUnit->name
+            'unit'              => $seller_enquiry_data->getSellerCommodityProduct?->getUnit ? [
+                    'id'        => $seller_enquiry_data->getSellerCommodityProduct?->getUnit->id,
+                    'name'      => $seller_enquiry_data->getSellerCommodityProduct?->getUnit->name
                 ] : [],
             'commodity_product' => $seller_enquiry_data->getSellerCommodityProduct ? [
-                    'id'        => $seller_enquiry_data->getSellerCommodityProduct->id,
-                    'name'      => $seller_enquiry_data->getSellerCommodityProduct->name,
-                    'thumbnail' => $seller_enquiry_data->getSellerCommodityProduct->thumbnail ? imageUrl($seller_enquiry_data->getSellerCommodityProduct->thumbnail) : asset('common/images/no-photo.png'),
+                    'id'        => $seller_enquiry_data->getSellerCommodityProduct?->id,
+                    'name'      => $seller_enquiry_data->getSellerCommodityProduct?->name,
+                    'thumbnail' => $seller_enquiry_data->getSellerCommodityProduct?->thumbnail ? imageUrl($seller_enquiry_data->getSellerCommodityProduct?->thumbnail) : asset('common/images/no-photo.png'),
 
-                    'category'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory ? [
-                        'id'    => $seller_enquiry_data->getSellerCommodityProduct->getCategory->id,
-                        'name'  => $seller_enquiry_data->getSellerCommodityProduct->getCategory->name,
+                    'category'  => $seller_enquiry_data->getSellerCommodityProduct?->getCategory ? [
+                        'id'    => $seller_enquiry_data->getSellerCommodityProduct?->getCategory->id,
+                        'name'  => $seller_enquiry_data->getSellerCommodityProduct?->getCategory->name,
 
                     ] : [],
 
@@ -305,15 +305,15 @@
                         </div>
                         <div>
                             <dt>Category</dt>
-                            <dd>{{ $enquiry_data->getCommodityProduct->getCategory->name }}</dd>
+                            <dd>{{ $enquiry_data->getCommodityProduct?->getCategory->name }}</dd>
                         </div>
                         <div>
                             <dt>Product</dt>
-                            <dd>{{ $enquiry_data->getCommodityProduct->name }}</dd>
+                            <dd>{{ $enquiry_data->getCommodityProduct?->name }}</dd>
                         </div>
                         <div>
                             <dt>Brand</dt>
-                            <dd>{{ $enquiry_data->getBrand->name }}</dd>
+                            <dd>{{ $enquiry_data->getBrand?->name }}</dd>
                         </div>
                         <div>
                             <dt>Delivery Location</dt>
@@ -347,16 +347,16 @@
                     <dl class="bz-kv-list">
                         <div>
                             <dt>Company Name</dt>
-                            <dd>{{ $enquiry_data->getUser->name }}
-                                ({{$enquiry_data->getUser->getUserDetail->company_name}})</dd>
+                            <dd>{{ $enquiry_data->getUser?->name }}
+                                ({{$enquiry_data->getUser?->getUserDetail->company_name}})</dd>
                         </div>
                         <div>
                             <dt>Phone</dt>
-                            <dd>{{ $enquiry_data->getUser->phone }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->phone }}</dd>
                         </div>
                         <div>
                             <dt>GST</dt>
-                            <dd>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail->gst_number }}</dd>
                         </div>
                         <div>
                             <dt>Pincode</dt>
@@ -395,36 +395,36 @@
                     <dl class="bz-kv-list">
                         <div>
                             <dt>Company Name</dt>
-                            <dd>{{ $enquiry_data->getUser->name }}
-                                ({{$enquiry_data->getUser->getUserDetail->company_name}})</dd>
+                            <dd>{{ $enquiry_data->getUser?->name }}
+                                ({{$enquiry_data->getUser?->getUserDetail->company_name}})</dd>
                         </div>
                         <div>
                             <dt>Phone</dt>
-                            <dd>{{ $enquiry_data->getUser->phone }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->phone }}</dd>
                         </div>
                         <div>
                             <dt>GST</dt>
-                            <dd>{{ $enquiry_data->getUser->getUserDetail->gst_number }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail->gst_number }}</dd>
                         </div>
                         <div>
                             <dt>Pincode</dt>
-                            <dd>{{ $enquiry_data->getUser->getUserDetail->postal_code }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail->postal_code }}</dd>
                         </div>
                         <div>
                             <dt>Address Line1</dt>
-                            <dd>{{ $enquiry_data->getUser->getUserDetail->address_line_one }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail->address_line_one }}</dd>
                         </div>
                         <div>
                             <dt>Address Line2</dt>
-                            <dd>{{ $enquiry_data->getUser->getUserDetail->address_line_two }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail->address_line_two }}</dd>
                         </div>
                         <div>
                             <dt>City</dt>
-                            <dd>{{ $enquiry_data->getUser->getUserDetail->city }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail->city }}</dd>
                         </div>
                         <div>
                             <dt>State</dt>
-                            <dd>{{ $enquiry_data->getUser->getUserDetail->state }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail->state }}</dd>
                         </div>
                         <div>
                             <dt>Credit Days</dt>
@@ -694,17 +694,17 @@
                             <span class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="selected_wallet" id="selected_wallet_cash" value="cash_balance" wire:model="selected_wallet">
                                 <label class="form-check-label" for="selected_wallet_cash"><b>Cash Wallet Balance:</b></label>
-                                <span class="bz-num">₹ {{ formatIndianNumber($enquiry_data->getUser->cash_balance) }}</span>
+                                <span class="bz-num">₹ {{ formatIndianNumber($enquiry_data->getUser?->cash_balance) }}</span>
                             </span>
                         </p>
                         <p>
                             <span class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="selected_wallet" id="selected_wallet_credit" value="credit_balance" wire:model="selected_wallet">
                                 <label class="form-check-label" for="selected_wallet_credit"><b>Credit Wallet Balance:</b></label>
-                                <span class="bz-num">₹ {{ formatIndianNumber($enquiry_data->getUser->credit_balance) }}</span>
+                                <span class="bz-num">₹ {{ formatIndianNumber($enquiry_data->getUser?->credit_balance) }}</span>
                             </span>
                         </p>
-                        {{-- <p class="fw-bold">Wallet Balance : ₹ {{ formatIndianNumber($enquiry_data->getUser->cash_balance + $enquiry_data->getUser->credit_balance) }}</p> --}}
+                        {{-- <p class="fw-bold">Wallet Balance : ₹ {{ formatIndianNumber($enquiry_data->getUser?->cash_balance + $enquiry_data->getUser?->credit_balance) }}</p> --}}
                         <small class="text-danger">Disclaimer</small> <br>
                         <ol class="small">
                             <li>This order can not be cancelled.</li>
@@ -758,7 +758,7 @@
                                         {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                                     </div>
                                     <div class="modal-body">
-                                        <label for="otp" class="form-label">Otp Send On {{ $enquiry_data->getMarkedSellerProductEnquiry->getUser->phone }}</label>
+                                        <label for="otp" class="form-label">Otp Send On {{ $enquiry_data->getMarkedSellerProductEnquiry->getUser?->phone }}</label>
                                         <input type="number" class="form-control" id="otp" placeholder="Enter OTP" wire:model="otp">
                                         <div class="text-end">
                                             <small id="resend-otp" class="d-none" wire:click="sendOtp()">
