@@ -74,6 +74,31 @@ class User extends Authenticatable
         return $this->hasOne(UserDetail::class);
     }
 
+    public function getPromotionHistory()
+    {
+        return $this->hasMany(UserPromotionHistory::class, 'user_id');
+    }
+
+    /**
+     * A buyer who was promoted to seller is still a buyer.
+     *
+     * Promotion overwrites `type`, so the account read as "Seller" everywhere
+     * and lost its buyer navigation the moment it was approved — even though it
+     * keeps its RFQs, orders and watchlist.
+     */
+    public function isBuyerAndSeller(): bool
+    {
+        if ($this->type !== 'seller') {
+            return false;
+        }
+
+        $history = $this->relationLoaded('getPromotionHistory')
+            ? $this->getPromotionHistory
+            : $this->getPromotionHistory()->get();
+
+        return $history->contains(fn ($row) => in_array($row->old_type, ['customer', 'buyer'], true));
+    }
+
     public function getTransporterDetail()
     {
         return $this->hasOne(TransporterDetail::class);

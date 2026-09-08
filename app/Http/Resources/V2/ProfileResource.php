@@ -28,6 +28,7 @@ class ProfileResource extends JsonResource
             'email'               => $this->email,
             'phone'               => $this->phone,
             'type'                => $this->type,
+            'is_buyer_and_seller' => $this->resource->isBuyerAndSeller(),
             'status'              => $this->status,
             'kyc_status'          => $this->kyc_status ?? null,
             'kyc_verified_at'     => optional($this->kyc_verified_at)->toIso8601String(),

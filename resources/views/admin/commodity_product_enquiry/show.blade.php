@@ -328,36 +328,42 @@
 
                         <h5 class="my-3">Selected Product Variation</h5>
 
-                        <div class="table-responsive mb-3">
-                            <table class="custom-table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        @foreach ($data->variation[0]['value'] as $variation_heading)
-                                            <th>{{ $variation_heading['name'] }}
-                                                @if ($variation_heading['unit'])
-                                                    ({{ $variation_heading['unit']['short_name'] }})
-                                                @endif
-                                            </th>
-                                        @endforeach
-                                        {{-- <th>Price</th> --}}
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data->variation as $variation)
+                        {{-- A Rate Finder RFQ books a total quantity and carries no
+                             variation rows; reading variation[0] on one was a fatal. --}}
+                        @if (filled($data->variation) && filled($data->variation[0]['value'] ?? null))
+                            <div class="table-responsive mb-3">
+                                <table class="custom-table">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $variation['id'] }}</td>
-                                            @foreach ($variation['value'] as $value)
-                                                <td>{{ $value['value'] }}</td>
+                                            <th>#</th>
+                                            @foreach ($data->variation[0]['value'] as $variation_heading)
+                                                <th>{{ $variation_heading['name'] }}
+                                                    @if ($variation_heading['unit'])
+                                                        ({{ $variation_heading['unit']['short_name'] }})
+                                                    @endif
+                                                </th>
                                             @endforeach
-                                            {{-- <td>{{ $variation['price'] }}</td> --}}
-                                            <td>{{ $variation['quantity'] }}</td>
+                                            {{-- <th>Price</th> --}}
+                                            <th>Quantity</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($data->variation as $variation)
+                                            <tr>
+                                                <td>{{ $variation['id'] }}</td>
+                                                @foreach ($variation['value'] as $value)
+                                                    <td>{{ $value['value'] }}</td>
+                                                @endforeach
+                                                {{-- <td>{{ $variation['price'] }}</td> --}}
+                                                <td>{{ $variation['quantity'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @else
+                            <p class="text-muted">No sizes were selected — this enquiry was raised for a total quantity.</p>
+                        @endif
 
                         <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
                             <li class="nav-item">

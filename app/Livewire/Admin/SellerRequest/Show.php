@@ -117,6 +117,20 @@ class Show extends Component
             Mail::to($this->requestRecord->getUser->email)->send(new SellerRequestStatusChangedMail($this->requestRecord));
         }
 
+        // First thing the new seller needs is a product to sell, so the
+        // notification points straight at that page; the dashboard reads the
+        // same type to show its one-time welcome.
+        if ($this->requestRecord->getUser) {
+            sendNotification(
+                $this->requestRecord->getUser,
+                'You are now a seller on Biznie',
+                'Your seller application has been approved. Add your first product to start receiving RFQs, and keep its price updated daily.',
+                'seller_approved',
+                ['reference' => $this->requestRecord->request_reference],
+                true
+            );
+        }
+
         session()->flash('success', 'Seller request approved and user promoted to seller.');
     }
 

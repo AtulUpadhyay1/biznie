@@ -28,6 +28,7 @@ class UserResource extends JsonResource
             'email'      => $this->email,
             'phone'      => $this->phone,
             'type'       => $this->type,
+            'is_buyer_and_seller' => $this->resource->isBuyerAndSeller(),
             'role'       => $this->role ?? null,
             'is_staff'   => (bool) ($this->is_staff ?? false),
             'kyc_status' => $this->kyc_status ?? null,

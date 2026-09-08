@@ -66,6 +66,31 @@
                                 </div>
                             </div>
 
+{{-- Which of the four prices the storefront shows for this listing.
+                                 Basic is the raw product price before charges. --}}
+                            <div class="col-12 mb-3">
+                                <h5 class="bz-section-label mb-2">Price Display</h5>
+                                <div class="d-flex flex-wrap gap-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="show_basic_price" wire:model="show_basic_price">
+                                        <label class="form-check-label" for="show_basic_price">Basic Price</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="show_ex_price" wire:model="show_ex_price">
+                                        <label class="form-check-label" for="show_ex_price">Ex-Works Price</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="show_for_price" wire:model="show_for_price">
+                                        <label class="form-check-label" for="show_for_price">F.O.R Price</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="show_fob_price" wire:model="show_fob_price">
+                                        <label class="form-check-label" for="show_fob_price">F.O.B Price</label>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Shown in the product page price breakup. Leave all off to show none.</small>
+                            </div>
+
                             <div class="col-12 mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
                                 <h5 class="bz-section-label mb-0">Update Loading Address</h5>
                                 <button class="btn btn-secondary btn-sm" type="button"><i class="bi bi-plus-lg"></i>Add</button>

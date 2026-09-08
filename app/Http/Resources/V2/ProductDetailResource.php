@@ -125,10 +125,17 @@ class ProductDetailResource extends JsonResource
                     'name' => $sellerProduct->getBrand->name,
                 ] : null,
                 // Where the goods load from — shown as the city of manufacturing
-                // and as the city the Ex-Works price belongs to. Listings often
-                // leave it blank, so fall back to the seller's registered city.
-                'loading_city'  => $sellerProduct->city ?: $sellerProduct->getUser?->getUserDetail?->city,
-                'loading_state' => $sellerProduct->state ?: $sellerProduct->getUser?->getUserDetail?->state,
+                // and as the city the Ex-Works price belongs to. Listings leave
+                // the column blank more often than not, so fall back to the
+                // first price row (which is where the offers list reads it from,
+                // and why that page could name a city when this one could not)
+                // and then to the seller's registered city.
+                'loading_city'  => $sellerProduct->city
+                    ?: $sellerProduct->getStatePrice->first()?->city
+                    ?: $sellerProduct->getUser?->getUserDetail?->city,
+                'loading_state' => $sellerProduct->state
+                    ?: $sellerProduct->getStatePrice->first()?->state
+                    ?: $sellerProduct->getUser?->getUserDetail?->state,
                 'sellers_count' => (int) ($best['sellers_count'] ?? 0),
             ] : null,
 

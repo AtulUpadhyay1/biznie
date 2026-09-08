@@ -10,7 +10,7 @@
 <script src="{{asset('admin_css/assets/js/tags-input.js')}}"></script>
 
 {{-- Biznie UI behaviour: progress bar, sidebar filter, post-navigate re-init --}}
-<script src="{{asset('admin_css/assets/js/biznie-admin.js')}}?v=17"></script>
+<script src="{{asset('admin_css/assets/js/biznie-admin.js')}}?v=18"></script>
 <script>
     var Toast = Swal.mixin({
         toast: true,

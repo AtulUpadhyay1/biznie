@@ -198,12 +198,44 @@ class PromotionController extends Controller
         return $filled;
     }
 
+    /**
+     * GSTIN checks for a seller application.
+     *
+     * Two things were going unchecked: the number was never validated as a
+     * GSTIN at all, and an applicant could type a GSTIN that has nothing to do
+     * with the one already on their buyer profile. The second is a mismatch
+     * worth stopping — the same legal entity is applying to sell.
+     *
+     * @return array<int, mixed>
+     */
+    private function gstRules($user): array
+    {
+        $profileGst = $user->getUserDetail?->gst_number;
+
+        $rules = [
+            'required',
+            'string',
+            'size:15',
+            'regex:/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/i',
+        ];
+
+        if (filled($profileGst)) {
+            $rules[] = function (string $attribute, $value, $fail) use ($profileGst) {
+                if (strcasecmp(trim((string) $value), trim($profileGst)) !== 0) {
+                    $fail('This GST number does not match the GSTIN on your profile ('.$profileGst.'). Use the same GSTIN, or update your profile first.');
+                }
+            };
+        }
+
+        return $rules;
+    }
+
     private function stepRules(int $step, $user): array
     {
         return match ($step) {
             1 => [
                 'company_name' => ['required', 'string', 'max:160'],
-                'gst_number' => ['required', 'string', 'max:30'],
+                'gst_number' => $this->gstRules($user),
                 'pan_number' => ['required', 'string', 'max:20', 'regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i'],
                 'seller_type_id' => ['required', 'integer', Rule::exists('seller_types', 'id')],
                 'business_type' => ['nullable', 'string', 'max:120'],
@@ -254,7 +286,7 @@ class PromotionController extends Controller
     {
         return [
             'company_name' => ['required', 'string', 'max:160'],
-            'gst_number' => ['required', 'string', 'max:30'],
+            'gst_number' => $this->gstRules($user),
             'pan_number' => ['required', 'string', 'max:20', 'regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i'],
             'seller_type_id' => ['required', 'integer', Rule::exists('seller_types', 'id')],
             'business_type' => ['nullable', 'string', 'max:120'],

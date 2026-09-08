@@ -37,13 +37,20 @@ class Show extends Component
     public function render()
     {
         $data = ProductEnquiry::with('getBrand', 'getCommodityProduct')->findOrFail($this->hidden_id);
+        // Rate Finder RFQs carry no variation rows and often no billing address,
+        // so every one of these was a fatal on this page: foreach over null, and
+        // an array offset on null further down.
         $variation_arr = [];
-        foreach($data->variation as $variations_value){
-            foreach($variations_value['value'] as $variation){
-                $variation_data['id']      = $variation['id'];
-                $variation_data['name']    = $variation['name'];
-                $variation_data['value']   = $variation['value'];
-                $variation_arr[] = $variation_data;
+        foreach((array) ($data->variation ?? []) as $variations_value){
+            foreach((array) ($variations_value['value'] ?? []) as $variation){
+                if(! is_array($variation)){
+                    continue;
+                }
+                $variation_arr[] = [
+                    'id'    => $variation['id'] ?? null,
+                    'name'  => $variation['name'] ?? null,
+                    'value' => $variation['value'] ?? null,
+                ];
             }
         }
 
@@ -71,8 +78,15 @@ class Show extends Component
             ->with('getStatePrice', 'getBrand', 'getUser')
             ->get()
             ->unique('user_id');
+        $billing_address = is_array($data->billing_address) ? $data->billing_address : [];
         $transporters_ids = TransporterDetail::whereJsonContains('commodity_product', $data->commodity_product_id)->pluck('user_id')->toArray();
-        $transporter_list = TransporterAddressPrice::whereIn('user_id', $transporters_ids)->where('state', $data->billing_address['state'])->where('city', $data->billing_address['city'])->with('getUser')->get();
+        $transporter_list = (blank($billing_address['state'] ?? null) || blank($billing_address['city'] ?? null))
+            ? collect()
+            : TransporterAddressPrice::whereIn('user_id', $transporters_ids)
+                ->where('state', $billing_address['state'])
+                ->where('city', $billing_address['city'])
+                ->with('getUser')
+                ->get();
         $loading_address = CommodityProductState::where('commodity_product_id', $data->commodity_product_id)
             ->where('brand_id', $data->brand_id)
             ->first();
@@ -152,8 +166,9 @@ class Show extends Component
                 $data->description          = $enquiry_data->description;
                 $data->message              = $enquiry_data->message;
                 $data->price                = $price_arr;
-                $data->base_price           = $product_state_prices[0]->getSellerCommodityProduct->base_price;
-                $data->loading_address      = $product_state_prices[0]->getSellerCommodityProduct->loading_address;
+                $first_state_price          = $product_state_prices->first();
+                $data->base_price           = $first_state_price?->getSellerCommodityProduct?->base_price;
+                $data->loading_address      = $first_state_price?->getSellerCommodityProduct?->loading_address;
                 $data->status               = $data->status ?? 'pending';
                 if(!$data->history){
                     $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];
@@ -218,9 +233,10 @@ class Show extends Component
 
             foreach ($this->transporter_user_id as $transporter_user_id) {
                 $data = TransporterProductEnquiry::where('user_id', $transporter_user_id)->where('product_enquiries_id', $enquiry_data->id)->first();
+                $billing = is_array($enquiry_data->billing_address) ? $enquiry_data->billing_address : [];
                 $available_transport = TransporterAddressPrice::where('user_id', $transporter_user_id)
-                    ->where('state', $enquiry_data->billing_address['state'])
-                    ->where('city', $enquiry_data->billing_address['city'])
+                    ->where('state', $billing['state'] ?? null)
+                    ->where('city', $billing['city'] ?? null)
                     ->first();
 
                 if(!$data){
@@ -239,8 +255,8 @@ class Show extends Component
                 $data->purpose              = $enquiry_data->purpose;
                 $data->description          = $enquiry_data->description;
                 $data->message              = $enquiry_data->message;
-                $data->min_price            = $available_transport->min_price;
-                $data->max_price            = $available_transport->max_price;
+                $data->min_price            = $available_transport?->min_price;
+                $data->max_price            = $available_transport?->max_price;
                 $data->status               = $data->status ?? 'pending';
                 if(!$data->history){
                     $data->history          = [['status' => 'New Enquiry', 'created_at' => Carbon::now()]];

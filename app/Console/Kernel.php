@@ -12,7 +12,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Sellers are quoted off their last saved price, so chase the stale ones
+        // once a morning. Needs the host's cron to run `schedule:run` every minute.
+        $schedule->command('biznie:remind-price-update')
+            ->dailyAt('09:30')
+            ->timezone('Asia/Kolkata')
+            ->withoutOverlapping();
     }
 
     /**

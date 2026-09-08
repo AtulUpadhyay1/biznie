@@ -117,42 +117,42 @@
                                     <div class="row g-2">
                                         <div class="col-md-6 col-lg-4">
                                             @if($requestRecord->gst_certificate_path)
-                                                <a href="{{ asset('storage/' . $requestRecord->gst_certificate_path) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">GST Certificate</a>
+                                                <a href="{{ route('admin.seller-request.document', ['id' => $requestRecord->id, 'field' => 'gst_certificate']) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">GST Certificate</a>
                                             @else
                                                 <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>GST Certificate (Not uploaded)</button>
                                             @endif
                                         </div>
                                         <div class="col-md-6 col-lg-4">
                                             @if($requestRecord->pan_document_path)
-                                                <a href="{{ asset('storage/' . $requestRecord->pan_document_path) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">PAN Document</a>
+                                                <a href="{{ route('admin.seller-request.document', ['id' => $requestRecord->id, 'field' => 'pan_document']) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">PAN Document</a>
                                             @else
                                                 <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>PAN Document (Not uploaded)</button>
                                             @endif
                                         </div>
                                         <div class="col-md-6 col-lg-4">
                                             @if($requestRecord->registration_certificate_path)
-                                                <a href="{{ asset('storage/' . $requestRecord->registration_certificate_path) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Registration Certificate</a>
+                                                <a href="{{ route('admin.seller-request.document', ['id' => $requestRecord->id, 'field' => 'registration_certificate']) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Registration Certificate</a>
                                             @else
                                                 <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>Registration Certificate (Not uploaded)</button>
                                             @endif
                                         </div>
                                         <div class="col-md-6 col-lg-4">
                                             @if($requestRecord->address_proof_path)
-                                                <a href="{{ asset('storage/' . $requestRecord->address_proof_path) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Address Proof</a>
+                                                <a href="{{ route('admin.seller-request.document', ['id' => $requestRecord->id, 'field' => 'address_proof']) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Address Proof</a>
                                             @else
                                                 <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>Address Proof (Not uploaded)</button>
                                             @endif
                                         </div>
                                         <div class="col-md-6 col-lg-4">
                                             @if($requestRecord->cancelled_cheque_path)
-                                                <a href="{{ asset('storage/' . $requestRecord->cancelled_cheque_path) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Cancelled Cheque</a>
+                                                <a href="{{ route('admin.seller-request.document', ['id' => $requestRecord->id, 'field' => 'cancelled_cheque']) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Cancelled Cheque</a>
                                             @else
                                                 <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>Cancelled Cheque (Not uploaded)</button>
                                             @endif
                                         </div>
                                         <div class="col-md-6 col-lg-4">
                                             @if($requestRecord->other_documents_path)
-                                                <a href="{{ asset('storage/' . $requestRecord->other_documents_path) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Other Documents</a>
+                                                <a href="{{ route('admin.seller-request.document', ['id' => $requestRecord->id, 'field' => 'other_documents']) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Other Documents</a>
                                             @else
                                                 <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>Other Documents (Not uploaded)</button>
                                             @endif
@@ -161,7 +161,7 @@
                                         @if($requestRecord->product_upload_mode === 'bulk')
                                             <div class="col-md-6 col-lg-4">
                                                 @if($requestRecord->product_sheet_path)
-                                                    <a href="{{ asset('storage/' . $requestRecord->product_sheet_path) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Product Sheet</a>
+                                                    <a href="{{ route('admin.seller-request.document', ['id' => $requestRecord->id, 'field' => 'product_sheet']) }}" target="_blank" class="btn btn-secondary btn-sm sr-doc-btn">Product Sheet</a>
                                                 @else
                                                     <button type="button" class="btn btn-secondary btn-sm sr-doc-btn" disabled>Product Sheet (Not uploaded)</button>
                                                 @endif

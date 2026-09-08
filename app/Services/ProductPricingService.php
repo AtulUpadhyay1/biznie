@@ -242,16 +242,25 @@ class ProductPricingService
      *
      * @return array<int, array{city: string, state: string}>
      */
+    /** @var array<int, array<int, array{city: string, state: string}>> */
+    private array $destinationCache = [];
+
     public function deliveryDestinations(int $commodityProductId): array
     {
+        // The offers list resolves a destination per offer, and each one landing
+        // here would otherwise re-run both queries below.
+        if (isset($this->destinationCache[$commodityProductId])) {
+            return $this->destinationCache[$commodityProductId];
+        }
+
         $transporterIds = TransporterDetail::whereJsonContains('commodity_product', $commodityProductId)
             ->pluck('user_id');
 
         if ($transporterIds->isEmpty()) {
-            return [];
+            return $this->destinationCache[$commodityProductId] = [];
         }
 
-        return TransporterAddressPrice::whereIn('user_id', $transporterIds)
+        return $this->destinationCache[$commodityProductId] = TransporterAddressPrice::whereIn('user_id', $transporterIds)
             ->whereNotNull('city')
             ->whereNotNull('state')
             ->orderBy('city')
@@ -412,6 +421,14 @@ class ProductPricingService
         }
 
         $first = $this->firstForPriceDestination($sellerProduct);
+
+        // Nothing quoted by the seller: price to the first city the goods can
+        // actually be delivered to. The freight leg below is then a real one,
+        // and the card can name the city its F.O.R price belongs to instead of
+        // showing a "delivered" price that is ex-works under another name.
+        if ($first === null) {
+            $first = collect($this->deliveryDestinations((int) $sellerProduct->commodity_product_id))->first();
+        }
 
         return [
             'state' => $first['state'] ?? $state,

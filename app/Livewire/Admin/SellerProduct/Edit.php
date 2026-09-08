@@ -15,6 +15,14 @@ class Edit extends Component
     public $loading_address = [];
     public $commission_type = 'exclude', $commission_amount = 0;
 
+    /**
+     * Which prices this listing shows on the storefront.
+     *
+     * The seller dashboard could already set these; the admin had no way to,
+     * which is why "Basic" could not be turned on for any listing from here.
+     */
+    public $show_basic_price = false, $show_ex_price = false, $show_for_price = false, $show_fob_price = false;
+
     public function mount($user_id, $product_id)
     {
         $this->user_id      = $user_id;
@@ -28,6 +36,10 @@ class Edit extends Component
         $this->loading_address      = $data->loading_address;
         $this->commission_type      = $data->commission_type;
         $this->commission_amount    = $data->commission_amount;
+        $this->show_basic_price     = (bool) $data->show_basic_price;
+        $this->show_ex_price        = (bool) $data->show_ex_price;
+        $this->show_for_price       = (bool) $data->show_for_price;
+        $this->show_fob_price       = (bool) $data->show_fob_price;
     }
 
     public function render()
@@ -54,6 +66,10 @@ class Edit extends Component
             $data->loading_address = $this->loading_address ?? [];
             $data->commission_type      = $this->commission_type;
             $data->commission_amount    = $this->commission_amount;
+            $data->show_basic_price     = (bool) $this->show_basic_price;
+            $data->show_ex_price        = (bool) $this->show_ex_price;
+            $data->show_for_price       = (bool) $this->show_for_price;
+            $data->show_fob_price       = (bool) $this->show_fob_price;
             $data->save();
 
             $this->dispatch('alert',

@@ -174,13 +174,9 @@ if(! function_exists('sendAdminNotification')){
             "body"           => $body,
             "type"           => $type,
         ];
-        $admin_list = Admin::get();
-        foreach ($admin_list as $admin_data){
-            if($admin_data->fcm_token){
-                FireBaseManager::sendMessage($notificationArr, $in_app_module, $admin_data->fcm_token);
-            }
-        }
-
+        // Saved before the push goes out: the bell and the dashboard are what
+        // the admin actually reads, and they must not depend on Firebase being
+        // reachable.
         if($save){
             $notification = new Notification;
             $notification->user_id = null;
@@ -191,6 +187,13 @@ if(! function_exists('sendAdminNotification')){
             $notification->is_read = 0;
             $notification->is_admin_read = 0;
             $notification->save();
+        }
+
+        $admin_list = Admin::get();
+        foreach ($admin_list as $admin_data){
+            if($admin_data->fcm_token){
+                FireBaseManager::sendMessage($notificationArr, $in_app_module, $admin_data->fcm_token);
+            }
         }
     }
 }

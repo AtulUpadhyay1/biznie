@@ -356,15 +356,69 @@
             });
     }
 
+    /* ----------------------------------------------------------------------
+       Heal sidebar submenus left in a broken state
+       ----------------------------------------------------------------------
+       A wire:navigate (or a failed Livewire request) can swap the DOM while a
+       Bootstrap collapse is mid-transition. The panel is then left with class
+       `collapsing` and an inline height of 0 while its trigger still says
+       aria-expanded="true" — the chevron points up and the submenu is blank.
+       Bootstrap never recovers on its own because the transitionend it was
+       waiting for belonged to an element that no longer exists.
+       ---------------------------------------------------------------------- */
+    function panelFor(sidebar, trigger) {
+        var sel = trigger.getAttribute('data-bs-target') || trigger.getAttribute('href') || '';
+        return sel.charAt(0) === '#' && sel.length > 1 ? sidebar.querySelector(sel) : null;
+    }
+
+    function healSidebarCollapses() {
+        var sidebar = document.querySelector('.sidebar');
+        if (!sidebar) { return; }
+
+        sidebar.querySelectorAll('.collapsing').forEach(function (el) {
+            el.classList.remove('collapsing');
+            el.classList.add('collapse');
+            el.style.height = '';
+        });
+
+        sidebar.querySelectorAll('[data-bs-toggle="collapse"]').forEach(function (trigger) {
+            var panel = panelFor(sidebar, trigger);
+            if (!panel) { return; }
+            var expanded = trigger.getAttribute('aria-expanded') === 'true';
+            panel.classList.add('collapse');
+            panel.classList.toggle('show', expanded);
+            if (expanded) { panel.style.height = ''; }
+        });
+
+        updateSidebarScrollbar();
+    }
     function onNavigated() {
         applyFoldedState();
         reinitPlugins();
+        healSidebarCollapses();
         syncTopbarTitle();
         sweepBrokenImages();
         initCountdowns();
         var input = document.querySelector('.bz-sb-search input');
-        if (input && input.value) { filterSidebar(input.value); }
+        if (input && input.value) {
+            filterSidebar(input.value);
+        } else {
+            // No query: nothing may stay hidden from a filter run before the swap.
+            document.querySelectorAll('.sidebar .bz-hidden').forEach(function (el) {
+                el.classList.remove('bz-hidden');
+            });
+        }
     }
+
+    // A Livewire request that errors out leaves the same half-finished DOM as a
+    // navigation does, which is when the admin sees submenus go blank.
+    document.addEventListener('livewire:init', function () {
+        if (!window.Livewire || !window.Livewire.hook) { return; }
+        window.Livewire.hook('commit', function (payload) {
+            if (payload.respond) { payload.respond(healSidebarCollapses); }
+            if (payload.fail) { payload.fail(healSidebarCollapses); }
+        });
+    });
 
     /* ----------------------------------------------------------------------
        select2 <-> Livewire bridge  (`.bz-select2`)
