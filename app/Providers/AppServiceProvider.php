@@ -13,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        // Biznie AI: rules first, optional Claude second.
+        $this->app->bind(
+            \App\Services\Chat\Nlu\IntentClassifier::class,
+            \App\Services\Chat\Nlu\HybridClassifier::class
+        );
     }
 
     /**

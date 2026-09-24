@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "anthropic-ai/sdk": "^0.51",
         "barryvdh/laravel-dompdf": "^2.1",
         "google/apiclient": "*",
         "guzzlehttp/guzzle": "^7.2",

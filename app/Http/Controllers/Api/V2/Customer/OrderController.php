@@ -15,7 +15,7 @@ class OrderController extends Controller
     {
         $perPage = min((int) $request->get('per_page', 15), 50);
 
-        $list = CommodityProductOrder::where('customer_user_id', $request->user()->id)
+        $list = CommodityProductOrder::where('customer_user_id', $this->ownerId($request))
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
             ->with([
                 'getBrand:id,name',
@@ -40,7 +40,7 @@ class OrderController extends Controller
 
     public function show(Request $request, int $id): JsonResponse
     {
-        $order = CommodityProductOrder::where('customer_user_id', $request->user()->id)
+        $order = CommodityProductOrder::where('customer_user_id', $this->ownerId($request))
             ->with([
                 'getBrand:id,name',
                 'getCommodityProduct',
@@ -59,5 +59,13 @@ class OrderController extends Controller
             'success' => true,
             'data'    => new OrderDetailResource($order),
         ]);
+    }
+
+    /** Staff sub-users act on their owner's orders, like the enquiry screens. */
+    private function ownerId(Request $request): int
+    {
+        $user = $request->user();
+
+        return $user->is_staff ? (int) $user->added_by : (int) $user->id;
     }
 }

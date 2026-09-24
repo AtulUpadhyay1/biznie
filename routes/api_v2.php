@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V2\PriceController;
 use App\Http\Controllers\Api\V2\ContactController;
 use App\Http\Controllers\Api\V2\EnquiryController;
 use App\Http\Controllers\Api\V2\BrandController;
+use App\Http\Controllers\Api\V2\ChatController;
 use App\Http\Controllers\Api\V2\PackagingTypeController;
 use App\Http\Controllers\Api\V2\ProductUnitController;
 use App\Http\Controllers\Api\V2\AddressLookupController;
@@ -87,6 +88,11 @@ Route::get('prices/{id}/history', [PriceController::class, 'history']);
 
 Route::post('contact', [ContactController::class, 'store']);
 Route::post('enquiry', [EnquiryController::class, 'store']);
+
+// Biznie AI chat. Public on purpose: auth is optional and resolved from the
+// bearer token inside the controller, so a stale token degrades to a guest
+// reply instead of a 401.
+Route::post('chat/messages', [ChatController::class, 'store'])->middleware('throttle:chat');
 
 // Address lookup (public)
 Route::get('address/pincode/{pincode}', [AddressLookupController::class, 'pincode'])->whereNumber('pincode');

@@ -549,7 +549,7 @@ class LiveBiddingService
 
         // A failed push must never roll back the bid that triggered it.
         try {
-            sendNotification($user, $title, $body, 'product_enquiry', ['unique_id' => $rfq->unique_id], true);
+            app(PushNotifier::class)->toUser($user, $title, $body, 'product_enquiry', ['unique_id' => $rfq->unique_id], true);
         } catch (\Throwable $e) {
             report($e);
         }

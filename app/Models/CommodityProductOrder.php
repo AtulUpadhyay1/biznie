@@ -88,4 +88,25 @@ class CommodityProductOrder extends Model
     {
         return $this->belongsTo(SellerProductEnquiry::class, 'seller_product_enquiries_id');
     }
+
+    /**
+     * Vehicle / driver rows as the buyer sees them: enough to call the driver
+     * or quote the vehicle number, none of the paperwork.
+     *
+     * @return list<array{vehicle_number: ?string, driver_name: ?string, driver_phone: ?string, tracking_number: ?string, transporter_name: ?string, status: ?string}>
+     */
+    public function trackingRows(): array
+    {
+        return $this->getDrivers
+            ->map(fn (CommodityProductOrderDriver $driver) => [
+                'vehicle_number'   => $driver->vehicle_number ?: null,
+                'driver_name'      => $driver->name ?: null,
+                'driver_phone'     => $driver->phone ?: null,
+                'tracking_number'  => $driver->tracking_number ?: null,
+                'transporter_name' => $driver->transporter_name ?: null,
+                'status'           => $driver->status ?: null,
+            ])
+            ->values()
+            ->all();
+    }
 }

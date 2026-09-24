@@ -18,6 +18,12 @@ class Kernel extends ConsoleKernel
             ->dailyAt('09:30')
             ->timezone('Asia/Kolkata')
             ->withoutOverlapping();
+
+        // Biznie AI chat log retention (BIZNIE_CHAT_RETENTION_DAYS, default 90).
+        $schedule->command('chat:prune')
+            ->dailyAt('03:15')
+            ->timezone('Asia/Kolkata')
+            ->withoutOverlapping();
     }
 
     /**

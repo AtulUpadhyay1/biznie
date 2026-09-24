@@ -31,6 +31,8 @@ class OrderDetailResource extends OrderResource
             'final_quantity_by_seller'   => $this->final_quantity_by_seller,
             'final_quantity_by_customer' => $this->final_quantity_by_customer,
             'cancel_reason'     => $this->cancel_reason,
+            // Additive: vehicle / driver tracking built from `getDrivers`.
+            'tracking'          => $this->resource->trackingRows(),
         ]);
     }
 }

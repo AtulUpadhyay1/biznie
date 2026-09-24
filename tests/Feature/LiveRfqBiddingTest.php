@@ -8,6 +8,7 @@ use App\Models\SellerCommodityProduct;
 use App\Models\SellerProductEnquiry;
 use App\Models\User;
 use App\Services\Rfq\LiveBiddingService;
+use App\Services\Rfq\PushNotifier;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -35,6 +36,18 @@ class LiveRfqBiddingTest extends TestCase
         }
 
         $this->product = $product;
+
+        // Raising an RFQ fans it out to every matching seller in the (dev)
+        // database, with real device tokens: no push may leave a test run.
+        $this->app->instance(PushNotifier::class, new class extends PushNotifier {
+            public function toUser(User $user, string $title, string $body, string $type = 'notification', array $payload = [], bool $save = false): void
+            {
+            }
+
+            public function toAdmins(string $title, string $body, string $type = 'notification', array $payload = []): void
+            {
+            }
+        });
     }
 
     /* ------------------------------------------------------------------ */

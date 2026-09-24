@@ -28,6 +28,29 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        // The chat route is public (auth is optional), so the user has to be
+        // resolved off the bearer token here rather than via `$request->user()`.
+        RateLimiter::for('chat', function (Request $request) {
+            $user   = auth('sanctum')->user();
+            $limits = config('biznie.chat.rate_limits');
+
+            $limit = $user
+                ? Limit::perMinute((int) $limits['user_per_minute'])->by('chat:u:' . $user->getAuthIdentifier())
+                : Limit::perMinute((int) $limits['guest_per_minute'])->by('chat:ip:' . $request->ip());
+
+            return $limit->response(function (Request $request, array $headers) {
+                $language = in_array($request->input('language'), config('biznie.chat.languages'), true)
+                    ? $request->input('language')
+                    : 'en';
+
+                return response()->json([
+                    'success'     => false,
+                    'message'     => __('chat.rate_limited', [], $language),
+                    'retry_after' => (int) ($headers['Retry-After'] ?? 60),
+                ], 429, $headers);
+            });
+        });
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
