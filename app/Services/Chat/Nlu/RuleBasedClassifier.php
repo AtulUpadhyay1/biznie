@@ -20,26 +20,28 @@ class RuleBasedClassifier implements IntentClassifier
 
     private const ORDER_WORDS = [
         'order', 'orders', 'shipment', 'consignment', 'delivery', 'dispatch', 'truck', 'gaadi', 'gadi', 'vehicle',
-        'ऑर्डर', 'आर्डर', 'डिलीवरी', 'गाड़ी', 'অর্ডার', 'ডেলিভারি', 'ஆர்டர்', 'டெலிவரி', 'ఆర్డర్', 'డెలివరీ',
+        'ऑर्डर', 'आर्डर', 'डिलीवरी', 'गाड़ी', 'गाडी', 'डिस्पैच', 'ट्रक', 'शिपमेंट', 'অর্ডার', 'ডেলিভারি', 'ஆர்டர்', 'டெலிவரி', 'ఆర్డర్', 'డెలివరీ',
     ];
 
     private const ENQUIRY_WORDS = [
         'enquiry', 'enquiries', 'inquiry', 'inquiries', 'enquiry\'s', 'rfq', 'rfqs', 'quote', 'quotes', 'quotation',
         'quotations', 'bid', 'bids', 'bidding', 'offer', 'offers',
-        'एन्क्वायरी', 'इन्क्वायरी', 'पूछताछ', 'कोटेशन', 'बोली', 'এনকোয়ারি', 'কোটেশন', 'चौकशी',
+        'एन्क्वायरी', 'इन्क्वायरी', 'इंक्वायरी', 'एंक्वायरी', 'एनक्वायरी', 'पूछताछ', 'कोटेशन', 'बोली', 'बिडिंग', 'ऑफर',
+        'এনকোয়ারি', 'কোটেশন', 'चौकशी',
         'விசாரணை', 'கொட்டேஷன்', 'ఎంక్వైరీ', 'కొటేషన్',
     ];
 
     private const STATUS_WORDS = [
         'where', 'when', 'status', 'track', 'tracking', 'update', 'updates', 'arrive', 'reach', 'reached', 'kahan', 'kaha',
         'kahaan', 'kab', 'kya hua', 'aayega', 'aaega', 'ayega', 'milega', 'pahuncha', 'pahunchega', 'pohcha', 'dispatched',
-        'कहाँ', 'कहां', 'कब', 'स्टेटस', 'स्थिति', 'কোথায়', 'কবে', 'স্ট্যাটাস', 'कुठे', 'कधी',
+        'कहाँ', 'कहां', 'कब', 'स्टेटस', 'स्थिति', 'क्या हुआ', 'आएगा', 'आयेगा', 'मिलेगा', 'पहुँच', 'पहुंच', 'अपडेट',
+        'কোথায়', 'কবে', 'স্ট্যাটাস', 'कुठे', 'कधी',
         'எங்கே', 'எப்போது', 'நிலை', 'ஸ்டேட்டஸ்', 'ఎక్కడ', 'ఎప్పుడు', 'స్టేటస్',
     ];
 
     private const LIST_WORDS = [
         'my', 'all', 'list', 'show', 'recent', 'previous', 'past', 'history', 'mera', 'mere', 'meri', 'dikhao', 'dikhaiye',
-        'मेरा', 'मेरे', 'मेरी', 'सभी', 'সব', 'আমার', 'माझे', 'माझी', 'माझा', 'सर्व', 'என்', 'எனது', 'அனைத்து', 'నా', 'అన్ని',
+        'मेरा', 'मेरे', 'मेरी', 'सभी', 'सारे', 'सारी', 'दिखाओ', 'दिखाइए', 'दिखाएँ', 'दिखाएं', 'সব', 'আমার', 'माझे', 'माझी', 'माझा', 'सर्व', 'என்', 'எனது', 'அனைத்து', 'నా', 'అన్ని',
     ];
 
     /** "Where is my stuff" phrasing that implies an order without saying so. */
@@ -53,26 +55,31 @@ class RuleBasedClassifier implements IntentClassifier
         'new enquiry', 'create enquiry', 'raise enquiry', 'send enquiry', 'new inquiry', 'create inquiry', 'new rfq',
         'create rfq', 'raise rfq', 'raise an rfq', 'post requirement', 'post my requirement', 'get quote', 'get a quote',
         'get quotes', 'quote chahiye', 'quotation chahiye', 'rate chahiye', 'enquiry banao', 'enquiry karni',
-        'नई एन्क्वायरी', 'कोटेशन चाहिए', 'নতুন এনকোয়ারি', 'নতুন কোটেশন', 'नवीन चौकशी', 'புதிய விசாரணை', 'కొత్త ఎంక్వైరీ',
+        'नई एन्क्वायरी', 'नई इन्क्वायरी', 'नई enquiry', 'नयी enquiry', 'नई inquiry', 'नया rfq', 'नई rfq', 'enquiry बनाओ',
+        'enquiry बनाएँ', 'enquiry बनाएं', 'enquiry बनानी', 'enquiry बनाना', 'enquiry डालनी', 'enquiry डालना', 'enquiry डालो',
+        'enquiry डालें', 'enquiry करनी', 'rfq बनाओ', 'rfq डालो', 'एन्क्वायरी बनाओ', 'एन्क्वायरी डालनी', 'quote चाहिए',
+        'quotation चाहिए', 'rate चाहिए', 'कोटेशन चाहिए', 'रेट चाहिए', 'নতুন এনকোয়ারি', 'নতুন কোটেশন', 'नवीन चौकशी', 'புதிய விசாரணை', 'కొత్త ఎంక్వైరీ',
     ];
 
     private const CREATE_WORDS = [
         'need', 'needed', 'want', 'require', 'required', 'requirement', 'buy', 'purchase', 'procure', 'chahiye', 'chaiye',
         'chahie', 'kharidna', 'kharid', 'lena hai', 'mangwana',
-        'चाहिए', 'खरीदना', 'खरीद', 'দরকার', 'লাগবে', 'কিনতে', 'हवे', 'हवा', 'पाहिजे', 'खरेदी', 'வேண்டும்', 'வாங்க',
+        'चाहिए', 'चाहिये', 'खरीदना', 'खरीद', 'ख़रीद', 'लेना है', 'मंगवाना', 'मँगवाना', 'ज़रूरत', 'जरूरत', 'দরকার', 'লাগবে', 'কিনতে', 'हवे', 'हवा', 'पाहिजे', 'खरेदी', 'வேண்டும்', 'வாங்க',
         'కావాలి', 'కొనాలి',
     ];
 
     private const PRICE_WORDS = [
         'price', 'prices', 'rate', 'rates', 'cost', 'pricing', 'bhav', 'bhaav', 'bhao', 'daam', 'dam', 'kimat', 'keemat',
         'qimat', 'bhav kya', 'rate kya',
-        'भाव', 'रेट', 'दाम', 'कीमत', 'মূল্য', 'দাম', 'দর', 'রেট', 'किंमत', 'दर', 'விலை', 'ரேட்', 'ధర', 'రేట్',
+        'भाव', 'रेट', 'दाम', 'कीमत', 'क़ीमत', 'प्राइस', 'मूल्य', 'মূল্য', 'দাম', 'দর', 'রেট', 'किंमत', 'दर', 'விலை', 'ரேட்', 'ధర', 'రేట్',
     ];
 
     private const SUPPORT_STRONG = [
         'support', 'customer care', 'customer support', 'contact', 'contact us', 'call me', 'talk to', 'speak to',
         'helpline', 'phone number', 'whatsapp', 'email', 'human', 'agent', 'executive', 'baat karni', 'baat karna',
-        'सपोर्ट', 'संपर्क', 'बात करनी', 'সাপোর্ট', 'যোগাযোগ', 'संपर्क साधा', 'ஆதரவு', 'தொடர்பு', 'సపోర్ట్', 'సంప్రదించ',
+        'सपोर्ट', 'संपर्क', 'बात करनी', 'बात करना', 'बात करवा', 'बात कराओ', 'कस्टमर केयर', 'ग्राहक सेवा', 'हेल्पलाइन',
+        'call करो', 'call करें', 'call कीजिए', 'कॉल करो', 'कॉल करें', 'कॉल कीजिए', 'फोन करो', 'फ़ोन करो', 'व्हाट्सएप',
+        'ईमेल', 'সাপোর্ট', 'যোগাযোগ', 'संपर्क साधा', 'ஆதரவு', 'தொடர்பு', 'సపోర్ట్', 'సంప్రదించ',
     ];
 
     private const SUPPORT_WEAK = [
@@ -86,11 +93,11 @@ class RuleBasedClassifier implements IntentClassifier
 
     private const GREETING_WORDS = [
         'hi', 'hii', 'hiii', 'hello', 'helo', 'hey', 'namaste', 'namaskar', 'namaskaram', 'vanakkam', 'good morning',
-        'good afternoon', 'good evening', 'नमस्ते', 'नमस्कार', 'নমস্কার', 'হ্যালো', 'வணக்கம்', 'నమస్కారం', 'హలో',
+        'good afternoon', 'good evening', 'नमस्ते', 'नमस्कार', 'हेलो', 'हैलो', 'प्रणाम', 'सुप्रभात', 'নমস্কার', 'হ্যালো', 'வணக்கம்', 'నమస్కారం', 'హలో',
     ];
 
     private const THANKS_WORDS = [
-        'thanks', 'thank you', 'thankyou', 'thx', 'dhanyavad', 'dhanyawad', 'shukriya', 'धन्यवाद', 'शुक्रिया',
+        'thanks', 'thank you', 'thankyou', 'thx', 'dhanyavad', 'dhanyawad', 'shukriya', 'धन्यवाद', 'शुक्रिया', 'थैंक्स', 'थैंक यू', 'थैंक्यू',
         'ধন্যবাদ', 'आभार', 'நன்றி', 'ధన్యవాదాలు', 'ధన్యవాదం',
     ];
 
@@ -106,6 +113,7 @@ class RuleBasedClassifier implements IntentClassifier
         'mt'               => 'MT',
         'tonnes?'          => 'MT',
         'tons?'            => 'MT',
+        'मीट्रिक\s*टन'      => 'MT',
         'टन'               => 'MT',
         'টন'               => 'MT',
         'டன்'              => 'MT',
@@ -122,6 +130,8 @@ class RuleBasedClassifier implements IntentClassifier
         'கிலோ'             => 'Kg',
         'కిలో'             => 'Kg',
         'pcs'              => 'Pcs',
+        'पीस'              => 'Pcs',
+        'बैग'              => 'Bags',
         'pieces?'          => 'Pcs',
         'nos'              => 'Nos',
         'bags?'            => 'Bags',
@@ -231,6 +241,12 @@ class RuleBasedClassifier implements IntentClassifier
         'मुझे', 'का', 'की', 'के', 'को', 'क्या', 'है', 'हैं', 'आज', 'में', 'तक', 'से', 'कितना', 'आमार', 'এর', 'কত', 'আজ',
         'কি', 'मला', 'आहे', 'चा', 'ची', 'चे', 'आज', 'काय', 'எனக்கு', 'என்ன', 'இன்று', 'ஒரு', 'నాకు', 'ఎంత',
         'ఈరోజు', 'ఏమిటి', 'ఉంది', 'உள்ளது', 'আছে', 'कैसे', 'কীভাবে', 'कसे',
+        // Hindi (Devanagari) verbs, pronouns and filler, mirroring the Roman list above.
+        'बता', 'बताओ', 'बताइए', 'बताइये', 'बताएँ', 'बताएं', 'दो', 'दीजिए', 'दीजिये', 'करो', 'करें', 'करना', 'करनी',
+        'कीजिए', 'कीजिये', 'जी', 'भाई', 'सर', 'कितनी', 'कितने', 'मैं', 'हम', 'हमें', 'हमको', 'मुझको', 'आप', 'आपका', 'आपकी',
+        'चाहता', 'चाहती', 'हूँ', 'हूं', 'हो', 'था', 'थी', 'गया', 'गई', 'कुछ', 'कोई', 'किसी', 'वाला', 'वाली', 'वाले', 'अभी',
+        'ठीक', 'और', 'या', 'पर', 'लिए', 'लेना', 'देना', 'कौन', 'क्यों', 'होगा', 'होगी', 'मिलेगी', 'नया', 'नई', 'नयी', 'चेक',
+        'कृपया', 'प्लीज़', 'प्लीज', 'बात', 'दिन', 'सबसे', 'अच्छा', 'बढ़िया', 'लाइव', 'तो',
     ];
 
     public function classify(string $text, ChatContext $ctx, array $history = []): NluResult

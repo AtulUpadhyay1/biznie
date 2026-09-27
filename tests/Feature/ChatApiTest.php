@@ -588,6 +588,34 @@ class ChatApiTest extends TestCase
         $this->assertSame('enquiry.create', $rules->analyse('need 20 mt tmt in pune')->intent);
     }
 
+    public function test_rule_nlu_understands_devanagari_hindi_with_english_terms(): void
+    {
+        $rules = new RuleBasedClassifier();
+
+        foreach ([
+            'मेरा order कहाँ है'           => 'order.status',
+            'मेरे orders दिखाओ'            => 'order.list',
+            'मेरी enquiry का status'       => 'enquiry.status',
+            'मेरी enquiries'               => 'enquiry.list',
+            'नई enquiry बनाओ'              => 'enquiry.create',
+            'मुझे quote चाहिए'             => 'enquiry.create',
+            'TMT का rate बताओ'             => 'product.search',
+            'support से बात करनी है'       => 'support.contact',
+            'नमस्ते'                       => 'greeting',
+            'धन्यवाद'                      => 'thanks',
+        ] as $text => $intent) {
+            $this->assertSame($intent, $rules->analyse($text)->intent, $text);
+        }
+
+        $rfq = $rules->analyse('मुझे 20 MT TMT चाहिए');
+        $this->assertSame('enquiry.create', $rfq->intent);
+        $this->assertSame(20.0, $rfq->entity('quantity'));
+        $this->assertSame('MT', $rfq->entity('unit'));
+        $this->assertSame('tmt', $rfq->entity('product_query'));
+
+        $this->assertSame('tmt', $rules->analyse('TMT का rate बताओ')->entity('product_query'));
+    }
+
     public function test_rule_nlu_keeps_thousands_separators(): void
     {
         $rules = new RuleBasedClassifier();
@@ -954,7 +982,7 @@ class ChatApiTest extends TestCase
     {
         $response = $this->send(['action' => ['type' => 'bootstrap'], 'language' => 'hi']);
 
-        $this->assertStringContainsString('Namaste', $this->blocks($response)[0]['text']);
+        $this->assertStringContainsString('नमस्ते', $this->blocks($response)[0]['text']);
         $this->assertSame(
             __('chat.menu.track_order', [], 'hi'),
             $this->block($response, 'quick_replies')['options'][0]['label']
