@@ -4,6 +4,7 @@ namespace App\Http\Resources\V2;
 
 use App\Http\Resources\Seller\MyCommodityProductVariationResource;
 use App\Services\ProductPricingService;
+use App\Support\ProductFamily;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -153,14 +154,25 @@ class ProductDetailResource extends JsonResource
                 'destinations' => $pricing->deliveryDestinations((int) $this->id),
             ],
 
-            'variations' => $sellerProduct
+            'variations' => $variations = $sellerProduct
                 ? MyCommodityProductVariationResource::collection($sellerProduct->getStatePrice)->resolve()
                 : [],
 
-            'quality'   => $pricing->qualityOptions($this->resource),
+            'quality'   => $quality = $pricing->qualityOptions($this->resource),
             'packaging' => $sellerProduct ? $pricing->packagingOptions($sellerProduct) : [],
 
             'price_history' => $sellerProduct ? $pricing->priceHistory($sellerProduct) : [],
+
+            // Specs, chemistry, mechanicals and applications for this
+            // product's family (B11) — TMT reads IS 1786, not an HR sheet.
+            'reference' => ProductFamily::reference(
+                $this->resource,
+                array_column($quality, 'name'),
+                $variations
+            ),
+            // Only a real video: the page used to show an HR-sheet video
+            // title on every product.
+            'video_url' => $this->video_url ?: null,
         ];
     }
 
