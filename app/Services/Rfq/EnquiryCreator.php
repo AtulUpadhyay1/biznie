@@ -2,6 +2,7 @@
 
 namespace App\Services\Rfq;
 
+use App\Models\CommodityProduct;
 use App\Models\ProductEnquiry;
 use App\Models\ProductUnit;
 use App\Models\User;
@@ -74,6 +75,53 @@ class EnquiryCreator
         }
 
         return $enquiry;
+    }
+
+    /**
+     * The RFQ's total quantity: its single `quantity` (Rate Finder), else the
+     * sum of the per-size rows (variant builder).
+     */
+    public static function totalQuantity(array $data): float
+    {
+        if (isset($data['quantity']) && is_numeric($data['quantity']) && (float) $data['quantity'] > 0) {
+            return (float) $data['quantity'];
+        }
+
+        $total = 0.0;
+        foreach (is_array($data['variation'] ?? null) ? $data['variation'] : [] as $row) {
+            if (is_array($row) && is_numeric($row['quantity'] ?? null)) {
+                $total += (float) $row['quantity'];
+            }
+        }
+
+        return round($total, 2);
+    }
+
+    /**
+     * Why this RFQ is below the product's minimum order, or null when it is
+     * not (B14). Shared by the API and the chat assistant so neither can raise
+     * an RFQ a seller would have to refuse.
+     */
+    public static function minimumOrderError(array $data): ?string
+    {
+        $product = CommodityProduct::with('getUnit')->find($data['commodity_product_id'] ?? null);
+        $moq = (float) ($product?->min_order_qty ?? 0);
+        $total = self::totalQuantity($data);
+
+        if ($total <= 0) {
+            return 'Enter the quantity you need';
+        }
+
+        if ($moq > 0 && $total < $moq) {
+            $unit = $data['unit_label'] ?? $product?->getUnit?->short_name ?? 'MT';
+            // "MT", never "Mt" (4.12).
+            $unit = in_array(strtolower(trim($unit)), ['mt', 'metric ton', 'metric tonne'], true) ? 'MT' : $unit;
+            $fmt = fn (float $n) => rtrim(rtrim(number_format($n, 2, '.', ''), '0'), '.');
+
+            return "Minimum order is {$fmt($moq)} {$unit} for this product (you entered {$fmt($total)} {$unit})";
+        }
+
+        return null;
     }
 
     /** Opens bidding and invites (and pushes) matching sellers. Never throws. */

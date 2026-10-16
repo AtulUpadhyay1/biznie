@@ -12,11 +12,13 @@ use App\Models\CommodityProductOrderLedger;
 use App\Models\CreditWalletTransaction;
 use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
+use App\Rules\OrderQuantity;
 use App\Services\Rfq\EnquiryCreator;
 use App\Services\Rfq\LiveBiddingService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class EnquiryController extends Controller
@@ -86,11 +88,13 @@ class EnquiryController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'commodity_product_id' => ['required', 'integer', 'exists:commodity_products,id'],
             'brand_id'             => ['nullable', 'integer', 'exists:brands,id'],
             'origin_city'          => ['nullable', 'string', 'max:120'],
             'variation'            => ['nullable', 'array'],
+            // Every size row a real quantity: > 0, at most 2 decimals.
+            'variation.*.quantity' => ['nullable', new OrderQuantity],
             'billing_address'      => ['nullable'],
             'delivery_address'     => ['nullable'],
             'consignee_detail'     => ['nullable'],
@@ -101,7 +105,7 @@ class EnquiryController extends Controller
             'price'                => ['nullable'],
             'payment_mode'         => ['nullable', 'string', 'max:60'],
             'credit_day'           => ['nullable', 'integer'],
-            'quantity'             => ['nullable', 'numeric', 'min:0.001'],
+            'quantity'             => ['nullable', new OrderQuantity],
             'unit_id'              => ['nullable', 'integer', 'exists:product_units,id'],
             'unit_label'           => ['nullable', 'string', 'max:30'],
             'size_label'           => ['nullable', 'string', 'max:150'],
@@ -109,6 +113,18 @@ class EnquiryController extends Controller
             'delivery_state'       => ['nullable', 'string', 'max:120'],
             'required_by'          => ['nullable', 'string', 'max:120'],
         ]);
+
+        // The total against the product's MOQ, once the rows themselves pass.
+        $validator->after(function ($v) use ($request) {
+            if ($v->errors()->isNotEmpty()) {
+                return;
+            }
+            if ($message = EnquiryCreator::minimumOrderError($request->all())) {
+                $v->errors()->add($request->filled('quantity') ? 'quantity' : 'variation', $message);
+            }
+        });
+
+        $data = $validator->validate();
 
         $enquiry = $this->creator->create($request->user(), $data);
 

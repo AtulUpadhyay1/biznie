@@ -25,6 +25,8 @@ class ProductResource extends JsonResource
             'images'      => $images,
             'base_price'  => (float) ($this->base_price ?? 0),
             'gst'         => (float) ($this->gst ?? 0),
+            // Lets list-driven forms (Rate Finder) enforce the MOQ (B14).
+            'min_order_qty' => (float) ($this->min_order_qty ?? 0),
             'category'    => $this->whenLoaded('getCategory', fn () => $this->getCategory ? [
                 'id'   => $this->getCategory->id,
                 'name' => $this->getCategory->name,

@@ -192,7 +192,11 @@ class EnquiryHandler
             'delivery_state' => ['nullable', 'string', 'max:120'],
             'required_by'    => ['required', 'string', Rule::in(config('biznie.chat.required_by_options'))],
             'description'    => ['nullable', 'string', 'max:2000'],
-        ])->validate();
+        ])->after(function ($v) use ($payload) {
+            if ($v->errors()->isEmpty() && ($message = EnquiryCreator::minimumOrderError($payload))) {
+                $v->errors()->add('quantity', $message);
+            }
+        })->validate();
 
         // The chat turn runs in a transaction; bidding and the seller pushes
         // wait until it has committed (see ChatContext::afterCommit).
