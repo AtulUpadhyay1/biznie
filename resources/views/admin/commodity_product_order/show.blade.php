@@ -559,31 +559,31 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $enquiry_data->billing_address['company_name'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['company_name'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>Phone</dt>
-                                            <dd>{{ $enquiry_data->billing_address['phone'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['phone'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $enquiry_data->billing_address['gst'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['gst'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>Address Line1</dt>
-                                            <dd>{{ $enquiry_data->billing_address['address_line_one'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['address_line_one'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>Address Line2</dt>
-                                            <dd>{{ $enquiry_data->billing_address['address_line_two'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['address_line_two'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $enquiry_data->billing_address['state'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['state'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $enquiry_data->billing_address['city'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['city'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>Pincode</dt>
@@ -603,34 +603,92 @@
                                     </div>
                                 </div>
                                 <div class="card-body p-3">
+                                    @php
+                                        // Normalised ship-to: delivery address, else consignee (B28).
+                                        $shipTo = \App\Support\AddressFormatter::first($enquiry_data->delivery_address, $enquiry_data->consignee_detail);
+                                    @endphp
+                                    @if (! $shipTo)
+                                        <div class="alert alert-warning mb-0 py-2">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                            <strong>Delivery address not provided.</strong>
+                                            Confirm the ship-to address with the buyer before dispatch.
+                                        </div>
+                                    @else
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['company_name'] }}</dd>
+                                            <dd>{{ $shipTo['company_name'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>Phone</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['phone'] }}</dd>
+                                            <dd>{{ $shipTo['phone'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['gst'] }}</dd>
+                                            <dd>{{ $shipTo['gstin'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>Address Line1</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['address_line_one'] }}</dd>
+                                            <dd>{{ $shipTo['address_line_one'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>Address Line2</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['address_line_two'] }}</dd>
+                                            <dd>{{ $shipTo['address_line_two'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['state'] }}</dd>
+                                            <dd>{{ $shipTo['state'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['city'] }}</dd>
+                                            <dd>{{ $shipTo['city'] ?? '—' }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Pincode</dt>
+                                            <dd>{{ $shipTo['pincode'] ?? '—' }}</dd>
+                                        </div>
+                                    </dl>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h5>Consignee (Ship to)</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <dl class="bz-kv-list">
+                                        <div>
+                                            <dt>Company</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['company_name'] ?? '—' }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Phone</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['phone'] ?? '—' }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>GST</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['gst'] ?? '—' }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line1</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['address_line_one'] ?? '—' }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Address Line2</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['address_line_two'] ?? '—' }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>State</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['state'] ?? '—' }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>City</dt>
+                                            <dd>{{ $enquiry_data->consignee_detail['city'] ?? '—' }}</dd>
                                         </div>
                                         <div>
                                             <dt>Pincode</dt>

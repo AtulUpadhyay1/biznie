@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2;
 
+use App\Services\Orders\OrderSummary;
 use Illuminate\Http\Request;
 
 class OrderDetailResource extends OrderResource
@@ -9,8 +10,17 @@ class OrderDetailResource extends OrderResource
     public function toArray(Request $request): array
     {
         $base = parent::toArray($request);
+        $addresses = OrderSummary::addresses($this->resource);
 
         return array_merge($base, [
+            // Normalised, render-ready addresses (B28). The raw columns below
+            // are kept for older clients only — never print them.
+            'billing'           => $addresses['billing'],
+            'delivery'          => $addresses['delivery'],
+            'delivery_address_missing' => $addresses['delivery'] === null,
+            // Quantity per size, GST and terms: the same figures the seller and
+            // admin see for this order.
+            'summary'           => OrderSummary::forOrder($this->resource),
             'billing_address'   => $this->billing_address,
             'delivery_address'  => $this->delivery_address,
             'consignee_detail'  => $this->consignee_detail,

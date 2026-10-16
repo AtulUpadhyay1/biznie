@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\V2\Transporter;
 
+use App\Services\Orders\OrderSummary;
+use App\Support\AddressFormatter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,14 +31,18 @@ class TransporterOrderDetailResource extends JsonResource
             'status'          => $this->status,
             'origin_city'     => $this->origin_city,
             'transport_price' => (float) ($this->transport_price ?? 0),
-            'total_quantity'  => $this->total_quantity,
-            'final_quantity'  => $this->final_quantity,
+            'total_quantity'  => ($summary = OrderSummary::forOrder($this->resource))['total_quantity'],
+            'final_quantity'  => $this->final_quantity_by_seller,
+            'quantity_unit'   => $summary['unit'],
             'total_amount'    => (float) ($this->total_amount ?? 0),
             'final_amount'    => (float) ($this->final_amount ?? 0),
-            'load_within'     => $this->load_within ?? null,
+            'load_within'     => $summary['dispatch_days'],
             'loading_address' => $this->loading_address ?? null,
             'delivery_address'=> $this->delivery_address ?? null,
             'consignee_detail'=> $this->consignee_detail ?? null,
+            // Pickup and drop, normalised for display (B28).
+            'pickup'          => AddressFormatter::normalize($this->loading_address),
+            'delivery'        => OrderSummary::addresses($this->resource)['delivery'],
             'history'         => $this->history ?? [],
             'invoices'        => $invoiceList,
             'customer' => $this->getCustomer ? [

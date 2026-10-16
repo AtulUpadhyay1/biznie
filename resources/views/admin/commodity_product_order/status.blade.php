@@ -79,9 +79,9 @@
         <div>
             <dt>Delivery Location</dt>
             <dd>
-                {{ $enquiry_data->consignee_detail['address_line_one'] }},
-                {{ $enquiry_data->consignee_detail['address_line_two'] }},
-                {{ $enquiry_data->consignee_detail['city'] }},
+                {{ $enquiry_data->consignee_detail['address_line_one'] ?? '—' }},
+                {{ $enquiry_data->consignee_detail['address_line_two'] ?? '—' }},
+                {{ $enquiry_data->consignee_detail['city'] ?? '—' }},
                 {{ $enquiry_data->consignee_detail['pin_code']
                     ?? $enquiry_data->consignee_detail['pincode'] }}
             </dd>
@@ -257,37 +257,37 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $enquiry_data->billing_address['company_name'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['company_name'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Phone</dt>
-                                            <dd>{{ $enquiry_data->billing_address['phone'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['phone'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $enquiry_data->billing_address['gst'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['gst'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 1</dt>
-                                            <dd>{{ $enquiry_data->billing_address['address_line_one'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['address_line_one'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 2</dt>
-                                            <dd>{{ $enquiry_data->billing_address['address_line_two'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['address_line_two'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $enquiry_data->billing_address['state'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['state'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $enquiry_data->billing_address['city'] }}</dd>
+                                            <dd>{{ $enquiry_data->billing_address['city'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
@@ -313,37 +313,37 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['company_name'] }}</dd>
+                                            <dd>{{ $enquiry_data->consignee_detail['company_name'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Phone</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['phone'] }}</dd>
+                                            <dd>{{ $enquiry_data->consignee_detail['phone'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['gst'] }}</dd>
+                                            <dd>{{ $enquiry_data->consignee_detail['gst'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 1</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['address_line_one'] }}</dd>
+                                            <dd>{{ $enquiry_data->consignee_detail['address_line_one'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 2</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['address_line_two'] }}</dd>
+                                            <dd>{{ $enquiry_data->consignee_detail['address_line_two'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['state'] }}</dd>
+                                            <dd>{{ $enquiry_data->consignee_detail['state'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $enquiry_data->consignee_detail['city'] }}</dd>
+                                            <dd>{{ $enquiry_data->consignee_detail['city'] ?? '—' }}</dd>
                                         </div>
 
                                         <div>
@@ -427,21 +427,21 @@
                                 <b>Billing Address</b> <br>
                                 <b>Pincode: </b> {{ isset($data->consignee_detail['pin_code']) ? $data->consignee_detail['pin_code'] : (isset($data->billing_address['pincode']) ? $data->billing_address['pincode'] : '') }} <br>
                                 <b>Address: </b> {{ $data->billing_address['address_line_one']??'' }} <br>
-                                <b>City: </b> {{ $data->billing_address['city'] }} <br>
-                                <b>State: </b> {{ $data->billing_address['state'] }} <br>
+                                <b>City: </b> {{ $data->billing_address['city'] ?? '—' }} <br>
+                                <b>State: </b> {{ $data->billing_address['state'] ?? '—' }} <br>
                             </p>
                         </div>
                         <div class="col-6 text-end">
                             <p>
                                 <b>Consignee Detail</b> <br>
-                                <b>Company: </b> {{ $data->consignee_detail['company_name'] }} <br>
-                                <b>Phone: </b> {{ $data->consignee_detail['phone'] }} <br>
+                                <b>Company: </b> {{ $data->consignee_detail['company_name'] ?? '—' }} <br>
+                                <b>Phone: </b> {{ $data->consignee_detail['phone'] ?? '—' }} <br>
                                 <b>Pincode: </b> {{ isset($data->consignee_detail['pin_code']) ? $data->consignee_detail['pin_code'] : (isset($data->consignee_detail['pincode']) ? $data->consignee_detail['pincode'] : '') }} <br>
-                                <b>Address 1: </b> {{ $data->consignee_detail['address_line_one'] }} <br>
-                                <b>Address 2: </b> {{ $data->consignee_detail['address_line_two'] }} <br>
-                                <b>City: </b> {{ $data->consignee_detail['city'] }} <br>
-                                <b>State: </b> {{ $data->consignee_detail['state'] }} <br>
-                                <b>Gst Number: </b> {{ $data->consignee_detail['gst'] }} <br>
+                                <b>Address 1: </b> {{ $data->consignee_detail['address_line_one'] ?? '—' }} <br>
+                                <b>Address 2: </b> {{ $data->consignee_detail['address_line_two'] ?? '—' }} <br>
+                                <b>City: </b> {{ $data->consignee_detail['city'] ?? '—' }} <br>
+                                <b>State: </b> {{ $data->consignee_detail['state'] ?? '—' }} <br>
+                                <b>Gst Number: </b> {{ $data->consignee_detail['gst'] ?? '—' }} <br>
                             </p>
                         </div>
                     </div> --}}

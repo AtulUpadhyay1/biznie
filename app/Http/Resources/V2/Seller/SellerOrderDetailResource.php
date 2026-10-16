@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2\Seller;
 
+use App\Services\Orders\OrderSummary;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -82,6 +83,9 @@ class SellerOrderDetailResource extends JsonResource
             }
         }
 
+        $summary = OrderSummary::forOrder($this->resource);
+        $addresses = OrderSummary::addresses($this->resource);
+
         return [
             'id'                 => $this->id,
             'unique_id'          => $this->unique_id,
@@ -91,28 +95,35 @@ class SellerOrderDetailResource extends JsonResource
             'origin_city'        => $this->origin_city,
             'base_price'         => (float) ($this->base_price ?? 0),
             'transport_price'    => (float) ($this->transport_price ?? 0),
-            'total_quantity'     => $this->total_quantity,
-            'final_quantity'     => $this->final_quantity,
+            // These used to read columns that do not exist on the order and so
+            // were always null — "— MT" on the seller page (B37). They now come
+            // from the order's own rows and the accepted quote.
+            'total_quantity'     => $summary['total_quantity'],
+            'final_quantity'     => $this->final_quantity_by_seller,
             'total_amount'       => (float) ($this->total_amount ?? 0),
             'paid_amount'        => (float) ($this->paid_amount ?? 0),
             'due_amount'         => (float) ($this->due_amount ?? 0),
             'final_amount'       => (float) ($this->final_amount ?? 0),
-            'ex_price'           => (float) ($this->ex_price ?? 0),
-            'freight_advance_amount' => (float) ($this->freight_advance_amount ?? 0),
-            'gst'                => $this->gst,
-            'seller_commission'  => $this->seller_commission ?? null,
+            'ex_price'           => $summary['ex_works_amount'],
+            'freight_advance_amount' => (float) ($this->freight_token_amount ?? 0),
+            'gst'                => $summary['gst_rate'],
+            'gst_amount'         => $summary['gst_amount'],
+            'seller_commission'  => $this->commission ?? null,
             'commission_type'    => $this->commission_type ?? null,
-            'load_within'        => $this->load_within ?? null,
-            'credit_days'        => $this->credit_days ?? null,
+            'load_within'        => $summary['dispatch_days'],
+            'credit_days'        => $summary['seller_credit_days'],
+            'summary'            => $summary,
             'update_for'         => $this->update_for ?? null,
             'purpose'            => $this->purpose ?? null,
             'description'        => $this->description ?? null,
-            'selected_quality'   => $this->selected_quality ?? null,
-            'selected_packaging_charge' => $this->selected_packaging_charge ?? null,
-            'variation'          => $this->variation ?? null,
+            'selected_quality'   => $summary['quality'] ? ['name' => $summary['quality']] : null,
+            'selected_packaging_charge' => $summary['packaging'] ? ['name' => $summary['packaging']] : null,
+            'variation'          => $this->value ?? null,
             'consignee_detail'   => $this->consignee_detail ?? null,
             'billing_address'    => $this->billing_address ?? null,
             'delivery_address'   => $this->delivery_address ?? null,
+            'billing'            => $addresses['billing'],
+            'delivery'           => $addresses['delivery'],
             'history'            => $this->history ?? [],
             'invoices'           => $invoiceList,
             'seller_invoice_list'   => $sellerInvoiceList,
