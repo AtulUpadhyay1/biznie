@@ -26,26 +26,38 @@ class QuotationController extends Controller
      * fanned out automatically on creation now, so an invitation row is a
      * reliable signal.
      *
-     *   received - invited, no price submitted yet ("New RFQ Received")
-     *   replied  - a price is on the board ("My Bids")
+     *   received - invited, not priced, and the RFQ still taking rates ("New RFQs")
+     *   replied  - priced by this seller in any way, with the result ("My Bids")
+     *   closed   - not priced and the RFQ is over (ordered elsewhere, closed, cancelled)
+     *
+     * "Priced" is ProductEnquiry::PRICED_BID_SQL — an app bid, an admin-entered
+     * rate or a legacy reply. Splitting on `ex_works_price` alone left admin-
+     * and legacy-priced bids under "New" as "Selected · Rate not submitted",
+     * and RFQs ordered from someone else stayed there for ever (B39/B40).
      */
     public function index(Request $request): JsonResponse
     {
         $ownerId = $this->ownerId($request);
         $perPage = min((int) $request->get('per_page', 15), 50);
-        $tab     = $request->get('tab', 'received');
+        $tab     = in_array($request->get('tab'), ['received', 'replied', 'closed'], true) ? $request->get('tab') : 'received';
 
         $invitations = SellerProductEnquiry::where('user_id', $ownerId)
             ->whereNotNull('product_enquiries_id')
             ->when(
                 $tab === 'replied',
-                fn ($q) => $q->whereNotNull('ex_works_price'),
-                fn ($q) => $q->whereNull('ex_works_price')
+                fn ($q) => $q->whereRaw(ProductEnquiry::PRICED_BID_SQL),
+                fn ($q) => $q->whereRaw('NOT ' . ProductEnquiry::PRICED_BID_SQL)
             )
             ->pluck('product_enquiries_id');
 
+        $stillOpen = fn ($q) => $q->whereNotIn('status', ['ordered', 'cancel', 'cancelled', 'No Seller Available'])
+            ->where(fn ($q) => $q->whereNull('bidding_status')->orWhere('bidding_status', '!=', 'closed'))
+            ->where(fn ($q) => $q->whereNull('bidding_ends_at')->orWhere('bidding_ends_at', '>=', now()));
+
         $list = ProductEnquiry::query()
             ->whereIn('id', $invitations)
+            ->when($tab === 'received', $stillOpen)
+            ->when($tab === 'closed', fn ($q) => $q->whereNot($stillOpen))
             ->with([
                 'getBrand:id,name',
                 'getCommodityProduct:id,name,slug,thumbnail,category_id',
