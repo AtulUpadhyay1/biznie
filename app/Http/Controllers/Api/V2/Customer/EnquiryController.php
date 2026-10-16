@@ -459,6 +459,8 @@ class EnquiryController extends Controller
             $order->status                      = 'pending';
             $order->history                     = [['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()->toIso8601String()]];
             $order->save();
+            // Quantity, dispatch and credit days, as agreed (B37).
+            OrderSummary::snapshot($order);
 
             if ($data['token_amount'] > 0) {
                 $ledger = new CommodityProductOrderLedger();

@@ -169,6 +169,8 @@ class ConvertToOrder extends Component
         $order->history                     = [['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()]];
         $order->customer_quality_check_visibility = websiteSetupValue('customer_quality_check_visibility') ?? 0;
         $order->save();
+        // Quantity, dispatch and credit days, as agreed on the quote (B37).
+        \App\Services\Orders\OrderSummary::snapshot($order);
 
         // $debit_ledger                       = new CommodityProductOrderLedger;
         // $debit_ledger->order_id             = $order->id;

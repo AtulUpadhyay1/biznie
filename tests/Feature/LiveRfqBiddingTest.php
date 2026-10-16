@@ -364,6 +364,9 @@ class LiveRfqBiddingTest extends TestCase
         $this->assertEquals(30000.0, (float) $order->total_freight_amount);
         $this->assertEquals(1435000.0, (float) $order->due_amount);
         $this->assertNotNull($order->gst);
+        // The agreed quantity is kept on the order itself (B37).
+        $this->assertEquals(30.0, (float) $order->fresh()->total_quantity);
+        $this->assertSame('MT', $order->fresh()->quantity_unit);
 
         // And a second accept on the same RFQ is refused.
         $this->postJson("/api/v2/me/enquiries/{$rfqId}/accept", [

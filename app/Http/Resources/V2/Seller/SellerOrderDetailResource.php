@@ -102,7 +102,7 @@ class SellerOrderDetailResource extends JsonResource
             // These used to read columns that do not exist on the order and so
             // were always null — "— MT" on the seller page (B37). They now come
             // from the order's own rows and the accepted quote.
-            'total_quantity'     => $summary['total_quantity'],
+            'total_quantity'     => $summary['total_quantity'] ?: ($this->total_quantity !== null ? (float) $this->total_quantity : null),
             'final_quantity'     => $this->final_quantity_by_seller,
             'total_amount'       => (float) ($this->total_amount ?? 0),
             'paid_amount'        => (float) ($this->paid_amount ?? 0),

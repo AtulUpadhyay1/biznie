@@ -67,6 +67,18 @@ class OrderSummary
             exWorksTotal: (float) ($order->total_ex_factory_amount ?? 0),
         );
 
+        // Terms stored on the order at creation (B37) win over the quote, which
+        // admin can still edit afterwards.
+        if ($order->dispatch_days) {
+            $summary['dispatch_days'] = (int) $order->dispatch_days;
+        }
+        if ($order->buyer_credit_days) {
+            $summary['buyer_credit_days'] = (int) $order->buyer_credit_days;
+        }
+        if ($order->seller_credit_days) {
+            $summary['seller_credit_days'] = (int) $order->seller_credit_days;
+        }
+
         // What was actually booked wins over the recomputation: admin may have
         // adjusted the total when converting, and the ledger runs off it. The
         // difference (commission, packaging added at conversion) is shown as
@@ -80,6 +92,24 @@ class OrderSummary
         }
 
         return $summary;
+    }
+
+    /**
+     * Copies the agreed quantity and terms onto the order row (B37), so they
+     * survive later edits to the quote and can be filtered and reported on.
+     * Call once the order is saved; safe to repeat.
+     */
+    public static function snapshot(CommodityProductOrder $order): void
+    {
+        $summary = self::forOrder($order);
+
+        $order->forceFill([
+            'total_quantity'     => $summary['total_quantity'] > 0 ? $summary['total_quantity'] : null,
+            'quantity_unit'      => $summary['unit'],
+            'dispatch_days'      => $order->dispatch_days ?: $summary['dispatch_days'],
+            'buyer_credit_days'  => $order->buyer_credit_days ?: $summary['buyer_credit_days'],
+            'seller_credit_days' => $order->seller_credit_days ?: $summary['seller_credit_days'],
+        ])->saveQuietly();
     }
 
     /**
