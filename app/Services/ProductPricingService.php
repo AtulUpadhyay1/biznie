@@ -290,7 +290,14 @@ class ProductPricingService
             ->orderBy('city')
             ->get(['city', 'state'])
             ->unique(fn ($row) => $row->city.'|'.$row->state)
-            ->map(fn ($row) => ['city' => $row->city, 'state' => $row->state])
+            // `city` stays the raw key freight is matched on; `label` is what
+            // people read — "East Godavari", not "east_godavari" (B10).
+            ->map(fn ($row) => [
+                'city'  => $row->city,
+                'state' => $row->state,
+                'label' => \App\Support\AddressFormatter::titleCase((string) $row->city),
+            ])
+            ->sortBy('label')
             ->values()
             ->all();
     }

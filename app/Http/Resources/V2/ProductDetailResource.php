@@ -135,9 +135,11 @@ class ProductDetailResource extends JsonResource
                 // first price row (which is where the offers list reads it from,
                 // and why that page could name a city when this one could not)
                 // and then to the seller's registered city.
-                'loading_city'  => $sellerProduct->city
+                'loading_city'  => ($loadingCity = $sellerProduct->city
                     ?: $sellerProduct->getStatePrice->first()?->city
-                    ?: $sellerProduct->getUser?->getUserDetail?->city,
+                    ?: $sellerProduct->getUser?->getUserDetail?->city)
+                    ? \App\Support\AddressFormatter::titleCase($loadingCity)
+                    : null,
                 'loading_state' => $sellerProduct->state
                     ?: $sellerProduct->getStatePrice->first()?->state
                     ?: $sellerProduct->getUser?->getUserDetail?->state,

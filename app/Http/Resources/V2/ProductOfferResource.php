@@ -58,7 +58,10 @@ class ProductOfferResource extends JsonResource
                 'id'   => $this->getUser->id,
                 'name' => $this->getUser->name,
             ] : null,
-            'city'                 => $this->city ?: $statePrice?->city,
+            // Display name of the loading city, proper case (B10).
+            'city'                 => ($loadingCity = $this->city ?: $statePrice?->city)
+                ? \App\Support\AddressFormatter::titleCase($loadingCity)
+                : null,
             'state'                => $this->state ?: $statePrice?->state,
             'quality'              => is_array($this->quality) ? array_values($this->quality) : [],
             'moq'                  => $this->moq,
