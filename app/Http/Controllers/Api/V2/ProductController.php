@@ -108,7 +108,8 @@ class ProductController extends Controller
      */
     private function cheapestFirst(array $rows): array
     {
-        usort($rows, fn ($a, $b) => ($a['for_price'] ?? 0) <=> ($b['for_price'] ?? 0));
+        // Ex-Works mode has no F.O.R; rank on what the card shows.
+        usort($rows, fn ($a, $b) => ($a['for_price'] ?? $a['ex_works_price'] ?? 0) <=> ($b['for_price'] ?? $b['ex_works_price'] ?? 0));
 
         return $rows;
     }

@@ -41,20 +41,21 @@ class ProductDetailResource extends JsonResource
         // listing's first quoted city when they have not named one. `delivery`
         // below still reports the buyer's own city, which is what the city
         // picker and the "select a city" prompt read.
-        $priced = $sellerProduct
-            ? $pricing->effectiveDestination($sellerProduct, $state, $city)
-            : ['state' => $state, 'city' => $city];
+        // No delivery city = Ex-Works (B08): no silent freight to a city the
+        // buyer did not pick. Same rule as the offer cards.
+        $exWorksMode = ! $city;
+        $priced = ['state' => $exWorksMode ? null : $state, 'city' => $exWorksMode ? null : $city];
 
-        $freight = $sellerProduct
+        $freight = ($sellerProduct && ! $exWorksMode)
             ? $pricing->freight((int) $this->id, $priced['state'], $priced['city'])
             : 0;
 
         $exPrice = $breakup ? (float) $breakup['ex_price'] : 0.0;
         // A freight rate the seller quoted for this city wins over the
         // transporter's, so the breakup below reports whichever applied.
-        $doorstep = $sellerProduct
+        $doorstep = ($sellerProduct && ! $exWorksMode)
             ? $pricing->destinationForPrice($sellerProduct, $exPrice, (float) $freight, $priced['state'], $priced['city'])
-            : ['for_price' => $exPrice, 'freight' => 0.0, 'source' => 'calculated'];
+            : ['for_price' => null, 'freight' => 0.0, 'source' => 'ex_works'];
         $forPrice = $doorstep['for_price'];
         $appliedFreight = (float) $doorstep['freight'];
 
@@ -93,6 +94,7 @@ class ProductDetailResource extends JsonResource
                 // 'seller' when the seller quoted this city, 'calculated' when
                 // it is ex-works plus the cheapest transporter rate.
                 'for_price_source' => $doorstep['source'],
+                'price_mode'       => $exWorksMode ? 'ex_works' : 'for',
                 'other_charges_breakup' => $pricing->otherCharges($sellerProduct),
                 'price_validity'   => $sellerProduct->price_validity ? dateTimeFormat($sellerProduct->price_validity) : null,
                 'last_updated'     => dateTimeFormat($sellerProduct->updated_at),
