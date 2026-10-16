@@ -356,6 +356,10 @@ class EnquiryController extends Controller
             'token_amount'        => ['required', 'numeric', 'min:1'],
             'total_amount'        => ['required', 'numeric', 'min:1'],
             'selected_wallet'     => ['required', 'in:cash_balance,credit_balance'],
+            // The buyer saw and agreed to the booking / cancellation rule (4.1).
+            'accept_terms'        => ['accepted'],
+        ], [
+            'accept_terms.accepted' => 'Please agree to the booking and cancellation terms',
         ]);
 
         // "Proceed to Order" on the Best Price panel names no seller - the

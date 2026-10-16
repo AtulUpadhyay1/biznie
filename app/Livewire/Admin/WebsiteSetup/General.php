@@ -17,7 +17,7 @@ class General extends Component
     private const KEYS = [
         'phone1', 'phone2', 'whatsapp', 'email', 'short_about', 'address',
         'facebook', 'twitter', 'instagram', 'youtube',
-        'legal_name', 'company_llpin', 'company_gstin', 'jurisdiction',
+        'legal_name', 'company_llpin', 'company_gstin', 'jurisdiction', 'booking_policy',
         'grievance_officer_name', 'grievance_officer_email', 'grievance_officer_phone', 'grievance_response_time',
     ];
 
@@ -48,6 +48,7 @@ class General extends Component
             'value.company_llpin'           => ['nullable', 'regex:/^[A-Z]{3}-\d{4}$/'],
             'value.company_gstin'           => ['nullable', new Gstin],
             'value.jurisdiction'            => ['nullable', 'string', 'max:150'],
+            'value.booking_policy'          => ['nullable', 'string', 'max:600'],
             'value.grievance_officer_name'  => ['nullable', 'string', 'max:100'],
             'value.grievance_officer_email' => ['nullable', 'email'],
             'value.grievance_officer_phone' => ['nullable', new IndianMobile],

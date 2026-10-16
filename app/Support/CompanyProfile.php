@@ -29,6 +29,9 @@ final class CompanyProfile
         '{{grievance_email}}' => 'grievance_officer_email',
         '{{grievance_phone}}' => 'grievance_officer_phone',
         '{{jurisdiction}}'    => 'jurisdiction',
+        // The one booking / cancellation rule (4.1): Terms, Return Policy and
+        // checkout all read this, so they cannot disagree again.
+        '{{booking_policy}}'  => 'booking_policy',
     ];
 
     /** Used only when a key has never been saved. */
@@ -36,6 +39,8 @@ final class CompanyProfile
         'legal_name'   => 'Biznie TradeTech LLP',
         'jurisdiction' => 'Varanasi, Uttar Pradesh, India',
         'grievance_response_time' => 'within 48 hours',
+        // Mirrors the published Terms until Admin -> General says otherwise.
+        'booking_policy' => 'The booking (token) amount confirms your order with the seller and is non-refundable. If you cancel after booking, the booking amount is forfeited.',
     ];
 
     /** @var array<string, string>|null */

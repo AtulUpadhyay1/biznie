@@ -99,6 +99,18 @@
                             @endforeach
                         </div>
 
+                        {{-- One booking / cancellation rule for Terms, Return Policy and checkout (4.1). --}}
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label" for="booking_policy">Booking &amp; cancellation rule</label>
+                                    <textarea class="form-control @error('value.booking_policy') is-invalid @enderror" id="booking_policy" rows="2" wire:model="value.booking_policy" placeholder="e.g. The booking (token) amount is non-refundable..."></textarea>
+                                    <small class="text-muted">Shown to buyers at checkout and in the Return Policy. Use <code>{{ '{' }}{{ '{' }}booking_policy{{ '}' }}{{ '}' }}</code> in Terms to print it there too.</small>
+                                    @error('value.booking_policy') <small class="text-danger d-block">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- IT Rules 2021: a named grievance officer with a response time. --}}
                         <h5 class="mt-3 mb-1">Grievance Officer</h5>
                         <p class="text-muted small mb-3">Required for an intermediary under the IT Rules, 2021.</p>

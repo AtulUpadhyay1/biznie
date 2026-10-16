@@ -46,6 +46,8 @@ class ConfigApiController extends Controller
                 'legal_name'    => CompanyProfile::get('legal_name'),
                 'llpin'         => CompanyProfile::get('company_llpin'),
                 'gstin'         => CompanyProfile::get('company_gstin'),
+                // Shown at checkout and in the Return Policy (4.1).
+                'booking_policy' => CompanyProfile::get('booking_policy'),
                 'grievance_officer' => [
                     'name'          => CompanyProfile::get('grievance_officer_name'),
                     'email'         => CompanyProfile::get('grievance_officer_email'),

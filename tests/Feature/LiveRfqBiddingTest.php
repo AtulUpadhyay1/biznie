@@ -349,12 +349,21 @@ class LiveRfqBiddingTest extends TestCase
         app(LiveBiddingService::class)->recordPrice(bid: $bid, exWorks: 47000, freight: 1000, other: 0);
 
         Sanctum::actingAs($buyer);
+        // No booking without agreeing to the booking / cancellation rule (4.1).
+        $this->postJson("/api/v2/me/enquiries/{$rfqId}/accept", [
+            'seller_quotation_id' => $bid->id,
+            'token_amount'        => 5000,
+            'total_amount'        => 1440000,
+            'selected_wallet'     => 'cash_balance',
+        ])->assertStatus(422)->assertJsonValidationErrors('accept_terms');
+
         // A tampered total from the browser must not set the order value (B43).
         $response = $this->postJson("/api/v2/me/enquiries/{$rfqId}/accept", [
             'seller_quotation_id' => $bid->id,
             'token_amount'        => 5000,
             'total_amount'        => 1,
             'selected_wallet'     => 'cash_balance',
+            'accept_terms'        => true,
         ]);
         $response->assertCreated();
 
@@ -374,6 +383,7 @@ class LiveRfqBiddingTest extends TestCase
             'token_amount'        => 5000,
             'total_amount'        => 1440000,
             'selected_wallet'     => 'cash_balance',
+            'accept_terms'        => true,
         ])->assertStatus(409);
     }
 }
