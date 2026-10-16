@@ -26,6 +26,9 @@ class NewsController extends Controller
                 'last_page'    => $list->lastPage(),
                 'per_page'     => $list->perPage(),
                 'total'        => $list->total(),
+                // When the newest article went up, so the page can say so
+                // instead of promising "daily" news (B19).
+                'last_published_at' => optional(MarketNews::active()->latest()->value('created_at'), fn ($d) => \Illuminate\Support\Carbon::parse($d)->toIso8601String()),
             ],
         ]);
     }
