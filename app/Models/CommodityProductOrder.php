@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\OrderStatus;
 
 class CommodityProductOrder extends Model
 {
@@ -47,6 +48,31 @@ class CommodityProductOrder extends Model
                 $q->where('name', 'like', "%{$search}%");
             });
         });
+    }
+
+    /**
+     * `?status=` on order lists: a canonical code (OrderStatus), a dashboard
+     * group (in_progress / dispatched / delivered / cancelled), or — for older
+     * clients — a stored legacy value.
+     */
+    public function scopeStatusFilter($query, ?string $value)
+    {
+        if (! $value) {
+            return $query;
+        }
+        if ($status = OrderStatus::tryFrom($value)) {
+            return OrderStatus::scopeFor($query, $status);
+        }
+        if (array_key_exists($value, OrderStatus::GROUPS)) {
+            return OrderStatus::scopeGroup($query, $value);
+        }
+
+        return $query->where('status', $value);
+    }
+
+    public function statusCode(): OrderStatus
+    {
+        return OrderStatus::of($this);
     }
 
     public function getBrand()

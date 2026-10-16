@@ -29,6 +29,8 @@ class TransporterOrderDetailResource extends JsonResource
             'order_id'        => $this->order_id,
             'enquiry_id'      => optional($this->getProductEnquiry)->unique_id,
             'status'          => $this->status,
+            'status_code'     => ($statusCode = $this->resource->statusCode())->value,
+            'status_label'    => $statusCode->label(),
             'origin_city'     => $this->origin_city,
             'transport_price' => (float) ($this->transport_price ?? 0),
             'total_quantity'  => ($summary = OrderSummary::forOrder($this->resource))['total_quantity'],

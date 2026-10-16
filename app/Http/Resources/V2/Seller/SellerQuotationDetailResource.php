@@ -14,6 +14,11 @@ class SellerQuotationDetailResource extends JsonResource
             'id'              => $this->id,
             'unique_id'       => $this->unique_id,
             'status'          => $this->status,
+            // This seller's own view: new / rate submitted / won / not selected (B39).
+            'status_code'  => ($sellerStatus = ($myReply instanceof \App\Models\SellerProductEnquiry
+                ? \App\Enums\RfqStatus::forSeller($myReply, $this->resource)
+                : \App\Enums\RfqStatus::Open))->value,
+            'status_label' => $sellerStatus->label('seller'),
             'origin_city'     => $this->origin_city,
             'quantity'        => $this->quantity !== null ? (float) $this->quantity : null,
             'unit_label'      => $this->unit_label,

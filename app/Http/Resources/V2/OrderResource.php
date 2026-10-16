@@ -15,6 +15,9 @@ class OrderResource extends JsonResource
             'order_id'        => $this->order_id,
             'enquiry_id'      => optional($this->getProductEnquiry)->unique_id,
             'status'          => $this->status,
+            // Canonical lifecycle code + label: what every client filters and shows.
+            'status_code'     => ($statusCode = $this->resource->statusCode())->value,
+            'status_label'    => $statusCode->label(),
             'origin_city'     => $this->origin_city,
             'base_price'      => (float) ($this->base_price ?? 0),
             'total_amount'    => (float) ($this->total_amount ?? 0),

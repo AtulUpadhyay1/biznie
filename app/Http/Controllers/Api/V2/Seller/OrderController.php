@@ -11,6 +11,7 @@ use App\Models\CommodityProductSellerOrderLedger;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Enums\OrderStatus;
 
 class OrderController extends Controller
 {
@@ -20,7 +21,8 @@ class OrderController extends Controller
         $perPage = min((int) $request->get('per_page', 15), 50);
 
         $list = CommodityProductOrder::where('seller_user_id', $ownerId)
-            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            // Canonical code or dashboard group (B29/B40); legacy values still work.
+            ->statusFilter($request->string('status')->toString())
             ->with([
                 'getBrand:id,name',
                 'getCommodityProduct:id,name,slug,thumbnail,unit_id',
@@ -71,7 +73,7 @@ class OrderController extends Controller
     public function updateStatus(Request $request, int $id): JsonResponse
     {
         $data = $request->validate([
-            'status' => ['required', 'string', 'in:confirm,loading,dispatched,delivered,complete,cancel'],
+            'status' => ['required', 'string', 'max:40'],
             'note'   => ['nullable', 'string', 'max:500'],
         ]);
 
@@ -82,10 +84,24 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => 'Order not found.'], 404);
         }
 
-        $order->status = $data['status'];
+        // Canonical codes (older clients' 'confirm' / 'cancel' still map), and
+        // only the next steps of the lifecycle — this used to let any status
+        // jump to any other.
+        $legacy = ['confirm' => 'seller_confirmed', 'cancel' => 'cancelled', 'loading' => 'loading', 'dispatched' => 'dispatched'];
+        $target = OrderStatus::tryFrom($legacy[$data['status']] ?? $data['status']);
+        $current = $order->statusCode();
+        if (! $target || ! in_array($target, $current->sellerNext(), true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This order cannot move from "' . $current->label() . '" to that status.',
+            ], 422);
+        }
+
+        $order->status = $target->storageValue();
         $history = is_array($order->history) ? $order->history : [];
         $history[] = [
-            'status'     => $data['status'],
+            'status'     => $target->label(),
+            'code'       => $target->value,
             'note'       => $data['note'] ?? null,
             'by'         => $request->user()->id,
             'created_at' => Carbon::now()->toIso8601String(),

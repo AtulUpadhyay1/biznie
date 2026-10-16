@@ -13,6 +13,10 @@ class EnquiryResource extends JsonResource
             'id'              => $this->id,
             'unique_id'       => $this->unique_id,
             'status'          => $this->status,
+            // One status for list and detail alike, derived from the bids (B27).
+            'status_code'     => ($rfqStatus = $this->resource->rfqStatus())->value,
+            'status_label'    => $rfqStatus->label('buyer', (int) ($quotes = $this->priced_bids_count ?? $this->resource->getSellerProductEnquiries()->whereRaw(\App\Models\ProductEnquiry::PRICED_BID_SQL)->count())),
+            'quotes_count'    => (int) $quotes,
             'origin_city'     => $this->origin_city,
             'quantity'        => $this->quantity !== null ? (float) $this->quantity : null,
             'unit_label'      => $this->unit_label,
@@ -55,6 +59,8 @@ class EnquiryResource extends JsonResource
             ],
             'is_marked_by_seller' => (bool) $this->getMarkedSellerProductEnquiry,
             'order_id'        => optional($this->getCommodityProductOrder)->order_id,
+            // For linking straight to the order page.
+            'order_db_id' => $this->getCommodityProductOrder?->id,
             'created_at'      => optional($this->created_at)->toIso8601String(),
         ];
     }

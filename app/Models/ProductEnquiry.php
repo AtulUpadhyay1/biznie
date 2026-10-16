@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\RfqStatus;
 
 class ProductEnquiry extends Model
 {
@@ -24,6 +25,47 @@ class ProductEnquiry extends Model
         'bidding_started_at' => 'datetime',
         'bidding_ends_at'    => 'datetime',
     ];
+
+    /** SQL for "this bid carries a price" — mirrors RfqStatus::isPriced(). */
+    public const PRICED_BID_SQL = "(for_price IS NOT NULL OR base_price > 0 OR status IN ('replied','Mark For Sell','ordered'))";
+
+    /** Adds `priced_bids_count` — how many sellers have actually quoted. */
+    public function scopeWithQuoteCount($query)
+    {
+        return $query->withCount(['getSellerProductEnquiries as priced_bids_count' => fn ($q) => $q->whereRaw(self::PRICED_BID_SQL)]);
+    }
+
+    /** `?status=` on the buyer's RFQ list, by canonical code (RfqStatus). */
+    public function scopeRfqStatusFilter($query, ?string $value)
+    {
+        $status = $value ? RfqStatus::tryFrom($value) : null;
+        if (! $status) {
+            return $value ? $query->where('status', $value) : $query;
+        }
+
+        $priced = fn ($q) => $q->whereRaw(self::PRICED_BID_SQL);
+        $over = fn ($q) => $q->where('bidding_status', 'closed')->orWhere('bidding_ends_at', '<', now())->orWhere('status', 'No Seller Available');
+
+        return match ($status) {
+            RfqStatus::Accepted      => $query->where('status', 'ordered'),
+            RfqStatus::Cancelled     => $query->whereIn('status', ['cancel', 'cancelled']),
+            RfqStatus::Quoted        => $query->whereNotIn('status', ['ordered', 'cancel', 'cancelled'])->whereHas('getSellerProductEnquiries', $priced),
+            RfqStatus::ClosedNoQuote => $query->whereNotIn('status', ['ordered', 'cancel', 'cancelled'])->whereDoesntHave('getSellerProductEnquiries', $priced)->where($over),
+            RfqStatus::Open          => $query->whereNotIn('status', ['ordered', 'cancel', 'cancelled', 'No Seller Available'])
+                ->whereDoesntHave('getSellerProductEnquiries', $priced)
+                ->where(fn ($q) => $q->whereNull('bidding_status')->orWhere('bidding_status', '!=', 'closed'))
+                ->where(fn ($q) => $q->whereNull('bidding_ends_at')->orWhere('bidding_ends_at', '>=', now())),
+            default                  => $query,
+        };
+    }
+
+    public function rfqStatus(): RfqStatus
+    {
+        $quotes = $this->priced_bids_count
+            ?? $this->getSellerProductEnquiries()->whereRaw(self::PRICED_BID_SQL)->count();
+
+        return RfqStatus::forBuyer($this, (int) $quotes);
+    }
 
     /** Auctions still taking bids — what the admin "Live RFQs" screen lists. */
     public function scopeLiveBidding($query)

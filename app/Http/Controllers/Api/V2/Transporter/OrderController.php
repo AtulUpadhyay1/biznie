@@ -9,6 +9,7 @@ use App\Models\CommodityProductOrder;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Enums\OrderStatus;
 
 class OrderController extends Controller
 {
@@ -18,7 +19,8 @@ class OrderController extends Controller
         $perPage = min((int) $request->get('per_page', 15), 50);
 
         $list = CommodityProductOrder::where('transporter_user_id', $ownerId)
-            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            // Canonical code or dashboard group (B29/B40); legacy values still work.
+            ->statusFilter($request->string('status')->toString())
             ->with([
                 'getBrand:id,name',
                 'getCommodityProduct:id,name,slug,thumbnail,unit_id',
@@ -70,9 +72,13 @@ class OrderController extends Controller
     public function updateStatus(Request $request, int $id): JsonResponse
     {
         $data = $request->validate([
-            'status' => ['required', 'string', 'in:loading,dispatched,delivered,complete'],
+            'status' => ['required', 'string', 'in:loading,dispatched,delivered,complete,weighed_invoiced,closed'],
             'note'   => ['nullable', 'string', 'max:500'],
         ]);
+        // Canonical codes accepted alongside the legacy ones; stored in the
+        // vocabulary the admin panel still reads.
+        $target = OrderStatus::tryFrom(['complete' => 'closed'][$data['status']] ?? $data['status']);
+        $data['status'] = $target?->storageValue() ?? $data['status'];
 
         $ownerId = $this->ownerId($request);
         $order = CommodityProductOrder::where('transporter_user_id', $ownerId)->find($id);
@@ -83,7 +89,8 @@ class OrderController extends Controller
         $order->status = $data['status'];
         $history = is_array($order->history) ? $order->history : [];
         $history[] = [
-            'status'     => $data['status'],
+            'status'     => $target?->label() ?? $data['status'],
+            'code'       => $target?->value,
             'note'       => $data['note'] ?? null,
             'by'         => $request->user()->id,
             'role'       => 'transporter',

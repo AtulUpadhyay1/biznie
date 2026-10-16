@@ -36,7 +36,8 @@ class EnquiryController extends Controller
         $perPage = min((int) $request->get('per_page', 15), 50);
 
         $list = ProductEnquiry::where('user_id', $userId)
-            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            ->rfqStatusFilter($request->string('status')->toString())
+            ->withQuoteCount()
             ->with([
                 'getBrand:id,name',
                 'getCommodityProduct:id,name,slug,thumbnail,category_id',

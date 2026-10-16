@@ -16,7 +16,8 @@ class OrderController extends Controller
         $perPage = min((int) $request->get('per_page', 15), 50);
 
         $list = CommodityProductOrder::where('customer_user_id', $this->ownerId($request))
-            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            // Canonical code or dashboard group (B29/B40); legacy values still work.
+            ->statusFilter($request->string('status')->toString())
             ->with([
                 'getBrand:id,name',
                 'getCommodityProduct:id,name,slug,thumbnail,unit_id,category_id',

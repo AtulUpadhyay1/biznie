@@ -92,6 +92,10 @@ class SellerOrderDetailResource extends JsonResource
             'order_id'           => $this->order_id,
             'enquiry_id'         => optional($this->getProductEnquiry)->unique_id,
             'status'             => $this->status,
+            'status_code'        => ($statusCode = $this->resource->statusCode())->value,
+            'status_label'       => $statusCode->label(),
+            // The steps this seller may take next — the buttons on the page.
+            'next_statuses'      => array_map(fn ($s) => ['code' => $s->value, 'label' => $s->label()], $statusCode->sellerNext()),
             'origin_city'        => $this->origin_city,
             'base_price'         => (float) ($this->base_price ?? 0),
             'transport_price'    => (float) ($this->transport_price ?? 0),
