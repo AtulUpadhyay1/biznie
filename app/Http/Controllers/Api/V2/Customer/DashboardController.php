@@ -9,10 +9,11 @@ use App\Models\CommodityProductOrder;
 use App\Models\ProductEnquiry;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Services\DashboardStats;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(Request $request, DashboardStats $stats): JsonResponse
     {
         $user = $request->user();
         $ownerId = $user->is_staff ? (int) $user->added_by : (int) $user->id;
@@ -27,12 +28,19 @@ class DashboardController extends Controller
                     'cash_balance'   => (float) ($user->cash_balance ?? 0),
                     'credit_balance' => (float) ($user->credit_balance ?? 0),
                 ],
+                // Tiles from the canonical status model; each set adds up to
+                // its total (B25).
+                'tiles' => [
+                    'orders' => $orderTiles = $stats->orderTiles(clone $orderQ),
+                    'rfqs'   => $rfqTiles = $stats->buyerRfqTiles(clone $enquiryQ),
+                ],
+                // Kept for older clients.
                 'counts' => [
-                    'orders_total'    => (clone $orderQ)->count(),
-                    'orders_pending'  => (clone $orderQ)->where('status', 'pending')->count(),
-                    'orders_complete' => (clone $orderQ)->where('status', 'complete')->count(),
-                    'enquiries_total'   => (clone $enquiryQ)->count(),
-                    'enquiries_pending' => (clone $enquiryQ)->where('status', 'pending')->count(),
+                    'orders_total'    => $orderTiles['total'],
+                    'orders_pending'  => $orderTiles['in_progress'],
+                    'orders_complete' => $orderTiles['delivered'],
+                    'enquiries_total'   => $rfqTiles['total'],
+                    'enquiries_pending' => $rfqTiles['open'],
                 ],
                 'recent_orders'    => OrderResource::collection(
                     (clone $orderQ)
@@ -48,6 +56,7 @@ class DashboardController extends Controller
                 )->resolve(),
                 'recent_enquiries' => EnquiryResource::collection(
                     (clone $enquiryQ)
+                        ->withQuoteCount()
                         ->with([
                             'getBrand:id,name',
                             'getCommodityProduct:id,name,slug,thumbnail,category_id',
