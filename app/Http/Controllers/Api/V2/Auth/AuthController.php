@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
+use App\Rules\IndianMobile;
 
 class AuthController extends Controller
 {
@@ -21,7 +22,7 @@ class AuthController extends Controller
         $data = $request->validate([
             'name'     => ['required', 'string', 'max:120'],
             'email'    => ['required', 'email', 'max:160', 'unique:users,email'],
-            'phone'    => ['nullable', 'string', 'regex:/^\d{10}$/', 'unique:users,phone'],
+            'phone'    => ['nullable', 'string', new IndianMobile, 'unique:users,phone'],
             'password' => ['required', 'confirmed', Password::min(8)->letters()->numbers()],
             'otp'      => ['required', 'string', 'regex:/^\d{6}$/'],
         ]);

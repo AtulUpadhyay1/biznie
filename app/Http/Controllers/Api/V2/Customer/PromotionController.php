@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Rules\Gstin;
+use App\Rules\IndianMobile;
+use App\Rules\Pan;
+use App\Rules\Pincode;
 
 class PromotionController extends Controller
 {
@@ -216,7 +220,8 @@ class PromotionController extends Controller
             'required',
             'string',
             'size:15',
-            'regex:/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/i',
+            // Check digit and the PAN embedded in the GSTIN, not just its shape (B32).
+            new Gstin(panField: 'pan_number'),
         ];
 
         if (filled($profileGst)) {
@@ -236,7 +241,7 @@ class PromotionController extends Controller
             1 => [
                 'company_name' => ['required', 'string', 'max:160'],
                 'gst_number' => $this->gstRules($user),
-                'pan_number' => ['required', 'string', 'max:20', 'regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i'],
+                'pan_number' => ['required', 'string', new Pan],
                 'seller_type_id' => ['required', 'integer', Rule::exists('seller_types', 'id')],
                 'business_type' => ['nullable', 'string', 'max:120'],
                 'company_address' => ['required', 'string', 'max:500'],
@@ -245,13 +250,13 @@ class PromotionController extends Controller
                 'city' => ['required', 'string', 'max:120'],
                 'state' => ['required', 'string', 'max:120'],
                 'country' => ['required', 'string', 'max:120'],
-                'pincode' => ['required', 'regex:/^\d{6}$/'],
+                'pincode' => ['required', new Pincode],
             ],
             2 => [
                 'contact_person' => ['required', 'string', 'max:120'],
                 'designation' => ['required', 'string', 'max:120'],
-                'mobile' => ['required', 'regex:/^\d{10}$/', Rule::unique('users', 'phone')->ignore($user->id)],
-                'alternate_mobile' => ['nullable', 'regex:/^\d{10}$/'],
+                'mobile' => ['required', new IndianMobile, Rule::unique('users', 'phone')->ignore($user->id)],
+                'alternate_mobile' => ['nullable', new IndianMobile],
                 'email' => ['required', 'email', 'max:160', Rule::unique('users', 'email')->ignore($user->id)],
             ],
             3 => [
@@ -287,7 +292,7 @@ class PromotionController extends Controller
         return [
             'company_name' => ['required', 'string', 'max:160'],
             'gst_number' => $this->gstRules($user),
-            'pan_number' => ['required', 'string', 'max:20', 'regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i'],
+            'pan_number' => ['required', 'string', new Pan],
             'seller_type_id' => ['required', 'integer', Rule::exists('seller_types', 'id')],
             'business_type' => ['nullable', 'string', 'max:120'],
             'company_address' => ['required', 'string', 'max:500'],
@@ -296,12 +301,12 @@ class PromotionController extends Controller
             'city' => ['required', 'string', 'max:120'],
             'state' => ['required', 'string', 'max:120'],
             'country' => ['required', 'string', 'max:120'],
-            'pincode' => ['required', 'regex:/^\d{6}$/'],
+            'pincode' => ['required', new Pincode],
 
             'contact_person' => ['required', 'string', 'max:120'],
             'designation' => ['required', 'string', 'max:120'],
-            'mobile' => ['required', 'regex:/^\d{10}$/', Rule::unique('users', 'phone')->ignore($user->id)],
-            'alternate_mobile' => ['nullable', 'regex:/^\d{10}$/'],
+            'mobile' => ['required', new IndianMobile, Rule::unique('users', 'phone')->ignore($user->id)],
+            'alternate_mobile' => ['nullable', new IndianMobile],
             'email' => ['required', 'email', 'max:160', Rule::unique('users', 'email')->ignore($user->id)],
 
             'gst_certificate' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
@@ -506,9 +511,9 @@ class PromotionController extends Controller
 
         $data = $request->validate([
             'name'            => ['required', 'string', 'max:120'],
-            'phone'           => ['required', 'string', 'regex:/^\d{10}$/', Rule::unique('users', 'phone')->ignore($user->id)],
+            'phone'           => ['required', 'string', new IndianMobile, Rule::unique('users', 'phone')->ignore($user->id)],
             'company_name'    => ['required', 'string', 'max:160'],
-            'gst_number'      => ['nullable', 'string', 'max:30'],
+            'gst_number'      => ['nullable', 'string', new Gstin],
             'address'         => ['nullable', 'string', 'max:500'],
             'alternate_phone' => ['nullable', 'string', 'max:20'],
             'aadhar_number'   => ['nullable', 'string', 'max:20'],

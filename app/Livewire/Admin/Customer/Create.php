@@ -5,6 +5,8 @@ namespace App\Livewire\Admin\Customer;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\UserDetail;
+use App\Rules\Gstin;
+use App\Rules\IndianMobile;
 
 class Create extends Component
 {
@@ -21,8 +23,8 @@ class Create extends Component
         $this->validate([
             'name'          => 'required',
             'company_name'  => 'required',
-            'gst_number'    => 'required',
-            'phone'         => 'required|numeric|digits:10',
+            'gst_number'    => ['required', new Gstin],
+            'phone'         => ['required', new IndianMobile],
         ]);
 
         $data = new User;

@@ -7,6 +7,9 @@ use App\Http\Resources\V2\AddressResource;
 use App\Models\UserAddress;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Rules\Gstin;
+use App\Rules\IndianMobile;
+use App\Rules\Pincode;
 
 class AddressController extends Controller
 {
@@ -67,16 +70,18 @@ class AddressController extends Controller
 
     private function rules(Request $request): array
     {
+        $this->uppercaseInputs($request, 'gst');
+
         return $request->validate([
-            'pincode'          => ['required', 'string', 'max:10'],
+            'pincode'          => ['required', 'string', new Pincode],
             'address_line_one' => ['required', 'string', 'max:255'],
             'address_line_two' => ['nullable', 'string', 'max:255'],
             'city'             => ['required', 'string', 'max:80'],
             'state'            => ['required', 'string', 'max:80'],
             'country'          => ['nullable', 'string', 'max:80'],
             'company_name'     => ['nullable', 'string', 'max:160'],
-            'phone'            => ['required', 'string', 'max:20'],
-            'gst'              => ['nullable', 'string', 'max:30'],
+            'phone'            => ['required', 'string', new IndianMobile],
+            'gst'              => ['nullable', 'string', new Gstin],
         ]);
     }
 

@@ -5,6 +5,8 @@ namespace App\Livewire\Admin\Transporter;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\TransporterDetail;
+use App\Rules\Gstin;
+use App\Rules\IndianMobile;
 
 class Edit extends Component
 {
@@ -39,8 +41,8 @@ class Edit extends Component
     {
         $this->validate([
             'name'          => 'required',
-            'phone'         => 'required|numeric|digits:10',
-            'gst_number'    => 'required',
+            'phone'         => ['required', new IndianMobile],
+            'gst_number'    => ['required', new Gstin],
             'address'       => 'required',
             'company_name'  => 'required',
         ]);

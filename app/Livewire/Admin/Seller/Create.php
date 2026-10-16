@@ -13,6 +13,7 @@ use App\Models\SellerKycDetail;
 use App\Models\BusinessCategory;
 use App\Models\UserPromotionHistory;
 use Illuminate\Validation\Rule;
+use App\Rules\Gstin;
 
 class Create extends Component
 {
@@ -67,11 +68,10 @@ class Create extends Component
         $this->validate([
             'user_name'     => 'required',
             'company_name'  => 'required',
-            'gst_number'    => 'required',
+            'gst_number'    => ['required', new Gstin],
             'phone'         => [
                 'required',
-                'numeric',
-                'digits:10',
+                new \App\Rules\IndianMobile,
                 function ($attribute, $value, $fail) {
                     $user = User::where('phone', $value)->first();
                     if ($user && $user->type === 'seller') {

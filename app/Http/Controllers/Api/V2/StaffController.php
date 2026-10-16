@@ -9,6 +9,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Rules\IndianMobile;
 
 class StaffController extends Controller
 {
@@ -57,7 +58,7 @@ class StaffController extends Controller
         $data = $request->validate([
             'name'       => ['required', 'string', 'max:255'],
             'email'      => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
-            'phone'      => ['required', 'string', 'max:20', Rule::unique('users', 'phone')],
+            'phone'      => ['required', 'string', new IndianMobile, Rule::unique('users', 'phone')],
             'role'       => ['required', 'string', 'max:255'],
             'permission' => ['required', 'array'],
             'password'   => ['nullable', 'string', 'min:6'],
@@ -93,7 +94,7 @@ class StaffController extends Controller
         $data = $request->validate([
             'name'       => ['required', 'string', 'max:255'],
             'email'      => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($staff->id)],
-            'phone'      => ['required', 'string', 'max:20', Rule::unique('users', 'phone')->ignore($staff->id)],
+            'phone'      => ['required', 'string', new IndianMobile, Rule::unique('users', 'phone')->ignore($staff->id)],
             'role'       => ['required', 'string', 'max:255'],
             'permission' => ['required', 'array'],
             'password'   => ['nullable', 'string', 'min:6'],

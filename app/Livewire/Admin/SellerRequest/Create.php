@@ -14,6 +14,10 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Rules\Gstin;
+use App\Rules\IndianMobile;
+use App\Rules\Pan;
+use App\Rules\Pincode;
 
 /**
  * Raise a "become a seller" request on behalf of a buyer from the admin panel.
@@ -310,8 +314,8 @@ class Create extends Component
         return match ($step) {
             1 => [
                 'company_name'      => ['required', 'string', 'max:160'],
-                'gst_number'        => ['required', 'string', 'max:30'],
-                'pan_number'        => ['required', 'string', 'max:20', 'regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i'],
+                'gst_number'        => ['required', 'string', new Gstin(panField: 'pan_number')],
+                'pan_number'        => ['required', 'string', new Pan],
                 'seller_type_id'    => ['required', 'integer', Rule::exists('seller_types', 'id')],
                 'business_type'     => ['nullable', 'string', 'max:120'],
                 'company_address'   => ['required', 'string', 'max:500'],
@@ -320,12 +324,12 @@ class Create extends Component
                 'city'              => ['required', 'string', 'max:120'],
                 'state'             => ['required', 'string', 'max:120'],
                 'country'           => ['required', 'string', 'max:120'],
-                'pincode'           => ['required', 'regex:/^\d{6}$/'],
+                'pincode'           => ['required', new Pincode],
             ],
             2 => [
                 'contact_person'   => ['required', 'string', 'max:120'],
                 'designation'      => ['required', 'string', 'max:120'],
-                'mobile'           => ['required', 'regex:/^\d{10}$/', Rule::unique('users', 'phone')->ignore($this->buyer->id)],
+                'mobile'           => ['required', new IndianMobile, Rule::unique('users', 'phone')->ignore($this->buyer->id)],
                 'alternate_mobile' => ['nullable', 'regex:/^\d{10}$/'],
                 'email'            => ['required', 'email', 'max:160', Rule::unique('users', 'email')->ignore($this->buyer->id)],
             ],

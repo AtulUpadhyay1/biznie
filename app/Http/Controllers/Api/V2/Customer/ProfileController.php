@@ -11,6 +11,10 @@ use App\Models\UserDetail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Rules\Gstin;
+use App\Rules\IndianMobile;
+use App\Rules\Pan;
+use App\Rules\Pincode;
 
 class ProfileController extends Controller
 {
@@ -48,21 +52,23 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         $detail = UserDetail::where('user_id', $user->id)->first() ?: new UserDetail();
+        $this->uppercaseInputs($request, 'gst_number', 'pan_number');
 
         $data = $request->validate([
             'name'             => ['required', 'string', 'max:120'],
             'email'            => ['required', 'email', 'max:160', Rule::unique('users', 'email')->ignore($user->id)],
-            'phone'            => ['nullable', 'string', 'regex:/^\d{10}$/', Rule::unique('users', 'phone')->ignore($user->id)],
+            'phone'            => ['nullable', 'string', new IndianMobile, Rule::unique('users', 'phone')->ignore($user->id)],
             'company_name'     => ['nullable', 'string', 'max:160'],
             'company_address'  => ['nullable', 'string', 'max:500'],
             'address_line_one' => ['nullable', 'string', 'max:255'],
             'address_line_two' => ['nullable', 'string', 'max:255'],
-            'postal_code'      => ['nullable', 'string', 'max:10'],
+            'postal_code'      => ['nullable', 'string', new Pincode],
             'city'             => ['nullable', 'string', 'max:80'],
             'state'            => ['nullable', 'string', 'max:80'],
             'country'          => ['nullable', 'string', 'max:80'],
-            'gst_number'       => ['nullable', 'string', 'max:30', Rule::unique('user_details', 'gst_number')->ignore($detail->id ?? null)],
-            'pan_number'       => ['nullable', 'string', 'max:20', Rule::unique('user_details', 'pan_number')->ignore($detail->id ?? null)],
+            // Format, state code, check digit, and the PAN inside the GSTIN (B32).
+            'gst_number'       => ['nullable', 'string', new Gstin(panField: 'pan_number'), Rule::unique('user_details', 'gst_number')->ignore($detail->id ?? null)],
+            'pan_number'       => ['nullable', 'string', new Pan, Rule::unique('user_details', 'pan_number')->ignore($detail->id ?? null)],
         ]);
 
         $user->name  = $data['name'];
@@ -98,24 +104,25 @@ class ProfileController extends Controller
         $kyc = SellerKycDetail::where('user_id', $user->id)->first() ?: new SellerKycDetail();
         $detail = UserDetail::where('user_id', $user->id)->first() ?: new UserDetail();
         $business = Business::where('user_id', $user->id)->first() ?: new Business();
+        $this->uppercaseInputs($request, 'gst_number', 'pan_number', 'ifsc_code');
 
         $data = $request->validate([
             'name'             => ['required', 'string', 'max:120'],
             'email'            => ['required', 'email', 'max:160', Rule::unique('users', 'email')->ignore($user->id)],
-            'phone'            => ['nullable', 'string', 'regex:/^\d{10}$/', Rule::unique('users', 'phone')->ignore($user->id)],
+            'phone'            => ['nullable', 'string', new IndianMobile, Rule::unique('users', 'phone')->ignore($user->id)],
             'company_name'     => ['required', 'string', 'max:160'],
-            'gst_number'       => ['required', 'string', 'max:30'],
-            'pan_number'       => ['nullable', 'string', 'max:20'],
+            'gst_number'       => ['required', 'string', new Gstin(panField: 'pan_number')],
+            'pan_number'       => ['nullable', 'string', new Pan],
             'address_line_one' => ['nullable', 'string', 'max:255'],
             'address_line_two' => ['nullable', 'string', 'max:255'],
-            'postal_code'      => ['nullable', 'string', 'max:10'],
+            'postal_code'      => ['nullable', 'string', new Pincode],
             'city'             => ['nullable', 'string', 'max:80'],
             'state'            => ['nullable', 'string', 'max:80'],
             'country'          => ['nullable', 'string', 'max:80'],
-            'account_number'   => ['nullable', 'string', 'max:30'],
+            'account_number'   => ['nullable', 'string', 'regex:/^\d{9,18}$/'],
             'account_holder_name' => ['nullable', 'string', 'max:120'],
             'bank_name'        => ['nullable', 'string', 'max:120'],
-            'ifsc_code'        => ['nullable', 'string', 'max:20'],
+            'ifsc_code'        => ['nullable', 'string', 'regex:/^[A-Z]{4}0[A-Z0-9]{6}$/'],
         ]);
 
         $user->name  = $data['name'];
@@ -165,16 +172,17 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         $detail = TransporterDetail::where('user_id', $user->id)->first() ?: new TransporterDetail();
+        $this->uppercaseInputs($request, 'gst_number', 'pan_number');
 
         $data = $request->validate([
             'name'            => ['required', 'string', 'max:120'],
             'email'           => ['nullable', 'email', 'max:160', Rule::unique('users', 'email')->ignore($user->id)],
-            'phone'           => ['required', 'string', 'regex:/^\d{10}$/', Rule::unique('users', 'phone')->ignore($user->id)],
+            'phone'           => ['required', 'string', new IndianMobile, Rule::unique('users', 'phone')->ignore($user->id)],
             'company_name'    => ['required', 'string', 'max:160'],
-            'gst_number'      => ['nullable', 'string', 'max:30'],
-            'pan_number'      => ['nullable', 'string', 'max:20'],
+            'gst_number'      => ['nullable', 'string', new Gstin(panField: 'pan_number')],
+            'pan_number'      => ['nullable', 'string', new Pan],
             'address'         => ['nullable', 'string', 'max:500'],
-            'alternate_phone' => ['nullable', 'string', 'max:20'],
+            'alternate_phone' => ['nullable', 'string', new IndianMobile],
             'aadhar_number'   => ['nullable', 'string', 'max:20'],
         ]);
 
