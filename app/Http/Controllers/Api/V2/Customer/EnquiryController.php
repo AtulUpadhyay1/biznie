@@ -13,6 +13,7 @@ use App\Models\CreditWalletTransaction;
 use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
 use App\Rules\OrderQuantity;
+use App\Services\Orders\OrderSummary;
 use App\Services\Rfq\EnquiryCreator;
 use App\Services\Rfq\LiveBiddingService;
 use Carbon\Carbon;
@@ -135,6 +136,16 @@ class EnquiryController extends Controller
                 $enquiry->fresh()->load('getBrand', 'getCommodityProduct.getCategory')
             ),
         ], 201);
+    }
+
+    /** `OID-20261016-4821`, unique — `rand()` alone could repeat within a day. */
+    private function nextOrderId(): string
+    {
+        do {
+            $id = 'OID-'.date('Ymd').'-'.random_int(1000, 9999);
+        } while (CommodityProductOrder::where('order_id', $id)->exists());
+
+        return $id;
     }
 
     private function ownerId(Request $request): int
@@ -356,6 +367,26 @@ class EnquiryController extends Controller
             return response()->json(['success' => false, 'message' => 'No quotation selected to accept.'], 422);
         }
 
+        // One order per RFQ: a double click or a second tab used to place two.
+        if ($enquiry->status === 'ordered' || CommodityProductOrder::where('product_enquiries_id', $enquiry->id)->exists()) {
+            return response()->json(['success' => false, 'message' => 'An order has already been placed for this RFQ.'], 409);
+        }
+
+        // The order total comes from the accepted quote, priced by the same
+        // OrderSummary the buyer, seller and admin order pages read — not from
+        // the number the browser posts (B43). The posted total is only a
+        // fallback for legacy quotes that carry no per-unit price at all.
+        $figures = OrderSummary::forBid($bid, $enquiry);
+        $total = $figures['order_total'] > 0 ? $figures['order_total'] : (float) $data['total_amount'];
+        if ($data['token_amount'] > $total) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token amount cannot be more than the order total.',
+                'errors'  => ['token_amount' => ['Token amount cannot be more than the order total.']],
+            ], 422);
+        }
+        $data['total_amount'] = $total;
+
         $customer = $request->user();
         $owner = $customer->is_staff ? $customer->added_by : $customer->id;
         $balance = $data['selected_wallet'] === 'cash_balance'
@@ -369,7 +400,7 @@ class EnquiryController extends Controller
             ], 422);
         }
 
-        $order = DB::transaction(function () use ($enquiry, $bid, $data, $customer, $owner) {
+        $order = DB::transaction(function () use ($enquiry, $bid, $data, $customer, $owner, $figures) {
             // Mark this quotation as accepted (and unmark others)
             SellerProductEnquiry::where('product_enquiries_id', $enquiry->id)->update(['is_mark' => 0]);
             $bid->is_mark = 1;
@@ -393,7 +424,7 @@ class EnquiryController extends Controller
             $order->commodity_product_id        = $bid->commodity_product_id;
             $order->brand_id                    = $bid->brand_id;
             $order->unique_id                   = $bid->unique_id;
-            $order->order_id                    = 'OID-'.date('Ymd').'-'.rand(1111, 9999);
+            $order->order_id                    = $this->nextOrderId();
             $order->origin_city                 = $bid->origin_city;
             $order->value                       = $bid->value;
             $order->billing_address             = $bid->billing_address;
@@ -406,6 +437,11 @@ class EnquiryController extends Controller
             $order->token_amount                = $data['token_amount'];
             $order->transport_price             = $bid->transport_price;
             $order->commission                  = $bid->commission;
+            $order->commission_type             = $bid->commission_type;
+            // Copied from the quote so every view prices the order the same way.
+            $order->gst                         = $figures['gst_rate'];
+            $order->total_ex_factory_amount     = $figures['ex_works_amount'];
+            $order->total_freight_amount        = $figures['freight_amount'];
             $order->total_amount                = $data['total_amount'];
             $order->paid_amount                 = $data['token_amount'];
             $order->due_amount                  = $data['total_amount'] - $data['token_amount'];

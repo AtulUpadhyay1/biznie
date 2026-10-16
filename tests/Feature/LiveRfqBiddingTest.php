@@ -336,4 +336,41 @@ class LiveRfqBiddingTest extends TestCase
         $this->assertEquals(47800.0, (float) $bid->refresh()->base_price);
         $this->assertEquals(4400.0, (float) $bid->transport_price);
     }
+
+    public function test_accepting_a_quote_prices_the_order_on_the_server(): void
+    {
+        $buyer = $this->makeUser('customer');
+        $buyer->cash_balance = 100000;
+        $buyer->save();
+        $seller = $this->makeSeller('Raipur');
+
+        $rfqId = $this->createRfq($buyer); // 30 units
+        $bid = SellerProductEnquiry::where('product_enquiries_id', $rfqId)->where('user_id', $seller->id)->first();
+        app(LiveBiddingService::class)->recordPrice(bid: $bid, exWorks: 47000, freight: 1000, other: 0);
+
+        Sanctum::actingAs($buyer);
+        // A tampered total from the browser must not set the order value (B43).
+        $response = $this->postJson("/api/v2/me/enquiries/{$rfqId}/accept", [
+            'seller_quotation_id' => $bid->id,
+            'token_amount'        => 5000,
+            'total_amount'        => 1,
+            'selected_wallet'     => 'cash_balance',
+        ]);
+        $response->assertCreated();
+
+        $order = \App\Models\CommodityProductOrder::find($response->json('data.id'));
+        $this->assertEquals(1440000.0, (float) $order->total_amount);   // (47,000 + 1,000) x 30
+        $this->assertEquals(1410000.0, (float) $order->total_ex_factory_amount);
+        $this->assertEquals(30000.0, (float) $order->total_freight_amount);
+        $this->assertEquals(1435000.0, (float) $order->due_amount);
+        $this->assertNotNull($order->gst);
+
+        // And a second accept on the same RFQ is refused.
+        $this->postJson("/api/v2/me/enquiries/{$rfqId}/accept", [
+            'seller_quotation_id' => $bid->id,
+            'token_amount'        => 5000,
+            'total_amount'        => 1440000,
+            'selected_wallet'     => 'cash_balance',
+        ])->assertStatus(409);
+    }
 }

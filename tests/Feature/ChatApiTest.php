@@ -143,6 +143,15 @@ class ChatApiTest extends TestCase
         return $product;
     }
 
+    /**
+     * A quantity the product accepts: RFQs below the catalog MOQ are refused
+     * (B14), so tests order at least the MOQ.
+     */
+    private function validQuantity(CommodityProduct $product, float $preferred = 25): float
+    {
+        return max($preferred, (float) ($product->min_order_qty ?? 0));
+    }
+
     private function writeKey(?User $user): string
     {
         return 'chat-write:' . ($user ? 'u:' . $user->id : 'ip:' . app(ChatLogger::class)->hashIp('127.0.0.1'));
@@ -339,9 +348,10 @@ class ChatApiTest extends TestCase
 
         $sessionId = (string) Str::uuid();
         $clientId  = (string) Str::uuid();
+        $quantity  = $this->validQuantity($product);
         $payload   = [
             'commodity_product_id' => $product->id,
-            'quantity'             => 25,
+            'quantity'             => $quantity,
             'unit_label'           => 'MT',
             'delivery_city'        => 'Pune',
             'required_by'          => 'Within 1 week',
@@ -358,7 +368,7 @@ class ChatApiTest extends TestCase
         $rfq = ProductEnquiry::find($created['enquiry']['id']);
         $this->assertSame($buyer->id, (int) $rfq->user_id);
         $this->assertSame('live', $rfq->bidding_status);
-        $this->assertEquals(25.0, (float) $rfq->quantity);
+        $this->assertEquals($quantity, (float) $rfq->quantity);
         $this->assertSame('Pune', $rfq->delivery_city);
         $this->assertSame($before + 1, ProductEnquiry::where('user_id', $buyer->id)->count());
 
@@ -401,7 +411,7 @@ class ChatApiTest extends TestCase
 
         $this->action('enquiry.submit', [
             'commodity_product_id' => $product->id,
-            'quantity'             => 5,
+            'quantity'             => $this->validQuantity($product, 5),
             'unit_label'           => 'MT',
             'delivery_city'        => 'Pune',
             'required_by'          => 'Within 1 week',
@@ -425,7 +435,7 @@ class ChatApiTest extends TestCase
 
         $base = [
             'commodity_product_id' => $product->id,
-            'quantity'             => 12,
+            'quantity'             => $this->validQuantity($product, 12),
             'delivery_city'        => 'Nagpur',
             'required_by'          => 'Within 3 days',
         ];
@@ -997,5 +1007,23 @@ class ChatApiTest extends TestCase
 
         $this->assertSame($owner->id, (new ChatContext($staff, 'en', $session, 'x'))->ownerId());
         $this->assertNull((new ChatContext(null, 'en', $session, 'x'))->ownerId());
+    }
+
+    public function test_enquiry_submit_below_the_product_moq_is_refused(): void
+    {
+        $product = $this->activeProduct();
+        $moq = (float) ($product->min_order_qty ?? 0);
+        if ($moq <= 1) {
+            $this->markTestSkipped('The first active product has no MOQ to test against.');
+        }
+        Sanctum::actingAs($this->makeUser());
+
+        $this->action('enquiry.submit', [
+            'commodity_product_id' => $product->id,
+            'quantity'             => $moq - 1,
+            'unit_label'           => 'MT',
+            'delivery_city'        => 'Pune',
+            'required_by'          => 'Within 1 week',
+        ])->assertStatus(422)->assertJsonValidationErrors(['quantity']);
     }
 }

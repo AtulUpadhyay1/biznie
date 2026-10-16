@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Services\ProductPricingService;
 use App\Models\BookmarkProduct;
 use App\Models\CommodityProductVariation;
-use App\Models\CommodityProductStatePrice;
 use App\Models\SellerCommodityProductHistory;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -61,40 +61,14 @@ class SellerListByCommodityProductResource extends JsonResource
                 $data['default_variation'][] = $value;
             }
 
-            $state_price = CommodityProductStatePrice::where('commodity_product_id', $this->commodity_product_id)
-            ->where('commodity_product_variation_id', $default_variation->id)
-            ->where('brand_id', $this->brand_id)
-            ->first();
 
-            if($state_price){
-                $commodityProduct = $this->getCommodityProduct;
-                $ex_price = $state_price->price + $this->base_price + $commodityProduct->loading_charge + $commodityProduct->insurance_charge + $commodityProduct->quality_charge;
-                $extra_charges = 0;
-                foreach ($commodityProduct->charge_name as $charge_key => $charge_name) {
-                    $other_charges_arr['name'] = $charge_name;
-                    $other_charges_arr['price'] = isset($commodityProduct->charge_price[$charge_key]) ? $commodityProduct->charge_price[$charge_key] : 0;
-                    $other_charges_arr['operator'] = isset($commodityProduct->operator[$charge_key]) ? $commodityProduct->operator[$charge_key] : "";
+        }
 
-                    if($other_charges_arr['operator']){
-                        if($other_charges_arr['operator'] == "+"){
-                            $extra_charges += $other_charges_arr['price'];
-                        }elseif($other_charges_arr['operator'] == "-"){
-                            $extra_charges -= $other_charges_arr['price'];
-                        }elseif($other_charges_arr['operator'] == "*"){
-                            $extra_charges += $ex_price * $other_charges_arr['price'];
-                        }elseif($other_charges_arr['operator'] == "/"){
-                            $extra_charges += $ex_price / $other_charges_arr['price'];
-                        }elseif($other_charges_arr['operator'] == "%"){
-                            $extra_charges += $ex_price * ($other_charges_arr['price'] / 100);
-                        }
-                    }
-                }
-
-                $tax_amount = ($ex_price + $extra_charges) * $commodityProduct->gst / 100;
-
-                $data['ex_price'] = round($ex_price + $extra_charges + $tax_amount);
-            }
-
+        // One engine for every client (B43). This list used to price with the
+        // catalog's charges and GST and an unrounded tax, so the mobile app and
+        // the website showed different ex prices for the same offer.
+        if ((float) $this->base_price > 0) {
+            $data['ex_price'] = app(ProductPricingService::class)->exWorksBreakup($this->resource)['ex_price'];
         }
 
         $price_history = SellerCommodityProductHistory::where('user_id', $this->user_id)
