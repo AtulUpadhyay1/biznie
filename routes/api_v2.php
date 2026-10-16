@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V2\Auth\AuthController;
 use App\Http\Controllers\Api\V2\Auth\PasswordController;
 use App\Http\Controllers\Api\V2\Auth\PasswordResetController;
 use App\Http\Controllers\Api\V2\Auth\RegisterOtpController;
+use App\Http\Controllers\Api\V2\Auth\PhoneOtpController;
 use App\Http\Controllers\Api\V2\HomeController;
 use App\Http\Controllers\Api\V2\ProductController;
 use App\Http\Controllers\Api\V2\CategoryController;
@@ -60,6 +61,9 @@ Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register'])
         ->middleware('throttle:10,1');
     Route::post('login', [AuthController::class, 'login']);
+    // Mobile + SMS code: sign in, or sign up on first use (4.7).
+    Route::post('otp/send', [PhoneOtpController::class, 'send'])->middleware('throttle:6,1');
+    Route::post('otp/verify', [PhoneOtpController::class, 'verify'])->middleware('throttle:12,1');
     Route::post('forgot-password', [PasswordResetController::class, 'forgot'])
         ->middleware('throttle:6,1');
     Route::post('reset-password', [PasswordResetController::class, 'reset'])
