@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use App\Rules\MasterUnit;
 
 /**
  * Raise a product request on behalf of a seller from the admin panel.
@@ -357,9 +358,10 @@ class Create extends Component
                 'chemical_specs.*.parameter' => ['nullable', 'string', 'max:160'],
                 'chemical_specs.*.value'     => ['nullable', 'string', 'max:190'],
                 'chemical_spec_images.*'     => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'],
-                'weight_unit'                => ['required', 'string', 'max:60'],
-                'net_weight'                 => ['required', 'string', 'max:60'],
-                'tolerance'                  => ['nullable', 'string', 'max:60'],
+                // A number in a master unit, never free text (B12).
+                'weight_unit'                => ['required', 'string', new MasterUnit],
+                'net_weight'                 => ['required', 'numeric', 'gt:0'],
+                'tolerance'                  => ['nullable', 'numeric', 'min:0', 'max:20'],
             ],
             5 => [
                 'variants'          => ['required', 'array', 'min:1'],

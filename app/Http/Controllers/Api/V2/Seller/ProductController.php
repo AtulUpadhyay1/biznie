@@ -19,6 +19,7 @@ use Illuminate\Validation\Rule;
 use App\Rules\GstRate;
 use App\Rules\HsnCode;
 use App\Support\SellerProductChecks;
+use App\Rules\MasterUnit;
 
 class ProductController extends Controller
 {
@@ -407,9 +408,10 @@ class ProductController extends Controller
                 'chemical_specs.*.parameter' => ['nullable', 'string', 'max:160'],
                 'chemical_specs.*.value'     => ['nullable', 'string', 'max:190'],
                 'chemical_specs.*.image'     => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'],
-                'weight_unit'                => ['required', 'string', 'max:60'],
-                'net_weight'                 => ['required', 'string', 'max:60'],
-                'tolerance'                  => ['nullable', 'string', 'max:60'],
+                // A number in a master unit, never free text (B12).
+                'weight_unit'                => ['required', 'string', new MasterUnit],
+                'net_weight'                 => ['required', 'numeric', 'gt:0'],
+                'tolerance'                  => ['nullable', 'numeric', 'min:0', 'max:20'],
             ],
             5 => [
                 // Two shapes share this step. A catalog-linked product's

@@ -39,6 +39,10 @@ final class SellerProductChecks
             $problems[] = 'Minimum order quantity must be a number greater than 0';
         }
 
+        if (! is_numeric($product->net_weight) || (float) $product->net_weight <= 0) {
+            $problems[] = 'Net weight must be a number';
+        }
+
         if (! is_numeric($product->quantity) || (float) $product->quantity <= 0) {
             $problems[] = 'Available quantity is required';
         }
