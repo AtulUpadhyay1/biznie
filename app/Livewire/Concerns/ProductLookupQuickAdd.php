@@ -9,6 +9,7 @@ use App\Models\ProductSubCategory;
 use App\Models\ProductSubSubCategory;
 use App\Models\ProductUnit;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 /**
  * Shared by the commodity-product Create and Edit screens.
@@ -57,12 +58,39 @@ trait ProductLookupQuickAdd
         $this->pushSubSubCategoryOptions();
     }
 
+    /**
+     * A sub-category of the chosen category (B07). Changing the category could
+     * leave the old sub-category selected, which is how SPONGE IRON ended up
+     * under RAW MATERIAL with Rice's "Broken" sub-category.
+     */
+    protected function subCategoryRule(bool $required): array
+    {
+        return [
+            $required ? 'required' : 'nullable',
+            Rule::exists('product_sub_categories', 'id')
+                ->where('product_category_id', $this->category_id)
+                ->whereNull('deleted_at'),
+        ];
+    }
+
+    protected function subCategoryMessages(): array
+    {
+        return ['sub_category_id.exists' => 'Pick a sub category of the selected category'];
+    }
+
     public function setSubCategoryList(): void
     {
         $this->sub_category_list = $this->category_id
             ? ProductSubCategory::active()->where('product_category_id', $this->category_id)->orderBy('name')->get()
             : collect();
         $this->sub_sub_category_list = collect();
+
+        // A saved sub-category from another category (older data) would show
+        // as blank yet still be saved back; drop it so the form tells the truth.
+        if ($this->sub_category_id && ! $this->sub_category_list->contains('id', (int) $this->sub_category_id)) {
+            $this->sub_category_id = null;
+            $this->sub_sub_category_id = null;
+        }
     }
 
     public function setSubSubCategoryList(): void

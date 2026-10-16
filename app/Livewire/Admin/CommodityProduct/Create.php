@@ -109,7 +109,7 @@ class Create extends Component
         $this->validate([
             'name'              => 'required',
             'category_id'       => 'required',
-            'sub_category_id'   => 'required',
+            'sub_category_id'   => $this->subCategoryRule(true),
             // 'brand_id'          => 'required',
             'unit_id'           => 'required',
             //'base_price'        => 'required',
@@ -125,7 +125,7 @@ class Create extends Component
             // 'quality_price.*'   => 'required',
             'thumbnail'         => 'required',
             'attribute'         => 'required|array',
-        ]);
+        ], $this->subCategoryMessages());
 
         // $allInputData = request()->all();
         // dd($allInputData);

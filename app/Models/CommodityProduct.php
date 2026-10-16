@@ -30,6 +30,22 @@ class CommodityProduct extends Model
         'packaging_type_price'  => 'array',
     ];
 
+    protected static function booted(): void
+    {
+        // Re-filing a catalog product re-files every listing of it (B07), so
+        // the storefront and the seller catalog never disagree on category.
+        static::updated(function (self $product) {
+            $changed = array_values(array_filter(
+                SellerCommodityProduct::CATALOG_FIELDS,
+                fn ($f) => $product->wasChanged($f) && ($f !== 'unit_id' || $product->unit_id)
+            ));
+            if ($changed) {
+                SellerCommodityProduct::where('commodity_product_id', $product->id)
+                    ->update(array_combine($changed, array_map(fn ($f) => $product->{$f}, $changed)));
+            }
+        });
+    }
+
     /**
      * Name + trade synonyms + size + grade + brand (B06): "saria 12mm",
      * "patti", "gol pipe" all find their product. Adds a relevance ORDER BY,

@@ -45,6 +45,38 @@ class SellerCommodityProduct extends Model
     /** How `price_validity` is written by every price form (string column). */
     public const PRICE_VALIDITY_FORMAT = 'Y-m-d h:i A';
 
+    /** Where a listing is filed — always the catalog product's (B07). */
+    public const CATALOG_FIELDS = ['category_id', 'sub_category_id', 'sub_sub_category_id', 'unit_id'];
+
+    protected static function booted(): void
+    {
+        // The catalog product is the one source of truth for category,
+        // sub-category and unit: a seller's own pick or a stale copy put
+        // SPONGE IRON under FINISHED here and RAW MATERIAL on the catalog.
+        static::saving(function (self $listing) {
+            if ($listing->commodity_product_id && (! $listing->exists || $listing->isDirty(['commodity_product_id', ...self::CATALOG_FIELDS]))) {
+                $listing->syncFromCatalog();
+            }
+        });
+    }
+
+    /** Copies category / sub-category / unit from the linked catalog product. */
+    public function syncFromCatalog(): void
+    {
+        $catalog = CommodityProduct::withTrashed()->find($this->commodity_product_id);
+        if (! $catalog) {
+            return;
+        }
+
+        $this->category_id         = $catalog->category_id;
+        $this->sub_category_id     = $catalog->sub_category_id;
+        $this->sub_sub_category_id = $catalog->sub_sub_category_id;
+        // A catalog product without a unit leaves the seller's own.
+        if ($catalog->unit_id) {
+            $this->unit_id = $catalog->unit_id;
+        }
+    }
+
     /**
      * Offers whose price is still valid. A listing past its `price_validity`
      * is a stale quote, not a live offer (B09) — it stays in the seller's

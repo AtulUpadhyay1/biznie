@@ -90,11 +90,12 @@ class Edit extends Component
         $this->validate([
             'name'              => 'required',
             'category_id'       => 'required',
+            'sub_category_id'   => $this->subCategoryRule(false),
             'unit_id'           => 'required',
             'packaging_type'    => 'required',
             'thumbnail'         => 'nullable|image',
             'attribute'         => 'required|array',
-        ]);
+        ], $this->subCategoryMessages());
 
         $data = CommodityProduct::find($this->hidden_id);
         $data->name             = $this->name;
