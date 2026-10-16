@@ -25,8 +25,10 @@ class HomeController extends Controller
                 'site' => [
                     'name'        => websiteSetupValue('site_name') ?: 'Biznie',
                     'tagline'     => websiteSetupValue('tagline'),
-                    'support_email' => websiteSetupValue('support_email'),
-                    'support_phone' => websiteSetupValue('support_phone'),
+                    // The keys Website Setup actually writes (B21): these read
+                    // `support_email` / `support_phone`, which nothing saves.
+                    'support_email' => \App\Support\CompanyProfile::get('email'),
+                    'support_phone' => \App\Support\CompanyProfile::get('phone1'),
                 ],
                 'categories'   => CategoryResource::collection($categories),
                 'market_news'  => NewsResource::collection($news),

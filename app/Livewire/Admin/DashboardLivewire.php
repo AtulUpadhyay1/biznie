@@ -99,7 +99,9 @@ class DashboardLivewire extends Component
 
     public function notificationTest()
     {
-        Mail::to('techuptechnologies1@gmail.com')->send(new EnquiryMail());
+        // Test mail goes to the company inbox configured in Website Setup, not
+        // a developer's personal address.
+        Mail::to(\App\Support\CompanyProfile::get('email') ?: config('mail.from.address'))->send(new EnquiryMail());
         $this->dispatch(
             'alert',
             type: 'success',
