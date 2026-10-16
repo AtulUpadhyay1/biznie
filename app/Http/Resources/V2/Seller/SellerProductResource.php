@@ -73,6 +73,9 @@ class SellerProductResource extends JsonResource
                 'base_price'    => (float) $breakup['base_price'],
                 'gauge_diff'    => (float) $breakup['gauge_diff'],
                 'total_charges' => (float) $breakup['total_charges'],
+                // Base + gauge + every charge: the GST base (B41 — the rows
+                // must visibly add up to the ex price).
+                'taxable'       => (float) $breakup['total_amount'],
                 'gst'           => (float) $breakup['gst'],
                 'tax_amount'    => (float) $breakup['tax_amount'],
             ],

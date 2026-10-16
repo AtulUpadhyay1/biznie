@@ -43,6 +43,20 @@ class ProductPricingService
     private const HOUSE_SELLER_USER_ID = 1;
 
     /**
+     * Extra-charge names that duplicate a dedicated column (loading_charge,
+     * insurance_charge, gst, tcs). Catalog prefill and older wizard saves put
+     * "Loading Charges" or "GST 18%" into the free-form charge list as well, so
+     * the breakup printed them twice and the ex price added "GST 18%" as ₹18
+     * (B41). They are skipped here; the dedicated column is the one source.
+     */
+    private const DUPLICATE_CHARGE_PATTERN = '/^\s*(loading|insurance|gst|igst|cgst|sgst|tcs)\b/i';
+
+    private function isDuplicateCharge(string $name): bool
+    {
+        return preg_match(self::DUPLICATE_CHARGE_PATTERN, $name) === 1;
+    }
+
+    /**
      * Sums the named charges of a seller product.
      *
      * Only "+" and "-" are applied. The multiplicative operators are ignored on
@@ -57,6 +71,9 @@ class ProductPricingService
 
         $extra = 0;
         foreach ($chargeNames as $key => $name) {
+            if ($this->isDuplicateCharge((string) $name)) {
+                continue;
+            }
             $price = (float) ($chargePrices[$key] ?? 0);
             $operator = $operators[$key] ?? '';
 
@@ -79,6 +96,9 @@ class ProductPricingService
 
         $charges = [];
         foreach ($chargeNames as $key => $name) {
+            if ($this->isDuplicateCharge((string) $name)) {
+                continue;
+            }
             $charges[] = [
                 'name'     => $name,
                 'price'    => (float) ($chargePrices[$key] ?? 0),
@@ -132,7 +152,9 @@ class ProductPricingService
         $loadingCharge = (float) $sellerProduct->loading_charge;
         $insuranceCharge = (float) $sellerProduct->insurance_charge;
         $qualityCharge = (float) $sellerProduct->quality_charge;
-        $gst = (float) $sellerProduct->gst;
+        // The wizard's GST dropdown (tax_rate) is authoritative; `gst` is the
+        // legacy column it is mirrored into.
+        $gst = (float) ($sellerProduct->tax_rate ?? $sellerProduct->gst);
 
         $extraCharges = $this->extraCharges($sellerProduct);
         $totalCharges = $loadingCharge + $insuranceCharge + $qualityCharge + $extraCharges;
