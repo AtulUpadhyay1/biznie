@@ -40,15 +40,28 @@ if(! function_exists('getPaginate')){
     }
 }
 
+/*
+ * One date format across admin, PDFs, notifications and API strings (B36):
+ * "14 May 2026, 09:36 PM" and "14/05/2026", always in the app timezone (IST).
+ * Carbon carries the zone explicitly instead of relying on PHP's default.
+ */
 if(!function_exists('dateTimeFormat')){
     function dateTimeFormat($datesTime){
-        return date('d-m-Y - h:i A', strtotime($datesTime));
+        if (! $datesTime) {
+            return '';
+        }
+
+        return \Carbon\Carbon::parse($datesTime)->setTimezone(config('app.timezone'))->format('d M Y, h:i A');
     }
 }
 
 if(!function_exists('dateFormat')){
     function dateFormat($dates){
-        return date('d-m-Y', strtotime($dates));
+        if (! $dates) {
+            return '';
+        }
+
+        return \Carbon\Carbon::parse($dates)->setTimezone(config('app.timezone'))->format('d/m/Y');
     }
 }
 

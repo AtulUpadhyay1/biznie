@@ -612,7 +612,7 @@
                                                                     <b class="ms-1">Status: </b><span
                                                                         class="bz-status bz-status--success">{{ $repliedStatus['status'] }}</span>
                                                                     <span
-                                                                        class="ms-1">{{ \Carbon\Carbon::parse($repliedStatus['created_at'])->format('d-m-Y H:i:s') }}</span>
+                                                                        class="ms-1">{{ dateTimeFormat($repliedStatus['created_at']) }}</span>
                                                                 @endif
                                                             </button>
                                                         </h2>
