@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2;
 
+use App\Support\IndianFormat;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,7 +17,7 @@ class OrderLedgerResource extends JsonResource
             'type'               => $this->type,
             'amount'             => (float) ($this->amount ?? 0),
             'remaining_balance'  => $this->remaining_balance !== null ? (float) $this->remaining_balance : null,
-            'description'        => $this->description,
+            'description'        => IndianFormat::maskAccountNumbersIn($this->description),
             'payment_mode'       => $this->payment_mode ?? null,
             'payment_method'     => $this->payment_method ?? null,
             'transaction_number' => $this->transaction_number ?? null,

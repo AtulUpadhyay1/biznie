@@ -173,7 +173,7 @@ class Ledger extends Component
             $cash_history = new CashWalletTransaction;
             $cash_history->user_id           = $this->data->customer_user_id;
             $cash_history->commodity_product_order_id   = $this->hidden_id;
-            $cash_history->amount            = $this->transaction_account_number;
+            $cash_history->amount            = $this->transaction_amount;
             $cash_history->description       = 'Amount refunded for Order Id: '.$this->data->order_id;
             $cash_history->mode              = 'online';
             $cash_history->status            = 'credit';
@@ -185,7 +185,10 @@ class Ledger extends Component
 
         }else if ($this->mode == 'credit_wallet'){
 
-            $user->credit_balance -= $this->transaction_amount;
+            // A refund puts the money back: the row below is a credit, so the
+            // balance must go up with it (this subtracted, double-charging the
+            // buyer's credit line on every refund).
+            $user->credit_balance += $this->transaction_amount;
             $user->save();
 
             $credit_history = new CreditWalletTransaction;

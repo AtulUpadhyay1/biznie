@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2;
 
+use App\Support\IndianFormat;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,8 +16,10 @@ class WalletTransactionResource extends JsonResource
             'amount'             => (float) ($this->amount ?? 0),
             'status'             => $this->status,
             'mode'               => $this->mode,
-            'description'        => $this->description,
-            'notes'              => $this->notes,
+            // Admin-typed remarks: mask any bank account number before it reaches
+            // the customer (B31).
+            'description'        => IndianFormat::maskAccountNumbersIn($this->description),
+            'notes'              => IndianFormat::maskAccountNumbersIn($this->notes),
             'transaction_status' => $this->transaction_status,
             'created_at'         => optional($this->created_at)->toIso8601String(),
         ];

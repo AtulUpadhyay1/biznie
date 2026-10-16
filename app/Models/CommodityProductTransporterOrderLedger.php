@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\MasksBankDetails;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CommodityProductTransporterOrderLedger extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, MasksBankDetails;
 
     public function getDrivers()
     {

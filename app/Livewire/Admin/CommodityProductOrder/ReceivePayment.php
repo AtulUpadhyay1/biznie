@@ -122,7 +122,7 @@ class ReceivePayment extends Component
             $cash_history = new CashWalletTransaction;
             $cash_history->user_id           = $this->data->customer_user_id;
             $cash_history->commodity_product_order_id   = $this->hidden_id;
-            $cash_history->amount            = $this->transaction_account_number;
+            $cash_history->amount            = $this->transaction_amount;
             $cash_history->description       = 'Amount debited for Order Id: '.$this->data->order_id;
             $cash_history->mode              = 'online';
             $cash_history->status            = 'debit';
