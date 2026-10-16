@@ -7,6 +7,7 @@ use App\Models\SellerCommodityProduct;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
+use App\Support\SellerProductChecks;
 
 class Show extends Component
 {
@@ -30,6 +31,14 @@ class Show extends Component
 
         if ($record->request_status === 'approved') {
             $this->dispatch('alert', type: 'error', message: 'This product is already approved.');
+            return;
+        }
+
+        // Same publishability rules as the seller's submit (B42): admin cannot
+        // put a product live with a bad HSN, GST, loading point or no stock.
+        $problems = SellerProductChecks::problems($record);
+        if ($problems) {
+            $this->dispatch('alert', type: 'error', message: 'Cannot approve: ' . implode('; ', $problems) . '. Reject with a note so the seller can fix it.');
             return;
         }
 

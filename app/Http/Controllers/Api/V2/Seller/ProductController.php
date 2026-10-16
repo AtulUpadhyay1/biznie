@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Rules\GstRate;
+use App\Rules\HsnCode;
+use App\Support\SellerProductChecks;
 
 class ProductController extends Controller
 {
@@ -41,6 +44,9 @@ class ProductController extends Controller
     ];
 
     private const FIELD_LABELS = [
+        'moq'                => 'minimum order quantity',
+        'available_quantity' => 'available quantity',
+        'load_within'        => 'dispatch days',
         'qualities'          => 'quality grades',
         'qualities.*.name'   => 'quality',
         'qualities.*.price'  => 'quality price',
@@ -361,8 +367,10 @@ class ProductController extends Controller
                 'product_type'         => ['required', Rule::in(['raw_material', 'finished_good', 'service'])],
                 'short_description'    => ['required', 'string', 'max:200'],
                 'detailed_description' => ['nullable', 'string', 'max:1000'],
-                'hsn_code'             => ['required', 'string', 'max:40'],
-                'tax_rate'             => ['nullable', 'numeric', 'min:0'],
+                // 4/6/8-digit HSN and a GST slab from the dropdown — never free
+                // text (B42). GST is set here once; see the charges note below.
+                'hsn_code'             => ['required', 'string', new HsnCode],
+                'tax_rate'             => ['required', new GstRate],
             ],
             2 => [
                 'product_images'   => ['nullable', 'array', 'max:5'],
@@ -421,8 +429,11 @@ class ProductController extends Controller
                 'loading_city'  => ['required', 'string', 'max:120'],
                 'loading_state' => ['required', 'string', 'max:120'],
                 'country'       => ['required', 'string', 'max:120'],
-                'moq'           => ['required', 'string', 'max:60'],
+                'moq'           => ['required', 'numeric', 'gt:0'],
                 'moq_unit'      => ['required', 'string', 'max:60'],
+                // What can actually be supplied, and how fast (B42).
+                'available_quantity' => ['required', 'numeric', 'gt:0'],
+                'load_within'   => ['required', 'integer', 'min:1', 'max:90'],
             ],
             7 => [
                 // `status` (active/inactive) is decided by the admin on approval,
@@ -463,6 +474,10 @@ class ProductController extends Controller
         }
         if (array_key_exists('tax_rate', $data)) {
             $record->tax_rate = ($data['tax_rate'] ?? '') !== '' ? $data['tax_rate'] : null;
+            // The column the price engine reads. One GST rate per product, from
+            // the step-1 dropdown — it used to be typed again as a "GST" charge
+            // row, which is how the breakup ended up with two GST lines.
+            $record->gst = $record->tax_rate ?? 0;
         }
         if (array_key_exists('product_video', $data)) {
             $record->video_url = $data['product_video'] ?: null;
@@ -598,6 +613,12 @@ class ProductController extends Controller
         if (array_key_exists('moq_unit', $data)) {
             $record->moq_unit = $data['moq_unit'] ?: null;
         }
+        if (array_key_exists('available_quantity', $data)) {
+            $record->quantity = $data['available_quantity'];
+        }
+        if (array_key_exists('load_within', $data)) {
+            $record->load_within = (int) $data['load_within'];
+        }
 
         if ($request->boolean('charges_provided')) {
             // The four charges the pricing service reads from their own columns
@@ -606,7 +627,9 @@ class ProductController extends Controller
             // arrays, where the operator decides whether it lifts or lowers the
             // ex price — without it the amount is simply ignored.
             foreach (self::KNOWN_CHARGES as $column) {
-                $record->{$column} = 0;
+                if ($column !== 'gst') {
+                    $record->{$column} = 0;
+                }
             }
 
             $names = [];
@@ -623,6 +646,11 @@ class ProductController extends Controller
                     : (($row['percent'] ?? '') !== '' ? (float) $row['percent'] : 0);
 
                 $column = $this->knownChargeColumn($type);
+                if ($column === 'gst') {
+                    // GST comes from the step-1 rate; a GST row here would be
+                    // stored as a flat rupee amount and printed twice (B41).
+                    continue;
+                }
                 if ($column) {
                     $record->{$column} = $amount;
                     continue;
@@ -707,7 +735,10 @@ class ProductController extends Controller
         if (! $record->city || ! $record->state || ! $record->country) return 'loading details';
         if (! $record->moq || ! $record->moq_unit) return 'minimum order quantity';
 
-        return null;
+        // Values that are present but not publishable (B42).
+        $problems = SellerProductChecks::problems($record);
+
+        return $problems[0] ?? null;
     }
 
     private function requestPayload(SellerCommodityProduct $record): array
@@ -779,6 +810,8 @@ class ProductController extends Controller
             'country'              => $record->country ?? 'India',
             'moq'                  => $record->moq ?? '',
             'moq_unit'             => $record->moq_unit ?? '',
+            'available_quantity'   => $record->quantity !== null ? (string) $record->quantity : '',
+            'load_within'          => $record->load_within !== null ? (string) $record->load_within : '',
             'charges'              => $charges,
             'publish_on'           => $record->publish_on ? \Illuminate\Support\Carbon::parse($record->publish_on)->toDateString() : '',
         ];
@@ -1014,11 +1047,18 @@ class ProductController extends Controller
         return $rows;
     }
 
-    /** The column a charge label maps to, or null when it is an extra charge. */
+    /**
+     * The column a charge label maps to, or null when it is an extra charge.
+     *
+     * Matched on the leading word, so "Loading Charges", "GST 18%" and
+     * "Insurance charge" land in their own columns instead of being stored a
+     * second time as extra charges — the duplicate rows in B41.
+     */
     private function knownChargeColumn(string $type): ?string
     {
+        $type = trim($type);
         foreach (self::KNOWN_CHARGES as $label => $column) {
-            if (strcasecmp($label, $type) === 0) {
+            if (strcasecmp($label, $type) === 0 || preg_match('/^' . preg_quote($label, '/') . '\b/i', $type)) {
                 return $column;
             }
         }
