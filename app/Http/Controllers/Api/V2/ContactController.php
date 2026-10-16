@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactUs;
+use App\Rules\IndianMobile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -13,15 +14,18 @@ class ContactController extends Controller
     {
         $data = $request->validate([
             'name'    => ['required', 'string', 'max:120'],
-            'email'   => ['required', 'email', 'max:160'],
-            'phone'   => ['nullable', 'string', 'max:20'],
+            // Mobile is how the team calls back; email is a courtesy. The form
+            // marked email optional while this rule required it, so the error
+            // only surfaced after submit (B20).
+            'email'   => ['nullable', 'email', 'max:160'],
+            'phone'   => ['required', 'string', new IndianMobile],
             'message' => ['required', 'string', 'max:2000'],
         ]);
 
         $contact = new ContactUs();
         $contact->name    = $data['name'];
-        $contact->email   = $data['email'];
-        $contact->phone   = $data['phone'] ?? null;
+        $contact->email   = $data['email'] ?? null;
+        $contact->phone   = $data['phone'];
         $contact->message = $data['message'];
         $contact->save();
 
