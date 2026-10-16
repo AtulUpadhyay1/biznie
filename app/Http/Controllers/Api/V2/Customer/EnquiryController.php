@@ -261,6 +261,10 @@ class EnquiryController extends Controller
         $stats = $this->bidding->stats($enquiry);
         $best  = $this->bidding->bestBid($enquiry);
         $qty   = $enquiry->quantity !== null ? (float) $enquiry->quantity : null;
+        // Every priced bid, auction or admin-entered — the same count the list
+        // page shows, so the detail page can never say "no rates" over quotes (B27).
+        $quotes = $enquiry->getSellerProductEnquiries()->whereRaw(ProductEnquiry::PRICED_BID_SQL)->count();
+        $rfqStatus = \App\Enums\RfqStatus::forBuyer($enquiry, $quotes);
 
         return response()->json([
             'success' => true,
@@ -268,6 +272,9 @@ class EnquiryController extends Controller
                 'id'        => $enquiry->id,
                 'unique_id' => $enquiry->unique_id,
                 'status'    => $enquiry->status,
+                'status_code'  => $rfqStatus->value,
+                'status_label' => $rfqStatus->label('buyer', $quotes),
+                'quotes_count' => $quotes,
                 'stage'     => $this->bidding->stage($enquiry),
                 'bidding'   => [
                     'status'       => $enquiry->bidding_status,
