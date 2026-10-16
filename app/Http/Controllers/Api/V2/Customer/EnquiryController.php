@@ -435,8 +435,10 @@ class EnquiryController extends Controller
             $order->order_id                    = $this->nextOrderId();
             $order->origin_city                 = $bid->origin_city;
             $order->value                       = $bid->value;
-            $order->billing_address             = $bid->billing_address;
-            $order->delivery_address            = $bid->delivery_address;
+            // The quote's addresses, else the RFQ's own (B26: Rate Finder RFQs
+            // collect them on the RFQ).
+            $order->billing_address             = $bid->billing_address ?: $enquiry->billing_address;
+            $order->delivery_address            = $bid->delivery_address ?: $enquiry->delivery_address;
             $order->purpose                     = $bid->purpose;
             $order->description                 = $bid->description;
             $order->message                     = $bid->message;
@@ -455,7 +457,7 @@ class EnquiryController extends Controller
             $order->due_amount                  = $data['total_amount'] - $data['token_amount'];
             $order->loading_address             = $bid->loading_address;
             $order->delivery_by                 = $bid->delivery_by;
-            $order->consignee_detail            = $bid->consignee_detail;
+            $order->consignee_detail            = $bid->consignee_detail ?: $enquiry->consignee_detail;
             $order->status                      = 'pending';
             $order->history                     = [['status' => 'Order Confirmed By Customer', 'created_at' => Carbon::now()->toIso8601String()]];
             $order->save();

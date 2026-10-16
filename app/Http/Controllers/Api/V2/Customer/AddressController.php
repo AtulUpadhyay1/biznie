@@ -15,7 +15,7 @@ class AddressController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $list = UserAddress::where('user_id', $request->user()->id)->latest()->get();
+        $list = UserAddress::where('user_id', $this->ownerId($request))->latest()->get();
 
         return response()->json([
             'success' => true,
@@ -28,7 +28,7 @@ class AddressController extends Controller
         $data = $this->rules($request);
 
         $address = new UserAddress();
-        $address->user_id = $request->user()->id;
+        $address->user_id = $this->ownerId($request);
         $this->assign($address, $data);
         $address->save();
 
@@ -41,7 +41,7 @@ class AddressController extends Controller
 
     public function update(Request $request, int $id): JsonResponse
     {
-        $address = UserAddress::where('user_id', $request->user()->id)->find($id);
+        $address = UserAddress::where('user_id', $this->ownerId($request))->find($id);
         if (! $address) {
             return response()->json(['success' => false, 'message' => 'Address not found.'], 404);
         }
@@ -59,13 +59,25 @@ class AddressController extends Controller
 
     public function destroy(Request $request, int $id): JsonResponse
     {
-        $address = UserAddress::where('user_id', $request->user()->id)->find($id);
+        $address = UserAddress::where('user_id', $this->ownerId($request))->find($id);
         if (! $address) {
             return response()->json(['success' => false, 'message' => 'Address not found.'], 404);
         }
         $address->delete();
 
         return response()->json(['success' => true, 'message' => 'Address removed.']);
+    }
+
+    /**
+     * Addresses belong to the company account. Staff used to read and write
+     * their own (empty) list, so the RFQ form showed "No saved addresses" to
+     * every staff login (B26).
+     */
+    private function ownerId(Request $request): int
+    {
+        $user = $request->user();
+
+        return $user->is_staff ? (int) $user->added_by : (int) $user->id;
     }
 
     private function rules(Request $request): array
