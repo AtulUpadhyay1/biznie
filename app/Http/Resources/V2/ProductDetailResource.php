@@ -96,6 +96,9 @@ class ProductDetailResource extends JsonResource
                 'other_charges_breakup' => $pricing->otherCharges($sellerProduct),
                 'price_validity'   => $sellerProduct->price_validity ? dateTimeFormat($sellerProduct->price_validity) : null,
                 'last_updated'     => dateTimeFormat($sellerProduct->updated_at),
+                // ISO timestamps for "Valid till" / "Updated 3 hours ago" (B09).
+                'valid_till'       => $sellerProduct->validTill()?->toIso8601String(),
+                'price_updated_at' => optional($sellerProduct->updated_at)->toIso8601String(),
             ] : null,
 
             // What this seller chose to expose on their listing. The prices

@@ -170,6 +170,8 @@ class ProductPricingService
     {
         return SellerCommodityProduct::where('commodity_product_id', $product->id)
             ->where('status', 'active')
+            // An expired quote is not a live offer (B09).
+            ->liveOffer()
             ->when(self::HOUSE_SELLER_USER_ID, fn ($query) => $query->where('user_id', self::HOUSE_SELLER_USER_ID))
             ->whereNotNull('base_price')
             ->where('base_price', '>', 0)

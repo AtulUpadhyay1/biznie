@@ -62,6 +62,9 @@ class ProductOfferResource extends JsonResource
             'moq_unit'             => $this->moq_unit,
             'price_validity'       => $this->price_validity ? dateTimeFormat($this->price_validity) : null,
             'last_updated'         => dateTimeFormat($this->updated_at),
+            // ISO timestamps for "Valid till" / "Updated 3 hours ago".
+            'valid_till'           => $this->validTill()?->toIso8601String(),
+            'price_updated_at'     => optional($this->updated_at)->toIso8601String(),
 
             'base_price'      => (float) $breakup['base_price'],
             'total_charges'   => (float) $breakup['total_charges'],

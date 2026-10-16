@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,6 +41,47 @@ class SellerCommodityProduct extends Model
         'show_for_price'        => 'boolean',
         'show_fob_price'        => 'boolean',
     ];
+
+    /** How `price_validity` is written by every price form (string column). */
+    public const PRICE_VALIDITY_FORMAT = 'Y-m-d h:i A';
+
+    /**
+     * Offers whose price is still valid. A listing past its `price_validity`
+     * is a stale quote, not a live offer (B09) — it stays in the seller's
+     * catalog but leaves the storefront until the seller re-prices it.
+     * Listings that never set a validity are treated as open-ended.
+     */
+    public function scopeLiveOffer($query)
+    {
+        return $query->where(function ($q) {
+            $q->whereNull('price_validity')
+                ->orWhere('price_validity', '')
+                ->orWhereRaw("STR_TO_DATE(price_validity, '%Y-%m-%d %h:%i %p') >= ?", [now()->format('Y-m-d H:i:s')]);
+        });
+    }
+
+    /** `price_validity` as a date, or null when unset or unparseable. */
+    public function validTill(): ?Carbon
+    {
+        if (! $this->price_validity) {
+            return null;
+        }
+
+        try {
+            return Carbon::createFromFormat(self::PRICE_VALIDITY_FORMAT, $this->price_validity);
+        } catch (\Throwable) {
+            try {
+                return Carbon::parse($this->price_validity);
+            } catch (\Throwable) {
+                return null;
+            }
+        }
+    }
+
+    public function isPriceExpired(): bool
+    {
+        return ($till = $this->validTill()) !== null && $till->isPast();
+    }
 
     public function getCommodityProduct()
     {
