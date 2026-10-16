@@ -95,7 +95,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         // Notification
         Route::get('notification', 'NotificationApiController@index');
-        Route::put('notification/{id}', 'NotificationApiController@update');
+        Route::put('notification/{id}', 'NotificationApiController@update')->middleware('owns:notification,user_id,id');
         Route::delete('notification', 'NotificationApiController@destroy');
         Route::post('update-fcm-token', 'NotificationApiController@updateToken');
 
@@ -107,8 +107,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::get('product-enquiry', 'ProductEnquiryApiController@index');
         Route::get('product-enquiry/{id}', 'ProductEnquiryApiController@show');
         Route::post('product-enquiry', 'ProductEnquiryApiController@save');
-        Route::post('product-enquiry-update/{id}', 'ProductEnquiryApiController@update');
-        Route::post('product-enquiry-to-order/{id}', 'ProductEnquiryApiController@enquiryToOrder');
+        Route::post('product-enquiry-update/{id}', 'ProductEnquiryApiController@update')->middleware('owns:enquiry,user_id,id');
+        Route::post('product-enquiry-to-order/{id}', 'ProductEnquiryApiController@enquiryToOrder')->middleware('owns:enquiry,user_id,id');
 
         // Credit Wallet Requests
         Route::get('credit-wallet-document-type', 'CreditWalletApiController@creditWalletDocument');
@@ -160,12 +160,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Customer', 'prefix' => 'c
 
         // Order
         Route::get('order', 'Authenticated\OrderApiController@index');
-        Route::get('order-ledger/{order_id}', 'Authenticated\OrderApiController@ledger');
+        Route::get('order-ledger/{order_id}', 'Authenticated\OrderApiController@ledger')->middleware('owns:order,customer_user_id,order_id');
         Route::get('order-detail/{id}', 'Authenticated\OrderApiController@show');
-        Route::post('update-quality-check-status', 'Authenticated\OrderApiController@qualityCheckStatus');
-        Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity');
-        Route::post('pay-order-due/{id}', 'Authenticated\OrderApiController@payOrderDue');
-        Route::post('order-status-update', 'Authenticated\OrderApiController@statusUpdate');
+        Route::post('update-quality-check-status', 'Authenticated\OrderApiController@qualityCheckStatus')->middleware('owns:order,customer_user_id,order_id');
+        Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity')->middleware('owns:order,customer_user_id,order_id');
+        Route::post('pay-order-due/{id}', 'Authenticated\OrderApiController@payOrderDue')->middleware('owns:order,customer_user_id,id');
+        Route::post('order-status-update', 'Authenticated\OrderApiController@statusUpdate')->middleware('owns:order,customer_user_id,order_id');
 
     });
 
@@ -189,38 +189,38 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Seller', 'prefix' => 'sel
 
         Route::get('my-commodity-product-list', 'Authenticated\CommodityProductApiController@myCommodityProductList');
         Route::post('store-commodity-product', 'Authenticated\CommodityProductApiController@store');
-        Route::get('get-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@edit');
-        Route::post('update-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@update');
-        Route::get('get-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@getPrice');
-        Route::post('update-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@updatePrice');
-        Route::get('get-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@getVariation');
-        Route::post('update-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@updateVariation');
-        Route::get('get-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@getVariationStock');
-        Route::post('update-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@updateVariationStock');
-        Route::post('update-commodity-product-loading-position/{id}', 'Authenticated\CommodityProductApiController@loadingPosition');
-        Route::get('get-commodity-product-quality/{id}', 'Authenticated\CommodityProductApiController@getQuality');
-        Route::post('update-commodity-product-quality/{id}', 'Authenticated\CommodityProductApiController@updateQuality');
-        Route::post('update-commodity-product-status/{id}', 'Authenticated\CommodityProductApiController@updateStatus');
-        Route::post('update-commodity-product-load-within/{id}', 'Authenticated\CommodityProductApiController@updateLoadWithin');
+        Route::get('get-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@edit')->middleware('owns:seller_product,user_id,id');
+        Route::post('update-commodity-product-basic/{id}', 'Authenticated\CommodityProductApiController@update')->middleware('owns:seller_product,user_id,id');
+        Route::get('get-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@getPrice')->middleware('owns:seller_product,user_id,id');
+        Route::post('update-commodity-product-price/{id}', 'Authenticated\CommodityProductApiController@updatePrice')->middleware('owns:seller_product,user_id,id');
+        Route::get('get-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@getVariation')->middleware('owns:seller_product,user_id,id');
+        Route::post('update-commodity-product-variation/{id}', 'Authenticated\CommodityProductApiController@updateVariation')->middleware('owns:seller_product,user_id,id');
+        Route::get('get-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@getVariationStock')->middleware('owns:seller_product,user_id,id');
+        Route::post('update-commodity-product-variation-stock/{id}', 'Authenticated\CommodityProductApiController@updateVariationStock')->middleware('owns:seller_product,user_id,id');
+        Route::post('update-commodity-product-loading-position/{id}', 'Authenticated\CommodityProductApiController@loadingPosition')->middleware('owns:seller_product,user_id,id');
+        Route::get('get-commodity-product-quality/{id}', 'Authenticated\CommodityProductApiController@getQuality')->middleware('owns:seller_product,user_id,id');
+        Route::post('update-commodity-product-quality/{id}', 'Authenticated\CommodityProductApiController@updateQuality')->middleware('owns:seller_product,user_id,id');
+        Route::post('update-commodity-product-status/{id}', 'Authenticated\CommodityProductApiController@updateStatus')->middleware('owns:seller_product,user_id,id');
+        Route::post('update-commodity-product-load-within/{id}', 'Authenticated\CommodityProductApiController@updateLoadWithin')->middleware('owns:seller_product,user_id,id');
 
         // Product enquiry
         Route::get('product-enquiry', 'Authenticated\ProductEnquiryApiController@index');
         Route::get('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@show');
-        Route::post('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@update');
+        Route::post('product-enquiry/{id}', 'Authenticated\ProductEnquiryApiController@update')->middleware('owns:seller_enquiry,user_id,id');
         Route::get('product-enquiry/{id}/bidding-list', 'Authenticated\ProductEnquiryApiController@biddingList');
 
         // Order
         Route::get('order', 'Authenticated\OrderApiController@index');
-        Route::get('order-detail/{id}', 'Authenticated\OrderApiController@show');
-        Route::post('order-status-update', 'Authenticated\OrderApiController@statusUpdate');
-        Route::post('update-quality-check', 'Authenticated\OrderApiController@qualityCheck');
-        Route::post('update-invoice', 'Authenticated\OrderApiController@updateInvoice');
-        Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity');
-        Route::get('order-ledger/{id}', 'Authenticated\OrderApiController@ledger');
+        Route::get('order-detail/{id}', 'Authenticated\OrderApiController@show')->middleware('owns:order,seller_user_id,id');
+        Route::post('order-status-update', 'Authenticated\OrderApiController@statusUpdate')->middleware('owns:order,seller_user_id,order_id');
+        Route::post('update-quality-check', 'Authenticated\OrderApiController@qualityCheck')->middleware('owns:order,seller_user_id,order_id');
+        Route::post('update-invoice', 'Authenticated\OrderApiController@updateInvoice')->middleware('owns:order,seller_user_id,order_id');
+        Route::post('update-final-quantity', 'Authenticated\OrderApiController@updateFinalQuantity')->middleware('owns:order,seller_user_id,order_id');
+        Route::get('order-ledger/{id}', 'Authenticated\OrderApiController@ledger')->middleware('owns:order,seller_user_id,id');
 
-        Route::post('driver', 'Authenticated\DriverApiController@store');
-        Route::put('driver/{id}', 'Authenticated\DriverApiController@update');
-        Route::delete('driver/{id}', 'Authenticated\DriverApiController@destroy');
+        Route::post('driver', 'Authenticated\DriverApiController@store')->middleware('owns:order,seller_user_id,order_id');
+        Route::put('driver/{id}', 'Authenticated\DriverApiController@update')->middleware('owns:driver,getOrder.seller_user_id,id');
+        Route::delete('driver/{id}', 'Authenticated\DriverApiController@destroy')->middleware('owns:driver,getOrder.seller_user_id,id');
 
     });
 

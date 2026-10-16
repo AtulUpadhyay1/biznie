@@ -42,7 +42,8 @@ class NotificationApiController extends Controller
             'id'    => 'required|array'
         ]);
 
-        Notification::whereIn('id', $request->id)->delete();
+        // Only the caller's own notifications (4.13).
+        Notification::whereIn('id', $request->id)->where('user_id', auth()->id())->delete();
         return response()->json([
             'success'   => true,
             'message'   => 'Notification deleted successfully.',

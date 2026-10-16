@@ -15,4 +15,9 @@ class CommodityProductOrderDriver extends Model
         'final_quantity_by_customer'    => 'array',
         'seller_invoices'               => 'array',
     ];
+
+    public function getOrder()
+    {
+        return $this->belongsTo(CommodityProductOrder::class, 'order_id');
+    }
 }

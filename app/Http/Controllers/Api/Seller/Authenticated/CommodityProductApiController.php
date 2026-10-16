@@ -472,8 +472,14 @@ class CommodityProductApiController extends Controller
         $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
 
         try {
-            foreach ($request->id as $key => $id) {
-                $data = SellerCommodityProductStatePrice::find($id);
+            // Only rows of this listing: the ids come from the body, and the
+            // route's product id was being overwritten by the loop (4.13).
+            $productId = (int) $id;
+            foreach ($request->id as $key => $rowId) {
+                $data = SellerCommodityProductStatePrice::where('seller_commodity_product_id', $productId)->find($rowId);
+                if (! $data) {
+                    return response(['success' => false, 'message' => 'Variation not found.'], 404);
+                }
                 $data->price        = $request->price[$key];
                 $data->is_selected  = $request->is_selected[$key];
                 $data->save();
@@ -536,8 +542,14 @@ class CommodityProductApiController extends Controller
         ]);
         $user_id = auth()->user()->is_staff == 0 ? auth()->id() : auth()->user()->added_by;
         try {
-            foreach ($request->id as $key => $id) {
-                $data = SellerCommodityProductStatePrice::find($id);
+            // Only rows of this listing: the ids come from the body, and the
+            // route's product id was being overwritten by the loop (4.13).
+            $productId = (int) $id;
+            foreach ($request->id as $key => $rowId) {
+                $data = SellerCommodityProductStatePrice::where('seller_commodity_product_id', $productId)->find($rowId);
+                if (! $data) {
+                    return response(['success' => false, 'message' => 'Variation not found.'], 404);
+                }
                 $data->stock        = $request->stock[$key];
                 $data->save();
             }
