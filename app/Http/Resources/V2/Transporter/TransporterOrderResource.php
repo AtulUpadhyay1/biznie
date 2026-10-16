@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2\Transporter;
 
+use App\Support\BuyerContact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,11 +22,7 @@ class TransporterOrderResource extends JsonResource
             'transport_price' => (float) ($this->transport_price ?? 0),
             'total_amount' => (float) ($this->total_amount ?? 0),
             'final_amount' => (float) ($this->final_amount ?? 0),
-            'customer' => $this->getCustomer ? [
-                'id'    => $this->getCustomer->id,
-                'name'  => $this->getCustomer->name,
-                'phone' => $this->getCustomer->phone,
-            ] : null,
+            'customer' => BuyerContact::customer($this->resource, withEmail: false),
             'seller' => $this->getSeller ? [
                 'id'    => $this->getSeller->id,
                 'name'  => $this->getSeller->name,

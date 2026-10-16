@@ -4,6 +4,7 @@ namespace App\Http\Resources\V2\Seller;
 
 use App\Services\Orders\OrderSummary;
 use Carbon\Carbon;
+use App\Support\BuyerContact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -85,6 +86,8 @@ class SellerOrderDetailResource extends JsonResource
 
         $summary = OrderSummary::forOrder($this->resource);
         $addresses = OrderSummary::addresses($this->resource);
+        // Buyer phone/email reach the seller only once they confirm (4.11).
+        $shared = BuyerContact::shared($this->resource);
 
         return [
             'id'                 => $this->id,
@@ -123,11 +126,11 @@ class SellerOrderDetailResource extends JsonResource
             'selected_quality'   => $summary['quality'] ? ['name' => $summary['quality']] : null,
             'selected_packaging_charge' => $summary['packaging'] ? ['name' => $summary['packaging']] : null,
             'variation'          => $this->value ?? null,
-            'consignee_detail'   => $this->consignee_detail ?? null,
-            'billing_address'    => $this->billing_address ?? null,
-            'delivery_address'   => $this->delivery_address ?? null,
-            'billing'            => $addresses['billing'],
-            'delivery'           => $addresses['delivery'],
+            'consignee_detail'   => BuyerContact::scrub($this->consignee_detail ?? null, $shared),
+            'billing_address'    => BuyerContact::scrub($this->billing_address ?? null, $shared),
+            'delivery_address'   => BuyerContact::scrub($this->delivery_address ?? null, $shared),
+            'billing'            => BuyerContact::scrub($addresses['billing'], $shared),
+            'delivery'           => BuyerContact::scrub($addresses['delivery'], $shared),
             'history'            => $this->history ?? [],
             'invoices'           => $invoiceList,
             'seller_invoice_list'   => $sellerInvoiceList,
@@ -138,12 +141,7 @@ class SellerOrderDetailResource extends JsonResource
                     ? imageUrl($this->quality_check_certificate)
                     : null,
             ],
-            'customer' => $this->getCustomer ? [
-                'id'    => $this->getCustomer->id,
-                'name'  => $this->getCustomer->name,
-                'phone' => $this->getCustomer->phone,
-                'email' => $this->getCustomer->email,
-            ] : null,
+            'customer' => BuyerContact::customer($this->resource),
             'brand' => $this->getBrand ? [
                 'id'   => $this->getBrand->id,
                 'name' => $this->getBrand->name,

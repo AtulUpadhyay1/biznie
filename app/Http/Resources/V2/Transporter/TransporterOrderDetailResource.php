@@ -4,6 +4,7 @@ namespace App\Http\Resources\V2\Transporter;
 
 use App\Services\Orders\OrderSummary;
 use App\Support\AddressFormatter;
+use App\Support\BuyerContact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,9 @@ class TransporterOrderDetailResource extends JsonResource
             }
         }
 
+        // Buyer phone/email only once the seller has confirmed (4.11).
+        $shared = BuyerContact::shared($this->resource);
+
         return [
             'id'              => $this->id,
             'unique_id'       => $this->unique_id,
@@ -40,19 +44,14 @@ class TransporterOrderDetailResource extends JsonResource
             'final_amount'    => (float) ($this->final_amount ?? 0),
             'load_within'     => $summary['dispatch_days'],
             'loading_address' => $this->loading_address ?? null,
-            'delivery_address'=> $this->delivery_address ?? null,
-            'consignee_detail'=> $this->consignee_detail ?? null,
+            'delivery_address'=> BuyerContact::scrub($this->delivery_address ?? null, $shared),
+            'consignee_detail'=> BuyerContact::scrub($this->consignee_detail ?? null, $shared),
             // Pickup and drop, normalised for display (B28).
             'pickup'          => AddressFormatter::normalize($this->loading_address),
-            'delivery'        => OrderSummary::addresses($this->resource)['delivery'],
+            'delivery'        => BuyerContact::scrub(OrderSummary::addresses($this->resource)['delivery'], $shared),
             'history'         => $this->history ?? [],
             'invoices'        => $invoiceList,
-            'customer' => $this->getCustomer ? [
-                'id'    => $this->getCustomer->id,
-                'name'  => $this->getCustomer->name,
-                'phone' => $this->getCustomer->phone,
-                'email' => $this->getCustomer->email,
-            ] : null,
+            'customer' => BuyerContact::customer($this->resource),
             'seller' => $this->getSeller ? [
                 'id'    => $this->getSeller->id,
                 'name'  => $this->getSeller->name,

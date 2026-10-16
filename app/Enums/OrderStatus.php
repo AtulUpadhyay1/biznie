@@ -105,6 +105,15 @@ enum OrderStatus: string
         return __('status.order.' . $this->value, [], $locale);
     }
 
+    /**
+     * The buyer's phone/email go to the seller and transporter only once the
+     * seller has confirmed (4.11); never on a booking or a cancelled order.
+     */
+    public function revealsBuyerContact(): bool
+    {
+        return ! in_array($this, [self::BookingPending, self::Booked, self::Cancelled], true);
+    }
+
     /** Next steps a seller may take from here (transport steps belong to the transporter/admin). */
     public function sellerNext(): array
     {

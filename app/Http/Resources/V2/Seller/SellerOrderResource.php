@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2\Seller;
 
+use App\Support\BuyerContact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,12 +24,8 @@ class SellerOrderResource extends JsonResource
             'paid_amount'  => (float) ($this->paid_amount ?? 0),
             'due_amount'   => (float) ($this->due_amount ?? 0),
             'final_amount' => (float) ($this->final_amount ?? 0),
-            'customer'     => $this->getCustomer ? [
-                'id'    => $this->getCustomer->id,
-                'name'  => $this->getCustomer->name,
-                'phone' => $this->getCustomer->phone,
-                'email' => $this->getCustomer->email,
-            ] : null,
+            // Phone/email only once the seller has confirmed (4.11).
+            'customer'     => BuyerContact::customer($this->resource),
             'brand' => $this->getBrand ? [
                 'id'   => $this->getBrand->id,
                 'name' => $this->getBrand->name,
