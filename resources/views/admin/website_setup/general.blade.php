@@ -78,6 +78,46 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Statutory identity: footer, About, Terms and Privacy read these (4.2). --}}
+                        <h5 class="mt-3 mb-1">Legal identity</h5>
+                        <p class="text-muted small mb-3">Shown in the website footer and on the About, Terms and Privacy pages.</p>
+                        <div class="row">
+                            @foreach ([
+                                'legal_name'    => ['Registered name', 'Biznie TradeTech LLP'],
+                                'company_llpin' => ['LLPIN', 'AAB-1234'],
+                                'company_gstin' => ['GSTIN', '09ABCDE1234F1Z5'],
+                                'jurisdiction'  => ['Jurisdiction (courts)', 'Varanasi, Uttar Pradesh, India'],
+                            ] as $key => [$label, $placeholder])
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="{{ $key }}">{{ $label }}</label>
+                                        <input type="text" class="form-control @error('value.'.$key) is-invalid @enderror" id="{{ $key }}" wire:model="value.{{ $key }}" placeholder="{{ $placeholder }}">
+                                        @error('value.'.$key) <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- IT Rules 2021: a named grievance officer with a response time. --}}
+                        <h5 class="mt-3 mb-1">Grievance Officer</h5>
+                        <p class="text-muted small mb-3">Required for an intermediary under the IT Rules, 2021.</p>
+                        <div class="row">
+                            @foreach ([
+                                'grievance_officer_name'  => ['Name', 'Full name'],
+                                'grievance_officer_email' => ['Email', 'grievance@biznie.com'],
+                                'grievance_officer_phone' => ['Phone', '10-digit mobile'],
+                                'grievance_response_time' => ['Response time', 'within 48 hours'],
+                            ] as $key => [$label, $placeholder])
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-group">
+                                        <label class="form-label" for="{{ $key }}">{{ $label }}</label>
+                                        <input type="text" class="form-control @error('value.'.$key) is-invalid @enderror" id="{{ $key }}" wire:model="value.{{ $key }}" placeholder="{{ $placeholder }}">
+                                        @error('value.'.$key) <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                         <x-submit-btn text="Update Settings" />
                     </div>
                 </form>
