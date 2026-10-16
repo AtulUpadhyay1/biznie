@@ -17,7 +17,19 @@
                     <form wire:submit.prevent="{{ $hidden_id ? 'update()' : 'save()' }}">
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
+                                <label for="product" class="form-label">Product <span class="text-danger">*</span></label>
+                                <select id="product" class="form-select @error('product') is-invalid @enderror" wire:model="product">
+                                    @foreach ($product_list as $product_name)
+                                        <option value="{{ $product_name }}">{{ $product_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('product')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="location" class="form-label">Market <span class="text-danger">*</span></label>
                                 <select id="location" class="form-select @error('location') is-invalid @enderror" wire:model="location">
                                     <option value="">Select Location</option>
                                     @foreach ($location_list as $location_data)
@@ -33,8 +45,17 @@
                                 <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
                                 <input type="number" id="price"
                                     class="form-control @error('price') is-invalid @enderror"
-                                    wire:model="price" placeholder="Enter ingot price">
+                                    wire:model="price" placeholder="Price per MT (₹)">
                                 @error('price')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="source" class="form-label">Source</label>
+                                <input type="text" id="source" class="form-control @error('source') is-invalid @enderror"
+                                    wire:model="source" placeholder="e.g. Mandi association, mill rate card">
+                                @error('source')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>

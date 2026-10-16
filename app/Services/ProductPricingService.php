@@ -274,39 +274,37 @@ class ProductPricingService
     }
 
     /**
-     * Dense 30-day base price series, oldest first.
+     * Base price observations over the last `$days`, oldest first: the last
+     * price the seller set on each day they changed it.
      *
-     * Mirrors the legacy payload: one entry per day, days without a history row
-     * fall back to the product's current base price so the series has no holes.
+     * Only real observations. The series used to be padded to 30 points with
+     * the current price on days with no history row, which drew a flat line
+     * that looked like 30 days of stable data when there was none (B13). The
+     * chart hides itself below five points.
+     *
+     * @return list<array{date: string, label: string, price: float}>
      */
     public function priceHistory(SellerCommodityProduct $sellerProduct, int $days = 30): array
     {
-        $history = SellerCommodityProductHistory::where('user_id', $sellerProduct->user_id)
+        return SellerCommodityProductHistory::where('user_id', $sellerProduct->user_id)
             ->where('commodity_product_id', $sellerProduct->commodity_product_id)
             ->where('seller_commodity_product_id', $sellerProduct->id)
             ->where('created_at', '>=', Carbon::now()->subDays($days))
-            ->get();
+            ->orderBy('created_at')
+            ->get()
+            ->groupBy(fn ($row) => Carbon::parse($row->created_at)->toDateString())
+            ->map(function ($rows, $date) {
+                $price = $rows->last()->seller_commodity_product_detail['base_price'] ?? null;
 
-        $series = [];
-        for ($i = $days - 1; $i >= 0; $i--) {
-            $date = Carbon::now()->subDays($i);
-            $key = $date->format('d/m/y');
-
-            $latestOfDay = $history
-                ->filter(fn ($row) => Carbon::parse($row->created_at)->format('d/m/y') === $key)
-                ->last();
-
-            $price = $latestOfDay->seller_commodity_product_detail['base_price']
-                ?? $sellerProduct->base_price;
-
-            $series[] = [
-                'date'  => $date->toDateString(),
-                'label' => $date->format('d M'),
-                'price' => round((float) $price),
-            ];
-        }
-
-        return $series;
+                return $price === null ? null : [
+                    'date'  => $date,
+                    'label' => Carbon::parse($date)->format('d M'),
+                    'price' => round((float) $price),
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
     }
 
     /** Packaging options with their charge, cheapest first. */
