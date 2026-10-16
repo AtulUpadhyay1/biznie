@@ -8,6 +8,7 @@ use App\Http\Resources\V2\ProductOfferResource;
 use App\Http\Resources\V2\ProductResource;
 use App\Models\CommodityProduct;
 use App\Services\ProductPricingService;
+use App\Support\ProductSearch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,12 +17,15 @@ class ProductController extends Controller
     public function index(Request $request): JsonResponse
     {
         $q = CommodityProduct::active()
-            ->with(['getCategory', 'getSubCategory', 'getUnit'])
-            ->latest();
+            ->with(['getCategory', 'getSubCategory', 'getUnit']);
 
-        if ($search = $request->string('search')->toString()) {
-            $q->search($search);
+        // Before latest(): the search adds a relevance ordering that must win.
+        $parsed = null;
+        if ($search = trim($request->string('search')->toString())) {
+            $parsed = ProductSearch::parse($search);
+            $parsed->apply($q);
         }
+        $q->latest();
         if ($categoryId = $request->integer('category_id')) {
             $q->where('category_id', $categoryId);
         }
@@ -39,7 +43,42 @@ class ProductController extends Controller
                 'last_page'    => $list->lastPage(),
                 'per_page'     => $list->perPage(),
                 'total'        => $list->total(),
+                // What the query was read as, e.g. "saria 12mm" -> "TMT · 12mm".
+                'search'       => $parsed ? [
+                    'query'           => $parsed->raw,
+                    'interpreted'     => $parsed->interpreted(),
+                    'synonym_applied' => $parsed->synonymApplied,
+                ] : null,
             ],
+        ]);
+    }
+
+    /**
+     * Header autocomplete (B05): from the second letter, the last word read
+     * as unfinished — "sar" already offers TMT, "pat" offers Flat.
+     */
+    public function suggest(Request $request): JsonResponse
+    {
+        $term = trim($request->string('q')->toString());
+        if (mb_strlen($term) < 2) {
+            return response()->json(['success' => true, 'data' => [], 'meta' => ['interpreted' => null]]);
+        }
+
+        $parsed = ProductSearch::parse($term, prefix: true);
+        $list = $parsed->apply(CommodityProduct::active()->with('getCategory'))
+            ->orderBy('name')
+            ->limit(8)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data'    => $list->map(fn (CommodityProduct $p) => [
+                'id'       => $p->id,
+                'name'     => $p->name,
+                'slug'     => $p->slug,
+                'category' => $p->getCategory?->name,
+            ])->values(),
+            'meta'    => ['interpreted' => $parsed->synonymApplied ? $parsed->interpreted() : null],
         ]);
     }
 

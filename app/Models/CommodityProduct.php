@@ -30,18 +30,24 @@ class CommodityProduct extends Model
         'packaging_type_price'  => 'array',
     ];
 
+    /**
+     * Name + trade synonyms + size + grade + brand (B06): "saria 12mm",
+     * "patti", "gol pipe" all find their product. Adds a relevance ORDER BY,
+     * so apply it before any other ordering.
+     */
     public function scopeSearch($query, $search)
     {
         if (!$search) {
             return $query;
         }
 
-        return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-            ->orWhereHas('getCategory', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%");
-            });
-        });
+        return \App\Support\ProductSearch::parse((string) $search)->apply($query);
+    }
+
+    /** Sellers' listings of this catalog product. */
+    public function sellerListings()
+    {
+        return $this->hasMany(SellerCommodityProduct::class, 'commodity_product_id');
     }
 
     public static function active()

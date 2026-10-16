@@ -77,6 +77,8 @@ Route::get('packaging-types', [PackagingTypeController::class, 'index']);
 Route::get('units', [ProductUnitController::class, 'index']);
 
 Route::get('products', [ProductController::class, 'index']);
+// Before products/{slug}, so "suggest" is not read as a slug.
+Route::get('products/suggest', [ProductController::class, 'suggest']);
 Route::get('products/{slug}', [ProductController::class, 'show']);
 Route::get('products/{slug}/offers', [ProductController::class, 'offers']);
 
