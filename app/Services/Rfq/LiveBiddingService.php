@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Support\NotificationTarget;
 
 /**
  * The one implementation of the live RFQ auction.
@@ -549,7 +550,7 @@ class LiveBiddingService
 
         // A failed push must never roll back the bid that triggered it.
         try {
-            app(PushNotifier::class)->toUser($user, $title, $body, 'product_enquiry', ['unique_id' => $rfq->unique_id], true);
+            app(PushNotifier::class)->toUser($user, $title, $body, 'product_enquiry', NotificationTarget::rfq($rfq, NotificationTarget::SELLER), true);
         } catch (\Throwable $e) {
             report($e);
         }

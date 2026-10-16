@@ -19,6 +19,8 @@ class NotificationController extends Controller
 
         $list = Notification::where('user_id', $userId)
             ->when($request->boolean('unread_only'), fn ($q) => $q->where('is_read', 0))
+            // Buying vs selling inbox for accounts that do both (B33).
+            ->when(in_array($request->get('role'), ['buyer', 'seller', 'transporter'], true), fn ($q) => $q->where('role', $request->get('role')))
             ->latest()
             ->paginate($perPage);
 

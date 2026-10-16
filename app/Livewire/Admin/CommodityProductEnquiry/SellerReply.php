@@ -11,6 +11,7 @@ use App\Models\SellerCommodityProduct;
 use App\Models\TransporterAddressPrice;
 use App\Models\TransporterProductEnquiry;
 use App\Models\SellerCommodityProductStatePrice;
+use App\Support\NotificationTarget;
 
 class SellerReply extends Component
 {
@@ -239,12 +240,10 @@ class SellerReply extends Component
 
             // Customer Notification
             $customer = $enquiry_data->getCustomer;
-            $title = 'Enquiry ' .$enquiry_data->unique_id. ' Marked Seller';
-            $body = 'Dear '.$customer->name.', Seller marked for enquiry.';
+            $title = 'Quote ready for RFQ '.$enquiry_data->unique_id;
+            $body = 'Dear '.$customer->name.', a seller has been selected for your RFQ. Review the quote and confirm your order.';
             $type = 'product_enquiry';
-            $data_info = [
-                'unique_id'     => $enquiry_data->unique_id,
-            ];
+            $data_info = NotificationTarget::rfq($enquiry_data, NotificationTarget::BUYER);
             sendNotification($customer, $title, $body, $type, $data_info, true);
 
             session()->flash('success', 'Enquiry mark to seller successfully.');

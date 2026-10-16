@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\UserAddress;
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Support\NotificationTarget;
 
 class Variation extends Component
 {
@@ -283,12 +284,10 @@ class Variation extends Component
         $data_history->price                = $data->price;
         $data_history->save();
 
-        $title = 'Product Enquiry';
-        $body = 'Dear '.$user->name.', Your product enquiry has been successfully submitted.';
+        $title = 'RFQ '.$data->unique_id.' submitted';
+        $body = 'Dear '.$user->name.', your RFQ has been submitted. We will share quotes shortly.';
         $type = 'product_enquiry';
-        $data_info = [
-            'unique_id'     => $data->unique_id,
-        ];
+        $data_info = NotificationTarget::rfq($data, NotificationTarget::BUYER);
         sendNotification($user, $title, $body, $type, $data_info, true);
 
         // Enquiry Send to Seller
@@ -365,13 +364,15 @@ class Variation extends Component
                 }
                 $data->save();
 
-                $title = 'New Product Enquiry';
-                $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
-                $type = 'product_enquiry';
-                $data_info = [
-                    'unique_id'     => $data->unique_id,
-                ];
-                sendNotification($user, $title, $body, $type, $data_info, true);
+                // To the seller being invited — this went to the buyer (B33).
+                $seller = User::find($user_id);
+                if ($seller) {
+                    $title = 'New RFQ '.$enquiry_data->unique_id;
+                    $body = 'Dear '.$seller->name.', you have a new RFQ. Please submit your rate.';
+                    $type = 'product_enquiry';
+                    $data_info = NotificationTarget::rfq($enquiry_data, NotificationTarget::SELLER);
+                    sendNotification($seller, $title, $body, $type, $data_info, true);
+                }
 
             }
 

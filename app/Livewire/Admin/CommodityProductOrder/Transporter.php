@@ -10,6 +10,7 @@ use App\Models\TransporterDetail;
 use App\Models\CommodityProductOrder;
 use App\Models\TransporterAddressPrice;
 use App\Models\TransporterProductEnquiry;
+use App\Support\NotificationTarget;
 
 class Transporter extends Component
 {
@@ -108,12 +109,13 @@ class Transporter extends Component
 
                 $user = User::find($transporter_user_id);
 
-                $title = 'Received New Product Enquiry';
-                $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
+                $rfq = \App\Models\ProductEnquiry::where('unique_id', $data->unique_id)->first();
+                $title = 'New freight enquiry '.$data->unique_id;
+                $body = 'Dear '.$user->name.', you have a new freight enquiry. Please submit your rate.';
                 $type = 'product_enquiry';
-                $data_info = [
-                    'unique_id'     => $data->unique_id,
-                ];
+                $data_info = $rfq
+                    ? NotificationTarget::rfq($rfq, NotificationTarget::TRANSPORTER, (int) $transporter_user_id)
+                    : ['unique_id' => $data->unique_id, 'role' => NotificationTarget::TRANSPORTER];
                 sendNotification($user, $title, $body, $type, $data_info, true);
 
             }

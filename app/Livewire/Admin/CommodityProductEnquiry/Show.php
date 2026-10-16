@@ -13,6 +13,7 @@ use App\Models\SellerCommodityProduct;
 use App\Models\TransporterAddressPrice;
 use App\Models\TransporterProductEnquiry;
 use App\Models\SellerCommodityProductStatePrice;
+use App\Support\NotificationTarget;
 
 class Show extends Component
 {
@@ -177,12 +178,10 @@ class Show extends Component
 
                 $user = User::find($user_id);
 
-                $title = 'New Product Enquiry';
-                $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
+                $title = 'New RFQ '.$enquiry_data->unique_id;
+                $body = 'Dear '.$user->name.', you have a new RFQ. Please submit your rate.';
                 $type = 'product_enquiry';
-                $data_info = [
-                    'unique_id'     => $data->unique_id,
-                ];
+                $data_info = NotificationTarget::rfq($enquiry_data, NotificationTarget::SELLER);
                 sendNotification($user, $title, $body, $type, $data_info, true);
 
             }
@@ -265,12 +264,10 @@ class Show extends Component
 
                 $user = User::find($transporter_user_id);
 
-                $title = 'Received New Product Enquiry';
-                $body = 'Dear '.$user->name.', Your have new product enquiry. Please fill your price.';
+                $title = 'New freight enquiry '.$enquiry_data->unique_id;
+                $body = 'Dear '.$user->name.', you have a new freight enquiry. Please submit your rate.';
                 $type = 'product_enquiry';
-                $data_info = [
-                    'unique_id'     => $data->unique_id,
-                ];
+                $data_info = NotificationTarget::rfq($enquiry_data, NotificationTarget::TRANSPORTER, (int) $transporter_user_id);
                 sendNotification($user, $title, $body, $type, $data_info, true);
 
             }

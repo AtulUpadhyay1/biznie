@@ -158,6 +158,9 @@ if(! function_exists('sendNotification')){
             $notification->title = $title;
             $notification->body = $body;
             $notification->type = $type;
+            // Who it is for and where it opens (B33) — see NotificationTarget.
+            $notification->role = $payload['role'] ?? null;
+            $notification->link = $payload['link'] ?? null;
             // Was assigning the model to itself, which stored a serialised
             // Notification in its own `data` column instead of the payload.
             $notification->data = $payload;
