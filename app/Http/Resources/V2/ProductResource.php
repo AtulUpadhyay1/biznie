@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2;
 
+use App\Services\ProductPricingService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -40,6 +41,22 @@ class ProductResource extends JsonResource
                 'name' => $this->getUnit->name,
             ] : null),
             'status'      => $this->status,
+            // "from ₹X/MT" on product cards (4.10), opt-in via ?with_price=1:
+            // the cheapest live ex-works offer whose seller publishes that
+            // price — the same figure the product page starts from.
+            'from_price'  => $this->when($request->boolean('with_price'), fn () => $this->fromPrice()),
         ];
+    }
+
+    private function fromPrice(): ?array
+    {
+        $pricing = app(ProductPricingService::class);
+        $offers = $pricing->sellerOffers($this->resource)->filter(fn ($offer) => (bool) $offer->show_ex_price);
+        $cheapest = $offers->first();
+
+        return $cheapest ? [
+            'ex_works'      => (float) $pricing->exWorksBreakup($cheapest)['ex_price'],
+            'sellers_count' => $offers->count(),
+        ] : null;
     }
 }
