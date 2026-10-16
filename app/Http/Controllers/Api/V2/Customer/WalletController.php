@@ -22,6 +22,9 @@ class WalletController extends Controller
                 'cash_balance'          => (float) ($user->cash_balance ?? 0),
                 'credit_balance'        => (float) ($user->credit_balance ?? 0),
                 'assign_credit_balance' => (float) ($user->assign_credit_balance ?? 0),
+                // Where the limit came from (B30): the approved request behind
+                // it, else a limit set directly by the credit team.
+                'credit_limit_source'   => $this->creditLimitSource($ownerId, (float) ($user->assign_credit_balance ?? 0)),
                 'recent_cash'           => WalletTransactionResource::collection(
                     CashWalletTransaction::where('user_id', $ownerId)->latest()->limit(5)->get()
                 )->resolve(),
@@ -30,6 +33,33 @@ class WalletController extends Controller
                 )->resolve(),
             ],
         ]);
+    }
+
+    private function creditLimitSource(int $ownerId, float $limit): ?array
+    {
+        if ($limit <= 0) {
+            return null;
+        }
+
+        $approved = \App\Models\CreditWalletRequest::where('user_id', $ownerId)
+            ->whereRaw('LOWER(status) = ?', ['approved'])
+            ->with('getDocumentType')
+            ->latest('updated_at')
+            ->first();
+
+        return $approved ? [
+            'via'          => 'request',
+            'reference'    => $approved->reference_number,
+            'request_id'   => $approved->id,
+            'facility'     => $approved->getDocumentType?->name,
+            'amount'       => $approved->amount !== null ? (float) $approved->amount : null,
+            'tenure_days'  => $approved->tenure_days,
+            'approved_at'  => optional($approved->updated_at)->toIso8601String(),
+        ] : [
+            'via'         => 'credit_team',
+            'reference'   => null,
+            'approved_at' => null,
+        ];
     }
 
     public function cash(Request $request): JsonResponse

@@ -19,14 +19,15 @@ class Show extends Component
     public function mount($id)
     {
         $this->hidden_id = $id;
-        $this->data = CreditWalletRequest::with('getUser', 'getUser.getUserDetail')->findOrFail($this->hidden_id);
+        $this->data = CreditWalletRequest::with('getUser', 'getUser.getUserDetail', 'getDocumentType')->findOrFail($this->hidden_id);
         $this->user_id = $this->data->user_id;
         $this->reference_number = $this->data->reference_number;
         $this->status = $this->data->status;
         $this->notes = $this->data->notes;
         $this->description = $this->data->description;
-        $this->amount = $this->data->getUser->assign_credit_balance;
-        $this->credit_days = $this->data->getUser->credit_days;
+        // Start from what the buyer asked for when no limit is set yet (B30).
+        $this->amount = (float) $this->data->getUser->assign_credit_balance ?: ($this->data->amount ?? 0);
+        $this->credit_days = $this->data->getUser->credit_days ?: ($this->data->tenure_days ?? 0);
     }
 
     public function render()

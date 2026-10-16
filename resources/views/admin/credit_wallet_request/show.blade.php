@@ -19,15 +19,28 @@
                                 </div>
                                 <form wire:submit.prevent="save()">
                                     <div class="card-body">
+                                        @if ($data->amount)
+                                            <div class="border rounded p-3 mb-3 text-body">
+                                                <strong>Requested:</strong> ₹ {{ formatIndianNumber($data->amount) }}
+                                                @if ($data->tenure_days) for {{ $data->tenure_days }} days @endif
+                                                @if ($data->getDocumentType) · {{ $data->getDocumentType->name }} @endif
+                                            </div>
+                                        @endif
                                         @foreach ($data->form_data as $key => $form_value)
                                             <div class="mb-3">
-                                                <label class="form-label" for="form_data_{{ $key }}">{{ $form_value['label'] }} @if($form_value['required'])<span class="text-danger">*</span>@endif</label>
-                                                @if(is_array($form_value) && isset($form_value['type']) && $form_value['type'] == 'file' && isset($form_value['value']))
+                                                {{-- "required" is stored as the string 'true'/'false' --}}
+                                                <label class="form-label" for="form_data_{{ $key }}">{{ $form_value['label'] }} @if(filter_var($form_value['required'] ?? false, FILTER_VALIDATE_BOOL))<span class="text-danger">*</span>@endif</label>
+                                                @if(is_array($form_value) && ($form_value['type'] ?? null) == 'file')
                                                     <div>
-                                                        <a id="form_data_{{ $key }}" class="btn btn-secondary btn-sm sr-doc-btn" href="{{imageUrl($form_value['value'])}}" target="_blank"><i class="bi bi-file-earmark-text"></i>View Document</a>
+                                                        @if (!empty($form_value['value']))
+                                                            <a id="form_data_{{ $key }}" class="btn btn-secondary btn-sm sr-doc-btn" href="{{imageUrl($form_value['value'])}}" target="_blank"><i class="bi bi-file-earmark-text"></i>View Document</a>
+                                                        @else
+                                                            <span class="text-muted">Not uploaded</span>
+                                                        @endif
                                                     </div>
                                                 @else
-                                                    <input type="text" id="form_data_{{ $key }}" class="form-control" value="{{ is_array($form_value) && isset($form_value['value']) ? $form_value['value'] : $form_value }}" readonly>
+                                                    {{-- An optional field left blank is stored as null --}}
+                                                    <input type="text" id="form_data_{{ $key }}" class="form-control" value="{{ is_array($form_value) ? ($form_value['value'] ?? '') : $form_value }}" readonly>
                                                 @endif
                                             </div>
                                         @endforeach
