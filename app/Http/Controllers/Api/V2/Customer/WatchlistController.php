@@ -20,10 +20,8 @@ class WatchlistController extends Controller
                 'getCommodityProduct:id,name,slug,thumbnail,unit_id,category_id',
                 'getCommodityProduct.getCategory:id,name',
                 'getCommodityProduct.getUnit:id,name',
-                'getSellerCommodityProduct',
-                'getSellerCommodityProduct.getBrand:id,name',
-                'getSellerCommodityProduct.getUser:id,name',
-                'getSellerCommodityProduct.getUser.getUserDetail',
+                // The listing shown is resolved per item from the live offers
+                // (see WatchlistResource), not from the saved row.
             ])
             ->latest()
             ->paginate($perPage);

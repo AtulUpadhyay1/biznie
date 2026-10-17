@@ -203,6 +203,12 @@ class ProductPricingService
             ->values();
     }
 
+    /** Whether this user's listings are the ones offered to buyers as Biznie's own. */
+    public function isHouseSeller(?int $userId): bool
+    {
+        return self::HOUSE_SELLER_USER_ID !== null && $userId === self::HOUSE_SELLER_USER_ID;
+    }
+
     /**
      * Cheapest live offer for a commodity product.
      *
