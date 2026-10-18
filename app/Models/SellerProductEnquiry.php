@@ -105,6 +105,19 @@ class SellerProductEnquiry extends Model
     }
 
     /**
+     * The base price this seller last bid, or null when the rate was keyed in
+     * as an Ex price (by an admin, or before bids were base prices) — in that
+     * case `base_price` only mirrors the Ex price and is not a basic price.
+     */
+    public function quotedBasePrice(): ?float
+    {
+        $last = collect(is_array($this->history) ? $this->history : [])
+            ->last(fn ($entry) => ($entry['status'] ?? null) === 'Price Submitted');
+
+        return isset($last['base_price']) ? (float) $last['base_price'] : null;
+    }
+
+    /**
      * Where this seller loads from, as a (state, city) pair.
      *
      * The bid's own loading address is authoritative; older rows carry one with

@@ -482,6 +482,9 @@ class LiveBiddingService
                 'label'           => $label,
                 'is_me'           => $isMine,
                 'seller_city'     => $revealCity ? $bid->ex_works_city : null,
+                // The basic price behind the rate, as the legacy board showed
+                // it; null when the rate was keyed in as an Ex price.
+                'base_price'      => $bid->quotedBasePrice(),
                 'ex_works_price'  => (float) $bid->ex_works_price,
                 'freight_charges' => (float) $bid->freight_charges,
                 'other_charges'   => (float) $bid->other_charges,

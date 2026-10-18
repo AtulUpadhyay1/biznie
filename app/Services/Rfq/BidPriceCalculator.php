@@ -136,13 +136,14 @@ class BidPriceCalculator
     }
 
     /**
-     * The buyer's size rows, each with this seller's gauge difference.
+     * The buyer's size rows, each with its gauge difference.
      *
-     * A row's id is the price row of the listing the buyer ordered from, so it
-     * is matched to this seller's own row for the same variation; a seller who
-     * has not priced that variation falls back to the difference the buyer was
-     * shown. A Rate Finder RFQ has no rows: it is one line at the product's
-     * default gauge difference.
+     * As in the legacy quotation, a row's gauge difference is the current
+     * price of the state-price row it was picked from (`SellerCommodityProduct
+     * StatePrice::find($row['id'])`), so it follows the price list rather than
+     * the figure frozen into the RFQ; a row whose price row is gone keeps the
+     * difference the buyer was shown. A Rate Finder RFQ has no rows: it is one
+     * line at the product's default gauge difference.
      */
     private function sizes(SellerProductEnquiry $bid, ?ProductEnquiry $rfq, ?SellerCommodityProduct $listing): array
     {
@@ -163,20 +164,12 @@ class BidPriceCalculator
             ]];
         }
 
-        $variationOf = SellerCommodityProductStatePrice::whereIn('id', array_filter(array_column($rows, 'id')))
-            ->pluck('commodity_product_variation_id', 'id');
-        $ownGauge = $listing
-            ? SellerCommodityProductStatePrice::where('seller_commodity_product_id', $listing->id)
-                ->whereIn('commodity_product_variation_id', $variationOf->filter()->values())
-                ->pluck('price', 'commodity_product_variation_id')
-            : collect();
+        $listed = SellerCommodityProductStatePrice::whereIn('id', array_filter(array_column($rows, 'id')))
+            ->pluck('price', 'id');
 
         $sizes = [];
         foreach ($rows as $index => $row) {
-            $variationId = $variationOf[$row['id'] ?? null] ?? null;
-            $gauge = $variationId !== null && $ownGauge->has($variationId)
-                ? $ownGauge[$variationId]
-                : ($row['price'] ?? 0);
+            $gauge = $listed[$row['id'] ?? null] ?? ($row['price'] ?? 0);
 
             $sizes[] = [
                 'index'      => $index,

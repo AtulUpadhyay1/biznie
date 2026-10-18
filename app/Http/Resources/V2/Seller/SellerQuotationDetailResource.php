@@ -85,6 +85,12 @@ class SellerQuotationDetailResource extends JsonResource
                and each size's gauge difference - so the Ex price it previews is
                the one quote() stores. */
             'pricing' => $myReply ? app(BidPriceCalculator::class)->terms($myReply, $this->resource) : null,
+            /* The legacy quotation's "Order Details": dispatch and credit days
+               as agreed on the bid, else the seller's listing and account. */
+            'order_terms' => $myReply ? [
+                'dispatch_within_days' => (int) ($myReply->load_within ?: $myReply->sellerListing()?->load_within) ?: null,
+                'credit_days'          => (int) ($myReply->seller_credit_days ?: $myReply->getUser?->credit_days) ?: null,
+            ] : null,
             /* The seller's own bid. `freight_charges` and `other_charges` are
                read-only here: the seller types a base price, the platform
                supplies the rest, and `for_price` is what the ranking uses. */
@@ -94,7 +100,7 @@ class SellerQuotationDetailResource extends JsonResource
                 'base_price'      => (float) ($myReply->base_price ?? 0),
                 // The base price this seller last bid; null for a bid keyed in
                 // as an Ex price (by an admin, or before bids were base prices).
-                'quoted_base_price' => self::quotedBasePrice($myReply),
+                'quoted_base_price' => $myReply->quotedBasePrice(),
                 'transport_price' => (float) ($myReply->transport_price ?? 0),
                 'ex_works_price'  => $myReply->ex_works_price !== null ? (float) $myReply->ex_works_price : null,
                 'freight_charges' => (float) ($myReply->freight_charges ?? 0),
@@ -105,7 +111,7 @@ class SellerQuotationDetailResource extends JsonResource
                 'price_source'    => $myReply->price_source ?: 'app',
                 'remarks'         => $myReply->remarks,
                 'price'           => $myReply->price,
-                'commission'      => $myReply->commission ?? null,
+                'commission'      => $myReply->commission !== null ? (float) $myReply->commission : null,
                 'commission_type' => $myReply->commission_type ?? null,
                 'is_mark'         => (bool) $myReply->is_mark,
                 'created_at'      => optional($myReply->created_at)->toIso8601String(),
@@ -113,13 +119,5 @@ class SellerQuotationDetailResource extends JsonResource
             ] : null,
             'created_at' => optional($this->created_at)->toIso8601String(),
         ];
-    }
-
-    private static function quotedBasePrice(SellerProductEnquiry $bid): ?float
-    {
-        $last = collect(is_array($bid->history) ? $bid->history : [])
-            ->last(fn ($entry) => ($entry['status'] ?? null) === 'Price Submitted');
-
-        return isset($last['base_price']) ? (float) $last['base_price'] : null;
     }
 }
