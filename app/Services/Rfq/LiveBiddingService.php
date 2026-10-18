@@ -76,6 +76,19 @@ class LiveBiddingService
     /* Auction lifecycle                                                   */
     /* ------------------------------------------------------------------ */
 
+    /**
+     * How long sellers get to price a new RFQ: the admin's "Seller Enquiry
+     * Reply Time (Min)" setting, or the .env default when it is not set. The
+     * setting used to be read only by the legacy app API, so live RFQs ran on
+     * the 15-minute default whatever the admin chose.
+     */
+    public function biddingMinutes(): int
+    {
+        $admin = (int) websiteSetupValue('seller_enquiry_reply_time');
+
+        return $admin > 0 ? $admin : (int) config('biznie.rfq.bidding_minutes', 15);
+    }
+
     /** Opens the bidding window. Idempotent: re-opening a live RFQ is a no-op. */
     public function openBidding(ProductEnquiry $rfq, ?int $minutes = null): ProductEnquiry
     {
@@ -83,7 +96,7 @@ class LiveBiddingService
             return $rfq;
         }
 
-        $minutes = $minutes ?: (int) config('biznie.rfq.bidding_minutes', 15);
+        $minutes = $minutes ?: $this->biddingMinutes();
 
         $rfq->bidding_started_at = Carbon::now();
         $rfq->bidding_ends_at    = Carbon::now()->addMinutes(max(1, $minutes));

@@ -44,11 +44,12 @@
                         <div class="row">
                             <div class="col-xl-4 col-sm-6 mb-3">
                                 <label for="seller_enquiry_reply_time" class="form-label">Seller Enquiry Reply Time (Min)
-                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="Time in minutes for the seller to reply to an enquiry.">
+                                    <span class="input-label-secondary cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="right" title="How long sellers can submit rates on a new RFQ (the live bidding window), in minutes. Applies to RFQs raised after you save.">
                                         <i class="bi bi-info-circle"></i>
                                     </span>
                                 </label>
-                                <input type="number" class="form-control" placeholder="Seller Enquiry Reply Time (Min)" id="seller_enquiry_reply_time" wire:model="value.seller_enquiry_reply_time">
+                                <input type="number" min="1" max="1440" step="1" class="form-control @error('value.seller_enquiry_reply_time') is-invalid @enderror" placeholder="Seller Enquiry Reply Time (Min)" id="seller_enquiry_reply_time" wire:model="value.seller_enquiry_reply_time">
+                                @error('value.seller_enquiry_reply_time') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <hr>
