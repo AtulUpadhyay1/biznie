@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\Admin\CommodityProductEnquiry\ManualPriceEntry;
+use App\Livewire\Admin\CommodityProductEnquiry\Show;
 use App\Livewire\Admin\WebsiteSetup\Setting;
 use App\Models\CommodityProduct;
 use App\Models\ProductEnquiry;
@@ -198,6 +199,24 @@ class SellerRfqInboxTest extends TestCase
             ->assertSeeHtml('<dt>Price Option</dt>')
             ->assertSee('F.O.R')
             ->assertSee("Delivered to the buyer's city, freight included");
+        Livewire::test(Show::class, ['id' => $rfqId])
+            ->assertSeeHtml('<dt>Price Option</dt>')
+            ->assertSee('F.O.R');
+    }
+
+    public function test_an_rfq_without_a_unit_takes_the_products(): void
+    {
+        $this->product->loadMissing('getUnit');
+        if (! $this->product->getUnit) {
+            $this->markTestSkipped('The product has no unit to fall back to.');
+        }
+        $this->makeSeller();
+
+        $rfqId = $this->createRfq($this->makeUser('customer'), ['unit_label' => null]);
+
+        $short = $this->product->getUnit->short_name;
+        $expected = in_array(strtolower(trim($short)), ['mt', 'metric ton', 'metric tonne'], true) ? 'MT' : $short;
+        $this->assertSame($expected, ProductEnquiry::find($rfqId)->unit_label);
     }
 
     public function test_an_unknown_price_option_is_refused(): void

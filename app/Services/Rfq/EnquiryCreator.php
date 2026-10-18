@@ -117,9 +117,7 @@ class EnquiryCreator
         }
 
         if ($moq > 0 && $total < $moq) {
-            $unit = $data['unit_label'] ?? $product?->getUnit?->short_name ?? 'MT';
-            // "MT", never "Mt" (4.12).
-            $unit = in_array(strtolower(trim($unit)), ['mt', 'metric ton', 'metric tonne'], true) ? 'MT' : $unit;
+            $unit = self::displayUnit($data['unit_label'] ?? $product?->getUnit?->short_name) ?? 'MT';
             $fmt = fn (float $n) => rtrim(rtrim(number_format($n, 2, '.', ''), '0'), '.');
 
             return "Minimum order is {$fmt($moq)} {$unit} for this product (you entered {$fmt($total)} {$unit})";
@@ -161,7 +159,11 @@ class EnquiryCreator
         return $prefix . str_pad((string) $next, 4, '0', STR_PAD_LEFT);
     }
 
-    /** Falls back to the unit's short name when the client sent no label. */
+    /**
+     * Falls back to the unit's short name when the client sent no label, then
+     * to the product's own unit: a product-page RFQ sent neither, and sellers
+     * read its quantity as "30 Unit".
+     */
     private function unitLabel(array $data): ?string
     {
         if (! empty($data['unit_label'])) {
@@ -172,7 +174,20 @@ class EnquiryCreator
             return ProductUnit::whereKey($data['unit_id'])->value('short_name');
         }
 
-        return null;
+        return self::displayUnit(
+            CommodityProduct::with('getUnit')->find($data['commodity_product_id'] ?? null)?->getUnit?->short_name
+        );
+    }
+
+    /** "MT", never "Mt" (4.12); null when there is no unit at all. */
+    private static function displayUnit(?string $unit): ?string
+    {
+        $unit = trim((string) $unit);
+        if ($unit === '') {
+            return null;
+        }
+
+        return in_array(strtolower($unit), ['mt', 'metric ton', 'metric tonne'], true) ? 'MT' : $unit;
     }
 
     /**
