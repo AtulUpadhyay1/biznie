@@ -50,9 +50,7 @@ class QuotationController extends Controller
             )
             ->pluck('product_enquiries_id');
 
-        $stillOpen = fn ($q) => $q->whereNotIn('status', ['ordered', 'cancel', 'cancelled', 'No Seller Available'])
-            ->where(fn ($q) => $q->whereNull('bidding_status')->orWhere('bidding_status', '!=', 'closed'))
-            ->where(fn ($q) => $q->whereNull('bidding_ends_at')->orWhere('bidding_ends_at', '>=', now()));
+        $stillOpen = fn ($q) => $q->openForBids();
 
         $list = ProductEnquiry::query()
             ->whereIn('id', $invitations)

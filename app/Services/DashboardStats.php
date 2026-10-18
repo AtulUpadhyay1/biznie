@@ -91,13 +91,19 @@ class DashboardStats
         return ['total' => $bids->count()] + $counts;
     }
 
-    /** The seller's open invitations, newest first — what "New RFQs" lists. */
+    /**
+     * The seller's open invitations, newest first — what "New RFQs" lists and
+     * the tile counts. Open for this seller means they have not priced it and
+     * it is still taking rates; another seller's bid does not take it away
+     * (the buyer-side "waiting for quotes" filter did, so a live auction left
+     * the list as soon as anyone bid).
+     */
     public function sellerNewRfqs(int $sellerId, int $limit = 5)
     {
         return ProductEnquiry::query()
             ->whereHas('getSellerProductEnquiries', fn ($q) => $q->where('user_id', $sellerId)
                 ->whereRaw('NOT ' . ProductEnquiry::PRICED_BID_SQL))
-            ->rfqStatusFilter(RfqStatus::Open->value)
+            ->openForBids()
             ->with([
                 'getBrand:id,name',
                 'getCommodityProduct:id,name,slug,thumbnail,category_id',

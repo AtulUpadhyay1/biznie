@@ -79,7 +79,7 @@ enum RfqStatus: string
         if (self::isPriced($bid)) {
             return self::Quoted;
         }
-        if ($rfq && self::biddingOver($rfq)) {
+        if ($rfq && (self::biddingOver($rfq) || in_array($rfqRaw, self::NO_SELLER, true))) {
             return self::ClosedNoQuote;
         }
 

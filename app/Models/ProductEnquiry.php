@@ -26,8 +26,27 @@ class ProductEnquiry extends Model
         'bidding_ends_at'    => 'datetime',
     ];
 
-    /** SQL for "this bid carries a price" — mirrors RfqStatus::isPriced(). */
-    public const PRICED_BID_SQL = "(for_price IS NOT NULL OR base_price > 0 OR status IN ('replied','Mark For Sell','ordered'))";
+    /**
+     * SQL for "this bid carries a price" — mirrors RfqStatus::isPriced().
+     *
+     * NULL-safe on purpose: a fresh invitation has no base_price, and
+     * `base_price > 0` on NULL is NULL, so `NOT (…)` came out NULL and the
+     * unpriced invitation vanished from "New RFQs" while the tile counted it.
+     */
+    public const PRICED_BID_SQL = "(for_price IS NOT NULL OR COALESCE(base_price, 0) > 0 OR COALESCE(status, '') IN ('replied','Mark For Sell','ordered'))";
+
+    /**
+     * RFQs still taking rates: not ordered, cancelled or out of sellers, and the
+     * bidding window not closed or past. The one definition the seller's tile,
+     * dashboard list and "New RFQs" tab share.
+     */
+    public function scopeOpenForBids($query)
+    {
+        return $query
+            ->where(fn ($q) => $q->whereNull('status')->orWhereNotIn('status', ['ordered', 'cancel', 'cancelled', 'No Seller Available']))
+            ->where(fn ($q) => $q->whereNull('bidding_status')->orWhere('bidding_status', '!=', 'closed'))
+            ->where(fn ($q) => $q->whereNull('bidding_ends_at')->orWhere('bidding_ends_at', '>=', now()));
+    }
 
     /** Adds `priced_bids_count` — how many sellers have actually quoted. */
     public function scopeWithQuoteCount($query)
@@ -51,10 +70,8 @@ class ProductEnquiry extends Model
             RfqStatus::Cancelled     => $query->whereIn('status', ['cancel', 'cancelled']),
             RfqStatus::Quoted        => $query->whereNotIn('status', ['ordered', 'cancel', 'cancelled'])->whereHas('getSellerProductEnquiries', $priced),
             RfqStatus::ClosedNoQuote => $query->whereNotIn('status', ['ordered', 'cancel', 'cancelled'])->whereDoesntHave('getSellerProductEnquiries', $priced)->where($over),
-            RfqStatus::Open          => $query->whereNotIn('status', ['ordered', 'cancel', 'cancelled', 'No Seller Available'])
-                ->whereDoesntHave('getSellerProductEnquiries', $priced)
-                ->where(fn ($q) => $q->whereNull('bidding_status')->orWhere('bidding_status', '!=', 'closed'))
-                ->where(fn ($q) => $q->whereNull('bidding_ends_at')->orWhere('bidding_ends_at', '>=', now())),
+            // The buyer's "waiting for quotes": still open and nobody has priced.
+            RfqStatus::Open          => $query->openForBids()->whereDoesntHave('getSellerProductEnquiries', $priced),
             default                  => $query,
         };
     }
