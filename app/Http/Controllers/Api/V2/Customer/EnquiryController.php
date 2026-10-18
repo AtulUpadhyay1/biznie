@@ -95,8 +95,18 @@ class EnquiryController extends Controller
             'brand_id'             => ['nullable', 'integer', 'exists:brands,id'],
             'origin_city'          => ['nullable', 'string', 'max:120'],
             'variation'            => ['nullable', 'array'],
+            // Each size row is listed field by field: with a rule on
+            // `variation.*.quantity` alone, validated() kept only the quantity
+            // and the seller saw "Variant 1, 2, 3" instead of the sizes.
+            'variation.*.id'            => ['nullable', 'integer'],
+            'variation.*.value'         => ['nullable', 'array'],
+            'variation.*.price'         => ['nullable', 'numeric'],
             // Every size row a real quantity: > 0, at most 2 decimals.
-            'variation.*.quantity' => ['nullable', new OrderQuantity],
+            'variation.*.quantity'      => ['nullable', new OrderQuantity],
+            'variation.*.ex_price'      => ['nullable', 'numeric'],
+            'variation.*.line_total'    => ['nullable', 'numeric'],
+            'variation.*.stock'         => ['nullable'],
+            'variation.*.user_selected' => ['nullable'],
             'billing_address'      => ['nullable'],
             'delivery_address'     => ['nullable'],
             'consignee_detail'     => ['nullable'],
