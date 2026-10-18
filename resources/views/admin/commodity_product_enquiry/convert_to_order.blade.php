@@ -316,6 +316,10 @@
                             <dd>{{ $enquiry_data->getBrand?->name }}</dd>
                         </div>
                         <div>
+                            <dt>Price Option</dt>
+                            <dd><x-price-option :value="$enquiry_data->price_option" /></dd>
+                        </div>
+                        <div>
                             <dt>Delivery Location</dt>
                             <dd>{{ $enquiry_data->consignee_detail['address_line_one'] }}
                                 {{ $enquiry_data->consignee_detail['address_line_two'] }}

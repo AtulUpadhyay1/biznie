@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Livewire\Admin\CommodityProductEnquiry\ManualPriceEntry;
 use App\Livewire\Admin\WebsiteSetup\Setting;
 use App\Models\CommodityProduct;
 use App\Models\ProductEnquiry;
@@ -172,6 +173,42 @@ class SellerRfqInboxTest extends TestCase
 
         $this->assertSame('live', $rfq->bidding_status);
         $this->assertEqualsWithDelta(60, $rfq->bidding_started_at->diffInMinutes($rfq->bidding_ends_at), 1);
+    }
+
+    public function test_the_price_option_reaches_the_buyer_the_seller_and_the_admin(): void
+    {
+        $seller = $this->makeSeller();
+        $buyer = $this->makeUser('customer');
+        $rfqId = $this->createRfq($buyer, ['price_option' => 'for']);
+
+        $this->assertSame('for', ProductEnquiry::find($rfqId)->price_option);
+
+        Sanctum::actingAs($buyer);
+        $this->getJson("/api/v2/me/enquiries/{$rfqId}")->assertOk()
+            ->assertJsonPath('data.price_option', 'for')
+            ->assertJsonPath('data.price_option_label', 'F.O.R');
+
+        Sanctum::actingAs($seller);
+        $this->getJson("/api/v2/seller/rfqs/{$rfqId}")->assertOk()
+            ->assertJsonPath('data.price_option_label', 'F.O.R');
+        $row = collect($this->getJson('/api/v2/seller/rfqs?tab=received')->json('data'))->firstWhere('id', $rfqId);
+        $this->assertSame('F.O.R', $row['price_option_label']);
+
+        Livewire::test(ManualPriceEntry::class, ['id' => $rfqId])
+            ->assertSeeHtml('<dt>Price Option</dt>')
+            ->assertSee('F.O.R')
+            ->assertSee("Delivered to the buyer's city, freight included");
+    }
+
+    public function test_an_unknown_price_option_is_refused(): void
+    {
+        Sanctum::actingAs($this->makeUser('customer'));
+
+        $this->postJson('/api/v2/me/enquiries', [
+            'commodity_product_id' => $this->product->id,
+            'quantity'             => 30,
+            'price_option'         => 'cif',
+        ])->assertUnprocessable()->assertJsonValidationErrors('price_option');
     }
 
     public function test_the_admin_reply_time_must_be_whole_minutes(): void

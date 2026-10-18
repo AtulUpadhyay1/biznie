@@ -21,6 +21,9 @@ class EnquiryResource extends JsonResource
             'quantity'        => $this->quantity !== null ? (float) $this->quantity : null,
             'unit_label'      => $this->unit_label,
             'size_label'      => $this->size_label,
+            // Which price the buyer was comparing on (Basic / Ex-Works / F.O.R).
+            'price_option'       => $this->price_option,
+            'price_option_label' => \App\Enums\PriceOption::labelFor($this->price_option),
             'delivery_city'   => $this->delivery_city,
             'delivery_state'  => $this->delivery_state,
             'required_by'     => $this->required_by,

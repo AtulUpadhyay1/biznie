@@ -46,6 +46,11 @@
                                         </div>
 
                                         <div>
+                                            <dt>Price Option</dt>
+                                            <dd><x-price-option :value="$main_product_enquiry->price_option" /></dd>
+                                        </div>
+
+                                        <div>
                                             <dt>Purpose</dt>
                                             <dd>{{ $main_product_enquiry->purpose }}</dd>
                                         </div>

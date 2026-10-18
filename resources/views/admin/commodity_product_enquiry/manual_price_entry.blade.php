@@ -48,6 +48,7 @@
                     <div><dt>Product</dt><dd>{{ $rfq->getCommodityProduct?->name ?? '--' }}{{ $rfq->size_label ? ' ' . $rfq->size_label : '' }}</dd></div>
                     <div><dt>Quantity</dt><dd>{{ $rfq->quantity ? formatIndianNumber($rfq->quantity) . ' ' . $unit : '--' }}</dd></div>
                     <div><dt>Delivery City</dt><dd>{{ $rfq->delivery_city ?? '--' }}</dd></div>
+                    <div><dt>Price Option</dt><dd><x-price-option :value="$rfq->price_option" /></dd></div>
                     <div><dt>Buyer</dt><dd>{{ $rfq->getUser?->name ?? '--' }}</dd></div>
                     <div><dt>Created On</dt><dd>{{ dateTimeFormat($rfq->created_at) }}</dd></div>
                     <div>

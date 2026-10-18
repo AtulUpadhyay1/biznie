@@ -61,6 +61,7 @@ class EnquiryCreator
         $enquiry->unit_id              = $data['unit_id'] ?? null;
         $enquiry->unit_label           = $this->unitLabel($data);
         $enquiry->size_label           = $data['size_label'] ?? null;
+        $enquiry->price_option         = $data['price_option'] ?? null;
         $enquiry->required_by          = $data['required_by'] ?? null;
         $enquiry->status               = 'pending';
         $enquiry->history              = [['status' => 'pending', 'created_at' => Carbon::now()->toIso8601String()]];

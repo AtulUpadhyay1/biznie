@@ -45,6 +45,11 @@
                                         </div>
 
                                         <div>
+                                            <dt>Price Option</dt>
+                                            <dd><x-price-option :value="$data->price_option" /></dd>
+                                        </div>
+
+                                        <div>
                                             <dt>Purpose</dt>
                                             <dd>{{ $data->purpose }}</dd>
                                         </div>

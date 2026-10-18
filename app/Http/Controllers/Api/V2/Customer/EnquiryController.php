@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V2\Customer;
 
+use App\Enums\PriceOption;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V2\BiddingResource;
 use App\Http\Resources\V2\EnquiryDetailResource;
@@ -21,6 +22,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class EnquiryController extends Controller
 {
@@ -121,6 +123,8 @@ class EnquiryController extends Controller
             'unit_id'              => ['nullable', 'integer', 'exists:product_units,id'],
             'unit_label'           => ['nullable', 'string', 'max:30'],
             'size_label'           => ['nullable', 'string', 'max:150'],
+            // The Price Option chip the buyer had selected on the product page.
+            'price_option'         => ['nullable', Rule::enum(PriceOption::class)],
             'delivery_city'        => ['nullable', 'string', 'max:120'],
             'delivery_state'       => ['nullable', 'string', 'max:120'],
             'required_by'          => ['nullable', 'string', 'max:120'],

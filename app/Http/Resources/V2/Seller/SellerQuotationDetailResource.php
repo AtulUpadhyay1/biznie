@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V2\Seller;
 
+use App\Enums\PriceOption;
 use App\Enums\RfqStatus;
 use App\Models\SellerProductEnquiry;
 use App\Services\Rfq\BidPriceCalculator;
@@ -33,6 +34,9 @@ class SellerQuotationDetailResource extends JsonResource
             'quantity'        => $this->quantity !== null ? (float) $this->quantity : null,
             'unit_label'      => $this->unit_label,
             'size_label'      => $this->size_label,
+            // Which price the buyer was comparing on (Basic / Ex-Works / F.O.R).
+            'price_option'       => $this->price_option,
+            'price_option_label' => PriceOption::labelFor($this->price_option),
             /* The city is all a bidding seller gets. Full delivery details are
                released only after the buyer confirms the order - the screen
                says as much, and the payload has to make that true. */
