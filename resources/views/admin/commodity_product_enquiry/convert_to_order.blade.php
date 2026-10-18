@@ -352,7 +352,7 @@
                         <div>
                             <dt>Company Name</dt>
                             <dd>{{ $enquiry_data->getUser?->name }}
-                                ({{$enquiry_data->getUser?->getUserDetail->company_name}})</dd>
+                                ({{$enquiry_data->getUser?->getUserDetail?->company_name}})</dd>
                         </div>
                         <div>
                             <dt>Phone</dt>
@@ -360,7 +360,7 @@
                         </div>
                         <div>
                             <dt>GST</dt>
-                            <dd>{{ $enquiry_data->getUser?->getUserDetail->gst_number }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail?->gst_number }}</dd>
                         </div>
                         <div>
                             <dt>Pincode</dt>
@@ -400,7 +400,7 @@
                         <div>
                             <dt>Company Name</dt>
                             <dd>{{ $enquiry_data->getUser?->name }}
-                                ({{$enquiry_data->getUser?->getUserDetail->company_name}})</dd>
+                                ({{$enquiry_data->getUser?->getUserDetail?->company_name}})</dd>
                         </div>
                         <div>
                             <dt>Phone</dt>
@@ -408,27 +408,27 @@
                         </div>
                         <div>
                             <dt>GST</dt>
-                            <dd>{{ $enquiry_data->getUser?->getUserDetail->gst_number }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail?->gst_number }}</dd>
                         </div>
                         <div>
                             <dt>Pincode</dt>
-                            <dd>{{ $enquiry_data->getUser?->getUserDetail->postal_code }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail?->postal_code }}</dd>
                         </div>
                         <div>
                             <dt>Address Line1</dt>
-                            <dd>{{ $enquiry_data->getUser?->getUserDetail->address_line_one }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail?->address_line_one }}</dd>
                         </div>
                         <div>
                             <dt>Address Line2</dt>
-                            <dd>{{ $enquiry_data->getUser?->getUserDetail->address_line_two }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail?->address_line_two }}</dd>
                         </div>
                         <div>
                             <dt>City</dt>
-                            <dd>{{ $enquiry_data->getUser?->getUserDetail->city }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail?->city }}</dd>
                         </div>
                         <div>
                             <dt>State</dt>
-                            <dd>{{ $enquiry_data->getUser?->getUserDetail->state }}</dd>
+                            <dd>{{ $enquiry_data->getUser?->getUserDetail?->state }}</dd>
                         </div>
                         <div>
                             <dt>Credit Days</dt>

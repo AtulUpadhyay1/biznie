@@ -94,7 +94,7 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $data->getUser?->getUserDetail->company_name }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail?->company_name }}</dd>
                                         </div>
 
                                         <div>
@@ -104,32 +104,32 @@
 
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $data->getUser?->getUserDetail->gst_number }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail?->gst_number }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 1</dt>
-                                            <dd>{{ $data->getUser?->getUserDetail->address_line_one }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail?->address_line_one }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 2</dt>
-                                            <dd>{{ $data->getUser?->getUserDetail->address_line_two }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail?->address_line_two }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $data->getUser?->getUserDetail->city }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail?->city }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $data->getUser?->getUserDetail->state }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail?->state }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Pincode</dt>
-                                            <dd>{{ $data->getUser?->getUserDetail->postal_code }}</dd>
+                                            <dd>{{ $data->getUser?->getUserDetail?->postal_code }}</dd>
                                         </div>
 
                                         <div>

@@ -96,7 +96,7 @@
                                     <dl class="bz-kv-list">
                                         <div>
                                             <dt>Company</dt>
-                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail->company_name }}
+                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail?->company_name }}
                                             </dd>
                                         </div>
 
@@ -107,35 +107,35 @@
 
                                         <div>
                                             <dt>GST</dt>
-                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail->gst_number }}
+                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail?->gst_number }}
                                             </dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 1</dt>
-                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail->address_line_one }}
+                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail?->address_line_one }}
                                             </dd>
                                         </div>
 
                                         <div>
                                             <dt>Address Line 2</dt>
-                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail->address_line_two }}
+                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail?->address_line_two }}
                                             </dd>
                                         </div>
 
                                         <div>
                                             <dt>City</dt>
-                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail->city }}</dd>
+                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail?->city }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>State</dt>
-                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail->state }}</dd>
+                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail?->state }}</dd>
                                         </div>
 
                                         <div>
                                             <dt>Pincode</dt>
-                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail->postal_code }}
+                                            <dd>{{ $main_product_enquiry->getUser?->getUserDetail?->postal_code }}
                                             </dd>
                                         </div>
 
