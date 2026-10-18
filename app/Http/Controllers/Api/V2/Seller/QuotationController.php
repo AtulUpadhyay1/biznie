@@ -7,6 +7,7 @@ use App\Http\Resources\V2\Seller\SellerQuotationDetailResource;
 use App\Http\Resources\V2\Seller\SellerQuotationResource;
 use App\Models\ProductEnquiry;
 use App\Models\SellerProductEnquiry;
+use App\Services\Rfq\BidPriceCalculator;
 use App\Services\Rfq\LiveBiddingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -169,18 +170,27 @@ class QuotationController extends Controller
     }
 
     /**
-     * Submits or improves this seller's ex-works rate.
+     * Submits or improves this seller's rate.
      *
-     * Ex-works is the only figure the seller controls; freight and other
-     * charges are the platform's, which is what the bid screen tells them.
-     * Sending anything else would let a seller win the F.O.R ranking by
+     * The seller bids a base price, as in the legacy app; their listing's
+     * charges, the buyer's quality and packaging, each size's gauge difference
+     * and GST turn it into the Ex price (BidPriceCalculator). Freight and other
+     * charges are the platform's, which is what the bid screen tells them —
+     * letting a seller send them would let them win the F.O.R ranking by
      * under-declaring freight.
+     *
+     * `ex_works_price` on its own is the older contract (the Ex price typed
+     * directly) and is still accepted from clients that send it.
      */
-    public function quote(Request $request, int $id): JsonResponse
+    public function quote(Request $request, int $id, BidPriceCalculator $calculator): JsonResponse
     {
         $data = $request->validate([
-            'ex_works_price' => ['required', 'numeric', 'min:0'],
+            'base_price'     => ['required_without:ex_works_price', 'nullable', 'numeric', 'gt:0', 'max:99999999'],
+            'ex_works_price' => ['nullable', 'numeric', 'min:0'],
             'remarks'        => ['nullable', 'string', 'max:500'],
+        ], [
+            'base_price.required_without' => 'Enter your base price.',
+            'base_price.gt'               => 'Enter a base price above zero.',
         ]);
 
         $ownerId = $this->ownerId($request);
@@ -211,11 +221,16 @@ class QuotationController extends Controller
             ], 422);
         }
 
+        $quote = isset($data['base_price'])
+            ? $calculator->quote($calculator->terms($bid, $enquiry), (float) $data['base_price'])
+            : null;
+
         $bid = $this->bidding->recordPrice(
             bid: $bid,
-            exWorks: (float) $data['ex_works_price'],
+            exWorks: $quote ? $quote['ex_price'] : (float) $data['ex_works_price'],
             source: 'app',
-            remarks: $data['remarks'] ?? null
+            remarks: $data['remarks'] ?? null,
+            quote: $quote
         );
 
         $enquiry->refresh()->setRelation('getMySellerProductEnquiry', $bid);
@@ -227,8 +242,10 @@ class QuotationController extends Controller
                 $enquiry->load(['getBrand', 'getCommodityProduct.getCategory', 'getUser'])
             ),
             'meta'    => [
-                'my_rank'   => $this->bidding->rankFor($enquiry, $ownerId),
-                'for_price' => (float) $bid->for_price,
+                'my_rank'    => $this->bidding->rankFor($enquiry, $ownerId),
+                'base_price' => $quote['base_price'] ?? null,
+                'ex_price'   => (float) $bid->ex_works_price,
+                'for_price'  => (float) $bid->for_price,
             ],
         ], 201);
     }
@@ -236,23 +253,21 @@ class QuotationController extends Controller
     /**
      * Legacy quotation endpoint, kept for the older mobile clients.
      *
-     * It writes through the same service so a bid raised the old way still
-     * lands on the leaderboard with a proper F.O.R price.
+     * Their `base_price` is a base price, exactly as it is on quote(), so it
+     * goes through the same calculation and lands on the leaderboard with a
+     * proper Ex and F.O.R price.
      */
-    public function respond(Request $request, int $id): JsonResponse
+    public function respond(Request $request, int $id, BidPriceCalculator $calculator): JsonResponse
     {
         $data = $request->validate([
-            'base_price'      => ['required', 'numeric', 'min:0'],
+            'base_price'      => ['required', 'numeric', 'gt:0'],
             'transport_price' => ['nullable', 'numeric', 'min:0'],
             'note'            => ['nullable', 'string', 'max:500'],
         ]);
 
-        $request->merge([
-            'ex_works_price' => $data['base_price'],
-            'remarks'        => $data['note'] ?? null,
-        ]);
+        $request->merge(['remarks' => $data['note'] ?? null]);
 
-        return $this->quote($request, $id);
+        return $this->quote($request, $id, $calculator);
     }
 
     /** This seller's invitation row for an RFQ, or null if they were not invited. */

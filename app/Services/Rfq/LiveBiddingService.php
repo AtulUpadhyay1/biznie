@@ -258,7 +258,7 @@ class LiveBiddingService
         $this->notifySeller(
             $sellerId,
             'New RFQ ' . $rfq->unique_id,
-            'A new RFQ is live. Submit your ex-works rate before the timer runs out.',
+            'A new RFQ is live. Submit your base price before the timer runs out.',
             $rfq
         );
 
@@ -307,14 +307,19 @@ class LiveBiddingService
     /**
      * Records a price against one bid, from either surface.
      *
-     * The seller app only sends `ex_works_price` — freight and other charges
-     * are the platform's to set, which is exactly what the seller screen
-     * promises ("Biznie will add freight and other charges"). The admin screen
-     * sends all three, because keying a price in on a seller's behalf is also
-     * the moment you fix a freight figure no transporter published.
+     * The seller app sends a base price, which BidPriceCalculator turns into
+     * the Ex price passed here along with its `$quote` — freight and other
+     * charges are the platform's to set, which is exactly what the seller
+     * screen promises ("Biznie will add freight and other charges"). The admin
+     * screen sends all three, because keying a price in on a seller's behalf
+     * is also the moment you fix a freight figure no transporter published.
      *
      * `base_price` / `transport_price` are kept in step so order conversion,
-     * which predates the auction, keeps reading the right numbers.
+     * which predates the auction, keeps reading the right numbers. With a
+     * `$quote`, each size row also gets its own GST-inclusive rate, which is
+     * what the order summary prices a size-wise order from.
+     *
+     * @param  array|null  $quote  BidPriceCalculator::quote() for a base-price bid.
      */
     public function recordPrice(
         SellerProductEnquiry $bid,
@@ -326,7 +331,8 @@ class LiveBiddingService
         ?string $remarks = null,
         ?string $exWorksCity = null,
         ?string $exWorksState = null,
-        ?string $freightType = null
+        ?string $freightType = null,
+        ?array $quote = null
     ): SellerProductEnquiry {
         $rfq = $bid->getProductEnquiry ?: ProductEnquiry::find($bid->product_enquiries_id);
 
@@ -366,21 +372,40 @@ class LiveBiddingService
             $bid->remarks = $remarks;
         }
 
-        // Legacy columns the order pipeline still reads.
-        $bid->base_price      = $bid->ex_works_price;
+        // Legacy columns the order pipeline still reads. Without a quote (an
+        // admin keying in an ex-works figure) the base price is not known.
+        $bid->base_price      = $quote['base_price'] ?? $bid->ex_works_price;
         $bid->transport_price = $bid->freight_charges;
+
+        if ($quote) {
+            $rows = is_array($bid->value) ? $bid->value : [];
+            foreach ($quote['sizes'] as $size) {
+                if ($size['index'] !== null && is_array($rows[$size['index']] ?? null)) {
+                    $rows[$size['index']] = array_merge($rows[$size['index']], [
+                        'price'          => $size['gauge_diff'],
+                        'per_unit_price' => $size['ex_price'],
+                        'tax'            => $size['tax'],
+                        'final_price'    => $size['line_total'],
+                    ]);
+                }
+            }
+            $bid->value = $rows;
+            $bid->price = array_column($quote['sizes'], 'gauge_diff');
+        }
 
         if ($bid->status !== 'ordered') {
             $bid->status = 'replied';
         }
 
         $history   = is_array($bid->history) ? $bid->history : [];
-        $history[] = [
+        $history[] = array_filter([
             'status'     => 'Price Submitted',
             'source'     => $source,
+            'base_price' => $quote['base_price'] ?? null,
+            'ex_price'   => (float) $bid->ex_works_price,
             'for_price'  => (float) $bid->for_price,
             'created_at' => Carbon::now()->toIso8601String(),
-        ];
+        ], fn ($v) => $v !== null);
         $bid->history = $history;
         $bid->save();
 

@@ -244,7 +244,7 @@ class OrderSummary
     }
 
     /** `8 MM` from `{value: [{value: "8", unit: {short_name: "MM"}}]}`. */
-    private static function sizeLabel(array $row): string
+    public static function sizeLabel(array $row): string
     {
         $parts = [];
         foreach (is_array($row['value'] ?? null) ? $row['value'] : [] as $attribute) {
