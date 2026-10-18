@@ -54,7 +54,10 @@ class EnquiryCreator
         $enquiry->price                = $data['price'] ?? null;
         $enquiry->payment_mode         = $data['payment_mode'] ?? null;
         $enquiry->credit_day           = $data['credit_day'] ?? null;
-        $enquiry->quantity             = $data['quantity'] ?? null;
+        // The single quantity, or the sum of the size rows: without it a
+        // size-wise RFQ showed "Quantity —" to sellers and the buyer's live
+        // panel had no total amount.
+        $enquiry->quantity             = self::totalQuantity($data) ?: null;
         $enquiry->unit_id              = $data['unit_id'] ?? null;
         $enquiry->unit_label           = $this->unitLabel($data);
         $enquiry->size_label           = $data['size_label'] ?? null;

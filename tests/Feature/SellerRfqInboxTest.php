@@ -152,7 +152,10 @@ class SellerRfqInboxTest extends TestCase
             'variation' => [$size('8', 1), $size('10', 2), $size('12', 3)],
         ]);
 
-        $this->assertSame('8', ProductEnquiry::find($rfqId)->variation[0]['value'][0]['value']);
+        $rfq = ProductEnquiry::find($rfqId);
+        $this->assertSame('8', $rfq->variation[0]['value'][0]['value']);
+        // The rows' total is the RFQ's quantity.
+        $this->assertEquals(30, (float) $rfq->quantity);
 
         Sanctum::actingAs($seller);
         $rows = $this->getJson("/api/v2/seller/rfqs/{$rfqId}")->assertOk()->json('data.variation');
